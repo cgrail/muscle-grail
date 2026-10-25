@@ -10,6 +10,7 @@ struct MuscleGrailApp: App {
     let container: ModelContainer
     #if os(macOS)
     @State private var claude: ClaudeConnection
+    @State private var backup: BackupFolder
     #endif
 
     init() {
@@ -23,6 +24,7 @@ struct MuscleGrailApp: App {
         Self.observeSteps()
         #else
         _claude = State(initialValue: ClaudeConnection(context: container.mainContext))
+        _backup = State(initialValue: BackupFolder(container: container))
         #endif
     }
 
@@ -43,7 +45,9 @@ struct MuscleGrailApp: App {
         #if os(macOS)
         Settings {
             TabView {
-                Tab("General", systemImage: "gear") { Form { LanguagePicker() }.formStyle(.grouped).frame(width: 560) }
+                Tab("General", systemImage: "gear") {
+                    Form { LanguagePicker(); BackupSettings() }.formStyle(.grouped).frame(width: 560).environment(backup)
+                }
                 Tab("Claude", systemImage: "sparkles") { ClaudeSettings().environment(claude) }
             }
         }
