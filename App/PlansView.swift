@@ -37,6 +37,7 @@ struct PlansView: View {
 struct PlanEditor: View {
     @Environment(\.modelContext) private var context
     @Bindable var plan: Plan
+    @State private var picking = false
 
     var body: some View {
         Form {
@@ -53,15 +54,18 @@ struct PlanEditor: View {
                     moved.move(fromOffsets: from, toOffset: to)
                     for (index, item) in moved.enumerated() { item.order = index }
                 }
-                Button("Add exercise", systemImage: "plus") {
-                    let item = PlanItem(exercise: "", order: (plan.sortedItems.last?.order ?? -1) + 1)
-                    context.insert(item)
-                    item.plan = plan
-                }
+                Button("Add exercise", systemImage: "plus") { picking = true }
             }
         }
         .formStyle(.grouped)
         .navigationTitle(plan.name)
+        .sheet(isPresented: $picking) {
+            ExercisePicker { name in
+                let item = PlanItem(exercise: name, order: (plan.sortedItems.last?.order ?? -1) + 1)
+                context.insert(item)
+                item.plan = plan
+            }
+        }
         #if os(iOS)
         .toolbar { EditButton() }
         #endif

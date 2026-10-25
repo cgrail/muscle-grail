@@ -18,6 +18,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | SwiftData + CloudKit private database | Least code. The local store works offline, and sync is built in. |
 | One local Swift package `Core` for models, sync monitor, HealthKit helpers and shared views | The three apps stay thin. Logic is testable with `swift test`. |
 | An exercise is just a name string, with no `Exercise` model | CloudKit has no unique constraints, so two offline devices would create duplicate exercise records. A name is its own merge key. Trade-off: renaming an exercise starts a fresh history. |
+| Exercise picker from [free-exercise-db](https://github.com/yuhonas/free-exercise-db): 876 exercises, public domain, a photo for each. Free text still works for custom exercises. | Consistent names across devices, which is what history matches on. The JSON is bundled (1 MB). Photos load from GitHub, because bundling all of them would add about 100 MB. |
 | One record per logged set, never edited | Two devices can't conflict over a set. Last-writer-wins only affects plan edits. |
 | HealthKit step observer (`enableBackgroundDelivery`, hourly) instead of `BGAppRefreshTask` | New steps wake iPhone and Watch in the background all day. Each wake gives CloudKit a chance to sync and refreshes the complication. One mechanism covers both jobs. |
 | The complication reads HealthKit directly | No App Group or shared store is needed. |
@@ -47,7 +48,7 @@ MuscleGrail.xcodeproj   folders are synced: new files in App/, Watch/, Complicat
 App/                    iOS + macOS app (one multiplatform target). Train (iOS only), Plans, History
 Watch/                  watchOS app. Plan picker, one page per exercise, HKWorkoutSession
 Complication/           WidgetKit complication: today's steps + km
-Core/                   Swift package: models, Store + SyncMonitor, Health, shared views, tests
+Core/                   Swift package: models, Store + SyncMonitor, Health, shared views, exercise catalog, tests
 Config/                 entitlements and Info.plists
 ```
 
@@ -78,7 +79,8 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 
 ## Status
 
-- [x] Core: models, sync monitor, HealthKit helpers, shared views. 2 unit tests pass (`cd Core && swift test`).
+- [x] Core: models, sync monitor, HealthKit helpers, shared views, exercise catalog. 3 unit tests pass (`cd Core && swift test`).
+- [x] Plan editor: "Add exercise" opens a searchable catalog with photos (search by name, muscle or equipment).
 - [x] The iOS app builds with the watch app and complication embedded, and the macOS app builds.
 - [x] Smoke test in the iPhone simulator: the CloudKit store opens and the Health permission sheet appears.
 - [ ] Run on real devices, then acceptance tests A–E.
@@ -93,6 +95,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 
 ## Skipped (not asked for)
 
+- Exercise photos during a workout (only in the picker) and offline photos
 - Rest timer and live heart rate display
 - Workout crash recovery
 - Live phone↔watch mirroring during a workout
