@@ -10,11 +10,12 @@ struct PlanPage: View {
     let plan: Plan
     @State private var search = ""
     @State private var picking = false
+    @State private var selection: UUID? // lets the arrow keys move between the exercises
 
     var body: some View {
         let locked = !newer.isEmpty
         let items = plan.sortedItems.filter { search.isEmpty || context.exerciseName($0.exerciseID).localizedCaseInsensitiveContains(search) }
-        List {
+        List(selection: $selection) {
             if locked { UpdateToEdit() }
             HStack(alignment: .bottom, spacing: 20) {
                 PlanArtwork(plan: plan, size: 140).shadow(radius: 6, y: 3)
@@ -33,7 +34,7 @@ struct PlanPage: View {
             .padding(.vertical, 12)
             .listRowSeparator(.hidden)
             Section {
-                ForEach(items) { PlanRow(item: $0).disabled(locked) }
+                ForEach(items) { PlanRow(item: $0).disabled(locked).tag($0.id) }
                     .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
                     .moveDisabled(locked || !search.isEmpty) // offsets count the filtered rows
             } header: {

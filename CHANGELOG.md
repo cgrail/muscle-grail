@@ -4,6 +4,7 @@
 
 ### Plans
 - The Mac app looks like Apple Music: plans sit in the sidebar like playlists, with their first exercise's photo as artwork. A plan opens as a table of its exercises with sets, reps and weight to edit in place, and a search to find an exercise in it. Under Library, every exercise is listed with its muscles and equipment, to sort, search and add to a plan.
+- On the Mac, the up and down arrow keys move between a plan's exercises.
 - Build plans on the Mac from a searchable catalog of over 800 exercises with photos, or add your own, each with target sets, reps and weight.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.
 - On the Mac, add exercises to a plan by describing them, typed or dictated, in English or German: "3x10 bench press at 60 kg, then squats". Needs Apple Intelligence.
