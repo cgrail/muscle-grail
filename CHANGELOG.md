@@ -32,5 +32,8 @@
 ### Watch face
 - A complication shows today's steps and walking distance.
 
+### Look
+- An app icon on iPhone, Watch and Mac: a flexed arm.
+
 ### Languages
 - English and German.

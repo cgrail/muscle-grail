@@ -35,6 +35,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - Code used by more than one target lives in the `Core` package: models, `Store` + `SyncMonitor`, `Health`, shared SwiftUI views, the exercise catalog.
 - Concurrency: app targets use Swift 5 mode with default actor isolation `MainActor`. `Core` uses Swift 6 strict concurrency and is nonisolated by default.
 - `Config/` holds entitlements and Info.plists and belongs to no target.
+- `Design/FlexArm.swift` draws the app icons into `App/` and `Watch/`'s `Assets.xcassets` (iPhone and watch without alpha, every macOS size) and `Design/flex-arm.png`. After changing it, run `swift Design/FlexArm.swift` from the repo root.
 - Files stay under 300 lines. Split by feature before a file crosses that, one feature per file, named after it. Subfolders inside a synchronized folder join the target too.
 
 ## Localization

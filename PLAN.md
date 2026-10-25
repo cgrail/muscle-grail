@@ -56,6 +56,7 @@ Watch/                  watchOS app. Plan picker, one page per exercise, HKWorko
 Complication/           WidgetKit complication: today's steps + km
 Core/                   Swift package: models, Store + SyncMonitor, Health, shared views, exercise catalog, tests
 Config/                 entitlements and Info.plists
+Design/                 the icon and image, drawn by FlexArm.swift
 ```
 
 Bundle IDs come from one build setting, `BUNDLE_ID_PREFIX = de.grails.musclegrail`.
@@ -91,7 +92,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [x] The iOS app builds with the watch app and complication embedded, and the macOS app builds.
 - [x] Smoke test in the iPhone simulator: the CloudKit store opens and the Health permission sheet appears.
 - [ ] Run on real devices, then acceptance tests A–E.
-- [ ] App icons.
+- [x] App icons: a flexed arm, drawn by `Design/FlexArm.swift`.
 
 ## Known risks and fallbacks
 

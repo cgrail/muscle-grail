@@ -1,4 +1,4 @@
 # Todo
 
 - [x] allow only one concurrent training at a time
-- [ ] create an icon and image with a flex arm with muscles
+- [x] create an icon and image with a flex arm with muscles

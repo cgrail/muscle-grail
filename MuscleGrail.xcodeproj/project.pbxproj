@@ -381,6 +381,7 @@
 		120000000000000000000002 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Config/MuscleGrail.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = Config/MuscleGrailMac.entitlements;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -414,6 +415,7 @@
 		120000000000000000000003 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Config/MuscleGrail.entitlements;
 				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = Config/MuscleGrailMac.entitlements;
 				"ENABLE_HARDENED_RUNTIME[sdk=macosx*]" = YES;
@@ -447,6 +449,7 @@
 		120000000000000000000005 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Config/MuscleGrailWatch.entitlements;
 				INFOPLIST_FILE = "Config/MuscleGrailWatch-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Muscle Grail";
@@ -469,6 +472,7 @@
 		120000000000000000000006 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Config/MuscleGrailWatch.entitlements;
 				INFOPLIST_FILE = "Config/MuscleGrailWatch-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Muscle Grail";
