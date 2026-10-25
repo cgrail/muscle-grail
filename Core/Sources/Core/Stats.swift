@@ -53,13 +53,13 @@ public func stats(_ workouts: [Workout], per period: Period, count: Int, now: Da
 
 /// Activity as GitHub shows it: one column per week up to the one containing `now`, one row per weekday from the
 /// calendar's first, counting the sessions (workouts, walks) on each day. Days after `now` are nil.
-public func activityWeeks(_ sessions: [Date], weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [[Int?]] {
+public func activityWeeks(_ sessions: [Date], weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {
     let counts = Dictionary(sessions.map { (calendar.startOfDay(for: $0), 1) }, uniquingKeysWith: +)
     return dayGrid(weeks: weeks, now: now, calendar: calendar) { counts[$0, default: 0] }
 }
 
 /// Per day, how far `values` (by start of day) got toward `goal`: 0 nothing, 1 under half, 2 half or more, 3 reached.
-public func goalWeeks(_ values: [Date: Double], goal: Double, weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [[Int?]] {
+public func goalWeeks(_ values: [Date: Double], goal: Double, weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {
     dayGrid(weeks: weeks, now: now, calendar: calendar) { day in
         let value = values[day] ?? 0
         return value >= goal ? 3 : value >= goal / 2 ? 2 : value > 0 ? 1 : 0
@@ -67,14 +67,33 @@ public func goalWeeks(_ values: [Date: Double], goal: Double, weeks: Int, now: D
 }
 
 /// One column per week up to the one containing `now`, one row per weekday, `level` for each day up to today.
-private func dayGrid(weeks: Int, now: Date, calendar: Calendar, level: (Date) -> Int) -> [[Int?]] {
+private func dayGrid(weeks: Int, now: Date, calendar: Calendar, level: (Date) -> Int) -> [GridWeek] {
     let today = calendar.startOfDay(for: now)
     let thisWeek = Period.week.start(of: now, in: calendar)
     return (0..<weeks).map { week in
         let start = Period.week.start(week - weeks + 1, after: thisWeek, in: calendar)
-        return (0..<7).map { day in
+        return GridWeek(start: start, days: (0..<7).map { day in
             let date = calendar.date(byAdding: .day, value: day, to: start)!
             return date > today ? nil : level(date)
-        }
+        })
     }
+}
+
+/// One column of a day grid: the week starting at `start`, and a level for each day, nil for days still ahead.
+public struct GridWeek: Equatable, Sendable {
+    public let start: Date
+    public let days: [Int?]
+}
+
+/// GitHub's month row: the columns where a new month starts, with the date to name it by. A first label
+/// right before the next one is left out, so the two don't overlap.
+public func monthLabels(_ weeks: [GridWeek], calendar: Calendar = .current) -> [Int: Date] {
+    let starts = weeks.indices.filter { $0 == 0 || calendar.component(.month, from: weeks[$0].start) != calendar.component(.month, from: weeks[$0 - 1].start) }
+    let shown = starts.count > 1 && starts[1] <= 2 ? Array(starts.dropFirst()) : starts
+    return Dictionary(uniqueKeysWithValues: shown.map { ($0, weeks[$0].start) })
+}
+
+/// GitHub's weekday column: every other row named, counting from the calendar's first weekday.
+public func weekdayLabels(calendar: Calendar = .current) -> [String?] {
+    (0..<7).map { row in row % 2 == 1 ? calendar.shortWeekdaySymbols[(calendar.firstWeekday - 1 + row) % 7] : nil }
 }

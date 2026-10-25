@@ -25,27 +25,41 @@ struct ActivitySection: View {
     }
 }
 
-/// One column per week, one square per day, darker for more.
+/// One column per week, one square per day, darker for more, with GitHub's month and weekday labels.
 struct ActivityGrid: View {
-    let weeks: [[Int?]]
+    let weeks: [GridWeek]
     var color = Color.green
 
     var body: some View {
-        let active = weeks.joined().filter { ($0 ?? 0) > 0 }.count
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 3) {
-                ForEach(weeks.indices, id: \.self) { week in
-                    VStack(spacing: 3) {
-                        ForEach(0..<7, id: \.self) { day in
-                            RoundedRectangle(cornerRadius: 2).fill(fill(weeks[week][day])).frame(width: 11, height: 11)
+        let active = weeks.flatMap(\.days).filter { ($0 ?? 0) > 0 }.count
+        let months = monthLabels(weeks)
+        HStack(alignment: .top, spacing: 4) {
+            VStack(alignment: .trailing, spacing: 3) {
+                label("").frame(height: 12)
+                ForEach(Array(weekdayLabels().enumerated()), id: \.offset) { label($0.element ?? "").frame(height: 11) }
+            }
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(alignment: .top, spacing: 3) {
+                    ForEach(weeks.indices, id: \.self) { week in
+                        VStack(spacing: 3) {
+                            label(months[week]?.formatted(.dateTime.month(.abbreviated)) ?? "")
+                                .fixedSize() // a month's name runs on over the next columns
+                                .frame(width: 11, height: 12, alignment: .leading)
+                            ForEach(0..<7, id: \.self) { day in
+                                RoundedRectangle(cornerRadius: 2).fill(fill(weeks[week].days[day])).frame(width: 11, height: 11)
+                            }
                         }
                     }
                 }
             }
+            .defaultScrollAnchor(.trailing)
         }
-        .defaultScrollAnchor(.trailing)
         .accessibilityElement()
         .accessibilityLabel(Text("Active on \(active) days in the last \(weeks.count) weeks"))
+    }
+
+    private func label(_ text: String) -> some View {
+        Text(verbatim: text).font(.system(size: 9)).foregroundStyle(.secondary)
     }
 
     private func fill(_ count: Int?) -> Color {
