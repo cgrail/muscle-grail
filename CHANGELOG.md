@@ -33,7 +33,7 @@
 - A complication shows today's steps and walking distance.
 
 ### Look
-- An app icon on iPhone, Watch and Mac: a flexed arm.
+- An app icon on iPhone, Watch and Mac: a shaded, flexed arm with biceps, forearm and fist.
 
 ### Languages
 - English and German.
