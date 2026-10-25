@@ -43,11 +43,7 @@ struct ExerciseDetail: View {
                         }
                     }
                     Section("Photo") {
-                        if let image = entry?.photo.flatMap(Photo.image) {
-                            Image(decorative: image, scale: 1).resizable().scaledToFit().frame(maxHeight: 240)
-                        } else if let url = bundled?.imageURL {
-                            AsyncImage(url: url) { $0.resizable().scaledToFit() } placeholder: { ProgressView() }.frame(maxHeight: 240)
-                        }
+                        ExercisePhoto(id: id, entry: entry).frame(maxHeight: 240)
                         PhotosPicker("Choose photo", selection: $pickedPhoto, matching: .images)
                         if entry?.photo != nil {
                             Button("Remove photo", role: .destructive) { context.setPhoto(id, to: nil) }
@@ -68,5 +64,19 @@ struct ExerciseDetail: View {
         #if os(macOS)
         .frame(minWidth: 420, minHeight: 520)
         #endif
+    }
+}
+
+/// An exercise's photo, whole: the user's own, else the bundled one.
+struct ExercisePhoto: View {
+    let id: String
+    let entry: CatalogEntry?
+
+    var body: some View {
+        if let image = entry?.photo.flatMap(Photo.image) {
+            Image(decorative: image, scale: 1).resizable().scaledToFit()
+        } else if let url = CatalogExercise.byID[id]?.imageURL {
+            AsyncImage(url: url) { $0.resizable().scaledToFit() } placeholder: { ProgressView() }
+        }
     }
 }

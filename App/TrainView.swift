@@ -54,7 +54,7 @@ private struct WorkoutView: View {
 }
 
 /// How to do an exercise, and a video of it, under its sets.
-private struct ExerciseGuide: View {
+struct ExerciseGuide: View {
     @Query private var entries: [CatalogEntry]
     private let id: String
 

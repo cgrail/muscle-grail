@@ -4,7 +4,7 @@ import SwiftData
 import SwiftUI
 
 /// Every exercise, the user's own and the bundled ones, listed like Apple Music's songs: search, sort, add to a plan,
-/// or double-click for the details.
+/// or double-click for the details. The selected one previews on the right, as in Finder.
 struct ExercisesLibrary: View {
     struct Row: Identifiable {
         let id: String, name: String, muscles: String, equipment: String
@@ -21,6 +21,7 @@ struct ExercisesLibrary: View {
     @State private var selection = Set<String>()
     @State private var order = [KeyPathComparator(\Row.name)]
     @State private var detail: Detail?
+    @State private var previewing = true
 
     var body: some View {
         let own = entries.filter { region == nil && CatalogExercise.byID[$0.id] == nil }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
@@ -48,7 +49,20 @@ struct ExercisesLibrary: View {
             detail = ids.first.map(Detail.init)
         }
         .searchable(text: $search, prompt: "Exercise, muscle or equipment")
-        .toolbar { RegionFilter(region: $region) }
+        .toolbar {
+            RegionFilter(region: $region)
+            Button("Preview", systemImage: "sidebar.trailing") { previewing.toggle() }
+        }
+        .inspector(isPresented: $previewing) {
+            Group {
+                if selection.count == 1, let id = selection.first {
+                    ExercisePreview(id: id)
+                } else {
+                    ContentUnavailableView("Select an exercise", systemImage: "dumbbell")
+                }
+            }
+            .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
+        }
         .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
         .navigationTitle("Exercises")
     }

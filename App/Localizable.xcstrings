@@ -559,6 +559,16 @@
         }
       }
     },
+    "Information" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informationen"
+          }
+        }
+      }
+    },
     "Kilometers walked per day" : {
       "localizations" : {
         "de" : {
@@ -709,6 +719,16 @@
         }
       }
     },
+    "Preview" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschau"
+          }
+        }
+      }
+    },
     "Previous day" : {
       "localizations" : {
         "de" : {
@@ -755,6 +775,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wdh."
+          }
+        }
+      }
+    },
+    "Select an exercise" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine Übung"
           }
         }
       }

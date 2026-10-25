@@ -1,7 +1,8 @@
 # Todo
 
-- [x] create ai generated description for the trainings like (arms heavy, leg heavy)
-- [x] add filter and groups and option to show only excercises for legs, arms
-- [x] add option to switch language for mac/iphone in app settings
-- [x] add description of how to properly execute them and video links to trainings
-- [x] add option to direclty enter the weight for an excerise instead of having to press +/-
+- [ ] add import/export mechanism from gymbook
+- [ ] add backup mechanism to folder on mac with auto write on save/load/edit
+- [ ] add filter for level, equipment and category
+- [ ] show instructions
+- [ ] enable keyboard up/down navigation on mac
+- [ ] enable direct entry of reps/sets on mac via number
