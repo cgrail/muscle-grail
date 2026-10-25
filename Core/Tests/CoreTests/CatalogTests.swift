@@ -27,6 +27,12 @@ struct CatalogTests {
         #expect(bench.detail == "chest · barbell")
     }
 
+    @Test func regionFilterKeepsOnlyThatRegionsExercises() {
+        let legs = CatalogExercise.all.filter { $0.trains(.legs) }.map(\.id)
+        #expect(legs.contains("Barbell_Squat") && legs.contains("Lying_Leg_Curls") && !legs.contains("Barbell_Curl"))
+        #expect(CatalogExercise.all.filter { $0.trains(nil) }.count == CatalogExercise.all.count)
+    }
+
     @Test func searchFindsEveryWordAnywhere() {
         #expect(bench.matches("barbell press"))
         #expect(!bench.matches("barbell curl"))

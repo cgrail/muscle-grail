@@ -269,12 +269,32 @@
         }
       }
     },
+    "All exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Übungen"
+          }
+        }
+      }
+    },
     "Another app uses port %lld. Quit it and switch this on again." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eine andere App nutzt Port %lld. Beende sie und schalte das hier wieder ein."
+          }
+        }
+      }
+    },
+    "Body region" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Körperpartie"
           }
         }
       }

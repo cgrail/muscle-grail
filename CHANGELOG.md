@@ -10,6 +10,7 @@
 - On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are.
 - Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 - Every plan says what it trains, from its exercises' muscles and sets: Leg-heavy, Chest & Back, or Full body. It shows under the plan when you pick a workout, on the watch too, and on the Mac's plan page.
+- Filter the exercise catalog by body region, like legs or arms, when adding an exercise and in the Mac's exercise library.
 
 ### Training
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.

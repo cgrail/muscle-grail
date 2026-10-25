@@ -25,6 +25,9 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
 
     public var regions: Set<BodyRegion> { Set(primaryMuscles.compactMap(BodyRegion.init(muscle:))) }
 
+    /// Whether it trains `region`; with no region, every exercise does.
+    public func trains(_ region: BodyRegion?) -> Bool { region.map(regions.contains) ?? true }
+
     public func matches(_ query: String) -> Bool {
         matchesEveryWord(of: query, in: [name, equipment ?? ""] + primaryMuscles)
     }
