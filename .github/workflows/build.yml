@@ -1,0 +1,27 @@
+# The checks that define "done" (CLAUDE.md, Build and test), on every pull request and every push to main.
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v4
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Core tests
+        working-directory: Core
+        run: swift test
+      - name: Build iPhone, watch and complication
+        run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+      - name: Build Mac
+        run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build

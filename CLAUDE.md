@@ -17,6 +17,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - Compile check, no signing: `xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build`. This also builds the embedded watch app and complication. Use `-destination 'platform=macOS'` for the Mac app.
 - An unsigned build traps inside CloudKit at launch. To launch in the simulator, sign ad hoc: `CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM=`. Real sync needs signed device builds (team `3Z7QAPFM7G`).
 - Done means `swift test` passes and the compile check succeeds for iOS (which includes the watch) and macOS. The user runs the UI tests by hand.
+- GitHub Actions (`.github/workflows/build.yml`) runs those three checks on every pull request and push to `main`, on the `macos-26` runner with its newest stable Xcode. It doesn't measure coverage.
 
 ## Tests
 

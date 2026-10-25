@@ -8,5 +8,5 @@
 - [x] enable direct entry of reps/sets on mac via number
 - [x] add translation for excercise to german - name 
 - [x] restore from the Mac's backup folder: merge the backup's actions into the store, or replace the store with it? replace
-- [ ] add github actions for pr and main build
+- [x] add github actions for pr and main build
 - [ ] also include https://github.com/RepDB/exercise-dataset with correct attribution -  https://github.com/RepDB/exercise-dataset/blob/main/ATTRIBUTION.md
