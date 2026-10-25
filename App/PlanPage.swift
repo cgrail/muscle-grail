@@ -75,14 +75,10 @@ private struct PlanRow: View {
                 Text(verbatim: CatalogExercise.byID[item.exerciseID]?.detail ?? "").font(.caption).foregroundStyle(.secondary)
             }
             Spacer()
-            Stepper(value: Binding { item.targetSets } set: { context.setTargets(item, sets: $0) }, in: 1...20) {
-                Text(item.targetSets.formatted()).monospacedDigit()
-            }
-            .frame(width: Column.sets, alignment: .leading)
-            Stepper(value: Binding { item.targetReps } set: { context.setTargets(item, reps: $0) }, in: 1...100) {
-                Text(item.targetReps.formatted()).monospacedDigit()
-            }
-            .frame(width: Column.reps, alignment: .leading)
+            count("Sets", item.targetSets, in: 1...20) { context.setTargets(item, sets: $0) }
+                .frame(width: Column.sets, alignment: .leading)
+            count("Reps", item.targetReps, in: 1...100) { context.setTargets(item, reps: $0) }
+                .frame(width: Column.reps, alignment: .leading)
             Stepper {
                 WeightField(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) })
             } onIncrement: {
@@ -103,6 +99,18 @@ private struct PlanRow: View {
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
+    }
+
+    /// A number to type, or to step to. A typed one outside `range` lands on its nearest end.
+    private func count(_ title: LocalizedStringKey, _ value: Int, in range: ClosedRange<Int>, set: @escaping (Int) -> Void) -> some View {
+        let binding = Binding { value } set: { set(min(max($0, range.lowerBound), range.upperBound)) }
+        return Stepper(value: binding, in: range) {
+            TextField(title, value: binding, format: .number)
+                .textFieldStyle(.roundedBorder)
+                .multilineTextAlignment(.trailing)
+                .monospacedDigit()
+                .frame(width: 44)
+        }
     }
 }
 #endif

@@ -5,6 +5,6 @@
 - [x] add filter for level, equipment and category
 - [x] show instructions
 - [x] enable keyboard up/down navigation on mac
-- [ ] enable direct entry of reps/sets on mac via number
+- [x] enable direct entry of reps/sets on mac via number
 - [ ] add translation for excercise to german
 - [ ] restore from the Mac's backup folder: merge the backup's actions into the store, or replace the store with it?
