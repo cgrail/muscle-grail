@@ -76,6 +76,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 - `Core/Sources/Core/exercises.json` is [free-exercise-db](https://github.com/yuhonas/free-exercise-db), public domain, bundled unchanged. To update it, replace the file with that repo's `dist/exercises.json`. Its `id`s are catalog ids that plans and sets refer to, so check that none disappeared.
 - The user's `CatalogEntry`s sit on top: their own exercises, and their name, description, video link and photo for any exercise. They live in the separate Catalog store of the same iCloud container (`Store.configurations`) with their own log, so the gym store stays small. Photos are stored as JPEGs of at most 1024 px (`Photo.jpeg`).
+- Weights step through what the exercise's equipment really comes in (`Weights`), never by a fixed amount.
 - Show a name with `ExerciseName` (`exerciseName(_:entry:)` outside views). A custom exercise whose entry hasn't synced yet shows a placeholder.
 - Photos load from the repo's GitHub raw URLs (see `CatalogExercise.imageURL`), so the picker needs internet to show them.
 

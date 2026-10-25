@@ -92,7 +92,11 @@ public struct ExerciseSection: View {
         let done = workout.sets(of: item.exerciseID)
         Section {
             Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
-            Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module), value: $weight, in: 0...1000, step: 2.5)
+            Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module)) {
+                weight = Weights.next(after: weight, for: item.exerciseID)
+            } onDecrement: {
+                weight = Weights.previous(before: weight, for: item.exerciseID)
+            }
             Button(String(localized: "Log set \(done.count + 1) of \(item.targetSets)", bundle: .module), systemImage: "checkmark") {
                 context.log(item.exerciseID, reps: reps, weightKg: weight, in: workout)
             }
