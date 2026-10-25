@@ -40,3 +40,4 @@
 
 ### Languages
 - English and German.
+- Switch the app between English and German whatever the system language: on the Mac in Settings → General, on the iPhone under the gear on the Train tab. It switches once you reopen the app.

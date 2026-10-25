@@ -4,12 +4,17 @@ import SwiftUI
 
 struct TrainView: View {
     @State private var workout: Workout?
+    @State private var showingSettings = false
 
     var body: some View {
         // Not NavigationStack(path:): the sidebar tabs on Mac and iPad compare paths across tabs and crash on a typed one.
         NavigationStack {
             WorkoutPicker { workout = $0 }
                 .navigationDestination(item: $workout) { WorkoutView(workout: $0) }
+                #if os(iOS)
+                .toolbar { Button("Settings", systemImage: "gear") { showingSettings = true } }
+                .sheet(isPresented: $showingSettings) { SettingsSheet() }
+                #endif
         }
     }
 }

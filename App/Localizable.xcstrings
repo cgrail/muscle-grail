@@ -329,6 +329,16 @@
         }
       }
     },
+    "Claude" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude"
+          }
+        }
+      }
+    },
     "Claude Code" : {
       "localizations" : {
         "de" : {
@@ -489,6 +499,16 @@
         }
       }
     },
+    "General" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allgemein"
+          }
+        }
+      }
+    },
     "Goal reached" : {
       "localizations" : {
         "de" : {
@@ -545,6 +565,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gehstrecke pro Tag in km"
+          }
+        }
+      }
+    },
+    "Language" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprache"
           }
         }
       }
@@ -709,6 +739,16 @@
         }
       }
     },
+    "Reopen Muscle Grail to switch the language." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Öffne Muscle Grail neu, um die Sprache zu wechseln."
+          }
+        }
+      }
+    },
     "Reps" : {
       "localizations" : {
         "de" : {
@@ -725,6 +765,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sätze"
+          }
+        }
+      }
+    },
+    "Settings" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einstellungen"
           }
         }
       }

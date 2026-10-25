@@ -41,7 +41,12 @@ struct MuscleGrailApp: App {
         }
         .modelContainer(container)
         #if os(macOS)
-        Settings { ClaudeSettings().environment(claude) }
+        Settings {
+            TabView {
+                Tab("General", systemImage: "gear") { Form { LanguagePicker() }.formStyle(.grouped).frame(width: 560) }
+                Tab("Claude", systemImage: "sparkles") { ClaudeSettings().environment(claude) }
+            }
+        }
         #endif
     }
 }
