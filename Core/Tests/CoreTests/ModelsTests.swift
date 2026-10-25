@@ -23,4 +23,22 @@ import Testing
         #expect(workout.exercises.map(\.id) == ["Bench", "Squat"])
         #expect(workout.exercises.map { $0.sets.map(\.reps) } == [[10, 8], [5]])
     }
+
+    @Test func planFocusIsTheRegionWithMoreThanHalfTheSets() {
+        #expect(makePlan(context, "Barbell_Squat", "Lying_Leg_Curls", "Barbell_Curl").focus == "Leg-heavy")
+    }
+
+    @Test func planFocusNamesTheTopTwoRegionsWhenTheyGetTwoThirds() {
+        let plan = makePlan(context, "Barbell_Bench_Press_-_Medium_Grip", "Pullups", "Plank")
+        context.setTargets(plan.sortedItems[2], sets: 1)
+        #expect(plan.focus == "Chest & Back")
+    }
+
+    @Test func planFocusIsFullBodyWhenSpread() {
+        #expect(makePlan(context, "Barbell_Squat", "Barbell_Bench_Press_-_Medium_Grip", "Pullups").focus == "Full body")
+    }
+
+    @Test func planOfYourOwnExercisesHasNoFocus() {
+        #expect(makePlan(context, context.createExercise(named: "Zercher Carry")).focus == nil)
+    }
 }

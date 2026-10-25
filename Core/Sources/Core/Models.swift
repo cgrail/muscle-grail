@@ -37,6 +37,22 @@ public extension Plan {
 
     /// When this plan was last trained. A workout without sets doesn't count.
     var lastDone: Date? { workouts?.filter { $0.sets?.isEmpty == false }.map(\.start).max() }
+
+    /// What the plan trains, by its target sets per body region: "Leg-heavy" when one region gets more than half,
+    /// else its top two while they get more than two thirds, else "Full body". Nil while it has no bundled exercise.
+    var focus: String? {
+        var sets = [BodyRegion: Int]()
+        for item in items ?? [] {
+            for region in CatalogExercise.byID[item.exerciseID]?.regions ?? [] { sets[region, default: 0] += item.targetSets }
+        }
+        let ranked = BodyRegion.allCases.filter { sets[$0, default: 0] > 0 }.sorted { sets[$0]! > sets[$1]! }
+        let total = sets.values.reduce(0, +)
+        guard let top = ranked.first else { return nil }
+        if sets[top]! * 2 > total { return top.heavy }
+        let second = ranked[1] // top has at most half, so another region has sets
+        if (sets[top]! + sets[second]!) * 3 > total * 2 { return String(localized: "\(top.name) & \(second.name)", bundle: .module) }
+        return String(localized: "Full body", bundle: .module)
+    }
 }
 
 /// The plan to do next: the one after the plan trained most recently, in plan order and round again. Else the first.

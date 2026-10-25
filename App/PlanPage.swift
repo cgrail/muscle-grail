@@ -22,6 +22,9 @@ struct PlanPage: View {
                     TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
                         .font(.largeTitle.bold())
                         .textFieldStyle(.plain)
+                    if let focus = plan.focus {
+                        Text(verbatim: focus).font(.title3).foregroundStyle(.tint)
+                    }
                     Text("\(plan.sortedItems.count) exercises").foregroundStyle(.secondary)
                     PlanAssistant(plan: plan)
                 }

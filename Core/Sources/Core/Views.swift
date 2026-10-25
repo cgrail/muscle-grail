@@ -67,6 +67,7 @@ public struct WorkoutPicker: View {
             VStack(alignment: .leading) {
                 Text(plan.title)
                 Group {
+                    if let focus = plan.focus { Text(verbatim: focus) }
                     if let last = plan.lastDone {
                         Text("Last done \(last, format: .relative(presentation: .named))", bundle: .module)
                     } else {
