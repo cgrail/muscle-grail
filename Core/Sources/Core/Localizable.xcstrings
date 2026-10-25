@@ -39,6 +39,38 @@
         }
       }
     },
+    "%lld/%lld sets · %lld reps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld Sätze · %3$lld Wdh."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld sets · %3$lld reps"
+          }
+        }
+      }
+    },
+    "%lld/%lld sets · %lld reps · %@ kg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld Sätze · %3$lld Wdh. · %4$@ kg"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld/%2$lld sets · %3$lld reps · %4$@ kg"
+          }
+        }
+      }
+    },
     "Continue %@" : {
       "localizations" : {
         "de" : {
@@ -69,6 +101,16 @@
         }
       }
     },
+    "Done" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erledigt"
+          }
+        }
+      }
+    },
     "Last done %@" : {
       "localizations" : {
         "de" : {
@@ -91,6 +133,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Log %1$lld × %2$lld at %3$@ kg"
+          }
+        }
+      }
+    },
+    "Log set" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satz eintragen"
           }
         }
       }

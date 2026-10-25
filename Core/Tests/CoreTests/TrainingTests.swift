@@ -63,4 +63,23 @@ import Testing
         _ = context.startWorkout(plan)
         #expect(plan.lastDone == nil)
     }
+
+    @Test func tickLogsTheNextSetAsPrefilled() {
+        let plan = makePlan(context, "Row")
+        let item = plan.sortedItems[0]
+        context.setTargets(item, reps: 10, weightKg: 38)
+        let workout = context.startWorkout(plan)
+        context.tick(item, in: workout)
+        #expect(workout.sets(of: "Row").map { "\($0.reps)×\($0.weightKg)" } == ["10×38.0"])
+    }
+
+    @Test func tickingAFinishedExerciseLogsNothingMore() {
+        let plan = makePlan(context, "Row")
+        let item = plan.sortedItems[0]
+        context.setTargets(item, sets: 1)
+        let workout = context.startWorkout(plan)
+        context.tick(item, in: workout)
+        context.tick(item, in: workout)
+        #expect(workout.sets(of: "Row").count == 1)
+    }
 }

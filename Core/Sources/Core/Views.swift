@@ -131,6 +131,57 @@ public struct ExerciseSection: View {
     }
 }
 
+/// One exercise in the workout list, as GymBook shows it: tick off the next set as prefilled, or open it for the details.
+public struct ExerciseRow: View {
+    @Environment(\.modelContext) private var context
+    private let item: PlanItem
+    private let workout: Workout
+    @State private var photo: CGImage?
+
+    public init(item: PlanItem, workout: Workout) {
+        self.item = item
+        self.workout = workout
+    }
+
+    public var body: some View {
+        let done = workout.sets(of: item.exerciseID).count
+        let next = context.nextSet(for: item, in: workout)
+        HStack {
+            Group {
+                if let photo {
+                    Image(decorative: photo, scale: 1).resizable().scaledToFill()
+                } else {
+                    Image(systemName: "dumbbell").foregroundStyle(.secondary)
+                }
+            }
+            .frame(width: 48, height: 48)
+            .clipShape(.rect(cornerRadius: 8))
+            .accessibilityHidden(true)
+            VStack(alignment: .leading) {
+                ExerciseName(item.exerciseID)
+                Group {
+                    if next.weightKg > 0 {
+                        Text("\(done)/\(item.targetSets) sets · \(next.reps) reps · \(next.weightKg.formatted()) kg", bundle: .module)
+                    } else {
+                        Text("\(done)/\(item.targetSets) sets · \(next.reps) reps", bundle: .module)
+                    }
+                }
+                .font(.subheadline).foregroundStyle(.secondary)
+            }
+            Spacer(minLength: 0)
+            if done >= item.targetSets {
+                Image(systemName: "checkmark.circle.fill").font(.title2).foregroundStyle(.green).accessibilityLabel(Text("Done", bundle: .module))
+            } else {
+                Button(String(localized: "Log set", bundle: .module), systemImage: "checkmark.circle") { context.tick(item, in: workout) }
+                    .labelStyle(.iconOnly)
+                    .font(.title2)
+                    .buttonStyle(.borderless) // in a row that opens the details, only this button logs
+            }
+        }
+        .task { photo = PhotoCache.shared.image(for: item.exerciseID, entry: context.catalogEntry(item.exerciseID)) }
+    }
+}
+
 /// An exercise's name, kept current as its catalog entry changes or arrives.
 public struct ExerciseName: View {
     @Query private var entries: [CatalogEntry]

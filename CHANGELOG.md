@@ -13,6 +13,7 @@
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.
 - Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.
+- On the iPhone and the Mac, a workout lists its exercises like GymBook: tick off the next set right in the list, or open an exercise for its details.
 - Log a set with one tap, or tick off a whole exercise like "3 × 10 at 20 kg" with one tap; swipe a logged set to delete it.
 - Exercise photos show while training, on the watch too, once they're on the device. They download while there is network; in a gym without internet the workout runs as usual and leaves missing photos out.
 - Finished workouts go to Health, and the watch records heart rate and calories.

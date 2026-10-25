@@ -18,6 +18,13 @@ public extension ModelContext {
         return loggedSet(id)!
     }
 
+    /// Ticks off the next set as prefilled (`nextSet`), from the workout list. An exercise with all its sets done stays as it is.
+    func tick(_ item: PlanItem, in workout: Workout) {
+        guard workout.sets(of: item.exerciseID).count < item.targetSets else { return }
+        let (reps, weightKg) = nextSet(for: item, in: workout)
+        log(item.exerciseID, reps: reps, weightKg: weightKg, in: workout)
+    }
+
     /// Ticks off an exercise in one go: logs its remaining sets with the same reps and weight.
     func logRemaining(of item: PlanItem, in workout: Workout, reps: Int, weightKg: Double) {
         for _ in 0..<max(0, item.targetSets - workout.sets(of: item.exerciseID).count) {

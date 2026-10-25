@@ -45,6 +45,14 @@ import Testing
         render(List { ExerciseSection(item: plan.sortedItems[0], workout: workout) })
     }
 
+    @Test func exerciseRowRendersOpenAndFinished() {
+        let plan = makePlan(context, "Bench", "Squat")
+        let workout = context.startWorkout(plan)
+        context.setTargets(plan.sortedItems[1], sets: 1, weightKg: 0)
+        context.log("Squat", reps: 10, weightKg: 0, in: workout)
+        render(NavigationStack { List(plan.sortedItems) { ExerciseRow(item: $0, workout: workout) } })
+    }
+
     @Test func exerciseSectionRendersYourOwnPhoto() {
         let id = context.createExercise(named: "Cable Fly")
         context.setPhoto(id, to: testPhoto())

@@ -23,6 +23,11 @@ public func catalogNames(matching query: String, custom: [String], limit: Int = 
 }
 
 public extension ModelContext {
+    /// The name to show for `exerciseID` once, where a view can't keep it current (`ExerciseName` does).
+    func exerciseName(_ exerciseID: String) -> String {
+        Core.exerciseName(exerciseID, entry: catalogEntry(exerciseID))
+    }
+
     /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones.
     func catalogID(named name: String) -> String? {
         let custom = (try? fetch(FetchDescriptor<CatalogEntry>())) ?? []
