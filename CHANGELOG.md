@@ -11,6 +11,7 @@
 
 ### Training
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.
+- Only one workout runs at a time: finish it before starting another plan.
 - Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.
 - On the iPhone and the Mac, a workout lists its exercises like GymBook: tick off the next set right in the list, or open an exercise for its details.

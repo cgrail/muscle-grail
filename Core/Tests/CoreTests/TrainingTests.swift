@@ -82,4 +82,11 @@ import Testing
         context.tick(item, in: workout)
         #expect(workout.sets(of: "Row").count == 1)
     }
+
+    @Test func aRunningWorkoutBlocksTheNextUntilFinished() {
+        let workout = context.startWorkout(makePlan(context, "Bench"))
+        #expect(context.isTraining)
+        context.finish(workout)
+        #expect(!context.isTraining)
+    }
 }

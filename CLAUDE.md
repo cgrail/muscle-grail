@@ -56,6 +56,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - `Change` formats are frozen like schema versions: never rename a case or label, give a new field an optional type, and bump `Change.version` with every new case or field. `ActionTests` keeps the JSON of every version-1 change, which must keep decoding; add the same for each new version.
 - Training works on every version, forever: starting a workout, logging, deleting a set and finishing never check a version or ask for an update. Only plan editing locks while a newer app version has recorded actions (`Action.newer`), and asks the user to update.
 - `LoggedSet` is append-only: one record per set, deleted to undo.
+- Only one workout runs at a time: the apps start no plan while `isTraining`. `startWorkout` itself never refuses, because two offline devices can each start one and both must still apply.
 - `ModelContext.log` saves immediately, because the watch app can be killed between sets.
 
 ## Sync and HealthKit

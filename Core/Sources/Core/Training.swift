@@ -3,6 +3,10 @@ import SwiftData
 
 // Training: works on every app version and never asks for an update (see `Change`).
 public extension ModelContext {
+    /// Whether a workout is running. Only one may run at a time, so the apps start no plan until it's finished.
+    /// `startWorkout` itself doesn't refuse: two offline devices can each start one, and both must apply.
+    var isTraining: Bool { ((try? fetchCount(Workout.unfinished)) ?? 0) > 0 }
+
     func startWorkout(_ plan: Plan) -> Workout {
         let id = UUID()
         record(.startWorkout(id: id, plan: plan.id, start: .now))

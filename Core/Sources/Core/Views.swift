@@ -21,7 +21,7 @@ public struct SyncStatusView: View {
     }
 }
 
-/// Unfinished workouts, the plan that is next in rotation, then the other plans. Picking a plan starts a workout.
+/// Unfinished workouts, the plan that is next in rotation, then the other plans. Picking a plan starts a workout, once none runs.
 public struct WorkoutPicker: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -34,15 +34,19 @@ public struct WorkoutPicker: View {
 
     public var body: some View {
         List {
+            let training = context.isTraining
             ForEach(unfinished) { workout in
                 Button(String(localized: "Continue \(workout.title)", bundle: .module), systemImage: "play.fill") { onPick(workout) }
             }
+            if training {
+                Text("Finish the running workout to start another.", bundle: .module).foregroundStyle(.secondary)
+            }
             let next = nextPlan(plans)
             if let next {
-                Section { start(next) } header: { Text("Next up", bundle: .module) }
+                Section { start(next).disabled(training) } header: { Text("Next up", bundle: .module) }
             }
             Section {
-                ForEach(plans.filter { $0 != next }, content: start)
+                ForEach(plans.filter { $0 != next }) { start($0).disabled(training) }
                 if plans.isEmpty {
                     #if os(macOS)
                     Text("No plans yet. Create one under Plans.", bundle: .module).foregroundStyle(.secondary)
