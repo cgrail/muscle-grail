@@ -27,6 +27,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | HealthKit step observer (`enableBackgroundDelivery`, hourly) instead of `BGAppRefreshTask` | New steps wake iPhone and Watch in the background all day. Each wake gives CloudKit a chance to sync and refreshes the complication. One mechanism covers both jobs. |
 | The activity chart: gym days from the store's workouts plus Health's strength workouts (any app), and each day's steps and distance from Health against the daily goals, read when it shows | A watch workout reaches the iPhone's Health over Bluetooth long before its record syncs through iCloud, so a gym day shows right away. Nothing from Health is stored. Workouts the app saved itself are matched by `healthKitID`, so they aren't counted twice. Walks count through steps and distance. |
 | Daily goals live in iCloud's key-value store; each day's steps and distance come from Health | Tiny settings need no model or migration, and still reach every device. |
+| The iPhone widget is the complication's code built again for iOS (`StepsWidget`) | One source for both. The iPhone app reloads it on every HealthKit step wake, like the watch does its complication. |
 | The complication reads HealthKit directly | No App Group or shared store is needed. |
 | Watch: steppers instead of the Digital Crown | The crown already pages between exercises. |
 | iPhone saves the workout with `HKWorkoutBuilder`; the watch uses `HKWorkoutSession` | The phone has no heart rate sensor. On the watch, the session keeps the app frontmost and running for the whole workout, and records heart rate and calories. |
@@ -53,7 +54,7 @@ Three things stop background sync completely:
 MuscleGrail.xcodeproj   folders are synced: new files in App/, Watch/, Complication/ are picked up automatically
 App/                    iOS + macOS app (one multiplatform target). Train, Plans, History
 Watch/                  watchOS app. Plan picker, one page per exercise, HKWorkoutSession
-Complication/           WidgetKit complication: today's steps + km
+Complication/           WidgetKit: today's steps + km, as the watch complication and the iPhone widget
 Core/                   Swift package: models, Store + SyncMonitor, Health, shared views, exercise catalog, tests
 Config/                 entitlements and Info.plists
 Design/                 the icon's source image, and Icon.swift, which makes every icon size from it

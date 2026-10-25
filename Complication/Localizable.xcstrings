@@ -56,6 +56,16 @@
           }
         }
       }
+    },
+    "Walking + running" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gehen + Laufen"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

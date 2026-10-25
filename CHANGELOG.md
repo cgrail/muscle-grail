@@ -28,8 +28,9 @@
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
 
-### Watch face
+### Watch face and Home Screen
 - A complication shows today's steps and walking distance.
+- An iPhone widget shows today's walking and running distance and steps, on the Home Screen and the Lock Screen.
 
 ### Look
 - An app icon on iPhone, Watch and Mac: a white flexed arm lifting a dumbbell, on navy.

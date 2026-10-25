@@ -44,13 +44,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Liest deine Schritte und Gehstrecke für die Komplikation."
+            "value" : "Liest deine Schritte und Gehstrecke, um sie auf dem Zifferblatt und dem Home-Bildschirm zu zeigen."
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "new",
-            "value" : "Reads your steps and walking distance for the complication."
+            "value" : "Reads your steps and walking distance to show them on your watch face and Home Screen."
           }
         }
       }

@@ -59,8 +59,24 @@ struct StepsView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         case .accessoryInline:
             Text("\(steps) steps · \(km) km")
+        #if os(watchOS)
         case .accessoryCorner:
             Image(systemName: "shoeprints.fill").widgetLabel("\(steps) steps")
+        #else
+        case .systemSmall: // the Home Screen: distance first, like the Health app's walking + running
+            VStack(alignment: .leading, spacing: 2) {
+                Image(systemName: "figure.walk").font(.title2).foregroundStyle(.orange)
+                Spacer()
+                Text("Walking + running").font(.caption.bold()).textCase(.uppercase).foregroundStyle(.secondary)
+                HStack(alignment: .firstTextBaseline, spacing: 2) {
+                    Text(verbatim: entry.km.formatted(.number.precision(.fractionLength(2)))).font(.system(size: 34, weight: .bold, design: .rounded))
+                    Text(verbatim: "km").font(.title3).foregroundStyle(.secondary)
+                }
+                .minimumScaleFactor(0.6)
+                Text("\(steps) steps").font(.footnote).foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+        #endif
         default:
             VStack {
                 Image(systemName: "shoeprints.fill")
@@ -70,14 +86,23 @@ struct StepsView: View {
     }
 }
 
+/// The watch complication and, built a second time as `StepsWidget`, the iPhone's Home Screen and Lock Screen widget.
 @main
 struct StepsComplication: Widget {
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: "Steps", provider: StepsProvider()) { entry in
+            #if os(watchOS)
             StepsView(entry: entry).containerBackground(.fill.tertiary, for: .widget)
+            #else
+            StepsView(entry: entry).containerBackground(.background, for: .widget)
+            #endif
         }
         .configurationDisplayName("Steps")
         .description("Today's steps and walking distance. Tapping it opens Muscle Grail.")
+        #if os(watchOS)
         .supportedFamilies([.accessoryRectangular, .accessoryCircular, .accessoryInline, .accessoryCorner])
+        #else
+        .supportedFamilies([.systemSmall, .accessoryRectangular, .accessoryCircular, .accessoryInline])
+        #endif
     }
 }
