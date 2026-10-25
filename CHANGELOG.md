@@ -15,6 +15,9 @@
 - Finished workouts go to Health, and the watch records heart rate and calories.
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.
 
+### History
+- Statistics per week, month, quarter or year: workouts per period as a chart, and the current period's workouts, sets and volume.
+
 ### Sync
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.

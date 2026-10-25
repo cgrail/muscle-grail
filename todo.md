@@ -4,7 +4,7 @@
 - [x] separate the gym session data from the catalog. the catalog is synched seperatly and has lower prio. it can have additional data like images, descriptions, links to youtube videos etc. and should be stored seperatly. the gym session data should be as small as possible and should onyly reference the catalog data
 - [x] on desktop i should be able to add something to a plan by using voice or chat. does it make sense to use the apple foundation model. 
 - [x] offer an mcp server for the desktop app to allow the creation of plans using claude
-- [ ] offer statistics like a weekly, monthly, quaertly or yearly overview
+- [x] offer statistics like a weekly, monthly, quaertly or yearly overview
 - [ ] offer a github like acitivy chart which shows how often you've worked out. walking sessions should also be included there
 - [ ] offer the option to set daily goals like 10km walking or 10k steps. visualize them like the github activity diagram
 - [ ] ticking on mobile should be simple. i should be able to do tick an excercise like 3x 20kg curls with one click
