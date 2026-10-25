@@ -52,7 +52,7 @@ Three things stop background sync completely:
 
 ```
 MuscleGrail.xcodeproj   folders are synced: new files in App/, Watch/, Complication/ are picked up automatically
-App/                    iOS + macOS app (one multiplatform target). Train, Plans, History
+App/                    iOS + macOS app (one multiplatform target). iPhone: tabs Train, Plans, History. Mac: an Apple Music-style sidebar
 Watch/                  watchOS app. Plan picker, one page per exercise, HKWorkoutSession
 Complication/           WidgetKit: today's steps + km, as the watch complication and the iPhone widget
 Core/                   Swift package: models, Store + SyncMonitor, Health, shared views, exercise catalog, tests

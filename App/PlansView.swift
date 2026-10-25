@@ -52,9 +52,6 @@ struct PlanEditor: View {
                     }
                     .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
                     Button("Add exercise", systemImage: "plus") { picking = true }
-                    #if os(macOS)
-                    PlanAssistant(plan: plan)
-                    #endif
                 }
             }
             .disabled(!newer.isEmpty)
@@ -76,12 +73,7 @@ private struct PlanItemRow: View {
     @State private var showingDetail = false
 
     var body: some View {
-        #if os(macOS)
-        let layout = AnyLayout(HStackLayout())
-        #else
-        let layout = AnyLayout(VStackLayout(alignment: .leading))
-        #endif
-        layout {
+        VStack(alignment: .leading) {
             HStack {
                 ExerciseName(item.exerciseID)
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
@@ -101,7 +93,7 @@ private struct PlanItemRow: View {
 }
 
 /// Shown while a newer app version has changed the data: plans wait for the update, training works as usual.
-private struct UpdateToEdit: View {
+struct UpdateToEdit: View {
     var body: some View {
         Label("Update Muscle Grail to edit plans. A newer version changed them. Training works as usual.", systemImage: "arrow.down.app")
             .foregroundStyle(.secondary)

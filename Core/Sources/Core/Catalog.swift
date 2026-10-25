@@ -30,7 +30,7 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
 
 /// Whether each word of `query` turns up somewhere in `fields`, ignoring case, hyphens and a plural "s":
 /// "dumbbell curl" finds Dumbbell Bicep Curl, "squats" Barbell Squat and "pull-ups" Pullups.
-func matchesEveryWord(of query: String, in fields: [String]) -> Bool {
+public func matchesEveryWord(of query: String, in fields: [String]) -> Bool {
     query.split(whereSeparator: { $0 == " " || $0 == "-" }).allSatisfy { word in
         let singular = word.count > 3 && word.hasSuffix("s") ? word.dropLast() : word
         return fields.contains { $0.localizedCaseInsensitiveContains(singular) }

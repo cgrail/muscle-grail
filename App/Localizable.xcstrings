@@ -51,6 +51,46 @@
         }
       }
     },
+    "%lld exercises" : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Übung"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Übungen"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld exercise"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld exercises"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld reps" : {
       "localizations" : {
         "de" : {
@@ -199,6 +239,16 @@
         }
       }
     },
+    "Add to Plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zum Plan hinzufügen"
+          }
+        }
+      }
+    },
     "Add “%@”" : {
       "localizations" : {
         "de" : {
@@ -235,6 +285,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Choose a plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle einen Plan"
           }
         }
       }
@@ -349,6 +409,26 @@
         }
       }
     },
+    "Equipment" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerät"
+          }
+        }
+      }
+    },
+    "Exercise" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übung"
+          }
+        }
+      }
+    },
     "Exercise, muscle or equipment" : {
       "localizations" : {
         "de" : {
@@ -365,6 +445,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Übungen"
+          }
+        }
+      }
+    },
+    "Find in Plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Plan suchen"
           }
         }
       }
@@ -449,6 +539,16 @@
         }
       }
     },
+    "Library" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mediathek"
+          }
+        }
+      }
+    },
     "Month" : {
       "localizations" : {
         "de" : {
@@ -459,12 +559,32 @@
         }
       }
     },
+    "Muscles" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muskeln"
+          }
+        }
+      }
+    },
     "Name" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "New Plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuer Plan"
           }
         }
       }
@@ -565,6 +685,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto entfernen"
+          }
+        }
+      }
+    },
+    "Reps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wdh."
           }
         }
       }
@@ -695,6 +825,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Woche"
+          }
+        }
+      }
+    },
+    "Weight" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewicht"
           }
         }
       }

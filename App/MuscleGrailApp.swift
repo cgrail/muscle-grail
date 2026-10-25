@@ -48,19 +48,19 @@ struct MuscleGrailApp: App {
 
 struct RootView: View {
     var body: some View {
+        #if os(macOS)
+        MacRootView()
+        #else
         TabView {
             Tab("Train", systemImage: "figure.strengthtraining.traditional") { TrainView() }
             Tab("Plans", systemImage: "list.bullet.clipboard") { PlansView() }
             Tab("History", systemImage: "clock") { HistoryView() }
         }
         .tabViewStyle(.sidebarAdaptable)
-        #if os(iOS)
         .task {
             await Health.requestAuthorization()
             MuscleGrailApp.observeSteps()
         }
-        #else
-        .toolbar { ToolbarItem(placement: .status) { SyncStatusView() } }
         #endif
     }
 }
