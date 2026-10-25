@@ -10,18 +10,24 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash # with pipefail, so a failure before `| tee` fails the step
+
 jobs:
   build:
     runs-on: macos-26
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
+      - run: echo "::notice::$(xcodebuild -version | tr '\n' ' ')"
+      # Each check repeats its errors as annotations, so the run's summary shows why it failed.
       - name: Core tests
         working-directory: Core
-        run: swift test
+        run: swift test 2>&1 | tee ../check.log || { grep -E "error:|✘" ../check.log | head -30 | sed 's/^/::error::/'; exit 1; }
       - name: Build iPhone, watch and complication
-        run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build
+        run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { grep -E "error:" check.log | head -30 | sed 's/^/::error::/'; exit 1; }
       - name: Build Mac
-        run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build
+        run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { grep -E "error:" check.log | head -30 | sed 's/^/::error::/'; exit 1; }
