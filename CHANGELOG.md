@@ -10,6 +10,7 @@
 - Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 
 ### Training
+- Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.
 - Log a set with one tap, or tick off a whole exercise like "3 × 10 at 20 kg" with one tap; swipe a logged set to delete it.
 - Finished workouts go to Health, and the watch records heart rate and calories.

@@ -21,7 +21,7 @@ public struct SyncStatusView: View {
     }
 }
 
-/// Unfinished workouts and plans. Picking a plan starts a workout.
+/// Unfinished workouts, the plan that is next in rotation, then the other plans. Picking a plan starts a workout.
 public struct WorkoutPicker: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -37,10 +37,12 @@ public struct WorkoutPicker: View {
             ForEach(unfinished) { workout in
                 Button(String(localized: "Continue \(workout.title)", bundle: .module), systemImage: "play.fill") { onPick(workout) }
             }
+            let next = nextPlan(plans)
+            if let next {
+                Section { start(next) } header: { Text("Next up", bundle: .module) }
+            }
             Section {
-                ForEach(plans) { plan in
-                    Button(plan.title) { onPick(context.startWorkout(plan)) }
-                }
+                ForEach(plans.filter { $0 != next }, content: start)
                 if plans.isEmpty {
                     #if os(macOS)
                     Text("No plans yet. Create one under Plans.", bundle: .module).foregroundStyle(.secondary)
@@ -53,6 +55,22 @@ public struct WorkoutPicker: View {
             }
         }
         .navigationTitle(Text("Train", bundle: .module))
+    }
+
+    private func start(_ plan: Plan) -> some View {
+        Button { onPick(context.startWorkout(plan)) } label: {
+            VStack(alignment: .leading) {
+                Text(plan.title)
+                Group {
+                    if let last = plan.lastDone {
+                        Text("Last done \(last, format: .relative(presentation: .named))", bundle: .module)
+                    } else {
+                        Text("Not done yet", bundle: .module)
+                    }
+                }
+                .font(.caption).foregroundStyle(.secondary)
+            }
+        }
     }
 }
 

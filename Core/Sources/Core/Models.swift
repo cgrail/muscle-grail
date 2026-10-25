@@ -34,6 +34,17 @@ public extension Plan {
     var sortedItems: [PlanItem] { (items ?? []).sorted { $0.order < $1.order } }
 
     var title: String { name.isEmpty ? String(localized: "Untitled", bundle: .module) : name }
+
+    /// When this plan was last trained. A workout without sets doesn't count.
+    var lastDone: Date? { workouts?.filter { $0.sets?.isEmpty == false }.map(\.start).max() }
+}
+
+/// The plan to do next: the one after the plan trained most recently, in plan order and round again. Else the first.
+public func nextPlan(_ plans: [Plan]) -> Plan? {
+    let sorted = plans.sorted { $0.order < $1.order }
+    guard let last = sorted.filter({ $0.lastDone != nil }).max(by: { $0.lastDone! < $1.lastDone! }),
+          let index = sorted.firstIndex(of: last) else { return sorted.first }
+    return sorted[(index + 1) % sorted.count]
 }
 
 public extension Workout {

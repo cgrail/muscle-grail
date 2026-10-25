@@ -8,7 +8,7 @@
 - [x] offer a github like acitivy chart which shows how often you've worked out. walking sessions should also be included there
 - [x] offer the option to set daily goals like 10km walking or 10k steps. visualize them like the github activity diagram
 - [x] ticking on mobile should be simple. i should be able to do tick an excercise like 3x 20kg curls with one click
-- [ ] there should be some kind of rotation. if i have plan a,b and c. if if've done plan a last time, it should offer or suggest me plan b and also show me when the last execution was like 5 days ago.
+- [x] there should be some kind of rotation. if i have plan a,b and c. if if've done plan a last time, it should offer or suggest me plan b and also show me when the last execution was like 5 days ago.
 - [x] always ask me if you plan to do a model migration. never implement a migraiton on your own. first ask for approval
 - [ ] i should be able to increase the weight for one set. so if i did curls with 3x 20kg, i should be able to go to the next weight like 22kg. offer me smart increments. don't offer me like 20.7 kg, because that does not exist. 
 - [ ] for watch, a workout session should work without internet access. if photos are not there, don't show them. download them when you have network.

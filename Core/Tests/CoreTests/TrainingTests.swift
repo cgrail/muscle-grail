@@ -32,4 +32,35 @@ import Testing
         context.logRemaining(of: plan.sortedItems[0], in: workout, reps: 8, weightKg: 22)
         #expect(workout.sets(of: "Curl").map(\.reps) == [10, 8, 8])
     }
+
+    /// Plans A, B and C, with a workout of `done` (one set each), in that order.
+    func rotation(done: [Int]) -> [Plan] {
+        let plans = ["A", "B", "C"].map { name in
+            let plan = makePlan(context, "Bench")
+            context.rename(plan, to: name)
+            return plan
+        }
+        for index in done { context.log("Bench", reps: 5, weightKg: 50, in: context.startWorkout(plans[index])) }
+        return plans
+    }
+
+    @Test func nextPlanFollowsTheOneDoneLast() {
+        let plans = rotation(done: [2, 0])
+        #expect(nextPlan(plans)?.name == "B")
+    }
+
+    @Test func nextPlanStartsOverAfterTheLast() {
+        let plans = rotation(done: [0, 1, 2])
+        #expect(nextPlan(plans)?.name == "A")
+    }
+
+    @Test func withoutHistoryTheFirstPlanIsNext() {
+        #expect(nextPlan(rotation(done: []))?.name == "A")
+    }
+
+    @Test func aWorkoutWithoutSetsIsNotDone() {
+        let plan = makePlan(context, "Bench")
+        _ = context.startWorkout(plan)
+        #expect(plan.lastDone == nil)
+    }
 }

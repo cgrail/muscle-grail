@@ -69,6 +69,16 @@
         }
       }
     },
+    "Last done %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuletzt %@"
+          }
+        }
+      }
+    },
     "Log %lld × %lld at %@ kg" : {
       "localizations" : {
         "de" : {
@@ -111,6 +121,16 @@
         }
       }
     },
+    "Next up" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als Nächstes"
+          }
+        }
+      }
+    },
     "No plans yet. Create one on your Mac." : {
       "localizations" : {
         "de" : {
@@ -127,6 +147,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noch keine Pläne. Erstelle einen unter Pläne."
+          }
+        }
+      }
+    },
+    "Not done yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nie trainiert"
           }
         }
       }
