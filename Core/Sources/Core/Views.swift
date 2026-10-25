@@ -56,7 +56,7 @@ public struct WorkoutPicker: View {
     }
 }
 
-/// One exercise of a running workout: adjust reps and weight, log the set, swipe a logged set to delete it (right-click on the Mac).
+/// One exercise of a running workout: adjust reps and weight, log a set or all the rest in one tap, swipe a logged set to delete it (right-click on the Mac).
 public struct ExerciseSection: View {
     @Environment(\.modelContext) private var context
     private let item: PlanItem
@@ -77,6 +77,12 @@ public struct ExerciseSection: View {
             Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module), value: $weight, in: 0...1000, step: 2.5)
             Button(String(localized: "Log set \(done.count + 1) of \(item.targetSets)", bundle: .module), systemImage: "checkmark") {
                 context.log(item.exerciseID, reps: reps, weightKg: weight, in: workout)
+            }
+            if item.targetSets - done.count > 1 {
+                let remaining = item.targetSets - done.count
+                Button(String(localized: "Log \(remaining) × \(reps) at \(weight.formatted()) kg", bundle: .module), systemImage: "checkmark.circle") {
+                    context.logRemaining(of: item, in: workout, reps: reps, weightKg: weight)
+                }
             }
             ForEach(done) { set in
                 let delete = Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }

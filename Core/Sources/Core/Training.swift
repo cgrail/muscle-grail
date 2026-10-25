@@ -18,6 +18,13 @@ public extension ModelContext {
         return loggedSet(id)!
     }
 
+    /// Ticks off an exercise in one go: logs its remaining sets with the same reps and weight.
+    func logRemaining(of item: PlanItem, in workout: Workout, reps: Int, weightKg: Double) {
+        for _ in 0..<max(0, item.targetSets - workout.sets(of: item.exerciseID).count) {
+            log(item.exerciseID, reps: reps, weightKg: weightKg, in: workout)
+        }
+    }
+
     /// The undo for `log`: logged sets are never edited, only deleted.
     func undo(_ set: LoggedSet) {
         record(.deleteSet(id: set.id))

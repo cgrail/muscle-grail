@@ -69,6 +69,22 @@
         }
       }
     },
+    "Log %lld × %lld at %@ kg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$lld × %2$lld mit %3$@ kg eintragen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Log %1$lld × %2$lld at %3$@ kg"
+          }
+        }
+      }
+    },
     "Log set %lld of %lld" : {
       "localizations" : {
         "de" : {

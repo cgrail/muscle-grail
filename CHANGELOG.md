@@ -11,7 +11,7 @@
 
 ### Training
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.
-- Log a set with one tap; swipe a logged set to delete it.
+- Log a set with one tap, or tick off a whole exercise like "3 × 10 at 20 kg" with one tap; swipe a logged set to delete it.
 - Finished workouts go to Health, and the watch records heart rate and calories.
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.
 

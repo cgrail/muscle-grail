@@ -24,4 +24,12 @@ import Testing
         #expect(last.allSatisfy { $0.weightKg == 60 })
         #expect(context.lastSets(of: "Deadlift", excluding: current).isEmpty)
     }
+
+    @Test func oneTapTicksOffTheRemainingSets() {
+        let plan = makePlan(context, "Curl")
+        let workout = context.startWorkout(plan)
+        context.log("Curl", reps: 10, weightKg: 20, in: workout)
+        context.logRemaining(of: plan.sortedItems[0], in: workout, reps: 8, weightKg: 22)
+        #expect(workout.sets(of: "Curl").map(\.reps) == [10, 8, 8])
+    }
 }
