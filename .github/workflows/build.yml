@@ -23,24 +23,15 @@ jobs:
         with:
           xcode-version: latest-stable
       - run: echo "::notice::$(xcodebuild -version | tr '\n' ' ')"
-      # Each check repeats its first errors as annotations (GitHub shows 10 per step), so the run's summary shows why it failed.
+      # A failed check posts the end of its log as an annotation, so the run's summary shows why without a login.
       # xcodebuild, not swift test: SwiftPM before Xcode 27 doesn't compile String Catalogs, so every German lookup fails.
       - name: Core tests
         working-directory: Core
         run: |
-          xcodebuild test -scheme Core -destination 'platform=macOS' 2>&1 | tee ../check.log || {
-            grep -E "recorded an issue|: error:|exited with|crashed" ../check.log | grep -v Connection | head -10 | sed 's/^/::error::/'
-            exit 1
-          }
+          xcodebuild test -scheme Core -destination 'platform=macOS' 2>&1 | tee ../check.log || { ../.github/annotate.sh ../check.log; exit 1; }
       - name: Build iPhone, watch and complication
         run: |
-          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || {
-            grep -E ": error:" check.log | head -10 | sed 's/^/::error::/'
-            exit 1
-          }
+          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
       - name: Build Mac
         run: |
-          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || {
-            grep -E ": error:" check.log | head -10 | sed 's/^/::error::/'
-            exit 1
-          }
+          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
