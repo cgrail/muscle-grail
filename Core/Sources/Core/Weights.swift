@@ -11,6 +11,11 @@ public enum Weights {
         ladder(for: CatalogExercise.byID[exerciseID]?.equipment).last { $0 < weight - 0.01 } ?? 0
     }
 
+    /// A typed weight with either decimal separator, "62,5" or "62.5". Nil for anything but a weight of 0 kg or more.
+    public static func parse(_ text: String) -> Double? {
+        Double(text.trimmingCharacters(in: .whitespaces).replacing(",", with: ".")).flatMap { $0 >= 0 && $0.isFinite ? $0 : nil }
+    }
+
     /// Every weight there is, ascending, from 0. Plates (2.5 kg, a 1.25 kg disc on each side) for barbells
     /// and whatever the catalog doesn't say, the user's own exercises included.
     static func ladder(for equipment: String?) -> [Double] {

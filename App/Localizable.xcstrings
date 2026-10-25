@@ -1,16 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "%@ kg" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ kg"
-          }
-        }
-      }
-    },
     "%@ km walked" : {
       "localizations" : {
         "de" : {

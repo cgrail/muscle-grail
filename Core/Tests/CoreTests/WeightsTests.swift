@@ -8,6 +8,15 @@ struct WeightsTests {
         #expect(Weights.previous(before: 12, for: "Dumbbell_Bicep_Curl") == 10)
     }
 
+    @Test func typedWeightTakesACommaOrAPoint() {
+        #expect(Weights.parse("62,5") == 62.5)
+        #expect(Weights.parse(" 62.5 ") == 62.5)
+    }
+
+    @Test func typedTextThatIsNoWeightIsIgnored() {
+        #expect(["", "abc", "-5", "inf", "nan"].allSatisfy { Weights.parse($0) == nil })
+    }
+
     @Test func barbellsGoUpByTheSmallestPlates() {
         #expect(Weights.next(after: 60, for: "Barbell_Squat") == 62.5)
     }

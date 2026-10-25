@@ -102,7 +102,13 @@ public struct ExerciseSection: View {
                 Image(decorative: photo, scale: 1).resizable().scaledToFit().frame(maxHeight: 90)
             }
             Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
-            Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module)) {
+            Stepper {
+                #if os(watchOS)
+                Text("\(weight.formatted()) kg", bundle: .module)
+                #else
+                WeightField(kg: $weight)
+                #endif
+            } onIncrement: {
                 weight = Weights.next(after: weight, for: item.exerciseID)
             } onDecrement: {
                 weight = Weights.previous(before: weight, for: item.exerciseID)
@@ -201,3 +207,34 @@ public struct ExerciseName: View {
         Text(verbatim: exerciseName(id, entry: entries.first))
     }
 }
+
+#if !os(watchOS) // the watch steps with its crown
+/// A weight to type, beside the stepper. Every edit that reads as a weight applies at once: a decimal pad has no
+/// return key to commit with, and a set logged mid-edit must get the typed weight.
+public struct WeightField: View {
+    @Binding private var kg: Double
+    @State private var text: String
+
+    public init(kg: Binding<Double>) {
+        _kg = kg
+        _text = State(initialValue: Self.format(kg.wrappedValue))
+    }
+
+    public var body: some View {
+        HStack(spacing: 4) {
+            TextField(String(localized: "Weight", bundle: .module), text: $text)
+                .textFieldStyle(.roundedBorder)
+                .multilineTextAlignment(.trailing)
+                .frame(maxWidth: 70)
+                #if os(iOS)
+                .keyboardType(.decimalPad)
+                #endif
+            Text(verbatim: "kg")
+        }
+        .onChange(of: kg) { if Weights.parse(text) != kg { text = Self.format(kg) } }
+        .onChange(of: text) { if let typed = Weights.parse(text), typed != kg { kg = typed } }
+    }
+
+    private static func format(_ kg: Double) -> String { kg.formatted(.number.grouping(.never)) }
+}
+#endif

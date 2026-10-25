@@ -83,7 +83,7 @@ private struct PlanRow: View {
             }
             .frame(width: Column.reps, alignment: .leading)
             Stepper {
-                Text(verbatim: "\(item.targetWeightKg.formatted()) kg").monospacedDigit()
+                WeightField(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) })
             } onIncrement: {
                 context.setTargets(item, weightKg: Weights.next(after: item.targetWeightKg, for: item.exerciseID))
             } onDecrement: {

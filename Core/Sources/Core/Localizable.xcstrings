@@ -403,6 +403,16 @@
         }
       }
     },
+    "Weight" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewicht"
+          }
+        }
+      }
+    },
     "Workout" : {
       "localizations" : {
         "de" : {
