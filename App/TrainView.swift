@@ -28,8 +28,11 @@ private struct WorkoutView: View {
         List {
             ForEach(workout.plan?.sortedItems ?? []) { item in
                 NavigationLink {
-                    List { ExerciseSection(item: item, workout: workout) }
-                        .navigationTitle(context.exerciseName(item.exerciseID))
+                    List {
+                        ExerciseSection(item: item, workout: workout)
+                        ExerciseGuide(id: item.exerciseID)
+                    }
+                    .navigationTitle(context.exerciseName(item.exerciseID))
                 } label: {
                     ExerciseRow(item: item, workout: workout)
                 }
@@ -45,6 +48,27 @@ private struct WorkoutView: View {
                 }
                 #endif
                 dismiss()
+            }
+        }
+    }
+}
+
+/// How to do an exercise, and a video of it, under its sets.
+private struct ExerciseGuide: View {
+    @Query private var entries: [CatalogEntry]
+    private let id: String
+
+    init(id: String) {
+        self.id = id
+        _entries = Query(filter: #Predicate { $0.id == id })
+    }
+
+    var body: some View {
+        let entry = entries.first
+        Section("How to") {
+            ForEach(instructions(id, entry: entry), id: \.self) { Text(verbatim: $0) }
+            if let url = videoURL(id, entry: entry) {
+                Link(destination: url) { Label("Watch video", systemImage: "play.rectangle") }
             }
         }
     }

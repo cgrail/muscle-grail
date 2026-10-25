@@ -559,6 +559,16 @@
         }
       }
     },
+    "How to" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausführung"
+          }
+        }
+      }
+    },
     "Kilometers walked per day" : {
       "localizations" : {
         "de" : {

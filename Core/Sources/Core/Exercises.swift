@@ -16,6 +16,20 @@ public func exerciseName(_ id: String, entry: CatalogEntry?) -> String {
     return CatalogExercise.byID[id]?.name ?? String(localized: "Custom exercise", bundle: .module)
 }
 
+/// How to do `id`, a paragraph per step: the user's own description, else the bundled instructions.
+public func instructions(_ id: String, entry: CatalogEntry?) -> [String] {
+    if let details = entry?.details, !details.isEmpty { return [details] }
+    return CatalogExercise.byID[id]?.instructions ?? []
+}
+
+/// A video of `id`: the user's own link, else a YouTube search for its name.
+public func videoURL(_ id: String, entry: CatalogEntry?) -> URL? {
+    if let url = URL(string: entry?.videoURL ?? ""), url.scheme?.hasPrefix("http") == true { return url }
+    var search = URLComponents(string: "https://www.youtube.com/results")!
+    search.queryItems = [URLQueryItem(name: "search_query", value: exerciseName(id, entry: entry) + " form")]
+    return search.url
+}
+
 /// Up to `limit` catalog names matching `query`, the user's own (`custom`) first: what the plan assistant searches.
 public func catalogNames(matching query: String, custom: [String], limit: Int = 8) -> [String] {
     let names = custom.filter { matchesEveryWord(of: query, in: [$0]) } + CatalogExercise.all.filter { $0.matches(query) }.map(\.name)

@@ -21,6 +21,24 @@ import Testing
         #expect(exerciseName(UUID().uuidString, entry: nil) == "Custom exercise")
     }
 
+    @Test func bundledExerciseComesWithItsInstructions() {
+        #expect(instructions("Barbell_Squat", entry: nil).count == 6)
+    }
+
+    @Test func yourDescriptionReplacesTheBundledInstructions() {
+        context.editExercise("Barbell_Squat", details: "Below parallel")
+        #expect(instructions("Barbell_Squat", entry: context.catalogEntry("Barbell_Squat")) == ["Below parallel"])
+    }
+
+    @Test func yourVideoLinkIsTheVideo() {
+        context.editExercise("Barbell_Squat", videoURL: "https://example.com/squat")
+        #expect(videoURL("Barbell_Squat", entry: context.catalogEntry("Barbell_Squat"))?.absoluteString == "https://example.com/squat")
+    }
+
+    @Test func withoutYourLinkTheVideoIsAYouTubeSearch() {
+        #expect(videoURL("Barbell_Squat", entry: nil)?.absoluteString == "https://www.youtube.com/results?search_query=Barbell%20Squat%20form")
+    }
+
     @Test func customExercisesWithTheSameNameNeverShareAnID() {
         #expect(context.createExercise(named: "Cable Fly") != context.createExercise(named: "Cable Fly"))
     }

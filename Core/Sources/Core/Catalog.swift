@@ -8,6 +8,7 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
     public let equipment: String?
     public let primaryMuscles: [String]
     public let images: [String]
+    public var instructions: [String] = []
 
     public static let all = load(Bundle.module.url(forResource: "exercises", withExtension: "json"))
 

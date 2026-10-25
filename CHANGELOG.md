@@ -13,6 +13,7 @@
 - Filter the exercise catalog by body region, like legs or arms, when adding an exercise and in the Mac's exercise library.
 
 ### Training
+- On the iPhone and the Mac, an exercise opened during a workout shows how to do it, step by step, under its sets, with a link to a video: your own video link, else a YouTube search for the exercise. Your own description replaces the steps.
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.
 - Only one workout runs at a time: finish it before starting another plan.
 - Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
