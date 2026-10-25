@@ -22,7 +22,7 @@
 
 ### History
 - Daily goals for steps and walking distance on the iPhone, with today's progress and a chart of every day like GitHub's. Goals sync through iCloud.
-- An activity chart like GitHub's, with month and weekday labels, shows the last year day by day: gym workouts, and on the iPhone also walks and hikes from Health.
+- An activity chart like GitHub's, with month and weekday labels, shows the last year day by day, today outlined: gym workouts, and on the iPhone every workout in Health, walks included, so a workout from the watch or another app shows right away.
 - Statistics per week, month, quarter or year: workouts per period as a chart, and the current period's workouts, sets and volume.
 
 ### Sync

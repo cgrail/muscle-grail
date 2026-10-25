@@ -89,4 +89,18 @@ import Testing
         english.locale = Locale(identifier: "en_US")
         #expect(weekdayLabels(calendar: english) == [nil, "Tue", nil, "Thu", nil, "Sat", nil])
     }
+
+    @Test func todaysSessionCountsToday() {
+        let now = date("2026-10-21")
+        #expect(activityWeeks([now], weeks: 1, now: now, calendar: calendar)[0].days == [0, 0, 1, nil, nil, nil, nil])
+    }
+
+    @Test func healthWorkoutsCountExceptTheOnesThisAppSaved() {
+        let own = workout(on: "2026-10-20")
+        let saved = UUID()
+        context.savedToHealth(own, as: saved)
+        workout(on: "2026-10-21", []) // started, nothing logged
+        let health = [(start: date("2026-10-20"), id: saved), (start: date("2026-10-21"), id: UUID())] // the second from the watch or another app
+        #expect(activitySessions(all(), health: health).sorted() == [date("2026-10-20"), date("2026-10-21")])
+    }
 }

@@ -1,15 +1,14 @@
 import Core
 import SwiftUI
 
-/// How often you trained over the last year, as GitHub shows contributions: gym workouts, and walks from Health on the iPhone.
+/// How often you trained over the last year, as GitHub shows contributions: gym workouts, and on the iPhone every workout in Health.
 struct ActivitySection: View {
     let workouts: [Workout]
-    @State private var walks: [Date] = []
+    @State private var health: [(start: Date, id: UUID)] = []
 
     var body: some View {
-        let gym = workouts.filter { !($0.sets ?? []).isEmpty }.map(\.start)
         Section {
-            ActivityGrid(weeks: activityWeeks(gym + walks, weeks: 53))
+            ActivityGrid(weeks: activityWeeks(activitySessions(workouts, health: health), weeks: 53))
         } header: {
             Text("Activity")
         } footer: {
@@ -20,7 +19,7 @@ struct ActivitySection: View {
             #endif
         }
         #if os(iOS)
-        .task { walks = await Health.walks(since: .now.addingTimeInterval(-371 * 24 * 3600)) }
+        .task { health = await Health.workouts(since: .now.addingTimeInterval(-371 * 24 * 3600)) }
         #endif
     }
 }
@@ -47,6 +46,11 @@ struct ActivityGrid: View {
                                 .frame(width: 11, height: 12, alignment: .leading)
                             ForEach(0..<7, id: \.self) { day in
                                 RoundedRectangle(cornerRadius: 2).fill(fill(weeks[week].days[day])).frame(width: 11, height: 11)
+                                    .overlay { // today: the last day that isn't still ahead
+                                        if week == weeks.count - 1, day == weeks[week].days.lastIndex(where: { $0 != nil }) {
+                                            RoundedRectangle(cornerRadius: 2).stroke(.primary.opacity(0.6), lineWidth: 1)
+                                        }
+                                    }
                             }
                         }
                     }

@@ -51,6 +51,13 @@ public func stats(_ workouts: [Workout], per period: Period, count: Int, now: Da
     return periods
 }
 
+/// Each session to count as activity: gym workouts with sets, and Health's workouts from any app or device, except
+/// the ones this app saved there, which are among the gym workouts already.
+public func activitySessions(_ workouts: [Workout], health: [(start: Date, id: UUID)]) -> [Date] {
+    let saved = Set(workouts.compactMap(\.healthKitID))
+    return workouts.filter { $0.sets?.isEmpty == false }.map(\.start) + health.filter { !saved.contains($0.id) }.map(\.start)
+}
+
 /// Activity as GitHub shows it: one column per week up to the one containing `now`, one row per weekday from the
 /// calendar's first, counting the sessions (workouts, walks) on each day. Days after `now` are nil.
 public func activityWeeks(_ sessions: [Date], weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {

@@ -36,14 +36,11 @@ import HealthKit
         return totals
     }
 
-    /// Start dates of walking and hiking workouts since `date`, from any app: they count as activity next to the gym.
-    public static func walks(since date: Date) async -> [Date] {
-        let kinds = [HKWorkoutActivityType.walking, .hiking].map { HKQuery.predicateForWorkouts(with: $0) }
-        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
-            HKQuery.predicateForSamples(withStart: date, end: nil), NSCompoundPredicate(orPredicateWithSubpredicates: kinds),
-        ])
-        let query = HKSampleQueryDescriptor(predicates: [.workout(predicate)], sortDescriptors: [])
-        return ((try? await query.result(for: store)) ?? []).map(\.startDate)
+    /// Every workout in Health since `date`, from any app or device, walks included: they count as activity.
+    /// It arrives from the watch over Bluetooth, long before a gym workout's record syncs through iCloud.
+    public static func workouts(since date: Date) async -> [(start: Date, id: UUID)] {
+        let query = HKSampleQueryDescriptor(predicates: [.workout(HKQuery.predicateForSamples(withStart: date, end: nil))], sortDescriptors: [])
+        return ((try? await query.result(for: store)) ?? []).map { ($0.startDate, $0.uuid) }
     }
 
     /// New steps wake the app in the background about hourly. Every wake gives CloudKit a chance to sync,
