@@ -25,10 +25,11 @@ jobs:
       - run: echo "::notice::$(xcodebuild -version | tr '\n' ' ')"
       # A failed check posts the end of its log as an annotation, so the run's summary shows why without a login.
       # xcodebuild, not swift test: SwiftPM before Xcode 27 doesn't compile String Catalogs, so every German lookup fails.
+      # One test at a time, so a crash names its test (the last one started) instead of failing every test running beside it.
       - name: Core tests
         working-directory: Core
         run: |
-          xcodebuild test -scheme Core -destination 'platform=macOS' 2>&1 | tee ../check.log || { ../.github/annotate.sh ../check.log; exit 1; }
+          xcodebuild test -scheme Core -destination 'platform=macOS' -parallel-testing-enabled NO 2>&1 | tee ../check.log || { ../.github/annotate.sh ../check.log; exit 1; }
       - name: Build iPhone, watch and complication
         run: |
           xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
