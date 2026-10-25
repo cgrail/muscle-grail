@@ -1,5 +1,4 @@
 # Todo
 
-- [x] the githb activity style diagram doesn't have month/day indicator
-- [x] githbub style indicator doesn't show current day if i've completed something today
-- [x] the icon doesn't look like a real arm. especially the hand
+- [ ] allow to select a day in the activiy view to see more details. merge steps, km and gym into one view. show all days (mo,di,mi,do,fr,sa,so) . mark gym days as red. days where the goal has been reached in blue and non-reached in light blue
+- [ ] 

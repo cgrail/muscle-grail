@@ -1,6 +1,6 @@
 # muscle-grail
 
-<img src="Design/flex-arm.png" width="160" alt="Muscle Grail: a flexed arm">
+<img src="Design/icon.png" width="160" alt="Muscle Grail: a flexed arm lifting a dumbbell">
 
 Muscle Grail App
 
