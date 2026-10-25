@@ -11,6 +11,26 @@
         }
       }
     },
+    "%@ of %@ km walked" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@ km gegangen"
+          }
+        }
+      }
+    },
+    "%@ of %@ steps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@ Schritten"
+          }
+        }
+      }
+    },
     "%lld reps" : {
       "localizations" : {
         "de" : {
@@ -219,6 +239,16 @@
         }
       }
     },
+    "Daily goals" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tagesziele"
+          }
+        }
+      }
+    },
     "Darker days had more workouts and walks." : {
       "localizations" : {
         "de" : {
@@ -289,6 +319,16 @@
         }
       }
     },
+    "Edit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeiten"
+          }
+        }
+      }
+    },
     "Exercise, muscle or equipment" : {
       "localizations" : {
         "de" : {
@@ -329,6 +369,16 @@
         }
       }
     },
+    "Kilometers walked per day" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gehstrecke pro Tag in km"
+          }
+        }
+      }
+    },
     "Let Claude create and edit plans" : {
       "localizations" : {
         "de" : {
@@ -355,6 +405,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "Off" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus"
           }
         }
       }
@@ -419,6 +479,16 @@
         }
       }
     },
+    "Set a daily goal for steps or walking distance." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Setze ein Tagesziel für Schritte oder Gehstrecke."
+          }
+        }
+      }
+    },
     "Sets" : {
       "localizations" : {
         "de" : {
@@ -435,6 +505,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Statistik"
+          }
+        }
+      }
+    },
+    "Steps per day" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritte pro Tag"
           }
         }
       }

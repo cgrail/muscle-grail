@@ -67,4 +67,10 @@ import Testing
         #expect(weeks[0] == [0, 0, 1, 0, 0, 0, 0]) // Monday 12 October to Sunday 18
         #expect(weeks[1] == [2, 0, 0, nil, nil, nil, nil]) // up to Wednesday 21, the rest still ahead
     }
+
+    @Test func goalDaysShowHowFarTheyGot() {
+        let values = [midnight("2026-10-19"): 12_000, midnight("2026-10-20"): 6_000, midnight("2026-10-21"): 2_000.0]
+        let week = goalWeeks(values, goal: 10_000, weeks: 1, now: date("2026-10-22"), calendar: calendar)[0]
+        #expect(week == [3, 2, 1, 0, nil, nil, nil])
+    }
 }

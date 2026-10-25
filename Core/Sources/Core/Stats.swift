@@ -54,14 +54,27 @@ public func stats(_ workouts: [Workout], per period: Period, count: Int, now: Da
 /// Activity as GitHub shows it: one column per week up to the one containing `now`, one row per weekday from the
 /// calendar's first, counting the sessions (workouts, walks) on each day. Days after `now` are nil.
 public func activityWeeks(_ sessions: [Date], weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [[Int?]] {
-    let today = calendar.startOfDay(for: now)
     let counts = Dictionary(sessions.map { (calendar.startOfDay(for: $0), 1) }, uniquingKeysWith: +)
+    return dayGrid(weeks: weeks, now: now, calendar: calendar) { counts[$0, default: 0] }
+}
+
+/// Per day, how far `values` (by start of day) got toward `goal`: 0 nothing, 1 under half, 2 half or more, 3 reached.
+public func goalWeeks(_ values: [Date: Double], goal: Double, weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [[Int?]] {
+    dayGrid(weeks: weeks, now: now, calendar: calendar) { day in
+        let value = values[day] ?? 0
+        return value >= goal ? 3 : value >= goal / 2 ? 2 : value > 0 ? 1 : 0
+    }
+}
+
+/// One column per week up to the one containing `now`, one row per weekday, `level` for each day up to today.
+private func dayGrid(weeks: Int, now: Date, calendar: Calendar, level: (Date) -> Int) -> [[Int?]] {
+    let today = calendar.startOfDay(for: now)
     let thisWeek = Period.week.start(of: now, in: calendar)
     return (0..<weeks).map { week in
         let start = Period.week.start(week - weeks + 1, after: thisWeek, in: calendar)
         return (0..<7).map { day in
             let date = calendar.date(byAdding: .day, value: day, to: start)!
-            return date > today ? nil : counts[date, default: 0]
+            return date > today ? nil : level(date)
         }
     }
 }

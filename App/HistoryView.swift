@@ -10,6 +10,9 @@ struct HistoryView: View {
         NavigationStack {
             List {
                 ActivitySection(workouts: workouts)
+                #if os(iOS)
+                GoalsSection()
+                #endif
                 StatsSection(workouts: workouts)
                 Section("Workouts") {
                     ForEach(workouts) { workout in

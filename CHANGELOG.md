@@ -16,6 +16,7 @@
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.
 
 ### History
+- Daily goals for steps and walking distance on the iPhone, with today's progress and a chart of every day like GitHub's. Goals sync through iCloud.
 - An activity chart like GitHub's shows the last year day by day: gym workouts, and on the iPhone also walks and hikes from Health.
 - Statistics per week, month, quarter or year: workouts per period as a chart, and the current period's workouts, sets and volume.
 

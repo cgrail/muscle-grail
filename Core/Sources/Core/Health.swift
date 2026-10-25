@@ -23,6 +23,19 @@ import HealthKit
         return try await query.result(for: store)?.sumQuantity()?.doubleValue(for: unit) ?? 0
     }
 
+    /// Each day's total for the last `days` days, by the start of the day, as the Health app counts it.
+    public static func daily(_ id: HKQuantityTypeIdentifier, unit: HKUnit, days: Int) async -> [Date: Double] {
+        let start = Calendar.current.date(byAdding: .day, value: -days, to: Calendar.current.startOfDay(for: .now))!
+        let query = HKStatisticsCollectionQueryDescriptor(
+            predicate: .quantitySample(type: HKQuantityType(id), predicate: HKQuery.predicateForSamples(withStart: start, end: nil)),
+            options: .cumulativeSum, anchorDate: start, intervalComponents: DateComponents(day: 1)
+        )
+        guard let days = try? await query.result(for: store) else { return [:] }
+        var totals: [Date: Double] = [:]
+        days.enumerateStatistics(from: start, to: .now) { day, _ in totals[day.startDate] = day.sumQuantity()?.doubleValue(for: unit) }
+        return totals
+    }
+
     /// Start dates of walking and hiking workouts since `date`, from any app: they count as activity next to the gym.
     public static func walks(since date: Date) async -> [Date] {
         let kinds = [HKWorkoutActivityType.walking, .hiking].map { HKQuery.predicateForWorkouts(with: $0) }
