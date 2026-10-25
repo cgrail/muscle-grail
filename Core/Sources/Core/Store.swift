@@ -44,9 +44,17 @@ public enum Store {
         ) { note in
             guard let event = note.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey]
                 as? NSPersistentCloudKitContainer.Event else { return }
-            let (id, finished, isSync, error) = (event.identifier, event.endDate != nil, event.type != .setup, event.error?.localizedDescription)
+            let (id, finished, isSync, error) = (event.identifier, event.endDate != nil, event.type != .setup, event.error.map(Self.message))
             MainActor.assumeIsolated { self.update(id: id, finished: finished, isSync: isSync, error: error) }
         }
+    }
+
+    /// Core Data's CloudKit errors only say "The operation couldn't be completed", so the one users can fix gets words.
+    nonisolated static func message(_ error: any Error) -> String {
+        let error = error as NSError
+        // 134400: no iCloud account on this device. Core Data has no public constant for it.
+        if error.domain == NSCocoaErrorDomain, error.code == 134400 { return String(localized: "Sign in to iCloud to sync", bundle: .module) }
+        return error.localizedDescription
     }
 
     func update(id: UUID, finished: Bool, isSync: Bool, error: String?) {

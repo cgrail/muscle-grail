@@ -41,6 +41,16 @@ struct StoreTests {
         #expect(sync.lastSync == nil)
     }
 
+    @Test func missingICloudAccountAsksToSignIn() {
+        let message = SyncMonitor.message(NSError(domain: NSCocoaErrorDomain, code: 134400))
+        #expect(message == String(localized: "Sign in to iCloud to sync", bundle: .module))
+    }
+
+    @Test func otherErrorsKeepTheirDescription() {
+        let error = NSError(domain: NSCocoaErrorDomain, code: NSFileNoSuchFileError)
+        #expect(SyncMonitor.message(error) == error.localizedDescription)
+    }
+
     @Test func notificationWithoutAnEventChangesNothing() {
         NotificationCenter.default.post(name: NSPersistentCloudKitContainer.eventChangedNotification, object: nil)
         #expect(sync.lastSync == nil && sync.lastError == nil)

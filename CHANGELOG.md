@@ -32,6 +32,7 @@
 
 ### Sync
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
+- A device without an iCloud account says "Sign in to iCloud to sync" instead of a bare error code.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
 
 ### Watch face and Home Screen
