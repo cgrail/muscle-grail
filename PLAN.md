@@ -23,6 +23,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | One record per logged set, never edited | Two devices can't conflict over a set. Last-writer-wins only affects plan edits. |
 | Every change is also stored as an action (a `Change`, as JSON in an `Action` record) and applied from it | The log can rebuild or re-apply the model, whatever the schema does later. Each action carries its app's format version: an older app keeps training, and leaves plan editing to an update. |
 | On the Mac, exercises can be added by describing them, through Apple's on-device Foundation Model with a catalog search tool | Free, private, offline, and it understands German. Its small context can't hold the 876 exercises, so it looks names up. Voice is macOS dictation into the same field. Needs Apple Intelligence. |
+| Claude edits plans through an MCP server inside the Mac app (Streamable HTTP on 127.0.0.1, off by default) | No extra process or shared store: the tools use the app's own context and actions. Claude Code connects directly, Claude Desktop through `mcp-remote`. |
 | HealthKit step observer (`enableBackgroundDelivery`, hourly) instead of `BGAppRefreshTask` | New steps wake iPhone and Watch in the background all day. Each wake gives CloudKit a chance to sync and refreshes the complication. One mechanism covers both jobs. |
 | The complication reads HealthKit directly | No App Group or shared store is needed. |
 | Watch: steppers instead of the Digital Crown | The crown already pages between exercises. |

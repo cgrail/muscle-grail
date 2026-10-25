@@ -129,6 +129,16 @@
         }
       }
     },
+    "Another app uses port %lld. Quit it and switch this on again." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine andere App nutzt Port %lld. Beende sie und schalte das hier wieder ein."
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "de" : {
@@ -145,6 +155,36 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto auswählen"
+          }
+        }
+      }
+    },
+    "Claude Code" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude Code"
+          }
+        }
+      }
+    },
+    "Claude Desktop" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude Desktop"
+          }
+        }
+      }
+    },
+    "Connect Claude" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude verbinden"
           }
         }
       }
@@ -249,12 +289,32 @@
         }
       }
     },
+    "Let Claude create and edit plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Claude Pläne erstellen und bearbeiten lassen"
+          }
+        }
+      }
+    },
     "Name" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "Only apps on this Mac can connect, and only while Muscle Grail is open." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur Apps auf diesem Mac können sich verbinden, und nur solange Muscle Grail geöffnet ist."
           }
         }
       }

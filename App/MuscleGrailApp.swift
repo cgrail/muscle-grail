@@ -5,6 +5,9 @@ import SwiftUI
 @main
 struct MuscleGrailApp: App {
     let container: ModelContainer
+    #if os(macOS)
+    @State private var claude: ClaudeConnection
+    #endif
 
     init() {
         _ = SyncMonitor.shared // listen before the store's first sync event
@@ -15,6 +18,8 @@ struct MuscleGrailApp: App {
         }
         #if os(iOS)
         Health.observeSteps { await SyncMonitor.shared.waitUntilIdle() }
+        #else
+        _claude = State(initialValue: ClaudeConnection(context: container.mainContext))
         #endif
     }
 
@@ -23,6 +28,9 @@ struct MuscleGrailApp: App {
             RootView()
         }
         .modelContainer(container)
+        #if os(macOS)
+        Settings { ClaudeSettings().environment(claude) }
+        #endif
     }
 }
 

@@ -6,6 +6,7 @@
 - Build plans on the Mac from a searchable catalog of over 800 exercises with photos, or add your own, each with target sets, reps and weight.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.
 - On the Mac, add exercises to a plan by describing them, typed or dictated, in English or German: "3x10 bench press at 60 kg, then squats". Needs Apple Intelligence.
+- On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are.
 - Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 
 ### Training

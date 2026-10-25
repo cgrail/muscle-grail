@@ -6,7 +6,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Platform roles
 
-- Mac: create and maintain plans. Full plan editing lives here. It can also train, like the iPhone, but saves nothing to Health (macOS has no HealthKit). Exercises can be added by describing them, typed or dictated (`PlanAssistant`, Apple's on-device model with a catalog search tool; the model's side has no tests, so check it by hand).
+- Mac: create and maintain plans. Full plan editing lives here. It can also train, like the iPhone, but saves nothing to Health (macOS has no HealthKit). Exercises can be added by describing them, typed or dictated (`PlanAssistant`, Apple's on-device model with a catalog search tool; the model's side has no tests, so check it by hand). Claude can create and extend plans through MCP, switched on in Settings (see below).
 - Watch: the gym device. It logs sets and makes small adjustments to the running workout: add a set, delete a set. Plan creation and editing stay on the Mac.
 - Every platform is fast: each tap answers from the local store. Network calls, sync waits and heavy work stay off the main actor and out of user paths.
 
@@ -68,7 +68,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - The apps ship through the App Store when the user releases a version; the watch app and complication ship inside the iPhone app. A push to `main` releases nothing.
 - `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` are set once in the project's build settings, so every target shares them (the watch app's version must match the iPhone app's). Each upload needs a higher `CURRENT_PROJECT_VERSION`.
 - TestFlight and App Store builds use CloudKit's Production environment. Before uploading a build with a model change, deploy the schema to Production in the CloudKit Console.
-- Saved data: the `UserDefaults` keys `lastSync` (`SyncMonitor`) and `day`, `steps`, `km` (the complication) keep their names and meaning, so an update reads what the old version saved.
+- Saved data: the `UserDefaults` keys `lastSync` (`SyncMonitor`), `day`, `steps`, `km` (the complication) and `mcpServer` (the Mac's Claude switch) keep their names and meaning, so an update reads what the old version saved.
 - [CHANGELOG.md](CHANGELOG.md) gets an entry in the same commit as every change a user would notice, under `## <MARKETING_VERSION> (current)`. Say what the app does now, not what the diff did; refactors that change nothing visible stay out. When `MARKETING_VERSION` is bumped, the top section is closed and a new current one opens above it.
 - `WHATS-NEW.md` is the user-facing cut for App Store Connect's "What's New", in English and German, written when a version ships, not per commit. Plain text: App Store Connect rejects bullets, emoji and typographic dashes or quotes there (umlauts are fine).
 
@@ -78,6 +78,12 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - The user's `CatalogEntry`s sit on top: their own exercises, and their name, description, video link and photo for any exercise. They live in the separate Catalog store of the same iCloud container (`Store.configurations`) with their own log, so the gym store stays small. Photos are stored as JPEGs of at most 1024 px (`Photo.jpeg`).
 - Show a name with `ExerciseName` (`exerciseName(_:entry:)` outside views). A custom exercise whose entry hasn't synced yet shows a placeholder.
 - Photos load from the repo's GitHub raw URLs (see `CatalogExercise.imageURL`), so the picker needs internet to show them.
+
+## Claude (MCP)
+
+- `MCP` (Core) answers JSON-RPC with four tools: `list_plans`, `search_exercises`, `create_plan`, `add_exercises`. They edit through the same Core functions as the app, so edits are recorded as actions and wait for an update after newer actions.
+- `MCPServer` (Core, macOS) serves it over Streamable HTTP at `http://127.0.0.1:7428/mcp` while the Mac app runs and Settings → Claude is on. It listens on the loopback interface only and refuses requests with a foreign `Origin` (DNS rebinding). The Mac app needs `com.apple.security.network.server` for it.
+- `MCPTests` call the real server over HTTP on a free port.
 
 ## Workflow
 
