@@ -46,7 +46,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Data model (CloudKit rules)
 
 - Every property has a default or is optional, and every relationship is optional with an inverse. No `@Attribute(.unique)`. Ordering lives in an `order: Int` field. A model that breaks a rule fails the store at launch.
-- Schema changes are additive: add fields, keep existing names. Renames and deletes break sync once the schema is deployed to Production.
+- Schema changes are additive: add fields, keep existing names. Renames and deletes break sync once the schema is deployed to Production, and devices update at different times (the Mac apart from the iPhone and watch), so an older App Store build must still read what a newer one writes.
 - An exercise is its name string (`PlanItem.exercise`, `LoggedSet.exercise`). History and prefill match on that name.
 - `LoggedSet` is append-only: one record per set, deleted to undo.
 - `ModelContext.log` saves immediately, because the watch app can be killed between sets.
@@ -57,7 +57,21 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - A workout goes to HealthKit only from the device that ran it. That device stores the UUID in `Workout.healthKitID`.
 - The CloudKit container `iCloud.de.grails.musclegrail` is permanent: Apple can't delete or rename it.
 
+## Releases and the App Store
+
+- The apps ship through the App Store when the user releases a version; the watch app and complication ship inside the iPhone app. A push to `main` releases nothing.
+- `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` are set once in the project's build settings, so every target shares them (the watch app's version must match the iPhone app's). Each upload needs a higher `CURRENT_PROJECT_VERSION`.
+- TestFlight and App Store builds use CloudKit's Production environment. Before uploading a build with a model change, deploy the schema to Production in the CloudKit Console.
+- Saved data: the `UserDefaults` keys `lastSync` (`SyncMonitor`) and `day`, `steps`, `km` (the complication) keep their names and meaning, so an update reads what the old version saved.
+- [CHANGELOG.md](CHANGELOG.md) gets an entry in the same commit as every change a user would notice, under `## <MARKETING_VERSION> (current)`. Say what the app does now, not what the diff did; refactors that change nothing visible stay out. When `MARKETING_VERSION` is bumped, the top section is closed and a new current one opens above it.
+- `WHATS-NEW.md` is the user-facing cut for App Store Connect's "What's New", in English and German, written when a version ships, not per commit. Plain text: App Store Connect rejects bullets, emoji and typographic dashes or quotes there (umlauts are fine).
+
 ## Exercise catalog
 
 - `Core/Sources/Core/exercises.json` is [free-exercise-db](https://github.com/yuhonas/free-exercise-db), public domain, bundled unchanged. To update it, replace the file with that repo's `dist/exercises.json`.
 - Photos load from the repo's GitHub raw URLs (see `CatalogExercise.imageURL`), so the picker needs internet to show them.
+
+## Workflow
+
+- The backlog is `todo.md`, worked through with the `/todo` skill. Each item gets its own commit, and done items are ticked `[x]` and kept.
+- Commit messages use an imperative subject of about 60 characters with no scope prefix ("Add searchable exercise catalog picker"). Add a body only when the reason isn't obvious.

@@ -7,7 +7,7 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Muscle Grail"
           }
         },
@@ -23,6 +23,12 @@
       "comment" : "Bundle name",
       "extractionState" : "extracted_with_value",
       "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "MuscleGrail"
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
@@ -37,7 +43,7 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Liest deine Schritte, damit Muscle Grail im Hintergrund synchron bleibt."
           }
         },
@@ -55,7 +61,7 @@
       "localizations" : {
         "de" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Speichert deine Krafttrainings in Health."
           }
         },
