@@ -1,33 +1,42 @@
 import Foundation
 import SwiftData
 
+// Training: works on every app version and never asks for an update (see `Change`).
 public extension ModelContext {
     func startWorkout(_ plan: Plan) -> Workout {
-        let workout = Workout()
-        insert(workout)
-        workout.plan = plan
+        let id = UUID()
+        record(.startWorkout(id: id, plan: plan.id, start: .now))
         try? save()
-        return workout
+        return workout(id)!
     }
 
     @discardableResult
     func log(_ exercise: String, reps: Int, weightKg: Double, in workout: Workout) -> LoggedSet {
-        let set = LoggedSet(exercise: exercise, reps: reps, weightKg: weightKg)
-        insert(set)
-        set.workout = workout
+        let id = UUID()
+        record(.logSet(id: id, workout: workout.id, exercise: exercise, reps: reps, weightKg: weightKg, date: .now))
         try? save() // save right away: the watch app can be killed between sets
-        return set
+        return loggedSet(id)!
     }
 
     /// The undo for `log`: logged sets are never edited, only deleted.
     func undo(_ set: LoggedSet) {
-        delete(set)
+        record(.deleteSet(id: set.id))
         try? save()
     }
 
     func finish(_ workout: Workout) {
-        workout.end = .now
+        record(.finishWorkout(id: workout.id, end: .now))
         try? save()
+    }
+
+    /// Only the device that ran the workout saves it to Health, then stores its id here.
+    func savedToHealth(_ workout: Workout, as healthKitID: UUID) {
+        record(.savedToHealth(workout: workout.id, healthKitID: healthKitID))
+        try? save()
+    }
+
+    func deleteWorkout(_ workout: Workout) {
+        record(.deleteWorkout(id: workout.id))
     }
 
     /// Sets of the most recent earlier workout that included `exercise`, in the order they were done.

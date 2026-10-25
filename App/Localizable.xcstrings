@@ -208,6 +208,16 @@
           }
         }
       }
+    },
+    "Update Muscle Grail to edit plans. A newer version changed them. Training works as usual." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisiere Muscle Grail, um Pläne zu bearbeiten. Eine neuere Version hat sie geändert. Das Training funktioniert wie gewohnt."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

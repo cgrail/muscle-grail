@@ -12,6 +12,7 @@
 
 ### Sync
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
+- Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
 
 ### Watch face
 - A complication shows today's steps and walking distance.

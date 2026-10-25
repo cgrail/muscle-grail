@@ -51,15 +51,16 @@ struct StoreTests {
         #expect(ContinuousClock.now - start < .seconds(5))
     }
 
-    @Test func waitReturnsOnceTheRunningSyncFinishes() async throws {
+    @Test func waitReturnsOnceTheRunningSyncFinishes() async {
         let id = UUID()
         sync.update(id: id, finished: false, isSync: true, error: nil)
-        let waiting = Task { await sync.waitUntilIdle(timeout: .seconds(30), settle: .zero) }
-        try await Task.sleep(for: .milliseconds(50)) // let the wait start polling
-        sync.update(id: id, finished: true, isSync: true, error: nil)
+        Task { // finishes after the wait has polled at least once
+            try? await Task.sleep(for: .seconds(1))
+            sync.update(id: id, finished: true, isSync: true, error: nil)
+        }
         let start = ContinuousClock.now
-        await waiting.value
-        #expect(ContinuousClock.now - start < .seconds(5))
+        await sync.waitUntilIdle(timeout: .seconds(30), settle: .zero)
+        #expect(ContinuousClock.now - start < .seconds(10))
     }
 
     @Test func waitGivesUpAtTheTimeout() async {

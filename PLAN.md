@@ -20,6 +20,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | An exercise is just a name string, with no `Exercise` model | CloudKit has no unique constraints, so two offline devices would create duplicate exercise records. A name is its own merge key. Trade-off: renaming an exercise starts a fresh history. |
 | Exercise picker from [free-exercise-db](https://github.com/yuhonas/free-exercise-db): 876 exercises, public domain, a photo for each. Free text still works for custom exercises. | Consistent names across devices, which is what history matches on. The JSON is bundled (1 MB). Photos load from GitHub, because bundling all of them would add about 100 MB. |
 | One record per logged set, never edited | Two devices can't conflict over a set. Last-writer-wins only affects plan edits. |
+| Every change is also stored as an action (a `Change`, as JSON in an `Action` record) and applied from it | The log can rebuild or re-apply the model, whatever the schema does later. Each action carries its app's format version: an older app keeps training, and leaves plan editing to an update. |
 | HealthKit step observer (`enableBackgroundDelivery`, hourly) instead of `BGAppRefreshTask` | New steps wake iPhone and Watch in the background all day. Each wake gives CloudKit a chance to sync and refreshes the complication. One mechanism covers both jobs. |
 | The complication reads HealthKit directly | No App Group or shared store is needed. |
 | Watch: steppers instead of the Digital Crown | The crown already pages between exercises. |

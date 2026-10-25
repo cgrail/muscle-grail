@@ -18,7 +18,7 @@ struct HistoryView: View {
                     }
                 }
                 .contextMenu {
-                    Button("Delete", systemImage: "trash", role: .destructive) { context.delete(workout) }
+                    Button("Delete", systemImage: "trash", role: .destructive) { context.deleteWorkout(workout) }
                 }
             }
             .navigationTitle("History")

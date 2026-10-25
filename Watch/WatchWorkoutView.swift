@@ -18,8 +18,7 @@ struct WatchWorkoutView: View {
             Button("Finish", systemImage: "checkmark") {
                 context.finish(workout)
                 session.end { id in
-                    workout.healthKitID = id
-                    try? context.save()
+                    if let id { context.savedToHealth(workout, as: id) }
                 }
                 dismiss()
             }

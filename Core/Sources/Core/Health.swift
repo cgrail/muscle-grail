@@ -39,9 +39,9 @@ import HealthKit
         store.enableBackgroundDelivery(for: steps, frequency: .hourly) { _, _ in }
     }
 
-    /// Saves a finished phone workout. The watch saves its own through its workout session.
-    public static func save(_ workout: Workout) async {
-        guard workout.healthKitID == nil, let end = workout.end else { return }
+    /// Saves a finished phone workout and returns its HealthKit id. The watch saves its own through its workout session.
+    public static func save(_ workout: Workout) async -> UUID? {
+        guard workout.healthKitID == nil, let end = workout.end else { return nil }
         let config = HKWorkoutConfiguration()
         config.activityType = .traditionalStrengthTraining
         config.locationType = .indoor
@@ -49,9 +49,9 @@ import HealthKit
         do {
             try await builder.beginCollection(at: workout.start)
             try await builder.endCollection(at: end)
-            workout.healthKitID = try await builder.finishWorkout()?.uuid
+            return try await builder.finishWorkout()?.uuid
         } catch {
-            // Health access denied or unavailable: the workout stays in the app, just not in Health.
+            return nil // Health access denied or unavailable: the workout stays in the app, just not in Health.
         }
     }
 }

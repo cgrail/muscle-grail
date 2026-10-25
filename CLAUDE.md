@@ -46,8 +46,13 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Data model (CloudKit rules)
 
 - Every property has a default or is optional, and every relationship is optional with an inverse. No `@Attribute(.unique)`. Ordering lives in an `order: Int` field. A model that breaks a rule fails the store at launch.
-- Schema changes are additive: add fields, keep existing names. Renames and deletes break sync once the schema is deployed to Production, and devices update at different times (the Mac apart from the iPhone and watch), so an older App Store build must still read what a newer one writes.
+- Model changes are always backwards compatible: add models and fields, never rename, retype or delete one. Devices update at different times (the Mac apart from the iPhone and watch), so an older App Store build must still read what a newer one syncs, and CloudKit's Production schema can't drop a field.
+- Every shipped schema version stays in the code (`SchemaV1.swift`, …), frozen, and `MigrationPlan` migrates a store from any of them to the newest. A version is frozen once a TestFlight or App Store build has shipped it; until then the newest one may change in place, still only additively. To change a frozen model, follow the steps on `MigrationPlan` in `Models.swift`. Stages are `.lightweight` only: CloudKit stores can't run custom ones.
+- `MigrationTests` enforce both: a store written by every version opens in the newest with its data, every version keeps each field of the one before with its type, and every field may be missing.
 - An exercise is its name string (`PlanItem.exercise`, `LoggedSet.exercise`). History and prefill match on that name.
+- Every model change goes through `ModelContext.record(_:)` (`Actions.swift`), which stores the `Change` as an `Action` and applies it. Views edit through Core functions (their bindings call them), never a model property. `replay(into:)` re-applies the log: into an empty store it rebuilds the model, into the live one it changes nothing. `ActionTests` checks both.
+- `Change` formats are frozen like schema versions: never rename a case or label, give a new field an optional type, and bump `Change.version` with every new case or field. `ActionTests` keeps the JSON of every version-1 change, which must keep decoding; add the same for each new version.
+- Training works on every version, forever: starting a workout, logging, deleting a set and finishing never check a version or ask for an update. Only plan editing locks while a newer app version has recorded actions (`Action.newer`), and asks the user to update.
 - `LoggedSet` is append-only: one record per set, deleted to undo.
 - `ModelContext.log` saves immediately, because the watch app can be killed between sets.
 

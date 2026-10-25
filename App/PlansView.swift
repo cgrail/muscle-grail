@@ -5,24 +5,28 @@ import SwiftUI
 struct PlansView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
+    @Query(Action.newer) private var newer: [Action]
 
     var body: some View {
+        let locked = !newer.isEmpty
         NavigationStack {
             List {
+                if locked { UpdateToEdit() }
                 ForEach(plans) { plan in
                     NavigationLink(plan.title) { PlanEditor(plan: plan) }
                         .contextMenu {
-                            Button("Delete", systemImage: "trash", role: .destructive) { context.delete(plan) }
+                            Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
                         }
                 }
-                .onMove { plans.reorder(fromOffsets: $0, toOffset: $1) }
+                .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
+                .moveDisabled(locked)
             }
             .navigationTitle("Plans")
             .toolbar {
                 #if os(iOS)
                 EditButton()
                 #endif
-                Button("Add plan", systemImage: "plus") { context.addPlan() }
+                Button("Add plan", systemImage: "plus") { context.addPlan() }.disabled(locked)
             }
         }
     }
@@ -30,22 +34,27 @@ struct PlansView: View {
 
 struct PlanEditor: View {
     @Environment(\.modelContext) private var context
-    @Bindable var plan: Plan
+    @Query(Action.newer) private var newer: [Action]
+    let plan: Plan
     @State private var picking = false
 
     var body: some View {
         Form {
-            TextField("Name", text: $plan.name)
-            Section("Exercises") {
-                ForEach(plan.sortedItems) { item in
-                    PlanItemRow(item: item)
-                        .contextMenu {
-                            Button("Delete", systemImage: "trash", role: .destructive) { context.delete(item) }
-                        }
+            if !newer.isEmpty { UpdateToEdit() }
+            Group {
+                TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
+                Section("Exercises") {
+                    ForEach(plan.sortedItems) { item in
+                        PlanItemRow(item: item)
+                            .contextMenu {
+                                Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
+                            }
+                    }
+                    .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
+                    Button("Add exercise", systemImage: "plus") { picking = true }
                 }
-                .onMove { plan.sortedItems.reorder(fromOffsets: $0, toOffset: $1) }
-                Button("Add exercise", systemImage: "plus") { picking = true }
             }
+            .disabled(!newer.isEmpty)
         }
         .formStyle(.grouped)
         .navigationTitle(plan.title)
@@ -59,7 +68,8 @@ struct PlanEditor: View {
 }
 
 private struct PlanItemRow: View {
-    @Bindable var item: PlanItem
+    @Environment(\.modelContext) private var context
+    let item: PlanItem
 
     var body: some View {
         #if os(macOS)
@@ -68,10 +78,21 @@ private struct PlanItemRow: View {
         let layout = AnyLayout(VStackLayout(alignment: .leading))
         #endif
         layout {
-            TextField("Exercise", text: $item.exercise)
-            Stepper("\(item.targetSets) sets", value: $item.targetSets, in: 1...20)
-            Stepper("\(item.targetReps) reps", value: $item.targetReps, in: 1...100)
-            Stepper("\(item.targetWeightKg.formatted()) kg", value: $item.targetWeightKg, in: 0...1000, step: 2.5)
+            TextField("Exercise", text: Binding { item.exercise } set: { context.rename(item, to: $0) })
+            Stepper("\(item.targetSets) sets", value: Binding { item.targetSets } set: { context.setTargets(item, sets: $0) }, in: 1...20)
+            Stepper("\(item.targetReps) reps", value: Binding { item.targetReps } set: { context.setTargets(item, reps: $0) }, in: 1...100)
+            Stepper(
+                "\(item.targetWeightKg.formatted()) kg",
+                value: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, in: 0...1000, step: 2.5
+            )
         }
+    }
+}
+
+/// Shown while a newer app version has changed the data: plans wait for the update, training works as usual.
+private struct UpdateToEdit: View {
+    var body: some View {
+        Label("Update Muscle Grail to edit plans. A newer version changed them. Training works as usual.", systemImage: "arrow.down.app")
+            .foregroundStyle(.secondary)
     }
 }

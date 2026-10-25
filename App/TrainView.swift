@@ -28,8 +28,7 @@ private struct WorkoutView: View {
             Button("Finish") {
                 context.finish(workout)
                 Task {
-                    await Health.save(workout)
-                    try? context.save()
+                    if let id = await Health.save(workout) { context.savedToHealth(workout, as: id) }
                 }
                 dismiss()
             }

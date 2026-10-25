@@ -9,7 +9,7 @@ public enum Store {
     /// The app's store, synced through CloudKit. Tests pass `inMemory` or a file `url`, which don't sync.
     public static func makeContainer(inMemory: Bool = false, url: URL? = nil) throws -> ModelContainer {
         try ModelContainer(
-            for: Plan.self, PlanItem.self, Workout.self, LoggedSet.self,
+            for: Schema(versionedSchema: CurrentSchema.self), migrationPlan: MigrationPlan.self,
             configurations: configuration(inMemory: inMemory, url: url)
         )
     }

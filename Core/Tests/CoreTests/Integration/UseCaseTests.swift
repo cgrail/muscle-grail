@@ -19,7 +19,7 @@ import Testing
 
     @Test func reorderExercisesOnTheMac() {
         let plan = makePlan(context, "Bench", "Squat", "Row")
-        plan.sortedItems.reorder(fromOffsets: [2], toOffset: 0)
+        context.reorder(plan.sortedItems, fromOffsets: [2], toOffset: 0)
         #expect(plan.sortedItems.map(\.exercise) == ["Row", "Bench", "Squat"])
     }
 
@@ -27,8 +27,7 @@ import Testing
         let plan = makePlan(context, "Bench")
         let workout = context.startWorkout(plan)
         context.log("Bench", reps: 8, weightKg: 60, in: workout)
-        context.delete(plan)
-        try context.save()
+        context.deletePlan(plan)
         #expect(try context.fetch(Workout.history) == [workout])
         #expect(workout.sets(of: "Bench").count == 1)
     }
