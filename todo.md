@@ -5,7 +5,7 @@
 - [x] on desktop i should be able to add something to a plan by using voice or chat. does it make sense to use the apple foundation model. 
 - [x] offer an mcp server for the desktop app to allow the creation of plans using claude
 - [x] offer statistics like a weekly, monthly, quaertly or yearly overview
-- [ ] offer a github like acitivy chart which shows how often you've worked out. walking sessions should also be included there
+- [x] offer a github like acitivy chart which shows how often you've worked out. walking sessions should also be included there
 - [ ] offer the option to set daily goals like 10km walking or 10k steps. visualize them like the github activity diagram
 - [ ] ticking on mobile should be simple. i should be able to do tick an excercise like 3x 20kg curls with one click
 - [ ] there should be some kind of rotation. if i have plan a,b and c. if if've done plan a last time, it should offer or suggest me plan b and also show me when the last execution was like 5 days ago.

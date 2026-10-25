@@ -79,6 +79,26 @@
         }
       }
     },
+    "Active on %lld days in the last %lld weeks" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An %1$lld Tagen aktiv in den letzten %2$lld Wochen"
+          }
+        }
+      }
+    },
+    "Activity" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivität"
+          }
+        }
+      }
+    },
     "Add" : {
       "localizations" : {
         "de" : {
@@ -195,6 +215,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Das habe ich nicht verstanden. Nenne jede Übung mit Sätzen, Wiederholungen und Gewicht."
+          }
+        }
+      }
+    },
+    "Darker days had more workouts and walks." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dunklere Tage hatten mehr Trainings und Spaziergänge."
+          }
+        }
+      }
+    },
+    "Darker days had more workouts." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dunklere Tage hatten mehr Trainings."
           }
         }
       }

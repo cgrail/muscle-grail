@@ -9,6 +9,7 @@ struct HistoryView: View {
     var body: some View {
         NavigationStack {
             List {
+                ActivitySection(workouts: workouts)
                 StatsSection(workouts: workouts)
                 Section("Workouts") {
                     ForEach(workouts) { workout in

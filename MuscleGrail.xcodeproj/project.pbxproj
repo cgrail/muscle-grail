@@ -387,7 +387,7 @@
 				INFOPLIST_FILE = "Config/MuscleGrail-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Muscle Grail";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads your steps so Muscle Grail can stay in sync in the background.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads your steps and walks so Muscle Grail can show your activity and stay in sync in the background.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Saves your strength workouts to Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphone*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphone*]" = YES;
@@ -420,7 +420,7 @@
 				INFOPLIST_FILE = "Config/MuscleGrail-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Muscle Grail";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads your steps so Muscle Grail can stay in sync in the background.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads your steps and walks so Muscle Grail can show your activity and stay in sync in the background.";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Saves your strength workouts to Health.";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphone*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphone*]" = YES;

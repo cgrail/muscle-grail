@@ -50,3 +50,18 @@ public func stats(_ workouts: [Workout], per period: Period, count: Int, now: Da
     }
     return periods
 }
+
+/// Activity as GitHub shows it: one column per week up to the one containing `now`, one row per weekday from the
+/// calendar's first, counting the sessions (workouts, walks) on each day. Days after `now` are nil.
+public func activityWeeks(_ sessions: [Date], weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [[Int?]] {
+    let today = calendar.startOfDay(for: now)
+    let counts = Dictionary(sessions.map { (calendar.startOfDay(for: $0), 1) }, uniquingKeysWith: +)
+    let thisWeek = Period.week.start(of: now, in: calendar)
+    return (0..<weeks).map { week in
+        let start = Period.week.start(week - weeks + 1, after: thisWeek, in: calendar)
+        return (0..<7).map { day in
+            let date = calendar.date(byAdding: .day, value: day, to: start)!
+            return date > today ? nil : counts[date, default: 0]
+        }
+    }
+}

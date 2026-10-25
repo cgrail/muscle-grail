@@ -8,7 +8,7 @@ import HealthKit
     public static func requestAuthorization() async {
         let share: Set<HKSampleType> = [.workoutType(), HKQuantityType(.heartRate), HKQuantityType(.activeEnergyBurned)]
         let read: Set<HKObjectType> = [
-            HKQuantityType(.stepCount), HKQuantityType(.distanceWalkingRunning),
+            .workoutType(), HKQuantityType(.stepCount), HKQuantityType(.distanceWalkingRunning),
             HKQuantityType(.heartRate), HKQuantityType(.activeEnergyBurned),
         ]
         try? await store.requestAuthorization(toShare: share, read: read)
@@ -21,6 +21,16 @@ import HealthKit
             predicate: .quantitySample(type: HKQuantityType(id), predicate: predicate), options: .cumulativeSum
         )
         return try await query.result(for: store)?.sumQuantity()?.doubleValue(for: unit) ?? 0
+    }
+
+    /// Start dates of walking and hiking workouts since `date`, from any app: they count as activity next to the gym.
+    public static func walks(since date: Date) async -> [Date] {
+        let kinds = [HKWorkoutActivityType.walking, .hiking].map { HKQuery.predicateForWorkouts(with: $0) }
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            HKQuery.predicateForSamples(withStart: date, end: nil), NSCompoundPredicate(orPredicateWithSubpredicates: kinds),
+        ])
+        let query = HKSampleQueryDescriptor(predicates: [.workout(predicate)], sortDescriptors: [])
+        return ((try? await query.result(for: store)) ?? []).map(\.startDate)
     }
 
     /// New steps wake the app in the background about hourly. Every wake gives CloudKit a chance to sync,
