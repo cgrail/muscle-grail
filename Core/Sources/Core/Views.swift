@@ -71,12 +71,12 @@ public struct ExerciseSection: View {
     }
 
     public var body: some View {
-        let done = workout.sets(of: item.exercise)
+        let done = workout.sets(of: item.exerciseID)
         Section {
             Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
             Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module), value: $weight, in: 0...1000, step: 2.5)
             Button(String(localized: "Log set \(done.count + 1) of \(item.targetSets)", bundle: .module), systemImage: "checkmark") {
-                context.log(item.exercise, reps: reps, weightKg: weight, in: workout)
+                context.log(item.exerciseID, reps: reps, weightKg: weight, in: workout)
             }
             ForEach(done) { set in
                 let delete = Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }
@@ -87,12 +87,27 @@ public struct ExerciseSection: View {
                     #endif
             }
         } header: {
-            Text(item.exercise)
+            ExerciseName(item.exerciseID)
         }
         .onAppear {
             guard !prefilled else { return }
             prefilled = true
             (reps, weight) = context.nextSet(for: item, in: workout)
         }
+    }
+}
+
+/// An exercise's name, kept current as its catalog entry changes or arrives.
+public struct ExerciseName: View {
+    @Query private var entries: [CatalogEntry]
+    private let id: String
+
+    public init(_ id: String) {
+        self.id = id
+        _entries = Query(filter: #Predicate { $0.id == id })
+    }
+
+    public var body: some View {
+        Text(verbatim: exerciseName(id, entry: entries.first))
     }
 }

@@ -1,0 +1,60 @@
+import Foundation
+import SwiftData
+import Testing
+@testable import Core
+
+@MainActor struct ExercisesTests {
+    let container = try! Store.makeContainer(inMemory: true)
+    var context: ModelContext { container.mainContext }
+
+    @Test func customExerciseIsNamedByItsEntry() {
+        let id = context.createExercise(named: "Cable Fly")
+        #expect(exerciseName(id, entry: context.catalogEntry(id)) == "Cable Fly")
+    }
+
+    @Test func bundledExerciseKeepsItsNameWhenOnlyItsDetailsChange() {
+        context.editExercise("Barbell_Squat", details: "Below parallel")
+        #expect(exerciseName("Barbell_Squat", entry: context.catalogEntry("Barbell_Squat")) == "Barbell Squat")
+    }
+
+    @Test func customExerciseWhoseEntryHasNotSyncedGetsAPlaceholder() {
+        #expect(exerciseName(UUID().uuidString, entry: nil) == "Custom exercise")
+    }
+
+    @Test func customExercisesWithTheSameNameNeverShareAnID() {
+        #expect(context.createExercise(named: "Cable Fly") != context.createExercise(named: "Cable Fly"))
+    }
+
+    @Test func catalogLivesInItsOwnStoreAndLog() throws {
+        let id = context.createExercise(named: "Cable Fly")
+        context.setPhoto(id, to: testPhoto())
+        try context.save()
+        let entry = try #require(context.catalogEntry(id))
+        let plan = makePlan(context, id)
+        try context.save()
+        #expect(entry.persistentModelID.storeIdentifier != plan.persistentModelID.storeIdentifier)
+        #expect(try context.fetchCount(FetchDescriptor<CatalogAction>()) == 2)
+        #expect(try context.fetchCount(FetchDescriptor<Action>()) == 2) // the plan and its exercise
+    }
+
+    @Test func photoIsShrunkToSync() throws {
+        let id = context.createExercise(named: "Cable Fly")
+        context.setPhoto(id, to: testPhoto(width: 3000, height: 1500))
+        let photo = try #require(context.catalogEntry(id)?.photo.flatMap(Photo.image))
+        #expect((photo.width, photo.height) == (1024, 512))
+    }
+
+    @Test func dataThatIsNotAPhotoKeepsThePhoto() {
+        let id = context.createExercise(named: "Cable Fly")
+        context.setPhoto(id, to: testPhoto())
+        context.setPhoto(id, to: Data("not a photo".utf8))
+        #expect(context.catalogEntry(id)?.photo != nil)
+    }
+
+    @Test func removingThePhoto() {
+        let id = context.createExercise(named: "Cable Fly")
+        context.setPhoto(id, to: testPhoto())
+        context.setPhoto(id, to: nil)
+        #expect(context.catalogEntry(id)?.photo == nil)
+    }
+}

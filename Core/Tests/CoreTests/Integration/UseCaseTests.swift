@@ -14,13 +14,13 @@ import Testing
         let first = context.addPlan()
         let plan = makePlan(context, "Bench", "Squat", "Row")
         #expect(plan.order == first.order + 1)
-        #expect(plan.sortedItems.map(\.exercise) == ["Bench", "Squat", "Row"])
+        #expect(plan.sortedItems.map(\.exerciseID) == ["Bench", "Squat", "Row"])
     }
 
     @Test func reorderExercisesOnTheMac() {
         let plan = makePlan(context, "Bench", "Squat", "Row")
         context.reorder(plan.sortedItems, fromOffsets: [2], toOffset: 0)
-        #expect(plan.sortedItems.map(\.exercise) == ["Row", "Bench", "Squat"])
+        #expect(plan.sortedItems.map(\.exerciseID) == ["Row", "Bench", "Squat"])
     }
 
     @Test func deletingAPlanKeepsItsHistory() throws {

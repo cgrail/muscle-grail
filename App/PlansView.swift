@@ -70,6 +70,7 @@ struct PlanEditor: View {
 private struct PlanItemRow: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
+    @State private var showingDetail = false
 
     var body: some View {
         #if os(macOS)
@@ -78,7 +79,12 @@ private struct PlanItemRow: View {
         let layout = AnyLayout(VStackLayout(alignment: .leading))
         #endif
         layout {
-            TextField("Exercise", text: Binding { item.exercise } set: { context.rename(item, to: $0) })
+            HStack {
+                ExerciseName(item.exerciseID)
+                Button("Details", systemImage: "info.circle") { showingDetail = true }
+                    .labelStyle(.iconOnly)
+                    .buttonStyle(.borderless)
+            }
             Stepper("\(item.targetSets) sets", value: Binding { item.targetSets } set: { context.setTargets(item, sets: $0) }, in: 1...20)
             Stepper("\(item.targetReps) reps", value: Binding { item.targetReps } set: { context.setTargets(item, reps: $0) }, in: 1...100)
             Stepper(
@@ -86,6 +92,7 @@ private struct PlanItemRow: View {
                 value: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, in: 0...1000, step: 2.5
             )
         }
+        .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
     }
 }
 

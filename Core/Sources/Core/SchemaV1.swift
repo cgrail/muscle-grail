@@ -5,9 +5,10 @@ import SwiftData
 // CloudKit rules: every property has a default or is optional, every relationship is optional
 // and has an inverse, no unique constraints, no ordered relationships (hence `order`).
 
-public enum SchemaV1: VersionedSchema {
+public enum SchemaV1: StoreLayout {
     public static var versionIdentifier: Schema.Version { Schema.Version(1, 0, 0) }
-    public static var models: [any PersistentModel.Type] { [Plan.self, PlanItem.self, Workout.self, LoggedSet.self, Action.self] }
+    public static var gymModels: [any PersistentModel.Type] { [Plan.self, PlanItem.self, Workout.self, LoggedSet.self, Action.self] }
+    public static var catalogModels: [any PersistentModel.Type] { [CatalogEntry.self, CatalogAction.self] }
 
     @Model public final class Plan {
         /// Stable across devices: actions refer to it.
@@ -23,19 +24,18 @@ public enum SchemaV1: VersionedSchema {
         }
     }
 
-    /// Exercises are plain names: offline devices can't create duplicate exercise records,
-    /// and renaming an exercise starts a fresh history.
     @Model public final class PlanItem {
         public var id = UUID()
-        public var exercise = ""
+        /// The catalog id: a bundled exercise's id, or a UUID string for one the user made.
+        public var exerciseID = ""
         public var order = 0
         public var targetSets = 3
         public var targetReps = 10
         public var targetWeightKg = 0.0
         public var plan: Plan?
 
-        public init(exercise: String, order: Int) {
-            self.exercise = exercise
+        public init(exerciseID: String, order: Int) {
+            self.exerciseID = exerciseID
             self.order = order
         }
     }
@@ -55,14 +55,14 @@ public enum SchemaV1: VersionedSchema {
     /// One record per set and never edited, so two devices can't conflict over it.
     @Model public final class LoggedSet {
         public var id = UUID()
-        public var exercise = ""
+        public var exerciseID = ""
         public var reps = 0
         public var weightKg = 0.0
         public var date = Date.now
         public var workout: Workout?
 
-        public init(exercise: String, reps: Int, weightKg: Double) {
-            self.exercise = exercise
+        public init(exerciseID: String, reps: Int, weightKg: Double) {
+            self.exerciseID = exerciseID
             self.reps = reps
             self.weightKg = weightKg
         }
@@ -75,6 +75,32 @@ public enum SchemaV1: VersionedSchema {
         /// The `Change.version` of the app that recorded it.
         public var version = 1
         public var payload = Data()
+
+        public init() {}
+    }
+
+    // The catalog's store: the user's own data for an exercise, and the log of its changes.
+
+    /// The user's own data for a catalog id, on top of the bundled exercise with that id, if there is one.
+    @Model public final class CatalogEntry {
+        public var id = ""
+        /// Empty keeps the bundled name.
+        public var name = ""
+        public var details = ""
+        public var videoURL = ""
+        @Attribute(.externalStorage) public var photo: Data?
+
+        public init(id: String) {
+            self.id = id
+        }
+    }
+
+    /// `Action` for the catalog's changes, kept in its store so photos never weigh on the gym data.
+    @Model public final class CatalogAction {
+        public var id = UUID()
+        public var date = Date.now
+        public var version = 1
+        @Attribute(.externalStorage) public var payload = Data()
 
         public init() {}
     }

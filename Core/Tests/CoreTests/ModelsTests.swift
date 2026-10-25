@@ -20,7 +20,7 @@ import Testing
         for (exercise, reps) in [("Bench", 10), ("Squat", 5), ("Bench", 8)] {
             context.log(exercise, reps: reps, weightKg: 50, in: workout)
         }
-        #expect(workout.exercises.map(\.name) == ["Bench", "Squat"])
+        #expect(workout.exercises.map(\.id) == ["Bench", "Squat"])
         #expect(workout.exercises.map { $0.sets.map(\.reps) } == [[10, 8], [5]])
     }
 }

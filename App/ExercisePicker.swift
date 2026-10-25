@@ -1,22 +1,30 @@
 import Core
+import SwiftData
 import SwiftUI
 
-/// Searchable exercise catalog. Search text can also be added as a custom exercise.
+/// Searchable exercise catalog: the user's own exercises, then the bundled ones. Search text can become a new exercise.
 struct ExercisePicker: View {
+    @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query(sort: \CatalogEntry.name) private var entries: [CatalogEntry]
     @State private var search = ""
     let onPick: (String) -> Void
 
     var body: some View {
         let query = search.trimmingCharacters(in: .whitespaces)
+        let custom = entries.filter { CatalogExercise.byID[$0.id] == nil && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
         let results = query.isEmpty ? CatalogExercise.all : CatalogExercise.all.filter { $0.matches(query) }
         NavigationStack {
             List {
                 if !query.isEmpty {
-                    Button("Add “\(query)”", systemImage: "plus") { pick(query) }
+                    Button("Add “\(query)”", systemImage: "plus") { pick(context.createExercise(named: query)) }
+                }
+                ForEach(custom) { entry in
+                    Button { pick(entry.id) } label: { CatalogRow(name: entry.name, detail: entry.details, photo: entry.photo) }
+                        .buttonStyle(.plain)
                 }
                 ForEach(results) { exercise in
-                    Button { pick(exercise.name) } label: { CatalogRow(exercise: exercise) }
+                    Button { pick(exercise.id) } label: { CatalogRow(name: exercise.name, detail: exercise.detail, imageURL: exercise.imageURL) }
                         .buttonStyle(.plain)
                 }
             }
@@ -31,28 +39,37 @@ struct ExercisePicker: View {
         #endif
     }
 
-    private func pick(_ name: String) {
-        onPick(name)
+    private func pick(_ id: String) {
+        onPick(id)
         dismiss()
     }
 }
 
 private struct CatalogRow: View {
-    let exercise: CatalogExercise
+    let name: String
+    let detail: String
+    var photo: Data?
+    var imageURL: URL?
 
     var body: some View {
         HStack {
-            AsyncImage(url: exercise.imageURL) { image in
-                image.resizable().scaledToFill()
-            } placeholder: {
-                Color.secondary.opacity(0.2)
+            Group {
+                if let image = photo.flatMap(Photo.image) {
+                    Image(decorative: image, scale: 1).resizable().scaledToFill()
+                } else {
+                    AsyncImage(url: imageURL) { image in
+                        image.resizable().scaledToFill()
+                    } placeholder: {
+                        Color.secondary.opacity(0.2)
+                    }
+                }
             }
             .frame(width: 56, height: 56)
             .clipShape(.rect(cornerRadius: 8))
             .accessibilityHidden(true)
             VStack(alignment: .leading) {
-                Text(exercise.name)
-                Text(exercise.detail).font(.caption).foregroundStyle(.secondary)
+                Text(name)
+                Text(detail).font(.caption).foregroundStyle(.secondary).lineLimit(2)
             }
             Spacer(minLength: 0)
         }

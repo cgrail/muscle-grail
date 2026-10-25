@@ -9,10 +9,13 @@ import Testing
 
     /// Every kind of change, made the way the apps make them.
     func makeEveryChange() {
-        let plan = makePlan(context, "Bench", "Squat", "Row")
+        let custom = context.createExercise(named: "Cable Fly")
+        context.editExercise(custom, details: "Slow and wide", videoURL: "https://youtu.be/example")
+        context.setPhoto(custom, to: testPhoto())
+        context.editExercise("Barbell_Squat", details: "Below parallel")
+        let plan = makePlan(context, "Bench", custom, "Row")
         context.rename(plan, to: "Push")
         let items = plan.sortedItems
-        context.rename(items[1], to: "Front Squat")
         context.setTargets(items[0], sets: 5, reps: 5, weightKg: 80)
         context.reorder(items, fromOffsets: [2], toOffset: 0)
         context.deleteExercise(items[1])
@@ -62,17 +65,18 @@ import Testing
             #"{"addPlan":{"id":"00000000-0000-0000-0000-000000000001","name":"Push","order":0}}"#,
             #"{"renamePlan":{"id":"00000000-0000-0000-0000-000000000001","name":"Push day"}}"#,
             #"{"deletePlan":{"id":"00000000-0000-0000-0000-000000000001"}}"#,
-            #"{"addExercise":{"exercise":"Bench","id":"00000000-0000-0000-0000-000000000002","order":0,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
-            #"{"renameExercise":{"exercise":"Bench Press","id":"00000000-0000-0000-0000-000000000002"}}"#,
+            #"{"addExercise":{"exerciseID":"Barbell_Bench_Press_-_Medium_Grip","id":"00000000-0000-0000-0000-000000000002","order":0,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
             #"{"setTargets":{"id":"00000000-0000-0000-0000-000000000002","reps":5,"sets":5,"weightKg":80}}"#,
             #"{"deleteExercise":{"id":"00000000-0000-0000-0000-000000000002"}}"#,
             #"{"reorder":{"ids":["00000000-0000-0000-0000-000000000002","00000000-0000-0000-0000-000000000003"]}}"#,
             #"{"startWorkout":{"id":"00000000-0000-0000-0000-000000000004","plan":"00000000-0000-0000-0000-000000000001","start":800000000}}"#,
-            #"{"logSet":{"date":800000000,"exercise":"Bench","id":"00000000-0000-0000-0000-000000000005","reps":8,"weightKg":60,"workout":"00000000-0000-0000-0000-000000000004"}}"#,
+            #"{"logSet":{"date":800000000,"exerciseID":"00000000-0000-0000-0000-000000000007","id":"00000000-0000-0000-0000-000000000005","reps":8,"weightKg":60,"workout":"00000000-0000-0000-0000-000000000004"}}"#,
             #"{"deleteSet":{"id":"00000000-0000-0000-0000-000000000005"}}"#,
             #"{"finishWorkout":{"end":800000000,"id":"00000000-0000-0000-0000-000000000004"}}"#,
             #"{"savedToHealth":{"healthKitID":"00000000-0000-0000-0000-000000000006","workout":"00000000-0000-0000-0000-000000000004"}}"#,
             #"{"deleteWorkout":{"id":"00000000-0000-0000-0000-000000000004"}}"#,
+            #"{"editExercise":{"details":"Slow","id":"00000000-0000-0000-0000-000000000007","name":"Cable Fly","videoURL":"https://youtu.be/example"}}"#,
+            #"{"setPhoto":{"id":"00000000-0000-0000-0000-000000000007","photo":"AQID"}}"#,
         ]
         for json in version1 {
             #expect(throws: Never.self, "\(json)") { try JSONDecoder().decode(Change.self, from: Data(json.utf8)) }

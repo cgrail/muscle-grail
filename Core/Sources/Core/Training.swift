@@ -11,9 +11,9 @@ public extension ModelContext {
     }
 
     @discardableResult
-    func log(_ exercise: String, reps: Int, weightKg: Double, in workout: Workout) -> LoggedSet {
+    func log(_ exerciseID: String, reps: Int, weightKg: Double, in workout: Workout) -> LoggedSet {
         let id = UUID()
-        record(.logSet(id: id, workout: workout.id, exercise: exercise, reps: reps, weightKg: weightKg, date: .now))
+        record(.logSet(id: id, workout: workout.id, exerciseID: exerciseID, reps: reps, weightKg: weightKg, date: .now))
         try? save() // save right away: the watch app can be killed between sets
         return loggedSet(id)!
     }
@@ -39,10 +39,10 @@ public extension ModelContext {
         record(.deleteWorkout(id: workout.id))
     }
 
-    /// Sets of the most recent earlier workout that included `exercise`, in the order they were done.
-    func lastSets(of exercise: String, excluding current: Workout) -> [LoggedSet] {
+    /// Sets of the most recent earlier workout that included `exerciseID`, in the order they were done.
+    func lastSets(of exerciseID: String, excluding current: Workout) -> [LoggedSet] {
         let descriptor = FetchDescriptor<LoggedSet>(
-            predicate: #Predicate { $0.exercise == exercise },
+            predicate: #Predicate { $0.exerciseID == exerciseID },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
         )
         let earlier = ((try? fetch(descriptor)) ?? []).filter { $0.workout != nil && $0.workout != current }
@@ -52,7 +52,7 @@ public extension ModelContext {
 
     /// Prefill for the next set: repeat the set just done, else the first set of last time, else the plan.
     func nextSet(for item: PlanItem, in workout: Workout) -> (reps: Int, weightKg: Double) {
-        let set = workout.sets(of: item.exercise).last ?? lastSets(of: item.exercise, excluding: workout).first
+        let set = workout.sets(of: item.exerciseID).last ?? lastSets(of: item.exerciseID, excluding: workout).first
         guard let set else { return (item.targetReps, item.targetWeightKg) }
         return (set.reps, set.weightKg)
     }

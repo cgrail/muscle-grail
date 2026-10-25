@@ -119,6 +119,16 @@
         }
       }
     },
+    "Choose photo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto auswählen"
+          }
+        }
+      }
+    },
     "Delete" : {
       "localizations" : {
         "de" : {
@@ -129,12 +139,32 @@
         }
       }
     },
-    "Exercise" : {
+    "Description" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Übung"
+            "value" : "Beschreibung"
+          }
+        }
+      }
+    },
+    "Details" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
+          }
+        }
+      }
+    },
+    "Done" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fertig"
           }
         }
       }
@@ -189,12 +219,32 @@
         }
       }
     },
+    "Photo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto"
+          }
+        }
+      }
+    },
     "Plans" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pläne"
+          }
+        }
+      }
+    },
+    "Remove photo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foto entfernen"
           }
         }
       }
@@ -209,12 +259,52 @@
         }
       }
     },
+    "Update Muscle Grail to edit exercises. A newer version changed them." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktualisiere Muscle Grail, um Übungen zu bearbeiten. Eine neuere Version hat sie geändert."
+          }
+        }
+      }
+    },
     "Update Muscle Grail to edit plans. A newer version changed them. Training works as usual." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktualisiere Muscle Grail, um Pläne zu bearbeiten. Eine neuere Version hat sie geändert. Das Training funktioniert wie gewohnt."
+          }
+        }
+      }
+    },
+    "Video" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video"
+          }
+        }
+      }
+    },
+    "Video link" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Videolink"
+          }
+        }
+      }
+    },
+    "Watch video" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Video ansehen"
           }
         }
       }

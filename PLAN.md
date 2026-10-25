@@ -17,8 +17,9 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 |---|---|
 | SwiftData + CloudKit private database | Least code. The local store works offline, and sync is built in. |
 | One local Swift package `Core` for models, sync monitor, HealthKit helpers and shared views | The three apps stay thin. Logic is testable with `swift test`. |
-| An exercise is just a name string, with no `Exercise` model | CloudKit has no unique constraints, so two offline devices would create duplicate exercise records. A name is its own merge key. Trade-off: renaming an exercise starts a fresh history. |
-| Exercise picker from [free-exercise-db](https://github.com/yuhonas/free-exercise-db): 876 exercises, public domain, a photo for each. Free text still works for custom exercises. | Consistent names across devices, which is what history matches on. The JSON is bundled (1 MB). Photos load from GitHub, because bundling all of them would add about 100 MB. |
+| An exercise is a catalog id: a bundled exercise's id, or a UUID for one the user made | Plans and sets only reference the catalog, so the gym data stays small. Devices create exercises offline without clashing, and a rename keeps the history. |
+| The catalog (the user's exercises, descriptions, video links, photos) lives in its own store in the same iCloud container | Photos never weigh on the gym data and sync on their own. CloudKit has no priority setting, so this is as close to "lower priority" as it gets. |
+| Exercise picker from [free-exercise-db](https://github.com/yuhonas/free-exercise-db): 876 exercises, public domain, a photo for each. Free text adds an exercise of your own. | Consistent names across devices, which is what history matches on. The JSON is bundled (1 MB). Photos load from GitHub, because bundling all of them would add about 100 MB. |
 | One record per logged set, never edited | Two devices can't conflict over a set. Last-writer-wins only affects plan edits. |
 | Every change is also stored as an action (a `Change`, as JSON in an `Action` record) and applied from it | The log can rebuild or re-apply the model, whatever the schema does later. Each action carries its app's format version: an older app keeps training, and leaves plan editing to an update. |
 | HealthKit step observer (`enableBackgroundDelivery`, hourly) instead of `BGAppRefreshTask` | New steps wake iPhone and Watch in the background all day. Each wake gives CloudKit a chance to sync and refreshes the complication. One mechanism covers both jobs. |
@@ -90,6 +91,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 
 ## Known risks and fallbacks
 
+- **Two stores mirror into one CloudKit container** (gym data and the catalog). If that misbehaves on devices, move the catalog to a container of its own.
 - **There is no public "sync now" API.** A wake of an app that is already running but suspended may not start a CloudKit import. Silent pushes still cover the common case. If test A or B fails:
   - **Watch lags behind:** have the phone push the latest state to the watch with WatchConnectivity `updateApplicationContext`. It works over Bluetooth, no internet needed.
   - **Sync stays unreliable:** move to `CKSyncEngine`, whose fetch and send calls can be awaited in any background wake. It means a lot more code.

@@ -1,33 +1,53 @@
 import Foundation
 import SwiftData
 
-/// A change to the model. Each one is stored as an `Action` and then applied, so the log can always rebuild the model.
+/// A change to the model. Each one is stored in a log and then applied, so the logs can always rebuild the model.
 /// Shipped cases are frozen: never rename a case or a label, give a new field an optional type, and bump `version`
 /// with every new case or field. Training's cases (`startWorkout`, `logSet`, `deleteSet`, `finishWorkout`) stay
 /// readable by every version, so an old app can always log in the gym.
 public enum Change: Codable, Equatable, Sendable {
-    /// The format this app writes. An app that finds actions of a higher one leaves plan editing to an update.
+    /// The format this app writes. An app that finds actions of a higher one leaves editing to an update.
     public static let version = 1
 
     case addPlan(id: UUID, name: String, order: Int)
     case renamePlan(id: UUID, name: String)
     case deletePlan(id: UUID)
-    case addExercise(id: UUID, plan: UUID, exercise: String, order: Int)
-    case renameExercise(id: UUID, exercise: String)
+    case addExercise(id: UUID, plan: UUID, exerciseID: String, order: Int)
     case setTargets(id: UUID, sets: Int, reps: Int, weightKg: Double)
     case deleteExercise(id: UUID)
     /// Plans or exercises, in their new order.
     case reorder(ids: [UUID])
     case startWorkout(id: UUID, plan: UUID, start: Date)
-    case logSet(id: UUID, workout: UUID, exercise: String, reps: Int, weightKg: Double, date: Date)
+    case logSet(id: UUID, workout: UUID, exerciseID: String, reps: Int, weightKg: Double, date: Date)
     case deleteSet(id: UUID)
     case finishWorkout(id: UUID, end: Date)
     case savedToHealth(workout: UUID, healthKitID: UUID)
     case deleteWorkout(id: UUID)
+    // The catalog's changes, logged in its own store.
+    case editExercise(id: String, name: String, details: String, videoURL: String)
+    case setPhoto(id: String, photo: Data?)
+
+    var isCatalog: Bool {
+        switch self {
+        case .editExercise, .setPhoto: true
+        default: false
+        }
+    }
 }
 
-public extension Action {
-    convenience init(_ change: Change) {
+/// A log entry: `Action` in the gym store, `CatalogAction` in the catalog's.
+public protocol ChangeRecord: PersistentModel {
+    var date: Date { get }
+    var version: Int { get set }
+    var payload: Data { get set }
+    init()
+}
+
+extension Action: ChangeRecord {}
+extension CatalogAction: ChangeRecord {}
+
+public extension ChangeRecord {
+    init(_ change: Change) {
         self.init()
         version = Change.version
         payload = (try? JSONEncoder().encode(change)) ?? Data()
@@ -35,7 +55,9 @@ public extension Action {
 
     /// Nil for a change from a newer version that this one can't read.
     var change: Change? { try? JSONDecoder().decode(Change.self, from: payload) }
+}
 
+public extension Action {
     /// Actions a newer app version recorded. While there are any, plans can't be edited here; training goes on.
     static var newer: FetchDescriptor<Action> {
         let current = Change.version
@@ -45,18 +67,30 @@ public extension Action {
     }
 }
 
+public extension CatalogAction {
+    /// Catalog changes a newer app version recorded. While there are any, the catalog can't be edited here.
+    static var newer: FetchDescriptor<CatalogAction> {
+        let current = Change.version
+        var descriptor = FetchDescriptor<CatalogAction>(predicate: #Predicate { $0.version > current })
+        descriptor.fetchLimit = 1
+        return descriptor
+    }
+}
+
 public extension ModelContext {
-    /// Stores `change` in the log and applies it. Every change to the model goes through here.
+    /// Stores `change` in its log and applies it. Every change to the model goes through here.
     func record(_ change: Change) {
-        insert(Action(change))
+        if change.isCatalog { insert(CatalogAction(change)) } else { insert(Action(change)) }
         apply(change)
     }
 
-    /// Re-applies the log, oldest first, to `target`: into an empty store it rebuilds the model, and into this one it
+    /// Re-applies both logs, oldest first, to `target`: into an empty store it rebuilds the model, and into this one it
     /// changes nothing. Changes this version can't read are skipped.
     func replay(into target: ModelContext) throws {
-        for action in try fetch(FetchDescriptor<Action>(sortBy: [SortDescriptor(\.date)])) {
-            if let change = action.change { target.apply(change) }
+        let gym = try fetch(FetchDescriptor<Action>()).map { ($0.date, $0.change) }
+        let catalog = try fetch(FetchDescriptor<CatalogAction>()).map { ($0.date, $0.change) }
+        for (_, change) in (catalog + gym).sorted(by: { $0.0 < $1.0 }) {
+            if let change { target.apply(change) }
         }
     }
 
@@ -71,11 +105,9 @@ public extension ModelContext {
             plan(id)?.name = name
         case let .deletePlan(id):
             if let plan = plan(id) { delete(plan) }
-        case let .addExercise(id, planID, exercise, order):
-            let item = item(id) ?? inserted(PlanItem(exercise: exercise, order: order))
-            (item.id, item.exercise, item.order, item.plan) = (id, exercise, order, plan(planID))
-        case let .renameExercise(id, exercise):
-            item(id)?.exercise = exercise
+        case let .addExercise(id, planID, exerciseID, order):
+            let item = item(id) ?? inserted(PlanItem(exerciseID: exerciseID, order: order))
+            (item.id, item.exerciseID, item.order, item.plan) = (id, exerciseID, order, plan(planID))
         case let .setTargets(id, sets, reps, weightKg):
             guard let item = item(id) else { return }
             (item.targetSets, item.targetReps, item.targetWeightKg) = (sets, reps, weightKg)
@@ -89,8 +121,8 @@ public extension ModelContext {
         case let .startWorkout(id, planID, start):
             let workout = workout(id, orNewAt: start)
             (workout.start, workout.plan) = (start, plan(planID))
-        case let .logSet(id, workoutID, exercise, reps, weightKg, date):
-            let set = loggedSet(id) ?? inserted(LoggedSet(exercise: exercise, reps: reps, weightKg: weightKg))
+        case let .logSet(id, workoutID, exerciseID, reps, weightKg, date):
+            let set = loggedSet(id) ?? inserted(LoggedSet(exerciseID: exerciseID, reps: reps, weightKg: weightKg))
             (set.id, set.date, set.workout) = (id, date, workout(workoutID, orNewAt: date))
         case let .deleteSet(id):
             if let set = loggedSet(id) { delete(set) }
@@ -100,6 +132,11 @@ public extension ModelContext {
             workout(workoutID)?.healthKitID = healthKitID
         case let .deleteWorkout(id):
             if let workout = workout(id) { delete(workout) }
+        case let .editExercise(id, name, details, videoURL):
+            let entry = catalogEntry(id) ?? inserted(CatalogEntry(id: id))
+            (entry.name, entry.details, entry.videoURL) = (name, details, videoURL)
+        case let .setPhoto(id, photo):
+            (catalogEntry(id) ?? inserted(CatalogEntry(id: id))).photo = photo
         }
     }
 }
@@ -109,6 +146,7 @@ extension ModelContext {
     func item(_ id: UUID) -> PlanItem? { first(#Predicate { $0.id == id }) }
     func workout(_ id: UUID) -> Workout? { first(#Predicate { $0.id == id }) }
     func loggedSet(_ id: UUID) -> LoggedSet? { first(#Predicate { $0.id == id }) }
+    func catalogEntry(_ id: String) -> CatalogEntry? { first(#Predicate { $0.id == id }) }
 
     private func workout(_ id: UUID, orNewAt start: Date) -> Workout {
         if let workout = workout(id) { return workout }

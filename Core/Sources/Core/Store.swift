@@ -6,17 +6,24 @@ public enum Store {
     /// Permanent: CloudKit containers can't be deleted or renamed once created.
     public static let cloudKitContainer = "iCloud.de.grails.musclegrail"
 
-    /// The app's store, synced through CloudKit. Tests pass `inMemory` or a file `url`, which don't sync.
+    /// The app's stores, synced through CloudKit. Tests pass `inMemory` or a file `url`, which don't sync.
     public static func makeContainer(inMemory: Bool = false, url: URL? = nil) throws -> ModelContainer {
         try ModelContainer(
             for: Schema(versionedSchema: CurrentSchema.self), migrationPlan: MigrationPlan.self,
-            configurations: configuration(inMemory: inMemory, url: url)
+            configurations: configurations(CurrentSchema.self, inMemory: inMemory, url: url)
         )
     }
 
-    static func configuration(inMemory: Bool = false, url: URL? = nil) -> ModelConfiguration {
-        if let url { return ModelConfiguration(url: url, cloudKitDatabase: .none) }
-        return ModelConfiguration(isStoredInMemoryOnly: inMemory, cloudKitDatabase: inMemory ? .none : .private(cloudKitContainer))
+    /// Gym data and the catalog live in separate stores of one container: the gym data stays small,
+    /// and the catalog's photos sync on their own. With a `url`, the catalog's file sits next to it.
+    static func configurations(_ layout: any StoreLayout.Type, inMemory: Bool = false, url: URL? = nil) -> [ModelConfiguration] {
+        let stores = [("Gym", layout.gymModels, url), ("Catalog", layout.catalogModels, url?.appendingPathExtension("catalog"))]
+        return stores.map { name, models, url in
+            if let url { return ModelConfiguration(name, schema: Schema(models), url: url, cloudKitDatabase: .none) }
+            return ModelConfiguration(
+                name, schema: Schema(models), isStoredInMemoryOnly: inMemory, cloudKitDatabase: inMemory ? .none : .private(cloudKitContainer)
+            )
+        }
     }
 }
 

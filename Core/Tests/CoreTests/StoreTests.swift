@@ -4,13 +4,16 @@ import Testing
 @testable import Core
 
 struct StoreTests {
-    @Test func appStoreSyncsThroughThePermanentContainer() {
-        #expect(Store.configuration().cloudKitContainerIdentifier == "iCloud.de.grails.musclegrail")
+    @Test func bothStoresSyncThroughThePermanentContainer() {
+        let stores = Store.configurations(CurrentSchema.self)
+        #expect(stores.map(\.name) == ["Gym", "Catalog"])
+        #expect(stores.allSatisfy { $0.cloudKitContainerIdentifier == "iCloud.de.grails.musclegrail" })
     }
 
     @Test func testStoresDontSync() {
-        #expect(Store.configuration(inMemory: true).cloudKitContainerIdentifier == nil)
-        #expect(Store.configuration(url: .temporaryDirectory.appending(path: "x.store")).cloudKitContainerIdentifier == nil)
+        let url = URL.temporaryDirectory.appending(path: "x.store")
+        let stores = Store.configurations(CurrentSchema.self, inMemory: true) + Store.configurations(CurrentSchema.self, url: url)
+        #expect(stores.allSatisfy { $0.cloudKitContainerIdentifier == nil })
     }
 }
 

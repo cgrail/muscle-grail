@@ -3,7 +3,7 @@ import SwiftData
 import Testing
 @testable import Core
 
-/// What a schema version writes before it migrates: a plan with an exercise, a workout with a set, and an action.
+/// What a schema version writes before it migrates: a plan with an exercise, a workout with a set, an action and a catalog entry.
 /// Every version in `MigrationPlan` gets one, frozen with it.
 protocol Seeded: VersionedSchema {
     @MainActor static func seed(_ context: ModelContext)
@@ -11,13 +11,14 @@ protocol Seeded: VersionedSchema {
 
 extension SchemaV1: Seeded {
     @MainActor static func seed(_ context: ModelContext) {
-        let plan = Plan(name: "Push", order: 0), item = PlanItem(exercise: "Bench", order: 0)
-        let workout = Workout(), set = LoggedSet(exercise: "Bench", reps: 8, weightKg: 60)
+        let plan = Plan(name: "Push", order: 0), item = PlanItem(exerciseID: "Bench", order: 0)
+        let workout = Workout(), set = LoggedSet(exerciseID: "Bench", reps: 8, weightKg: 60)
         context.insert(plan)
         context.insert(item)
         context.insert(workout)
         context.insert(set)
         context.insert(Action())
+        context.insert(CatalogEntry(id: "Bench"))
         item.plan = plan
         workout.plan = plan
         set.workout = workout
@@ -41,16 +42,18 @@ func fields(_ schema: Schema) -> [String: [String: String]] {
         defer { try? FileManager.default.removeItem(at: folder) }
         let url = folder.appending(path: "store")
         do {
-            let container = try ModelContainer(for: Schema(versionedSchema: old), configurations: ModelConfiguration(url: url, cloudKitDatabase: .none))
+            let layout = try #require(old as? any StoreLayout.Type)
+            let container = try ModelContainer(for: Schema(versionedSchema: old), configurations: Store.configurations(layout, url: url))
             try #require(old as? Seeded.Type, "\(old) needs a seed").seed(container.mainContext)
             try container.mainContext.save()
         }
 
         let newest = try Store.makeContainer(url: url)
         let workout = try #require(newest.mainContext.fetch(FetchDescriptor<Workout>()).first)
-        #expect(workout.plan?.sortedItems.map(\.exercise) == ["Bench"])
+        #expect(workout.plan?.sortedItems.map(\.exerciseID) == ["Bench"])
         #expect(workout.sets(of: "Bench").map(\.reps) == [8])
         #expect(try newest.mainContext.fetchCount(FetchDescriptor<Action>()) == 1)
+        #expect(try newest.mainContext.fetchCount(FetchDescriptor<CatalogEntry>()) == 1)
     }
 
     /// Older app versions keep reading what newer ones sync, and CloudKit can't rename or delete a field.

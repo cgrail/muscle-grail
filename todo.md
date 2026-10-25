@@ -1,7 +1,7 @@
 # Todo
 
 - [x] i should also be able to track something on the desktop app
-- [ ] separate the gym session data from the catalog. the catalog is synched seperatly and has lower prio. it can have additional data like images, descriptions, links to youtube videos etc. and should be stored seperatly. the gym session data should be as small as possible and should onyly reference the catalog data
+- [x] separate the gym session data from the catalog. the catalog is synched seperatly and has lower prio. it can have additional data like images, descriptions, links to youtube videos etc. and should be stored seperatly. the gym session data should be as small as possible and should onyly reference the catalog data
 - [ ] on desktop i should be able to add something to a plan by using voice or chat. does it make sense to use the apple foundation model. 
 - [ ] offer an mcp server for the desktop app to allow the creation of plans using claude
 - [ ] offer statistics like a weekly, monthly, quaertly or yearly overview
@@ -11,3 +11,4 @@
 - [ ] there should be some kind of rotation. if i have plan a,b and c. if if've done plan a last time, it should offer or suggest me plan b and also show me when the last execution was like 5 days ago.
 - [x] always ask me if you plan to do a model migration. never implement a migraiton on your own. first ask for approval
 - [ ] i should be able to increase the weight for one set. so if i did curls with 3x 20kg, i should be able to go to the next weight like 22kg. offer me smart increments. don't offer me like 20.7 kg, because that does not exist. 
+- [ ] for watch, a workout session should work without internet access. if photos are not there, don't show them. download them when you have network.

@@ -30,16 +30,12 @@ public extension ModelContext {
         record(.deletePlan(id: plan.id))
     }
 
-    /// Appends `exercise` to the end of `plan`.
+    /// Appends the catalog exercise `exerciseID` to the end of `plan`.
     @discardableResult
-    func add(_ exercise: String, to plan: Plan) -> PlanItem {
+    func add(_ exerciseID: String, to plan: Plan) -> PlanItem {
         let id = UUID()
-        record(.addExercise(id: id, plan: plan.id, exercise: exercise, order: (plan.sortedItems.last?.order ?? -1) + 1))
+        record(.addExercise(id: id, plan: plan.id, exerciseID: exerciseID, order: (plan.sortedItems.last?.order ?? -1) + 1))
         return item(id)!
-    }
-
-    func rename(_ item: PlanItem, to exercise: String) {
-        record(.renameExercise(id: item.id, exercise: exercise))
     }
 
     /// Changes the targets given and keeps the others.

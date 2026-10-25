@@ -13,8 +13,11 @@ struct HistoryView: View {
                     Text(workout.title).font(.headline)
                     Text(workout.start, format: .dateTime.weekday().day().month().hour().minute())
                         .font(.subheadline).foregroundStyle(.secondary)
-                    ForEach(workout.exercises, id: \.name) { exercise in
-                        Text(verbatim: "\(exercise.name): \(exercise.sets.map { "\($0.reps)×\($0.weightKg.formatted())" }.joined(separator: "  "))")
+                    ForEach(workout.exercises, id: \.id) { exercise in
+                        HStack(spacing: 0) {
+                            ExerciseName(exercise.id)
+                            Text(verbatim: ": \(exercise.sets.map { "\($0.reps)×\($0.weightKg.formatted())" }.joined(separator: "  "))")
+                        }
                     }
                 }
                 .contextMenu {
