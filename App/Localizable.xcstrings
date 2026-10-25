@@ -319,6 +319,16 @@
         }
       }
     },
+    "Choose Backup…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Backup auswählen …"
+          }
+        }
+      }
+    },
     "Choose a plan" : {
       "localizations" : {
         "de" : {
@@ -799,6 +809,16 @@
         }
       }
     },
+    "Plans, workouts and your exercises on all your devices become the backup's. This can't be undone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pläne, Trainings und deine Übungen werden auf allen deinen Geräten durch die aus dem Backup ersetzt. Das lässt sich nicht rückgängig machen."
+          }
+        }
+      }
+    },
     "Preview" : {
       "localizations" : {
         "de" : {
@@ -849,12 +869,42 @@
         }
       }
     },
+    "Replace" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersetzen"
+          }
+        }
+      }
+    },
+    "Replace everything with this backup?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles durch dieses Backup ersetzen?"
+          }
+        }
+      }
+    },
     "Reps" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wdh."
+          }
+        }
+      }
+    },
+    "Restore" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederherstellen"
           }
         }
       }

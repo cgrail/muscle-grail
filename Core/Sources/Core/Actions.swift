@@ -37,8 +37,8 @@ public enum Change: Codable, Equatable, Sendable {
 
 /// A log entry: `Action` in the gym store, `CatalogAction` in the catalog's.
 public protocol ChangeRecord: PersistentModel {
-    var id: UUID { get }
-    var date: Date { get }
+    var id: UUID { get set }
+    var date: Date { get set }
     var version: Int { get set }
     var payload: Data { get set }
     init()

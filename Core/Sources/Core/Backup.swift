@@ -15,6 +15,12 @@ public enum Backup {
         init(_ record: some ChangeRecord) {
             (id, date, version, payload) = (record.id, record.date, record.version, record.payload)
         }
+
+        func record<R: ChangeRecord>() -> R {
+            let record = R()
+            (record.id, record.date, record.version, record.payload) = (id, date, version, payload)
+            return record
+        }
     }
 
     struct File: Codable {
@@ -34,5 +40,23 @@ public enum Backup {
         let encoder = JSONEncoder()
         encoder.outputFormatting = .prettyPrinted
         try encoder.encode(file).write(to: folder.appending(path: fileName), options: .atomic)
+    }
+
+    /// Replaces everything in the store with the backup `file`: both logs, and the model they rebuild. The deletions sync,
+    /// so every device ends up with the backup. A file that doesn't read as a backup changes nothing.
+    public static func restore(_ file: URL, into context: ModelContext) throws {
+        let backup = try JSONDecoder().decode(File.self, from: Data(contentsOf: file))
+        for model in CurrentSchema.models { try context.deleteAll(model) }
+        for entry in backup.gym { context.insert(entry.record() as Action) }
+        for entry in backup.catalog { context.insert(entry.record() as CatalogAction) }
+        try context.replay(into: context)
+        try context.save()
+    }
+}
+
+private extension ModelContext {
+    // One by one, not a batch delete: CloudKit mirrors what the context deletes.
+    func deleteAll<T: PersistentModel>(_ type: T.Type) throws {
+        for model in try fetch(FetchDescriptor<T>()) { delete(model) }
     }
 }

@@ -23,6 +23,27 @@ import Testing
         #expect(try backup.catalog == context.fetch(FetchDescriptor<CatalogAction>()).map(Backup.Entry.init))
     }
 
+    @Test func restoringReplacesTheStoreWithTheBackup() throws {
+        let workout = context.startWorkout(makePlan(context, "Barbell_Squat"))
+        context.log("Barbell_Squat", reps: 5, weightKg: 100, in: workout)
+        context.setPhoto("Barbell_Squat", to: testPhoto())
+        try context.save()
+        try Backup.write(container, to: folder)
+        let backedUp = try snapshot(context)
+        context.deleteWorkout(workout)
+        makePlan(context, "Pullups")
+        try Backup.restore(file, into: context)
+        #expect(try snapshot(context) == backedUp)
+    }
+
+    @Test func aBrokenBackupChangesNothing() throws {
+        makePlan(context, "Barbell_Squat")
+        let before = try snapshot(context)
+        try Data("not a backup".utf8).write(to: file)
+        #expect(throws: (any Error).self) { try Backup.restore(file, into: context) }
+        #expect(try snapshot(context) == before)
+    }
+
     @Test func anEmptyStoreWritesNoBackup() throws {
         try Backup.write(container, to: folder)
         #expect(!FileManager.default.fileExists(atPath: file.path()))

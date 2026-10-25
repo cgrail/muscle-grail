@@ -31,6 +31,18 @@ import SwiftUI
         schedule()
     }
 
+    /// Replaces everything with the backup `file`, off the main actor; the main context picks the result up when it saves.
+    func restore(_ file: URL) {
+        Task { [container] in
+            let result = await Task.detached {
+                let access = file.startAccessingSecurityScopedResource()
+                defer { if access { file.stopAccessingSecurityScopedResource() } }
+                return Result { try Backup.restore(file, into: ModelContext(container)) }
+            }.value
+            if case let .failure(failure) = result { error = failure.localizedDescription }
+        }
+    }
+
     /// Saves come in bursts while editing and syncing, so this waits for a quiet moment and writes once.
     private func schedule() {
         guard let url else { return }
@@ -61,6 +73,8 @@ import SwiftUI
 struct BackupSettings: View {
     @Environment(BackupFolder.self) private var backup
     @State private var choosing = false
+    @State private var picking = false
+    @State private var restoring: URL?
 
     var body: some View {
         Section("Backup") {
@@ -73,9 +87,20 @@ struct BackupSettings: View {
                 Text("Last backup \(date, format: .dateTime.hour().minute().second())").foregroundStyle(.secondary)
             }
             Text("Plans, workouts and your exercises are saved to this folder whenever they change.").foregroundStyle(.secondary)
+            LabeledContent("Restore") {
+                Button("Choose Backup…") { picking = true }
+                    .fileImporter(isPresented: $picking, allowedContentTypes: [.json]) { result in
+                        if case let .success(file) = result { restoring = file }
+                    }
+            }
         }
         .fileImporter(isPresented: $choosing, allowedContentTypes: [.folder]) { result in
             if case let .success(folder) = result { backup.choose(folder) }
+        }
+        .confirmationDialog("Replace everything with this backup?", isPresented: Binding { restoring != nil } set: { if !$0 { restoring = nil } }) {
+            Button("Replace", role: .destructive) { restoring.map(backup.restore) }
+        } message: {
+            Text("Plans, workouts and your exercises on all your devices become the backup's. This can't be undone.")
         }
     }
 }

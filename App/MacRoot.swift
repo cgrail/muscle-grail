@@ -46,8 +46,8 @@ struct MacRootView: View {
             case .train: TrainView()
             case .history: HistoryView()
             case .exercises: ExercisesLibrary()
-            case .plan(let plan): PlanPage(plan: plan).id(plan.id)
-            case nil: ContentUnavailableView("Choose a plan", systemImage: "list.bullet.clipboard")
+            case .plan(let plan) where plans.contains(plan): PlanPage(plan: plan).id(plan.id)
+            case .plan, nil: ContentUnavailableView("Choose a plan", systemImage: "list.bullet.clipboard") // a sync or restore deleted it
             }
         }
         .task { if page == nil { page = plans.first.map(Page.plan) ?? .train } }
