@@ -24,9 +24,10 @@ jobs:
           xcode-version: latest-stable
       - run: echo "::notice::$(xcodebuild -version | tr '\n' ' ')"
       # Each check repeats its errors as annotations, so the run's summary shows why it failed.
+      # xcodebuild, not swift test: SwiftPM before Xcode 27 doesn't compile String Catalogs, so every German lookup fails.
       - name: Core tests
         working-directory: Core
-        run: swift test 2>&1 | tee ../check.log || { grep -E "error:|✘" ../check.log | head -30 | sed 's/^/::error::/'; exit 1; }
+        run: xcodebuild test -scheme Core -destination 'platform=macOS' 2>&1 | tee ../check.log || { grep -E "error:|✘" ../check.log | head -30 | sed 's/^/::error::/'; exit 1; }
       - name: Build iPhone, watch and complication
         run: xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { grep -E "error:" check.log | head -30 | sed 's/^/::error::/'; exit 1; }
       - name: Build Mac
