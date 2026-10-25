@@ -79,7 +79,8 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 
 ## Status
 
-- [x] Core: models, sync monitor, HealthKit helpers, shared views, exercise catalog. 3 unit tests pass (`cd Core && swift test`).
+- [x] Core: models, sync monitor, HealthKit helpers, shared views, exercise catalog. Unit tests, the 10 use-case tests and the sync test pass (`cd Core && swift test`), every file above 90% line coverage.
+- [x] English and German, through String Catalogs in every target.
 - [x] Plan editor: "Add exercise" opens a searchable catalog with photos (search by name, muscle or equipment).
 - [x] The iOS app builds with the watch app and complication embedded, and the macOS app builds.
 - [x] Smoke test in the iPhone simulator: the CloudKit store opens and the Health permission sheet appears.

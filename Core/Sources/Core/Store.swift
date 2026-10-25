@@ -6,12 +6,17 @@ public enum Store {
     /// Permanent: CloudKit containers can't be deleted or renamed once created.
     public static let cloudKitContainer = "iCloud.de.grails.musclegrail"
 
-    public static func makeContainer(inMemory: Bool = false) throws -> ModelContainer {
-        let config = ModelConfiguration(
-            isStoredInMemoryOnly: inMemory,
-            cloudKitDatabase: inMemory ? .none : .private(cloudKitContainer)
+    /// The app's store, synced through CloudKit. Tests pass `inMemory` or a file `url`, which don't sync.
+    public static func makeContainer(inMemory: Bool = false, url: URL? = nil) throws -> ModelContainer {
+        try ModelContainer(
+            for: Plan.self, PlanItem.self, Workout.self, LoggedSet.self,
+            configurations: configuration(inMemory: inMemory, url: url)
         )
-        return try ModelContainer(for: Plan.self, PlanItem.self, Workout.self, LoggedSet.self, configurations: config)
+    }
+
+    static func configuration(inMemory: Bool = false, url: URL? = nil) -> ModelConfiguration {
+        if let url { return ModelConfiguration(url: url, cloudKitDatabase: .none) }
+        return ModelConfiguration(isStoredInMemoryOnly: inMemory, cloudKitDatabase: inMemory ? .none : .private(cloudKitContainer))
     }
 }
 
@@ -19,11 +24,14 @@ public enum Store {
 @MainActor @Observable public final class SyncMonitor {
     public static let shared = SyncMonitor()
 
-    public private(set) var lastSync = UserDefaults.standard.object(forKey: "lastSync") as? Date
+    public private(set) var lastSync: Date?
     public private(set) var lastError: String?
     private var running: Set<UUID> = []
+    private let defaults: UserDefaults
 
-    private init() {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
+        lastSync = defaults.object(forKey: "lastSync") as? Date
         _ = NotificationCenter.default.addObserver(
             forName: NSPersistentCloudKitContainer.eventChangedNotification, object: nil, queue: .main
         ) { note in
@@ -34,20 +42,21 @@ public enum Store {
         }
     }
 
-    private func update(id: UUID, finished: Bool, isSync: Bool, error: String?) {
+    func update(id: UUID, finished: Bool, isSync: Bool, error: String?) {
         guard finished else { running.insert(id); return }
         running.remove(id)
         lastError = error
         if isSync, error == nil {
             lastSync = .now
-            UserDefaults.standard.set(lastSync, forKey: "lastSync")
+            defaults.set(lastSync, forKey: "lastSync")
         }
     }
 
     /// Gives a background wake-up time to sync: returns once no import or export is running, or after `timeout`.
-    public func waitUntilIdle(timeout: Duration = .seconds(20)) async {
+    /// `settle` covers a fresh launch, which needs a moment before its first import starts.
+    public func waitUntilIdle(timeout: Duration = .seconds(20), settle: Duration = .seconds(2)) async {
         let deadline = ContinuousClock.now + timeout
-        try? await Task.sleep(for: .seconds(2)) // a fresh launch needs a moment before its first import starts
+        try? await Task.sleep(for: settle)
         while !running.isEmpty, ContinuousClock.now < deadline {
             try? await Task.sleep(for: .milliseconds(500))
         }

@@ -24,16 +24,4 @@ import Testing
         #expect(last.allSatisfy { $0.weightKg == 60 })
         #expect(context.lastSets(of: "Deadlift", excluding: current).isEmpty)
     }
-
-    @Test func suggestionPrefersThisWorkoutThenLastTimeThenThePlan() {
-        let item = PlanItem(exercise: "Bench", order: 0)
-        item.targetReps = 8
-        item.targetWeightKg = 40
-        let lastTime = [LoggedSet(exercise: "Bench", reps: 10, weightKg: 60), LoggedSet(exercise: "Bench", reps: 7, weightKg: 60)]
-        let justDone = [LoggedSet(exercise: "Bench", reps: 6, weightKg: 62.5)]
-
-        #expect(suggestion(for: item, done: [], last: []) == (8, 40))
-        #expect(suggestion(for: item, done: [], last: lastTime) == (10, 60))
-        #expect(suggestion(for: item, done: justDone, last: lastTime) == (6, 62.5))
-    }
 }

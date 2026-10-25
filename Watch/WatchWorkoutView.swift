@@ -16,8 +16,7 @@ struct WatchWorkoutView: View {
                 List { ExerciseSection(item: item, workout: workout) }
             }
             Button("Finish", systemImage: "checkmark") {
-                workout.end = .now
-                try? context.save()
+                context.finish(workout)
                 session.end { id in
                     workout.healthKitID = id
                     try? context.save()
@@ -27,7 +26,7 @@ struct WatchWorkoutView: View {
             .tint(.green)
         }
         .tabViewStyle(.verticalPage)
-        .navigationTitle(workout.plan?.name ?? "Workout")
+        .navigationTitle(workout.title)
         .navigationBarBackButtonHidden()
         .onAppear { session.start() }
     }

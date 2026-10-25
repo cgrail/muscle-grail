@@ -23,11 +23,10 @@ private struct WorkoutView: View {
         List {
             ForEach(workout.plan?.sortedItems ?? []) { ExerciseSection(item: $0, workout: workout) }
         }
-        .navigationTitle(workout.plan?.name ?? "Workout")
+        .navigationTitle(workout.title)
         .toolbar {
             Button("Finish") {
-                workout.end = .now
-                try? context.save()
+                context.finish(workout)
                 Task {
                     await Health.save(workout)
                     try? context.save()

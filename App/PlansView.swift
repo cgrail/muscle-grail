@@ -10,25 +10,19 @@ struct PlansView: View {
         NavigationStack {
             List {
                 ForEach(plans) { plan in
-                    NavigationLink(plan.name.isEmpty ? "Untitled" : plan.name) { PlanEditor(plan: plan) }
+                    NavigationLink(plan.title) { PlanEditor(plan: plan) }
                         .contextMenu {
                             Button("Delete", systemImage: "trash", role: .destructive) { context.delete(plan) }
                         }
                 }
-                .onMove { from, to in
-                    var moved = plans
-                    moved.move(fromOffsets: from, toOffset: to)
-                    for (index, plan) in moved.enumerated() { plan.order = index }
-                }
+                .onMove { plans.reorder(fromOffsets: $0, toOffset: $1) }
             }
             .navigationTitle("Plans")
             .toolbar {
                 #if os(iOS)
                 EditButton()
                 #endif
-                Button("Add plan", systemImage: "plus") {
-                    context.insert(Plan(name: "New plan", order: (plans.last?.order ?? -1) + 1))
-                }
+                Button("Add plan", systemImage: "plus") { context.addPlan() }
             }
         }
     }
@@ -49,22 +43,14 @@ struct PlanEditor: View {
                             Button("Delete", systemImage: "trash", role: .destructive) { context.delete(item) }
                         }
                 }
-                .onMove { from, to in
-                    var moved = plan.sortedItems
-                    moved.move(fromOffsets: from, toOffset: to)
-                    for (index, item) in moved.enumerated() { item.order = index }
-                }
+                .onMove { plan.sortedItems.reorder(fromOffsets: $0, toOffset: $1) }
                 Button("Add exercise", systemImage: "plus") { picking = true }
             }
         }
         .formStyle(.grouped)
-        .navigationTitle(plan.name)
+        .navigationTitle(plan.title)
         .sheet(isPresented: $picking) {
-            ExercisePicker { name in
-                let item = PlanItem(exercise: name, order: (plan.sortedItems.last?.order ?? -1) + 1)
-                context.insert(item)
-                item.plan = plan
-            }
+            ExercisePicker { context.add($0, to: plan) }
         }
         #if os(iOS)
         .toolbar { EditButton() }

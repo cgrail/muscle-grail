@@ -21,7 +21,8 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Tests
 
 - Coverage: every file in `Core` at 90%+ lines, 100% is the goal. Measure from `Core/`: `swift test --enable-code-coverage`, then `xcrun llvm-cov report .build/debug/CoreTests.xctest/Contents/MacOS/CoreTests -instr-profile .build/debug/codecov/default.profdata -ignore-filename-regex='\.build|Tests'`.
-- The app targets have no test target, so logic goes in `Core` and the views in `App/` and `Watch/` stay thin.
+- The app targets have no test target, so logic goes in `Core` and the views in `App/` and `Watch/` stay thin. `Health.swift` compiles only for iOS and watchOS, so it is missing from the macOS coverage report: keep it a thin HealthKit wrapper.
+- Core views get smoke tests that render them in a window (`ViewsTests.render`). The accessibility tree is empty under `swift test`, so assert on the store, not on what's on screen.
 - One behavior, one test: changing a behavior should break exactly one test. Each test asserts only the behavior its name states. Shared setup goes in helpers.
 - Integration tests: exactly 10, one per most-used use case, plus one sync test. To cover a new use case, replace the least important one. They live in `Core/Tests/CoreTests/Integration/` and run a use case end to end through `Store` and the models.
 - The sync test focuses on phone and watch: sets logged offline on one device show up on the other in history and prefill, with no duplicates. CloudKit doesn't run under `swift test`, so simulate the other device's records arriving in the local store. Real sync is checked by acceptance tests A–C in PLAN.md.
@@ -37,8 +38,9 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Localization
 
-- English and German. Every user-facing string lives in a String Catalog (`Localizable.xcstrings`) with both `en` and `de` filled in.
-- Strings shown from `Core` need `bundle: .module`, and `Package.swift` needs `defaultLocalization: "en"`.
+- English and German. Every user-facing string lives in a String Catalog (`Localizable.xcstrings`, `InfoPlist.xcstrings` for Info.plist strings) with German filled in. `LocalizationTests` fails on any string without German.
+- `xcodebuild` doesn't add new strings to a catalog. After the build, run `xcrun xcstringstool sync <catalog> --stringsdata <files>` with the target's `*.stringsdata` from DerivedData `Build/Intermediates.noindex/…/Objects-normal/arm64/`, then translate the new keys.
+- Strings shown from `Core` need `bundle: .module`; without it SwiftUI looks them up in the app's catalog.
 - Exercise names stay English: the name is the key for history and prefill, and the catalog data is English only.
 
 ## Data model (CloudKit rules)

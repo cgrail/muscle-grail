@@ -16,6 +16,8 @@ import SwiftData
     }
 
     public var sortedItems: [PlanItem] { (items ?? []).sorted { $0.order < $1.order } }
+
+    public var title: String { name.isEmpty ? String(localized: "Untitled", bundle: .module) : name }
 }
 
 /// Exercises are plain names: offline devices can't create duplicate exercise records,
@@ -44,8 +46,25 @@ import SwiftData
 
     public init() {}
 
+    public static var unfinished: FetchDescriptor<Workout> {
+        FetchDescriptor(predicate: #Predicate { $0.end == nil }, sortBy: [SortDescriptor(\.start)])
+    }
+
+    public static var history: FetchDescriptor<Workout> {
+        FetchDescriptor(sortBy: [SortDescriptor(\.start, order: .reverse)])
+    }
+
+    public var title: String { plan?.title ?? String(localized: "Workout", bundle: .module) }
+
     public func sets(of exercise: String) -> [LoggedSet] {
         (sets ?? []).filter { $0.exercise == exercise }.sorted { $0.date < $1.date }
+    }
+
+    /// Exercises in the order they were first done, each with its sets in order.
+    public var exercises: [(name: String, sets: [LoggedSet])] {
+        let sorted = (sets ?? []).sorted { $0.date < $1.date }
+        let names = sorted.map(\.exercise).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
+        return names.map { name in (name, sorted.filter { $0.exercise == name }) }
     }
 }
 

@@ -1,0 +1,62 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ km" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ km"
+          }
+        }
+      }
+    },
+    "%@ steps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Schritte"
+          }
+        }
+      }
+    },
+    "%@ steps · %@ km" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ Schritte · %2$@ km"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ steps · %2$@ km"
+          }
+        }
+      }
+    },
+    "Steps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritte"
+          }
+        }
+      }
+    },
+    "Today's steps and walking distance. Tapping it opens Muscle Grail." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schritte und Gehstrecke von heute. Tippen öffnet Muscle Grail."
+          }
+        }
+      }
+    }
+  },
+  "version" : "1.0"
+}

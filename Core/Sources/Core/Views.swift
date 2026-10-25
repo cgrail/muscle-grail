@@ -1,17 +1,22 @@
 import SwiftData
 import SwiftUI
 
+// Core strings live in Core's catalog, so every one names `bundle: .module`.
+
 public struct SyncStatusView: View {
-    public init() {}
+    private let sync: SyncMonitor
+
+    public init(sync: SyncMonitor = .shared) {
+        self.sync = sync
+    }
 
     public var body: some View {
-        let sync = SyncMonitor.shared
         if let error = sync.lastError {
             Label(error, systemImage: "exclamationmark.icloud").foregroundStyle(.red).lineLimit(3)
         } else if let date = sync.lastSync {
-            Label { Text("Synced \(date, style: .relative) ago") } icon: { Image(systemName: "checkmark.icloud") }
+            Label { Text("Synced \(date, style: .relative) ago", bundle: .module) } icon: { Image(systemName: "checkmark.icloud") }
         } else {
-            Label("Not synced yet", systemImage: "icloud")
+            Label(String(localized: "Not synced yet", bundle: .module), systemImage: "icloud")
         }
     }
 }
@@ -20,7 +25,7 @@ public struct SyncStatusView: View {
 public struct WorkoutPicker: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
-    @Query(filter: #Predicate<Workout> { $0.end == nil }, sort: \Workout.start) private var unfinished: [Workout]
+    @Query(Workout.unfinished) private var unfinished: [Workout]
     private let onPick: (Workout) -> Void
 
     public init(onPick: @escaping (Workout) -> Void) {
@@ -30,20 +35,20 @@ public struct WorkoutPicker: View {
     public var body: some View {
         List {
             ForEach(unfinished) { workout in
-                Button("Continue \(workout.plan?.name ?? "workout")", systemImage: "play.fill") { onPick(workout) }
+                Button(String(localized: "Continue \(workout.title)", bundle: .module), systemImage: "play.fill") { onPick(workout) }
             }
             Section {
                 ForEach(plans) { plan in
-                    Button(plan.name) { onPick(context.startWorkout(plan)) }
+                    Button(plan.title) { onPick(context.startWorkout(plan)) }
                 }
                 if plans.isEmpty {
-                    Text("No plans yet. Create one on your Mac.").foregroundStyle(.secondary)
+                    Text("No plans yet. Create one on your Mac.", bundle: .module).foregroundStyle(.secondary)
                 }
             } footer: {
                 SyncStatusView()
             }
         }
-        .navigationTitle("Train")
+        .navigationTitle(Text("Train", bundle: .module))
     }
 }
 
@@ -64,18 +69,15 @@ public struct ExerciseSection: View {
     public var body: some View {
         let done = workout.sets(of: item.exercise)
         Section {
-            Stepper("\(reps) reps", value: $reps, in: 0...200)
-            Stepper("\(weight.formatted()) kg", value: $weight, in: 0...1000, step: 2.5)
-            Button("Log set \(done.count + 1) of \(item.targetSets)", systemImage: "checkmark") {
+            Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
+            Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module), value: $weight, in: 0...1000, step: 2.5)
+            Button(String(localized: "Log set \(done.count + 1) of \(item.targetSets)", bundle: .module), systemImage: "checkmark") {
                 context.log(item.exercise, reps: reps, weightKg: weight, in: workout)
             }
             ForEach(done) { set in
-                Text("\(set.reps) × \(set.weightKg.formatted()) kg")
+                Text(verbatim: "\(set.reps) × \(set.weightKg.formatted()) kg")
                     .swipeActions {
-                        Button("Delete", systemImage: "trash", role: .destructive) {
-                            context.delete(set)
-                            try? context.save()
-                        }
+                        Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }
                     }
             }
         } header: {
@@ -84,7 +86,7 @@ public struct ExerciseSection: View {
         .onAppear {
             guard !prefilled else { return }
             prefilled = true
-            (reps, weight) = suggestion(for: item, done: done, last: context.lastSets(of: item.exercise, excluding: workout))
+            (reps, weight) = context.nextSet(for: item, in: workout)
         }
     }
 }
