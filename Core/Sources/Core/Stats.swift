@@ -51,25 +51,33 @@ public func stats(_ workouts: [Workout], per period: Period, count: Int, now: Da
     return periods
 }
 
-/// Each session to count as activity: gym workouts with sets, and Health's workouts from any app or device, except
-/// the ones this app saved there, which are among the gym workouts already.
-public func activitySessions(_ workouts: [Workout], health: [(start: Date, id: UUID)]) -> [Date] {
+/// Gym days in the activity grid: this app's workouts with sets, and Health's strength workouts it didn't save itself.
+public func gymSessions(_ workouts: [Workout], health: [(start: Date, id: UUID)]) -> [Date] {
+    workouts.filter { $0.sets?.isEmpty == false }.map(\.start) + healthOnly(health, besides: workouts)
+}
+
+/// Health's workouts this app didn't save: from another app, or from the watch before its record synced here.
+public func healthOnly(_ health: [(start: Date, id: UUID)], besides workouts: [Workout]) -> [Date] {
     let saved = Set(workouts.compactMap(\.healthKitID))
-    return workouts.filter { $0.sets?.isEmpty == false }.map(\.start) + health.filter { !saved.contains($0.id) }.map(\.start)
+    return health.filter { !saved.contains($0.id) }.map(\.start)
 }
 
-/// Activity as GitHub shows it: one column per week up to the one containing `now`, one row per weekday from the
-/// calendar's first, counting the sessions (workouts, walks) on each day. Days after `now` are nil.
-public func activityWeeks(_ sessions: [Date], weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {
-    let counts = Dictionary(sessions.map { (calendar.startOfDay(for: $0), 1) }, uniquingKeysWith: +)
-    return dayGrid(weeks: weeks, now: now, calendar: calendar) { counts[$0, default: 0] }
+/// This app's workouts with sets on `day`.
+public func trained(_ workouts: [Workout], on day: Date, calendar: Calendar = .current) -> [Workout] {
+    workouts.filter { $0.sets?.isEmpty == false && calendar.isDate($0.start, inSameDayAs: day) }
 }
 
-/// Per day, how far `values` (by start of day) got toward `goal`: 0 nothing, 1 under half, 2 half or more, 3 reached.
-public func goalWeeks(_ values: [Date: Double], goal: Double, weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {
-    dayGrid(weeks: weeks, now: now, calendar: calendar) { day in
-        let value = values[day] ?? 0
-        return value >= goal ? 3 : value >= goal / 2 ? 2 : value > 0 ? 1 : 0
+/// The activity grid, one level per day: 3 a gym day, 2 every daily goal set was reached, 1 moving but short of them
+/// (or no goals set), 0 nothing recorded. `steps` and `km` are by start of day.
+public func activityWeeks(gym: [Date] = [], steps: [Date: Double] = [:], km: [Date: Double] = [:], stepGoal: Double = 0, kmGoal: Double = 0,
+                          weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {
+    let gymDays = Set(gym.map { calendar.startOfDay(for: $0) })
+    return dayGrid(weeks: weeks, now: now, calendar: calendar) { day in
+        let moved = [(steps[day] ?? 0, stepGoal), (km[day] ?? 0, kmGoal)]
+        let goals = moved.filter { $0.1 > 0 }
+        if gymDays.contains(day) { return 3 }
+        if !goals.isEmpty, goals.allSatisfy({ $0.0 >= $0.1 }) { return 2 }
+        return moved.contains { $0.0 > 0 } ? 1 : 0
     }
 }
 
@@ -100,7 +108,7 @@ public func monthLabels(_ weeks: [GridWeek], calendar: Calendar = .current) -> [
     return Dictionary(uniqueKeysWithValues: shown.map { ($0, weeks[$0].start) })
 }
 
-/// GitHub's weekday column: every other row named, counting from the calendar's first weekday.
-public func weekdayLabels(calendar: Calendar = .current) -> [String?] {
-    (0..<7).map { row in row % 2 == 1 ? calendar.shortWeekdaySymbols[(calendar.firstWeekday - 1 + row) % 7] : nil }
+/// The weekday column: every row named, counting from the calendar's first weekday (Mo, Di, Mi … in German).
+public func weekdayLabels(calendar: Calendar = .current) -> [String] {
+    (0..<7).map { calendar.shortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + $0) % 7] }
 }

@@ -61,46 +61,53 @@ import Testing
         #expect(stats(all(), per: .week, count: 1, now: date("2026-10-20"), calendar: calendar)[0].workouts == 0)
     }
 
-    @Test func activityCountsSessionsPerDayInWeekColumns() {
-        let days = [date("2026-10-19"), date("2026-10-19"), date("2026-10-14")]
-        let weeks = activityWeeks(days, weeks: 2, now: date("2026-10-21"), calendar: calendar)
-        #expect(weeks[0].days == [0, 0, 1, 0, 0, 0, 0]) // Monday 12 October to Sunday 18
-        #expect(weeks[1].days == [2, 0, 0, nil, nil, nil, nil]) // up to Wednesday 21, the rest still ahead
-    }
-
-    @Test func goalDaysShowHowFarTheyGot() {
-        let values = [midnight("2026-10-19"): 12_000, midnight("2026-10-20"): 6_000, midnight("2026-10-21"): 2_000.0]
-        let week = goalWeeks(values, goal: 10_000, weeks: 1, now: date("2026-10-22"), calendar: calendar)[0]
-        #expect(week.days == [3, 2, 1, 0, nil, nil, nil])
-    }
-
     @Test func monthsAreLabeledWhereTheyStart() {
-        let weeks = activityWeeks([], weeks: 6, now: date("2026-10-21"), calendar: calendar) // weeks from 14 September
+        let weeks = activityWeeks(weeks: 6, now: date("2026-10-21"), calendar: calendar) // weeks from 14 September
         #expect(monthLabels(weeks, calendar: calendar) == [0: midnight("2026-09-14"), 3: midnight("2026-10-05")])
     }
 
     @Test func aMonthLabelRightBeforeTheNextIsLeftOut() {
-        let weeks = activityWeeks([], weeks: 4, now: date("2026-10-21"), calendar: calendar) // weeks from 28 September
+        let weeks = activityWeeks(weeks: 4, now: date("2026-10-21"), calendar: calendar) // weeks from 28 September
         #expect(monthLabels(weeks, calendar: calendar).keys.sorted() == [1])
     }
 
-    @Test func everyOtherWeekdayIsLabeledFromTheFirst() {
-        var english = calendar
-        english.locale = Locale(identifier: "en_US")
-        #expect(weekdayLabels(calendar: english) == [nil, "Tue", nil, "Thu", nil, "Sat", nil])
+    @Test func gymDaysWinOverGoals() {
+        let day = date("2026-10-20")
+        let week = activityWeeks(gym: [day], steps: [midnight("2026-10-20"): 12_000], stepGoal: 10_000, weeks: 1, now: day, calendar: calendar)[0]
+        #expect(week.days == [0, 3, nil, nil, nil, nil, nil])
     }
 
-    @Test func todaysSessionCountsToday() {
-        let now = date("2026-10-21")
-        #expect(activityWeeks([now], weeks: 1, now: now, calendar: calendar)[0].days == [0, 0, 1, nil, nil, nil, nil])
+    @Test func goalDaysShowWhetherEveryGoalWasReached() {
+        let steps = [midnight("2026-10-19"): 12_000, midnight("2026-10-20"): 12_000.0]
+        let km = [midnight("2026-10-19"): 11, midnight("2026-10-20"): 5.0]
+        let week = activityWeeks(steps: steps, km: km, stepGoal: 10_000, kmGoal: 10, weeks: 1, now: date("2026-10-22"), calendar: calendar)[0]
+        #expect(week.days == [2, 1, 0, 0, nil, nil, nil]) // both goals, steps only, nothing, today with nothing yet
     }
 
-    @Test func healthWorkoutsCountExceptTheOnesThisAppSaved() {
+    @Test func withoutGoalsMovingIsShortOfThem() {
+        let week = activityWeeks(steps: [midnight("2026-10-19"): 3_000], weeks: 1, now: date("2026-10-19"), calendar: calendar)[0]
+        #expect(week.days[0] == 1)
+    }
+
+    @Test func gymSessionsSkipTheWorkoutsThisAppSavedToHealth() {
         let own = workout(on: "2026-10-20")
         let saved = UUID()
         context.savedToHealth(own, as: saved)
         workout(on: "2026-10-21", []) // started, nothing logged
         let health = [(start: date("2026-10-20"), id: saved), (start: date("2026-10-21"), id: UUID())] // the second from the watch or another app
-        #expect(activitySessions(all(), health: health).sorted() == [date("2026-10-20"), date("2026-10-21")])
+        #expect(gymSessions(all(), health: health).sorted() == [date("2026-10-20"), date("2026-10-21")])
+    }
+
+    @Test func aDayShowsTheWorkoutsTrainedOnIt() {
+        let monday = workout(on: "2026-10-19")
+        workout(on: "2026-10-20")
+        workout(on: "2026-10-19", [])
+        #expect(trained(all(), on: date("2026-10-19"), calendar: calendar) == [monday])
+    }
+
+    @Test func everyWeekdayIsLabeledFromTheFirst() {
+        var german = calendar
+        german.locale = Locale(identifier: "de_DE")
+        #expect(weekdayLabels(calendar: german) == ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"])
     }
 }

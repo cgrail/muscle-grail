@@ -36,10 +36,14 @@ import HealthKit
         return totals
     }
 
-    /// Every workout in Health since `date`, from any app or device, walks included: they count as activity.
-    /// It arrives from the watch over Bluetooth, long before a gym workout's record syncs through iCloud.
-    public static func workouts(since date: Date) async -> [(start: Date, id: UUID)] {
-        let query = HKSampleQueryDescriptor(predicates: [.workout(HKQuery.predicateForSamples(withStart: date, end: nil))], sortDescriptors: [])
+    /// Strength workouts in Health since `date`, from any app or device: gym days. A watch workout arrives over
+    /// Bluetooth, long before its record syncs through iCloud.
+    public static func strengthWorkouts(since date: Date) async -> [(start: Date, id: UUID)] {
+        let kinds = [HKWorkoutActivityType.traditionalStrengthTraining, .functionalStrengthTraining].map { HKQuery.predicateForWorkouts(with: $0) }
+        let predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            HKQuery.predicateForSamples(withStart: date, end: nil), NSCompoundPredicate(orPredicateWithSubpredicates: kinds),
+        ])
+        let query = HKSampleQueryDescriptor(predicates: [.workout(predicate)], sortDescriptors: [])
         return ((try? await query.result(for: store)) ?? []).map { ($0.startDate, $0.uuid) }
     }
 

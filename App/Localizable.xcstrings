@@ -11,6 +11,16 @@
         }
       }
     },
+    "%@ km walked" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ km gegangen"
+          }
+        }
+      }
+    },
     "%@ of %@ km walked" : {
       "localizations" : {
         "de" : {
@@ -27,6 +37,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ von %2$@ Schritten"
+          }
+        }
+      }
+    },
+    "%@ steps" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Schritte"
           }
         }
       }
@@ -99,12 +119,42 @@
         }
       }
     },
-    "Active on %lld days in the last %lld weeks" : {
+    "%lld workouts from other apps" : {
       "localizations" : {
         "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "An %1$lld Tagen aktiv in den letzten %2$lld Wochen"
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Training aus einer anderen App"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Trainings aus anderen Apps"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld workout from another app"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld workouts from other apps"
+                }
+              }
+            }
           }
         }
       }
@@ -249,26 +299,6 @@
         }
       }
     },
-    "Darker days had more workouts and walks." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dunklere Tage hatten mehr Trainings und Spaziergänge."
-          }
-        }
-      }
-    },
-    "Darker days had more workouts." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dunklere Tage hatten mehr Trainings."
-          }
-        }
-      }
-    },
     "Delete" : {
       "localizations" : {
         "de" : {
@@ -319,16 +349,6 @@
         }
       }
     },
-    "Edit" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bearbeiten"
-          }
-        }
-      }
-    },
     "Exercise, muscle or equipment" : {
       "localizations" : {
         "de" : {
@@ -355,6 +375,46 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beenden"
+          }
+        }
+      }
+    },
+    "Goal reached" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ziel erreicht"
+          }
+        }
+      }
+    },
+    "Goals" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ziele"
+          }
+        }
+      }
+    },
+    "Gym" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gym"
+          }
+        }
+      }
+    },
+    "Gym on %lld days in the last %lld weeks" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An %1$lld Tagen im Gym in den letzten %2$lld Wochen"
           }
         }
       }
@@ -409,6 +469,26 @@
         }
       }
     },
+    "Next day" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nächster Tag"
+          }
+        }
+      }
+    },
+    "No gym workout" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Gym-Training"
+          }
+        }
+      }
+    },
     "Off" : {
       "localizations" : {
         "de" : {
@@ -459,6 +539,16 @@
         }
       }
     },
+    "Previous day" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorheriger Tag"
+          }
+        }
+      }
+    },
     "Quarter" : {
       "localizations" : {
         "de" : {
@@ -479,22 +569,22 @@
         }
       }
     },
-    "Set a daily goal for steps or walking distance." : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Setze ein Tagesziel für Schritte oder Gehstrecke."
-          }
-        }
-      }
-    },
     "Sets" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sätze"
+          }
+        }
+      }
+    },
+    "Short of goal" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ziel verfehlt"
           }
         }
       }
