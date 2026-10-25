@@ -45,6 +45,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Data model (CloudKit rules)
 
+- Ask before any model migration, and never make one on your own: a model or field added to a `SchemaV<n>`, unshipped versions included, or a new schema version. Describe the change and why it is needed, then wait for the user's approval.
 - Every property has a default or is optional, and every relationship is optional with an inverse. No `@Attribute(.unique)`. Ordering lives in an `order: Int` field. A model that breaks a rule fails the store at launch.
 - Model changes are always backwards compatible: add models and fields, never rename, retype or delete one. Devices update at different times (the Mac apart from the iPhone and watch), so an older App Store build must still read what a newer one syncs, and CloudKit's Production schema can't drop a field.
 - Every shipped schema version stays in the code (`SchemaV1.swift`, …), frozen, and `MigrationPlan` migrates a store from any of them to the newest. A version is frozen once a TestFlight or App Store build has shipped it; until then the newest one may change in place, still only additively. To change a frozen model, follow the steps on `MigrationPlan` in `Models.swift`. Stages are `.lightweight` only: CloudKit stores can't run custom ones.

@@ -27,6 +27,7 @@ Do **not** batch items. For each item, in order:
    - **Offline:** every action works with no network, and nothing a user does waits on sync.
    - **Platform roles:** plans are created and maintained on the Mac; the watch logs, adds and deletes sets and edits nothing else.
    - **Actions:** every model change goes through `record` as a `Change`; a new case or field bumps `Change.version`. Training never checks a version.
+   - **Model migrations:** an item that needs a model or field added to the schema stops here: describe the change and ask the user for approval before making it.
    - **CloudKit rules:** every new property has a default or is optional, every relationship is optional with an inverse, and the schema only grows (no renames, no deletes).
    - **Strings:** every new user-facing string has German in its catalog, and Core's strings name `bundle: .module`.
    - **Saved data:** `UserDefaults` keys keep their names and meaning.
