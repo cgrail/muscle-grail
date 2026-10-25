@@ -3,17 +3,24 @@ import HealthKit
 import SwiftData
 import SwiftUI
 
-/// One page per exercise, then a finish page.
+/// One page per exercise, its sets then how to do it, then a finish page.
 struct WatchWorkoutView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
+    @Query private var entries: [CatalogEntry]
     let workout: Workout
     @State private var session = WorkoutSession()
 
     var body: some View {
         TabView {
             ForEach(workout.plan?.sortedItems ?? []) { item in
-                List { ExerciseSection(item: item, workout: workout) }
+                List {
+                    ExerciseSection(item: item, workout: workout)
+                    let steps = instructions(item.exerciseID, entry: entries.first { $0.id == item.exerciseID })
+                    if !steps.isEmpty {
+                        Section("How to") { ForEach(steps, id: \.self) { Text(verbatim: $0).font(.footnote) } }
+                    }
+                }
             }
             Button("Finish", systemImage: "checkmark") {
                 context.finish(workout)

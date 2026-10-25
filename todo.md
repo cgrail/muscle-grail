@@ -3,7 +3,7 @@
 - [ ] add import/export mechanism from gymbook
 - [x] add backup mechanism to folder on mac with auto write on save/load/edit
 - [x] add filter for level, equipment and category
-- [ ] show instructions
+- [x] show instructions
 - [ ] enable keyboard up/down navigation on mac
 - [ ] enable direct entry of reps/sets on mac via number
 - [ ] add translation for excercise to german

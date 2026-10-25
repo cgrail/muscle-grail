@@ -36,6 +36,9 @@ struct ExerciseDetail: View {
                         }
                         TextField("Description", text: Binding { entry?.details ?? "" } set: { context.editExercise(id, details: $0) }, axis: .vertical)
                     }
+                    if let steps = bundled?.instructions, !steps.isEmpty {
+                        Section("How to") { ForEach(steps, id: \.self) { Text(verbatim: $0) } }
+                    }
                     Section("Video") {
                         TextField("Video link", text: Binding { entry?.videoURL ?? "" } set: { context.editExercise(id, videoURL: $0) })
                         if let url = URL(string: entry?.videoURL ?? ""), url.scheme?.hasPrefix("http") == true {

@@ -10,6 +10,16 @@
           }
         }
       }
+    },
+    "How to" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausführung"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

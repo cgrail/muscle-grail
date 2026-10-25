@@ -16,6 +16,7 @@
 ### Training
 - Type a weight instead of stepping to it, with a comma or a point: in a workout on the iPhone and the Mac, and in plans. The watch keeps its stepper.
 - On the iPhone and the Mac, an exercise opened during a workout shows how to do it, step by step, under its sets, with a link to a video: your own video link, else a YouTube search for the exercise. Your own description replaces the steps.
+- An exercise's details, opened from a plan or the Mac's exercise library, show the catalog's steps for how to do it. On the watch, each exercise's page shows how to do it under its sets.
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.
 - Only one workout runs at a time: finish it before starting another plan.
 - Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
