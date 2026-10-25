@@ -110,4 +110,19 @@ import Testing
         german.locale = Locale(identifier: "de_DE")
         #expect(weekdayLabels(calendar: german) == ["Mo", "Di", "Mi", "Do", "Fr", "Sa", "So"])
     }
+
+    @Test func progressFollowsTheKilometerGoalWhenThereIsOne() {
+        #expect(dayProgress(steps: 5_000, km: 2.5, stepGoal: 10_000, kmGoal: 10) == 0.25)
+        #expect(dayProgress(steps: 5_000, km: 2.5, stepGoal: 10_000, kmGoal: 0) == 0.5)
+    }
+
+    @Test func progressStopsAtTheGoalAndNeedsOne() {
+        #expect(dayProgress(steps: 15_000, km: 0, stepGoal: 10_000, kmGoal: 0) == 1)
+        #expect(dayProgress(steps: 15_000, km: 9, stepGoal: 0, kmGoal: 0) == nil)
+    }
+
+    @Test func unsetGoalsAreTenThousandStepsAndNoKilometers() {
+        let goals = dailyGoals() // nothing stored for the tests
+        #expect((goals.steps, goals.km) == (10_000, 0))
+    }
 }

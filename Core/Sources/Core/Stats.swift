@@ -112,3 +112,16 @@ public func monthLabels(_ weeks: [GridWeek], calendar: Calendar = .current) -> [
 public func weekdayLabels(calendar: Calendar = .current) -> [String] {
     (0..<7).map { calendar.shortStandaloneWeekdaySymbols[(calendar.firstWeekday - 1 + $0) % 7] }
 }
+
+/// The daily goals in iCloud's key-value store, where the iPhone app keeps them: 10,000 steps unless set, km off at 0.
+/// The widget and the complication read them from there too.
+public func dailyGoals(in store: NSUbiquitousKeyValueStore = .default) -> (steps: Double, km: Double) {
+    (store.object(forKey: "goalSteps") == nil ? 10_000 : store.double(forKey: "goalSteps"), store.double(forKey: "goalKm"))
+}
+
+/// How far today got toward the daily goal, from 0 to 1, for a ring or a bar: kilometers when a km goal is set,
+/// else steps. Nil without either goal.
+public func dayProgress(steps: Double, km: Double, stepGoal: Double, kmGoal: Double) -> Double? {
+    if kmGoal > 0 { return min(km / kmGoal, 1) }
+    return stepGoal > 0 ? min(steps / stepGoal, 1) : nil
+}

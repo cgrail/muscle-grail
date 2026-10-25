@@ -7,10 +7,14 @@ struct StepsEntry: TimelineEntry {
     var date = Date.now
     var steps = 0.0
     var km = 0.0
+    /// The daily goals, from the same iCloud key-value store as the iPhone app's (it shares its identifier).
+    var goals = dailyGoals()
+
+    var progress: Double? { dayProgress(steps: steps, km: km, stepGoal: goals.steps, kmGoal: goals.km) }
 }
 
 struct StepsProvider: TimelineProvider {
-    func placeholder(in context: Context) -> StepsEntry { StepsEntry(steps: 10_847, km: 6.7) }
+    func placeholder(in context: Context) -> StepsEntry { StepsEntry(steps: 10_847, km: 6.7, goals: (10_000, 10)) }
 
     func getSnapshot(in context: Context, completion: @escaping (StepsEntry) -> Void) {
         completion(placeholder(in: context))
@@ -55,8 +59,22 @@ struct StepsView: View {
             VStack(alignment: .leading) {
                 Label(steps, systemImage: "shoeprints.fill").font(.headline)
                 Label("\(km) km", systemImage: "figure.walk")
+                if let progress = entry.progress {
+                    Gauge(value: progress) { EmptyView() }.gaugeStyle(.accessoryLinearCapacity)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
+        case .accessoryCircular: // the day's progress as a ring, like the Health app's, around steps and km
+            let both = VStack(spacing: 0) {
+                Text(verbatim: entry.steps.formatted(.number.notation(.compactName))).font(.system(size: 14, weight: .semibold))
+                Text("\(km) km").font(.system(size: 10))
+            }
+            .minimumScaleFactor(0.6)
+            if let progress = entry.progress {
+                Gauge(value: progress) { EmptyView() } currentValueLabel: { both }.gaugeStyle(.accessoryCircularCapacity)
+            } else {
+                both
+            }
         case .accessoryInline:
             Text("\(steps) steps · \(km) km")
         #if os(watchOS)
@@ -74,6 +92,9 @@ struct StepsView: View {
                 }
                 .minimumScaleFactor(0.6)
                 Text("\(steps) steps").font(.footnote).foregroundStyle(.secondary)
+                if let progress = entry.progress {
+                    ProgressView(value: progress).tint(.orange).padding(.top, 4)
+                }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         #endif

@@ -30,7 +30,7 @@
 
 ### Watch face and Home Screen
 - A complication shows today's steps and walking distance.
-- An iPhone widget shows today's walking and running distance and steps, on the Home Screen and the Lock Screen.
+- An iPhone widget shows today's walking and running distance and steps, on the Home Screen and the Lock Screen. A ring (round) or a bar shows how far the day got toward the daily goal: kilometers if you set a km goal, else steps. The watch's round complication shows the ring too.
 
 ### Look
 - An app icon on iPhone, Watch and Mac: a white flexed arm lifting a dumbbell, on navy.

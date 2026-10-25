@@ -9,8 +9,7 @@ import SwiftUI
     var km: Double { didSet { store.set(km, forKey: "goalKm") } }
 
     init() {
-        steps = store.object(forKey: "goalSteps") == nil ? 10_000 : store.double(forKey: "goalSteps")
-        km = store.double(forKey: "goalKm")
+        (steps, km) = dailyGoals(in: store)
         NotificationCenter.default.addObserver(forName: NSUbiquitousKeyValueStore.didChangeExternallyNotification, object: store, queue: .main) { [weak self] _ in
             MainActor.assumeIsolated { self?.load() }
         }
@@ -18,8 +17,7 @@ import SwiftUI
     }
 
     private func load() {
-        steps = store.object(forKey: "goalSteps") == nil ? 10_000 : store.double(forKey: "goalSteps")
-        km = store.double(forKey: "goalKm")
+        (steps, km) = dailyGoals(in: store)
     }
 }
 

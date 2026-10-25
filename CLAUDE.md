@@ -31,7 +31,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 - The Xcode project uses synchronized folders. Add a file by creating it in `App/`, `Watch/` or `Complication/`; it joins that target automatically. Edit `project.pbxproj` only for targets, build settings or capabilities.
 - `App/` is one multiplatform target (iOS + macOS). Gate platform-specific code with `#if os(iOS)` / `#if os(macOS)`.
-- `Complication/` builds twice: as `StepsComplication` inside the watch app, and as `StepsWidget`, the iPhone's Home Screen and Lock Screen widget, inside the iPhone app only. Gate watch-only families with `#if os(watchOS)`; both targets share its string catalogs.
+- `Complication/` builds twice: as `StepsComplication` inside the watch app, and as `StepsWidget`, the iPhone's Home Screen and Lock Screen widget, inside the iPhone app only. Gate watch-only families with `#if os(watchOS)`; both targets share its string catalogs, and both read the daily goals from the iPhone app's iCloud key-value store (`dailyGoals`), so their entitlement names the app's store.
 - In the app's tabs, navigate with `navigationDestination(item:)` or plain `NavigationLink`s, never a typed `NavigationStack(path:)`. The sidebar-adaptable `TabView` (Mac, iPad) compares navigation paths across tabs and crashes on a typed one (`AnyNavigationPath.Error.comparisonTypeMismatch`).
 - Code used by more than one target lives in the `Core` package: models, `Store` + `SyncMonitor`, `Health`, shared SwiftUI views, the exercise catalog.
 - Concurrency: app targets use Swift 5 mode with default actor isolation `MainActor`. `Core` uses Swift 6 strict concurrency and is nonisolated by default.
