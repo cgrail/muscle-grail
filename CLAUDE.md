@@ -4,12 +4,27 @@ Offline-first gym tracker. iPhone and Apple Watch log sets, a Mac app edits plan
 
 Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It holds the decisions, known risks, and the acceptance tests that define "done".
 
+## Platform roles
+
+- Mac: create and maintain plans. Full plan editing lives here.
+- Watch: the gym device. It logs sets and makes small adjustments to the running workout: add a set, delete a set. Plan creation and editing stay on the Mac.
+- Every platform is fast: each tap answers from the local store. Network calls, sync waits and heavy work stay off the main actor and out of user paths.
+
 ## Build and test
 
 - `xcode-select` points at the Command Line Tools, so prefix every `swift` / `xcodebuild` call with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
 - Core tests: `cd Core && swift test`.
 - Compile check, no signing: `xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build`. This also builds the embedded watch app and complication. Use `-destination 'platform=macOS'` for the Mac app.
 - An unsigned build traps inside CloudKit at launch. To launch in the simulator, sign ad hoc: `CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM=`. Real sync needs signed device builds (team `3Z7QAPFM7G`).
+- Done means `swift test` passes and the compile check succeeds for iOS (which includes the watch) and macOS. The user runs the UI tests by hand.
+
+## Tests
+
+- Coverage: every file in `Core` at 90%+ lines, 100% is the goal. Measure from `Core/`: `swift test --enable-code-coverage`, then `xcrun llvm-cov report .build/debug/CoreTests.xctest/Contents/MacOS/CoreTests -instr-profile .build/debug/codecov/default.profdata -ignore-filename-regex='\.build|Tests'`.
+- The app targets have no test target, so logic goes in `Core` and the views in `App/` and `Watch/` stay thin.
+- One behavior, one test: changing a behavior should break exactly one test. Each test asserts only the behavior its name states. Shared setup goes in helpers.
+- Integration tests: exactly 10, one per most-used use case, plus one sync test. To cover a new use case, replace the least important one. They live in `Core/Tests/CoreTests/Integration/` and run a use case end to end through `Store` and the models.
+- The sync test focuses on phone and watch: sets logged offline on one device show up on the other in history and prefill, with no duplicates. CloudKit doesn't run under `swift test`, so simulate the other device's records arriving in the local store. Real sync is checked by acceptance tests A–C in PLAN.md.
 
 ## Project shape
 
@@ -18,6 +33,13 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - Code used by more than one target lives in the `Core` package: models, `Store` + `SyncMonitor`, `Health`, shared SwiftUI views, the exercise catalog.
 - Concurrency: app targets use Swift 5 mode with default actor isolation `MainActor`. `Core` uses Swift 6 strict concurrency and is nonisolated by default.
 - `Config/` holds entitlements and Info.plists and belongs to no target.
+- Files stay under 300 lines. Split by feature before a file crosses that, one feature per file, named after it. Subfolders inside a synchronized folder join the target too.
+
+## Localization
+
+- English and German. Every user-facing string lives in a String Catalog (`Localizable.xcstrings`) with both `en` and `de` filled in.
+- Strings shown from `Core` need `bundle: .module`, and `Package.swift` needs `defaultLocalization: "en"`.
+- Exercise names stay English: the name is the key for history and prefill, and the catalog data is English only.
 
 ## Data model (CloudKit rules)
 
