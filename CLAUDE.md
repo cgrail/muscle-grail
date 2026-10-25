@@ -78,7 +78,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - The user's `CatalogEntry`s sit on top: their own exercises, and their name, description, video link and photo for any exercise. They live in the separate Catalog store of the same iCloud container (`Store.configurations`) with their own log, so the gym store stays small. Photos are stored as JPEGs of at most 1024 px (`Photo.jpeg`).
 - Weights step through what the exercise's equipment really comes in (`Weights`), never by a fixed amount.
 - Show a name with `ExerciseName` (`exerciseName(_:entry:)` outside views). A custom exercise whose entry hasn't synced yet shows a placeholder.
-- Photos load from the repo's GitHub raw URLs (see `CatalogExercise.imageURL`), so the picker needs internet to show them.
+- Photos load from the repo's GitHub raw URLs (see `CatalogExercise.imageURL`), so the picker needs internet to show them. Training never does: it shows only photos on the device, the user's own and the bundled ones `PhotoCache` downloaded (512 px) while the workout picker had network.
 
 ## Claude (MCP)
 

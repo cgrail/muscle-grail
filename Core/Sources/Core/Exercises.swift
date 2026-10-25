@@ -72,3 +72,27 @@ public enum Photo {
         CGImageSourceCreateWithData(data as CFData, nil).flatMap { CGImageSourceCreateImageAtIndex($0, 0, nil) }
     }
 }
+
+/// Bundled exercise photos, downloaded while there is network and kept on the device: training in a gym without
+/// internet shows the ones it has and leaves the rest out.
+public struct PhotoCache: Sendable {
+    public static let shared = PhotoCache(folder: URL.cachesDirectory.appending(path: "ExercisePhotos"))
+    let folder: URL
+
+    /// The photo for `exerciseID` if it's on the device: the user's own, else the downloaded bundled one.
+    public func image(for exerciseID: String, entry: CatalogEntry?) -> CGImage? {
+        if let photo = entry?.photo { return Photo.image(photo) }
+        return (try? Data(contentsOf: file(for: exerciseID))).flatMap(Photo.image)
+    }
+
+    /// Downloads the bundled photos of `exerciseIDs` that aren't on the device yet. Without network, the next call tries again.
+    public func download(_ exerciseIDs: [String], fetch: @Sendable (URL) async throws -> Data = { try await URLSession.shared.data(from: $0).0 }) async {
+        try? FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        for id in Set(exerciseIDs) where !FileManager.default.fileExists(atPath: file(for: id).path) {
+            guard let url = CatalogExercise.byID[id]?.imageURL, let data = try? await fetch(url), let photo = Photo.jpeg(data, maxPixels: 512) else { continue }
+            try? photo.write(to: file(for: id))
+        }
+    }
+
+    private func file(for exerciseID: String) -> URL { folder.appending(path: exerciseID + ".jpg") }
+}

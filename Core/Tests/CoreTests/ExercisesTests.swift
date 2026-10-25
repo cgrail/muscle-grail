@@ -58,3 +58,26 @@ import Testing
         #expect(context.catalogEntry(id)?.photo == nil)
     }
 }
+
+@MainActor struct PhotoCacheTests {
+    let container = try! Store.makeContainer(inMemory: true)
+    var context: ModelContext { container.mainContext }
+    let cache = PhotoCache(folder: URL.temporaryDirectory.appending(path: UUID().uuidString))
+
+    @Test func photosDownloadOnceAndShowWithoutNetwork() async {
+        await cache.download(["Barbell_Squat", "Barbell_Squat"]) { _ in testPhoto() }
+        await cache.download(["Barbell_Squat"]) { _ in Issue.record("downloaded again"); return Data() }
+        #expect(cache.image(for: "Barbell_Squat", entry: nil) != nil)
+    }
+
+    @Test func withoutNetworkThereIsNoPhoto() async {
+        await cache.download(["Barbell_Squat"]) { _ in throw URLError(.notConnectedToInternet) }
+        #expect(cache.image(for: "Barbell_Squat", entry: nil) == nil)
+    }
+
+    @Test func yourOwnPhotoComesFirst() {
+        let id = context.createExercise(named: "Cable Fly")
+        context.setPhoto(id, to: testPhoto())
+        #expect(cache.image(for: id, entry: context.catalogEntry(id)) != nil)
+    }
+}

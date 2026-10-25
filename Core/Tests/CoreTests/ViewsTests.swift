@@ -33,7 +33,7 @@ import Testing
     }
 
     @Test func showingWorkoutPickerStartsNoWorkout() throws {
-        _ = context.startWorkout(makePlan(context, "Bench"))
+        context.log("Bench", reps: 8, weightKg: 60, in: context.startWorkout(makePlan(context, "Bench")))
         render(NavigationStack { WorkoutPicker { _ in } })
         #expect(try context.fetchCount(FetchDescriptor<Workout>()) == 1)
     }
@@ -43,6 +43,13 @@ import Testing
         let workout = context.startWorkout(plan)
         context.log("Bench", reps: 8, weightKg: 60, in: workout)
         render(List { ExerciseSection(item: plan.sortedItems[0], workout: workout) })
+    }
+
+    @Test func exerciseSectionRendersYourOwnPhoto() {
+        let id = context.createExercise(named: "Cable Fly")
+        context.setPhoto(id, to: testPhoto())
+        let plan = makePlan(context, id)
+        render(List { ExerciseSection(item: plan.sortedItems[0], workout: context.startWorkout(plan)) })
     }
 }
 #endif

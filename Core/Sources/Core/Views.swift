@@ -55,6 +55,7 @@ public struct WorkoutPicker: View {
             }
         }
         .navigationTitle(Text("Train", bundle: .module))
+        .task(id: plans.count) { await PhotoCache.shared.download(plans.flatMap { $0.sortedItems.map(\.exerciseID) }) }
     }
 
     private func start(_ plan: Plan) -> some View {
@@ -82,6 +83,7 @@ public struct ExerciseSection: View {
     @State private var reps = 0
     @State private var weight = 0.0
     @State private var prefilled = false
+    @State private var photo: CGImage?
 
     public init(item: PlanItem, workout: Workout) {
         self.item = item
@@ -91,6 +93,9 @@ public struct ExerciseSection: View {
     public var body: some View {
         let done = workout.sets(of: item.exerciseID)
         Section {
+            if let photo {
+                Image(decorative: photo, scale: 1).resizable().scaledToFit().frame(maxHeight: 90)
+            }
             Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
             Stepper(String(localized: "\(weight.formatted()) kg", bundle: .module)) {
                 weight = Weights.next(after: weight, for: item.exerciseID)
@@ -122,6 +127,7 @@ public struct ExerciseSection: View {
             prefilled = true
             (reps, weight) = context.nextSet(for: item, in: workout)
         }
+        .task { photo = PhotoCache.shared.image(for: item.exerciseID, entry: context.catalogEntry(item.exerciseID)) }
     }
 }
 
