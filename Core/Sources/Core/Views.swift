@@ -42,7 +42,11 @@ public struct WorkoutPicker: View {
                     Button(plan.title) { onPick(context.startWorkout(plan)) }
                 }
                 if plans.isEmpty {
+                    #if os(macOS)
+                    Text("No plans yet. Create one under Plans.", bundle: .module).foregroundStyle(.secondary)
+                    #else
                     Text("No plans yet. Create one on your Mac.", bundle: .module).foregroundStyle(.secondary)
+                    #endif
                 }
             } footer: {
                 SyncStatusView()
@@ -52,7 +56,7 @@ public struct WorkoutPicker: View {
     }
 }
 
-/// One exercise of a running workout: adjust reps and weight, log the set, swipe a logged set to delete it.
+/// One exercise of a running workout: adjust reps and weight, log the set, swipe a logged set to delete it (right-click on the Mac).
 public struct ExerciseSection: View {
     @Environment(\.modelContext) private var context
     private let item: PlanItem
@@ -75,10 +79,12 @@ public struct ExerciseSection: View {
                 context.log(item.exercise, reps: reps, weightKg: weight, in: workout)
             }
             ForEach(done) { set in
+                let delete = Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }
                 Text(verbatim: "\(set.reps) × \(set.weightKg.formatted()) kg")
-                    .swipeActions {
-                        Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }
-                    }
+                    .swipeActions { delete }
+                    #if os(macOS)
+                    .contextMenu { delete } // a mouse can't swipe
+                    #endif
             }
         } header: {
             Text(item.exercise)

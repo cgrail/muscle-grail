@@ -1,4 +1,3 @@
-#if os(iOS)
 import Core
 import SwiftData
 import SwiftUI
@@ -27,12 +26,13 @@ private struct WorkoutView: View {
         .toolbar {
             Button("Finish") {
                 context.finish(workout)
+                #if os(iOS) // the Mac has no HealthKit
                 Task {
                     if let id = await Health.save(workout) { context.savedToHealth(workout, as: id) }
                 }
+                #endif
                 dismiss()
             }
         }
     }
 }
-#endif

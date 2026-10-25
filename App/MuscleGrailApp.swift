@@ -29,9 +29,7 @@ struct MuscleGrailApp: App {
 struct RootView: View {
     var body: some View {
         TabView {
-            #if os(iOS)
             Tab("Train", systemImage: "figure.strengthtraining.traditional") { TrainView() }
-            #endif
             Tab("Plans", systemImage: "list.bullet.clipboard") { PlansView() }
             Tab("History", systemImage: "clock") { HistoryView() }
         }

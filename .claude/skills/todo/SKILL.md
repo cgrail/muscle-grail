@@ -19,7 +19,7 @@ Do **not** batch items. For each item, in order:
 1. **Read the item as a bug report, not a spec.** Most entries are one line of the user's shorthand ("the watch forgot my last set"). Find the actual code before deciding what the fix is: the symptom is usually a small piece of a shared code path in `Core`.
 2. **Locate it.** [CLAUDE.md](../../../CLAUDE.md) maps the folders. A change usually touches more than one layer, so follow a feature through every layer it touches:
    - **Core** (`Core/Sources/Core/`): the models in `Models.swift`, plan editing in `Plans.swift`, the workout flow and prefill in `Training.swift`, `Store` and `SyncMonitor` in `Store.swift`, HealthKit in `Health.swift`, the views the iPhone and watch share in `Views.swift`, the exercise catalog in `Catalog.swift`.
-   - **iPhone and Mac** (`App/`, one target): `PlansView`, `ExercisePicker`, `TrainView` (iOS only), `HistoryView`, `MuscleGrailApp`.
+   - **iPhone and Mac** (`App/`, one target): `PlansView`, `ExercisePicker`, `TrainView`, `HistoryView`, `MuscleGrailApp`.
    - **Watch** (`Watch/`): `WatchWorkoutView` with its `WorkoutSession`, and `MuscleGrailWatchApp`. **Complication** (`Complication/`): `StepsComplication`.
    - **Strings:** each target's `Localizable.xcstrings` and `InfoPlist.xcstrings`; Core's catalog is in `Core/Sources/Core/`.
 3. **Implement.** Match the surrounding code's idiom: terse, comments only for the why. Logic goes in `Core`, where the tests reach it; views only call it.

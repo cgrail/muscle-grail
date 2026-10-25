@@ -1,6 +1,6 @@
 # Todo
 
-- [ ] i should also be able to track something on the desktop app
+- [x] i should also be able to track something on the desktop app
 - [ ] separate the gym session data from the catalog. the catalog is synched seperatly and has lower prio. it can have additional data like images, descriptions, links to youtube videos etc. and should be stored seperatly. the gym session data should be as small as possible and should onyly reference the catalog data
 - [ ] on desktop i should be able to add something to a plan by using voice or chat. does it make sense to use the apple foundation model. 
 - [ ] offer an mcp server for the desktop app to allow the creation of plans using claude

@@ -95,6 +95,16 @@
         }
       }
     },
+    "No plans yet. Create one under Plans." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Pläne. Erstelle einen unter Pläne."
+          }
+        }
+      }
+    },
     "Not synced yet" : {
       "localizations" : {
         "de" : {

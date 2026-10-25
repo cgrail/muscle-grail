@@ -6,7 +6,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Platform roles
 
-- Mac: create and maintain plans. Full plan editing lives here.
+- Mac: create and maintain plans. Full plan editing lives here. It can also train, like the iPhone, but saves nothing to Health (macOS has no HealthKit).
 - Watch: the gym device. It logs sets and makes small adjustments to the running workout: add a set, delete a set. Plan creation and editing stay on the Mac.
 - Every platform is fast: each tap answers from the local store. Network calls, sync waits and heavy work stay off the main actor and out of user paths.
 
