@@ -27,6 +27,22 @@ struct CatalogTests {
         #expect(bench.detail == "chest · barbell")
     }
 
+    @Test func searchFindsEveryWordAnywhere() {
+        #expect(bench.matches("barbell press"))
+        #expect(!bench.matches("barbell curl"))
+    }
+
+    @Test func searchIgnoresPluralsAndHyphens() {
+        #expect(CatalogExercise.byID["Barbell_Squat"]?.matches("squats") == true)
+        #expect(CatalogExercise.byID["Pullups"]?.matches("pull-ups") == true)
+    }
+
+    @Test func assistantSearchListsYourOwnExercisesFirst() {
+        let names = catalogNames(matching: "fly", custom: ["Cable Fly", "Squat"], limit: 3)
+        #expect(names.first == "Cable Fly")
+        #expect(names.count == 3)
+    }
+
     @Test func searchMatchesNameMusclesAndEquipmentIgnoringCase() {
         #expect(["bench", "CHEST", "bar"].allSatisfy(bench.matches))
         #expect(!bench.matches("squat"))

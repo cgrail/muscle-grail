@@ -38,6 +38,14 @@ public extension ModelContext {
         return item(id)!
     }
 
+    /// Adds described exercises to `plan`, each by its catalog name or as a new exercise of the user's own.
+    func add(_ exercises: [PlannedExercise], to plan: Plan) {
+        for exercise in exercises {
+            let item = add(catalogID(named: exercise.name) ?? createExercise(named: exercise.name), to: plan)
+            setTargets(item, sets: exercise.sets, reps: exercise.reps, weightKg: exercise.weightKg)
+        }
+    }
+
     /// Changes the targets given and keeps the others.
     func setTargets(_ item: PlanItem, sets: Int? = nil, reps: Int? = nil, weightKg: Double? = nil) {
         record(.setTargets(id: item.id, sets: sets ?? item.targetSets, reps: reps ?? item.targetReps, weightKg: weightKg ?? item.targetWeightKg))
@@ -52,5 +60,17 @@ public extension ModelContext {
         var ids = rows.map(\.id)
         ids.move(fromOffsets: source, toOffset: destination)
         record(.reorder(ids: ids))
+    }
+}
+
+/// An exercise someone described for a plan, by name, as the plan assistant hands it over.
+public struct PlannedExercise: Equatable, Sendable {
+    public var name: String
+    public var sets: Int
+    public var reps: Int
+    public var weightKg: Double
+
+    public init(name: String, sets: Int, reps: Int, weightKg: Double) {
+        (self.name, self.sets, self.reps, self.weightKg) = (name, sets, reps, weightKg)
     }
 }

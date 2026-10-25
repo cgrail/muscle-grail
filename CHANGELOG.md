@@ -5,6 +5,8 @@
 ### Plans
 - Build plans on the Mac from a searchable catalog of over 800 exercises with photos, or add your own, each with target sets, reps and weight.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.
+- On the Mac, add exercises to a plan by describing them, typed or dictated, in English or German: "3x10 bench press at 60 kg, then squats". Needs Apple Intelligence.
+- Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 
 ### Training
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.

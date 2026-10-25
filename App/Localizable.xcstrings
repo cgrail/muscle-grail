@@ -79,6 +79,16 @@
         }
       }
     },
+    "Add" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hinzufügen"
+          }
+        }
+      }
+    },
     "Add exercise" : {
       "localizations" : {
         "de" : {
@@ -109,6 +119,16 @@
         }
       }
     },
+    "Adding exercises by describing them needs Apple Intelligence." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen per Beschreibung hinzuzufügen braucht Apple Intelligence."
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "de" : {
@@ -129,12 +149,32 @@
         }
       }
     },
+    "Couldn't understand that. Name each exercise with its sets, reps and weight." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das habe ich nicht verstanden. Nenne jede Übung mit Sätzen, Wiederholungen und Gewicht."
+          }
+        }
+      }
+    },
     "Delete" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Löschen"
+          }
+        }
+      }
+    },
+    "Describe exercises, like 3x10 bench press at 60 kg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen beschreiben, z. B. 3x10 Bankdrücken mit 60 kg"
           }
         }
       }
@@ -255,6 +295,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trainieren"
+          }
+        }
+      }
+    },
+    "Turn on Apple Intelligence to add exercises by describing them." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schalte Apple Intelligence ein, um Übungen per Beschreibung hinzuzufügen."
           }
         }
       }

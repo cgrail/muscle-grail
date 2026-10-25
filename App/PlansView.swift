@@ -52,6 +52,9 @@ struct PlanEditor: View {
                     }
                     .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
                     Button("Add exercise", systemImage: "plus") { picking = true }
+                    #if os(macOS)
+                    PlanAssistant(plan: plan)
+                    #endif
                 }
             }
             .disabled(!newer.isEmpty)

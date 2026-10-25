@@ -24,6 +24,15 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
     public var detail: String { (primaryMuscles + [equipment].compactMap { $0 }).joined(separator: " · ") }
 
     public func matches(_ query: String) -> Bool {
-        ([name, equipment ?? ""] + primaryMuscles).contains { $0.localizedCaseInsensitiveContains(query) }
+        matchesEveryWord(of: query, in: [name, equipment ?? ""] + primaryMuscles)
+    }
+}
+
+/// Whether each word of `query` turns up somewhere in `fields`, ignoring case, hyphens and a plural "s":
+/// "dumbbell curl" finds Dumbbell Bicep Curl, "squats" Barbell Squat and "pull-ups" Pullups.
+func matchesEveryWord(of query: String, in fields: [String]) -> Bool {
+    query.split(whereSeparator: { $0 == " " || $0 == "-" }).allSatisfy { word in
+        let singular = word.count > 3 && word.hasSuffix("s") ? word.dropLast() : word
+        return fields.contains { $0.localizedCaseInsensitiveContains(singular) }
     }
 }

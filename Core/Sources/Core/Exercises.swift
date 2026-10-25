@@ -16,7 +16,20 @@ public func exerciseName(_ id: String, entry: CatalogEntry?) -> String {
     return CatalogExercise.byID[id]?.name ?? String(localized: "Custom exercise", bundle: .module)
 }
 
+/// Up to `limit` catalog names matching `query`, the user's own (`custom`) first: what the plan assistant searches.
+public func catalogNames(matching query: String, custom: [String], limit: Int = 8) -> [String] {
+    let names = custom.filter { matchesEveryWord(of: query, in: [$0]) } + CatalogExercise.all.filter { $0.matches(query) }.map(\.name)
+    return Array(names.prefix(limit))
+}
+
 public extension ModelContext {
+    /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones.
+    func catalogID(named name: String) -> String? {
+        let custom = (try? fetch(FetchDescriptor<CatalogEntry>())) ?? []
+        return custom.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.id
+            ?? CatalogExercise.all.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.id
+    }
+
     /// A new exercise of the user's own. Its id is a UUID, so devices can make exercises offline without clashing.
     func createExercise(named name: String) -> String {
         let id = UUID().uuidString
