@@ -8,14 +8,13 @@ struct ExercisePicker: View {
     @Environment(\.dismiss) private var dismiss
     @Query(sort: \CatalogEntry.name) private var entries: [CatalogEntry]
     @State private var search = ""
-    @State private var region: BodyRegion?
+    @State private var filter = CatalogFilter()
     let onPick: (String) -> Void
 
     var body: some View {
         let query = search.trimmingCharacters(in: .whitespaces)
-        // the user's own exercises have no muscles, so a region hides them
-        let custom = entries.filter { region == nil && CatalogExercise.byID[$0.id] == nil && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
-        let results = CatalogExercise.all.filter { $0.trains(region) && (query.isEmpty || $0.matches(query)) }
+        let custom = entries.filter { filter.isEmpty && CatalogExercise.byID[$0.id] == nil && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
+        let results = CatalogExercise.all.filter { filter.admits($0) && (query.isEmpty || $0.matches(query)) }
         NavigationStack {
             List {
                 if !query.isEmpty {
@@ -34,7 +33,7 @@ struct ExercisePicker: View {
             .navigationTitle("Add exercise")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem { RegionFilter(region: $region) }
+                ToolbarItem { FilterMenu(filter: $filter) }
             }
         }
         #if os(macOS)
@@ -48,16 +47,30 @@ struct ExercisePicker: View {
     }
 }
 
-/// Shows only the exercises for one body region, like legs or arms.
-struct RegionFilter: View {
-    @Binding var region: BodyRegion?
+/// Shows only the exercises for a body region, level, piece of equipment and category, like legs for beginners with dumbbells.
+struct FilterMenu: View {
+    @Binding var filter: CatalogFilter
 
     var body: some View {
-        Picker("Body region", systemImage: region == nil ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill", selection: $region) {
-            Text("All exercises").tag(BodyRegion?.none)
-            ForEach(BodyRegion.allCases, id: \.self) { Text($0.name).tag(Optional($0)) }
+        Menu("Filter", systemImage: filter.isEmpty ? "line.3.horizontal.decrease.circle" : "line.3.horizontal.decrease.circle.fill") {
+            Picker("Body region", selection: $filter.region) {
+                Text("All").tag(BodyRegion?.none)
+                ForEach(BodyRegion.allCases, id: \.self) { Text($0.name).tag(Optional($0)) }
+            }
+            picker("Level", $filter.level, CatalogFilter.levels)
+            picker("Equipment", $filter.equipment, CatalogFilter.equipment)
+            picker("Category", $filter.category, CatalogFilter.categories)
+            if !filter.isEmpty {
+                Button("Show all exercises") { filter = CatalogFilter() }
+            }
         }
-        .pickerStyle(.menu)
+    }
+
+    private func picker(_ title: LocalizedStringKey, _ selection: Binding<String?>, _ terms: [String]) -> some View {
+        Picker(title, selection: selection) {
+            Text("All").tag(String?.none)
+            ForEach(terms, id: \.self) { Text(catalogTerm($0)).tag(Optional($0)) }
+        }
     }
 }
 

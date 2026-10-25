@@ -121,6 +121,114 @@
         }
       }
     },
+    "bands" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widerstandsbänder"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bands"
+          }
+        }
+      }
+    },
+    "barbell" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langhantel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barbell"
+          }
+        }
+      }
+    },
+    "beginner" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anfänger"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beginner"
+          }
+        }
+      }
+    },
+    "body only" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Körpergewicht"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Body only"
+          }
+        }
+      }
+    },
+    "cable" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kabelzug"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cable"
+          }
+        }
+      }
+    },
+    "cardio" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cardio"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cardio"
+          }
+        }
+      }
+    },
     "Chest" : {
       "localizations" : {
         "de" : {
@@ -201,6 +309,78 @@
         }
       }
     },
+    "dumbbell" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kurzhantel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dumbbell"
+          }
+        }
+      }
+    },
+    "e-z curl bar" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SZ-Stange"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Z curl bar"
+          }
+        }
+      }
+    },
+    "exercise ball" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gymnastikball"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercise ball"
+          }
+        }
+      }
+    },
+    "expert" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Experte"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expert"
+          }
+        }
+      }
+    },
     "Finish the running workout to start another." : {
       "localizations" : {
         "de" : {
@@ -211,12 +391,66 @@
         }
       }
     },
+    "foam roll" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faszienrolle"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foam roll"
+          }
+        }
+      }
+    },
     "Full body" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ganzkörper"
+          }
+        }
+      }
+    },
+    "intermediate" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortgeschritten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Intermediate"
+          }
+        }
+      }
+    },
+    "kettlebells" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kettlebells"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kettlebells"
           }
         }
       }
@@ -293,6 +527,42 @@
         }
       }
     },
+    "machine" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Machine"
+          }
+        }
+      }
+    },
+    "medicine ball" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medizinball"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medicine ball"
+          }
+        }
+      }
+    },
     "New plan" : {
       "localizations" : {
         "de" : {
@@ -353,12 +623,74 @@
         }
       }
     },
-    "Sign in to iCloud to sync" : {
+    "olympic weightlifting" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Melde dich bei iCloud an, um zu synchronisieren"
+            "value" : "Olympisches Gewichtheben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olympic weightlifting"
+          }
+        }
+      }
+    },
+    "other" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonstiges"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other"
+          }
+        }
+      }
+    },
+    "plyometrics" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plyometrie"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plyometrics"
+          }
+        }
+      }
+    },
+    "powerlifting" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powerlifting"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Powerlifting"
           }
         }
       }
@@ -379,6 +711,70 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Schultern"
+          }
+        }
+      }
+    },
+    "Sign in to iCloud to sync" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melde dich bei iCloud an, um zu synchronisieren"
+          }
+        }
+      }
+    },
+    "strength" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kraft"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strength"
+          }
+        }
+      }
+    },
+    "stretching" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dehnen"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stretching"
+          }
+        }
+      }
+    },
+    "strongman" : {
+      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strongman"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Strongman"
           }
         }
       }

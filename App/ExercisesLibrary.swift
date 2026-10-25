@@ -17,15 +17,15 @@ struct ExercisesLibrary: View {
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Action.newer) private var newer: [Action]
     @State private var search = ""
-    @State private var region: BodyRegion?
+    @State private var filter = CatalogFilter()
     @State private var selection = Set<String>()
     @State private var order = [KeyPathComparator(\Row.name)]
     @State private var detail: Detail?
     @State private var previewing = true
 
     var body: some View {
-        let own = entries.filter { region == nil && CatalogExercise.byID[$0.id] == nil }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
-        let bundled = CatalogExercise.all.filter { $0.trains(region) }.map { Row(id: $0.id, name: $0.name, muscles: $0.primaryMuscles.joined(separator: ", "), equipment: $0.equipment ?? "") }
+        let own = entries.filter { filter.isEmpty && CatalogExercise.byID[$0.id] == nil }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
+        let bundled = CatalogExercise.all.filter(filter.admits).map { Row(id: $0.id, name: $0.name, muscles: $0.primaryMuscles.joined(separator: ", "), equipment: $0.equipment ?? "") }
         let rows = (own + bundled).filter { search.isEmpty || matchesEveryWord(of: search, in: [$0.name, $0.muscles, $0.equipment]) }
         Table(rows.sorted(using: order), selection: $selection, sortOrder: $order) {
             TableColumn("Exercise", value: \.name) { row in
@@ -50,7 +50,7 @@ struct ExercisesLibrary: View {
         }
         .searchable(text: $search, prompt: "Exercise, muscle or equipment")
         .toolbar {
-            RegionFilter(region: $region)
+            FilterMenu(filter: $filter)
             Button("Preview", systemImage: "sidebar.trailing") { previewing.toggle() }
         }
         .inspector(isPresented: $previewing) {

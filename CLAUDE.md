@@ -45,6 +45,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - `xcodebuild` doesn't add new strings to a catalog. After the build, run `xcrun xcstringstool sync <catalog> --stringsdata <files>` with the target's `*.stringsdata` from DerivedData `Build/Intermediates.noindex/…/Objects-normal/arm64/`, then translate the new keys.
 - Strings shown from `Core` need `bundle: .module`; without it SwiftUI looks them up in the app's catalog.
 - Exercise names stay English: the name is the key for history and prefill, and the catalog data is English only.
+- The catalog's levels, equipment and categories show through `catalogTerm`, from entries added by hand (`extractionState: manual`) to Core's catalog. After a catalog update, `LocalizationTests` names any new term without German.
 
 ## Data model (CloudKit rules)
 

@@ -259,12 +259,12 @@
         }
       }
     },
-    "All exercises" : {
+    "All" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Übungen"
+            "value" : "Alle"
           }
         }
       }
@@ -305,6 +305,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abbrechen"
+          }
+        }
+      }
+    },
+    "Category" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kategorie"
           }
         }
       }
@@ -489,6 +499,16 @@
         }
       }
     },
+    "Filter" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filter"
+          }
+        }
+      }
+    },
     "Find in Plan" : {
       "localizations" : {
         "de" : {
@@ -635,6 +655,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Claude Pläne erstellen und bearbeiten lassen"
+          }
+        }
+      }
+    },
+    "Level" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niveau"
           }
         }
       }
@@ -865,6 +895,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ziel verfehlt"
+          }
+        }
+      }
+    },
+    "Show all exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Übungen zeigen"
           }
         }
       }

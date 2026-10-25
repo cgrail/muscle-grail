@@ -33,6 +33,14 @@ struct CatalogTests {
         #expect(CatalogExercise.all.filter { $0.trains(nil) }.count == CatalogExercise.all.count)
     }
 
+    @Test func filterKeepsOnlyExercisesMatchingEveryChoice() {
+        var filter = CatalogFilter()
+        (filter.region, filter.level, filter.equipment, filter.category) = (.legs, "beginner", "barbell", "strength")
+        let kept = CatalogExercise.all.filter(filter.admits)
+        #expect(!kept.isEmpty)
+        #expect(kept.allSatisfy { $0.regions.contains(.legs) && $0.level == "beginner" && $0.equipment == "barbell" && $0.category == "strength" })
+    }
+
     @Test func searchFindsEveryWordAnywhere() {
         #expect(bench.matches("barbell press"))
         #expect(!bench.matches("barbell curl"))

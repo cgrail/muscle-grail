@@ -9,6 +9,8 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
     public let primaryMuscles: [String]
     public let images: [String]
     public var instructions: [String] = []
+    public var level: String?
+    public var category: String?
 
     public static let all = load(Bundle.module.url(forResource: "exercises", withExtension: "json"))
 
@@ -33,6 +35,37 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
         matchesEveryWord(of: query, in: [name, equipment ?? ""] + primaryMuscles)
     }
 }
+
+/// Narrows the catalog to one body region, level, piece of equipment and category; nil lets every exercise through.
+public struct CatalogFilter: Equatable, Sendable {
+    public var region: BodyRegion?
+    public var level: String?
+    public var equipment: String?
+    public var category: String?
+
+    public init() {}
+
+    /// The user's own exercises have none of these, so a filter that isn't empty hides them.
+    public var isEmpty: Bool { self == CatalogFilter() }
+
+    public func admits(_ exercise: CatalogExercise) -> Bool {
+        exercise.trains(region) && [(level, exercise.level), (equipment, exercise.equipment), (category, exercise.category)]
+            .allSatisfy { chosen, value in chosen == nil || chosen == value }
+    }
+
+    public static let levels = values(\.level)
+    public static let equipment = values(\.equipment)
+    public static let categories = values(\.category)
+
+    /// What `key` holds across the catalog, most common first: beginner before expert, strength before cardio.
+    static func values(_ key: KeyPath<CatalogExercise, String?>) -> [String] {
+        let counts = Dictionary(CatalogExercise.all.compactMap { $0[keyPath: key] }.map { ($0, 1) }, uniquingKeysWith: +)
+        return counts.keys.sorted { (counts[$0]!, $1) > (counts[$1]!, $0) }
+    }
+}
+
+/// A level, piece of equipment or category in the user's language: the catalog has them in English only.
+public func catalogTerm(_ term: String) -> String { String(localized: String.LocalizationValue(term), bundle: .module) }
 
 /// Whether each word of `query` turns up somewhere in `fields`, ignoring case, hyphens and a plural "s":
 /// "dumbbell curl" finds Dumbbell Bicep Curl, "squats" Barbell Squat and "pull-ups" Pullups.

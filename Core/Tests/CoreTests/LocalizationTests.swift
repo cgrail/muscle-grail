@@ -25,6 +25,13 @@ struct LocalizationTests {
         }
     }
 
+    /// The catalog's terms are looked up at runtime, so the build can't add them to the String Catalog.
+    @Test func everyCatalogTermHasGerman() throws {
+        let url = try #require(Bundle.module.url(forResource: "Localizable", withExtension: "strings", subdirectory: nil, localization: "de"))
+        let german = try #require(NSDictionary(contentsOf: url) as? [String: String])
+        #expect((CatalogFilter.levels + CatalogFilter.equipment + CatalogFilter.categories).filter { german[$0] == nil } == [])
+    }
+
     @Test func coreShipsItsGermanStrings() {
         var resource = LocalizedStringResource("Not synced yet", bundle: .atURL(Bundle.module.bundleURL))
         resource.locale = Locale(identifier: "de")
