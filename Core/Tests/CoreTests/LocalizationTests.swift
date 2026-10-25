@@ -25,11 +25,27 @@ struct LocalizationTests {
         }
     }
 
-    /// The catalog's terms are looked up at runtime, so the build can't add them to the String Catalog.
+    /// The catalog's text is looked up at runtime, so the build can't add it to a String Catalog.
+    func german(_ table: String) throws -> [String: String] {
+        let url = try #require(Bundle.module.url(forResource: table, withExtension: "strings", subdirectory: nil, localization: "de"))
+        return try #require(NSDictionary(contentsOf: url) as? [String: String])
+    }
+
     @Test func everyCatalogTermHasGerman() throws {
-        let url = try #require(Bundle.module.url(forResource: "Localizable", withExtension: "strings", subdirectory: nil, localization: "de"))
-        let german = try #require(NSDictionary(contentsOf: url) as? [String: String])
-        #expect((CatalogFilter.levels + CatalogFilter.equipment + CatalogFilter.categories).filter { german[$0] == nil } == [])
+        let muscles = Set(CatalogExercise.all.flatMap(\.primaryMuscles))
+        let terms = CatalogFilter.levels + CatalogFilter.equipment + CatalogFilter.categories + muscles
+        #expect(try terms.filter { try german("Localizable")[$0] == nil } == [])
+    }
+
+    @Test func everyExerciseNameAndStepHasGerman() throws {
+        let german = try german("Exercises")
+        let text = CatalogExercise.all.flatMap { [$0.name] + $0.instructions }.filter { !$0.isEmpty }
+        #expect(text.filter { german[$0] == nil } == [])
+    }
+
+    @Test func exercisesTranslateFromTheirCatalog() throws {
+        let de = try #require(Bundle.module.url(forResource: "de", withExtension: "lproj").flatMap(Bundle.init(url:)))
+        #expect(translated("Barbell Squat", bundle: de) == "Langhantel-Kniebeuge")
     }
 
     @Test func coreShipsItsGermanStrings() {

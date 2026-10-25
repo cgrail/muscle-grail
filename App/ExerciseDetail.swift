@@ -29,14 +29,15 @@ struct ExerciseDetail: View {
                 Group {
                     Section {
                         if let bundled {
-                            LabeledContent("Name", value: bundled.name)
+                            LabeledContent("Name", value: bundled.label)
                             Text(bundled.detail).foregroundStyle(.secondary)
                         } else {
                             TextField("Name", text: Binding { entry?.name ?? "" } set: { context.editExercise(id, name: $0) })
                         }
                         TextField("Description", text: Binding { entry?.details ?? "" } set: { context.editExercise(id, details: $0) }, axis: .vertical)
                     }
-                    if let steps = bundled?.instructions, !steps.isEmpty {
+                    let steps = instructions(id, entry: nil) // the bundled steps: the user's own description is the field above
+                    if !steps.isEmpty {
                         Section("How to") { ForEach(steps, id: \.self) { Text(verbatim: $0) } }
                     }
                     Section("Video") {

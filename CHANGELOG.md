@@ -12,6 +12,7 @@
 - On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are.
 - Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 - Every plan says what it trains, from its exercises' muscles and sets: Leg-heavy, Chest & Back, or Full body. It shows under the plan when you pick a workout, on the watch too, and on the Mac's plan page.
+- In German, exercises are German too: their names, how to do them, and their muscles, equipment, level and category. Search finds an exercise by its English or German name.
 - Filter the exercise catalog by body region, level, equipment and category, like legs for beginners with dumbbells, when adding an exercise and in the Mac's exercise library.
 - The Mac's exercise library previews the selected exercise on the right, like Finder: its photo, muscles and equipment, how to do it, and a video link. The Preview button in the toolbar hides it.
 

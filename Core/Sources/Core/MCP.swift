@@ -91,7 +91,7 @@ import SwiftData
 
     private func describe(_ plan: Plan) -> String {
         ([plan.title] + plan.sortedItems.map { item in
-            return "- \(context.exerciseName(item.exerciseID)): \(item.targetSets) × \(item.targetReps) at \(item.targetWeightKg.formatted()) kg"
+            return "- \(context.exerciseName(item.exerciseID, localized: false)): \(item.targetSets) × \(item.targetReps) at \(item.targetWeightKg.formatted()) kg"
         }).joined(separator: "\n")
     }
 

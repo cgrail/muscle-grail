@@ -24,7 +24,7 @@ struct CatalogTests {
     }
 
     @Test func detailListsMusclesThenEquipment() {
-        #expect(bench.detail == "chest · barbell")
+        #expect(bench.detail == "Chest · Barbell")
     }
 
     @Test func regionFilterKeepsOnlyThatRegionsExercises() {

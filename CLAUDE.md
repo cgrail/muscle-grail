@@ -44,8 +44,9 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - English and German. Every user-facing string lives in a String Catalog (`Localizable.xcstrings`, `InfoPlist.xcstrings` for Info.plist strings) with German filled in. `LocalizationTests` fails on any string without German.
 - `xcodebuild` doesn't add new strings to a catalog. After the build, run `xcrun xcstringstool sync <catalog> --stringsdata <files>` with the target's `*.stringsdata` from DerivedData `Build/Intermediates.noindex/…/Objects-normal/arm64/`, then translate the new keys.
 - Strings shown from `Core` need `bundle: .module`; without it SwiftUI looks them up in the app's catalog.
-- Exercise names stay English: the name is the key for history and prefill, and the catalog data is English only.
-- The catalog's levels, equipment and categories show through `catalogTerm`, from entries added by hand (`extractionState: manual`) to Core's catalog. After a catalog update, `LocalizationTests` names any new term without German.
+- An exercise's `name` stays English: it is the catalog's data, and Claude (MCP) and the plan assistant look exercises up by it. The apps show `label`, its translation, and the steps translated the same way (`instructions(_:entry:)`). Both live in Core's `Exercises.xcstrings`, keyed by the English text, with `generatesSymbol: false` (similar steps would clash as symbols). Where a machine reads a name (MCP, the video search), pass `localized: false` to `exerciseName`.
+- The catalog's muscles, levels, equipment and categories show through `catalogTerm`, from entries added by hand (`extractionState: manual`) to Core's `Localizable.xcstrings`.
+- After a catalog update, `LocalizationTests` names every new name, step or term without German: add it by hand.
 
 ## Data model (CloudKit rules)
 

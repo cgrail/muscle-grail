@@ -10,23 +10,25 @@ public extension CatalogExercise {
     static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
 }
 
-/// The name to show for `id`: the user's own, else the bundled one. A custom exercise whose entry hasn't synced yet gets a placeholder.
-public func exerciseName(_ id: String, entry: CatalogEntry?) -> String {
+/// The name to show for `id`: the user's own, else the bundled one in the user's language, or in English (`localized: false`)
+/// where a machine reads it: Claude and the video search. A custom exercise whose entry hasn't synced yet gets a placeholder.
+public func exerciseName(_ id: String, entry: CatalogEntry?, localized: Bool = true) -> String {
     if let name = entry?.name, !name.isEmpty { return name }
-    return CatalogExercise.byID[id]?.name ?? String(localized: "Custom exercise", bundle: .module)
+    guard let bundled = CatalogExercise.byID[id] else { return String(localized: "Custom exercise", bundle: .module) }
+    return localized ? bundled.label : bundled.name
 }
 
 /// How to do `id`, a paragraph per step: the user's own description, else the bundled instructions.
 public func instructions(_ id: String, entry: CatalogEntry?) -> [String] {
     if let details = entry?.details, !details.isEmpty { return [details] }
-    return CatalogExercise.byID[id]?.instructions ?? []
+    return CatalogExercise.byID[id]?.instructions.map { translated($0) } ?? []
 }
 
 /// A video of `id`: the user's own link, else a YouTube search for its name.
 public func videoURL(_ id: String, entry: CatalogEntry?) -> URL? {
     if let url = URL(string: entry?.videoURL ?? ""), url.scheme?.hasPrefix("http") == true { return url }
     var search = URLComponents(string: "https://www.youtube.com/results")!
-    search.queryItems = [URLQueryItem(name: "search_query", value: exerciseName(id, entry: entry) + " form")]
+    search.queryItems = [URLQueryItem(name: "search_query", value: exerciseName(id, entry: entry, localized: false) + " form")]
     return search.url
 }
 
@@ -38,8 +40,8 @@ public func catalogNames(matching query: String, custom: [String], limit: Int = 
 
 public extension ModelContext {
     /// The name to show for `exerciseID` once, where a view can't keep it current (`ExerciseName` does).
-    func exerciseName(_ exerciseID: String) -> String {
-        Core.exerciseName(exerciseID, entry: catalogEntry(exerciseID))
+    func exerciseName(_ exerciseID: String, localized: Bool = true) -> String {
+        Core.exerciseName(exerciseID, entry: catalogEntry(exerciseID), localized: localized)
     }
 
     /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones.

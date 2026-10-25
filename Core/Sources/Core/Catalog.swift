@@ -24,16 +24,30 @@ public struct CatalogExercise: Decodable, Identifiable, Sendable {
         images.first.flatMap { URL(string: "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/\($0)") }
     }
 
-    public var detail: String { (primaryMuscles + [equipment].compactMap { $0 }).joined(separator: " · ") }
+    /// The name in the user's language. `name` stays English: it is the catalog's data, and Claude and the assistant look exercises up by it.
+    public var label: String { translated(name) }
+
+    /// Its muscles, then its equipment, in the user's language.
+    public var detail: String { (primaryMuscles + [equipment].compactMap { $0 }).map(catalogTerm).joined(separator: " · ") }
 
     public var regions: Set<BodyRegion> { Set(primaryMuscles.compactMap(BodyRegion.init(muscle:))) }
 
     /// Whether it trains `region`; with no region, every exercise does.
     public func trains(_ region: BodyRegion?) -> Bool { region.map(regions.contains) ?? true }
 
+    /// Whether every word of `query` is in its name, muscles or equipment, in English or the user's language.
     public func matches(_ query: String) -> Bool {
-        matchesEveryWord(of: query, in: [name, equipment ?? ""] + primaryMuscles)
+        let terms = primaryMuscles + [equipment].compactMap { $0 }
+        return matchesEveryWord(of: query, in: [name, label] + terms + terms.map(catalogTerm))
     }
+
+    /// The catalog in the order of its names in the user's language, which only changes with a relaunch.
+    public static let alphabetical = all.sorted { $0.label.localizedStandardCompare($1.label) == .orderedAscending }
+}
+
+/// A name or step of the catalog in the user's language: `Exercises.xcstrings` has them keyed by the English text.
+func translated(_ text: String, bundle: Bundle = .module) -> String {
+    bundle.localizedString(forKey: text, value: nil, table: "Exercises")
 }
 
 /// Narrows the catalog to one body region, level, piece of equipment and category; nil lets every exercise through.
@@ -64,7 +78,7 @@ public struct CatalogFilter: Equatable, Sendable {
     }
 }
 
-/// A level, piece of equipment or category in the user's language: the catalog has them in English only.
+/// A muscle, level, piece of equipment or category in the user's language: the catalog has them in English only.
 public func catalogTerm(_ term: String) -> String { String(localized: String.LocalizationValue(term), bundle: .module) }
 
 /// Whether each word of `query` turns up somewhere in `fields`, ignoring case, hyphens and a plural "s":

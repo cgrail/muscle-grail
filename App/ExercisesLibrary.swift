@@ -25,7 +25,7 @@ struct ExercisesLibrary: View {
 
     var body: some View {
         let own = entries.filter { filter.isEmpty && CatalogExercise.byID[$0.id] == nil }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
-        let bundled = CatalogExercise.all.filter(filter.admits).map { Row(id: $0.id, name: $0.name, muscles: $0.primaryMuscles.joined(separator: ", "), equipment: $0.equipment ?? "") }
+        let bundled = CatalogExercise.all.filter(filter.admits).map { Row(id: $0.id, name: $0.label, muscles: $0.primaryMuscles.map(catalogTerm).joined(separator: ", "), equipment: $0.equipment.map(catalogTerm) ?? "") }
         let rows = (own + bundled).filter { search.isEmpty || matchesEveryWord(of: search, in: [$0.name, $0.muscles, $0.equipment]) }
         Table(rows.sorted(using: order), selection: $selection, sortOrder: $order) {
             TableColumn("Exercise", value: \.name) { row in

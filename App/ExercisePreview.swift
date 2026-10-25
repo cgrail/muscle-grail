@@ -21,8 +21,8 @@ struct ExercisePreview: View {
             }
             if let bundled = CatalogExercise.byID[id] {
                 Section("Information") {
-                    LabeledContent("Muscles", value: bundled.primaryMuscles.joined(separator: ", "))
-                    if let equipment = bundled.equipment { LabeledContent("Equipment", value: equipment) }
+                    LabeledContent("Muscles", value: bundled.primaryMuscles.map(catalogTerm).joined(separator: ", "))
+                    if let equipment = bundled.equipment { LabeledContent("Equipment", value: catalogTerm(equipment)) }
                 }
             }
             ExerciseGuide(id: id)
