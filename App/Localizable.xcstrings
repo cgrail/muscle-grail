@@ -549,6 +549,16 @@
         }
       }
     },
+    "Drag an exercise onto another plan to move it." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zieh eine Übung auf einen anderen Plan, um sie dorthin zu verschieben."
+          }
+        }
+      }
+    },
     "Equipment" : {
       "localizations" : {
         "de" : {
