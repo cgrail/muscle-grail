@@ -13,11 +13,11 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Build and test
 
 - `xcode-select` points at the Command Line Tools, so prefix every `swift` / `xcodebuild` call with `DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer`.
-- Core tests: `cd Core && swift test`.
+- Core tests: `cd Core && ./fetch-catalog.sh && swift test`. The exercise catalog isn't in git (see Exercise catalog); the script downloads it once.
 - Compile check, no signing: `xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build`. This also builds the embedded watch app and complication. Use `-destination 'platform=macOS'` for the Mac app.
 - An unsigned build traps inside CloudKit at launch. To launch in the simulator, sign ad hoc: `CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM=`. Real sync needs signed device builds (team `3Z7QAPFM7G`).
 - Done means `swift test` passes and the compile check succeeds for iOS (which includes the watch) and macOS. The user runs the UI tests by hand.
-- GitHub Actions (`.github/workflows/build.yml`) runs those three checks on every pull request and push to `main`, on the `macos-26` runner with its newest stable Xcode. It runs Core's tests with `xcodebuild test -scheme Core`, because SwiftPM before Xcode 27 doesn't compile String Catalogs. It doesn't measure coverage.
+- GitHub Actions (`.github/workflows/build.yml`) runs those three checks on every pull request and push to `main`, on the `macos-26` runner with its newest stable Xcode. It fetches the catalog, then runs Core's tests with `xcodebuild test -scheme Core`, because SwiftPM before Xcode 27 doesn't compile String Catalogs. It doesn't measure coverage.
 
 ## Tests
 
@@ -45,9 +45,8 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - English and German. Every user-facing string lives in a String Catalog (`Localizable.xcstrings`, `InfoPlist.xcstrings` for Info.plist strings) with German filled in. `LocalizationTests` fails on any string without German.
 - `xcodebuild` doesn't add new strings to a catalog. After the build, run `xcrun xcstringstool sync <catalog> --stringsdata <files>` with the target's `*.stringsdata` from DerivedData `Build/Intermediates.noindex/…/Objects-normal/arm64/`, then translate the new keys.
 - Strings shown from `Core` need `bundle: .module`; without it SwiftUI looks them up in the app's catalog.
-- An exercise's `name` stays English: it is the catalog's data, and Claude (MCP) and the plan assistant look exercises up by it. The apps show `label`, its translation, and the steps translated the same way (`instructions(_:entry:)`). Both live in Core's `Exercises.xcstrings`, keyed by the English text, with `generatesSymbol: false` (similar steps would clash as symbols). Where a machine reads a name (MCP, the video search), pass `localized: false` to `exerciseName`.
-- The catalog's muscles, levels, equipment and categories show through `catalogTerm`, from entries added by hand (`extractionState: manual`) to Core's `Localizable.xcstrings`.
-- After a catalog update, `LocalizationTests` names every new name, step or term without German: add it by hand.
+- An exercise's `name` stays English: Claude (MCP) and the plan assistant look exercises up by it. The apps show `label` and `steps`, which RepDB has in German (`name_de`, `instructions_de`). Where a machine reads a name (MCP, the video search), pass `localized: false` to `exerciseName`.
+- The catalog's muscles, levels, equipment and categories are RepDB's English keys (`pectoralis_major`, `pull_up_bar`); they show through `catalogTerm`, from entries added by hand (`extractionState: manual`) to Core's `Localizable.xcstrings`. After a catalog update, `LocalizationTests` names every new term without German, and every exercise RepDB brought without it.
 
 ## Data model (CloudKit rules)
 
@@ -82,11 +81,13 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Exercise catalog
 
-- `Core/Sources/Core/exercises.json` is [free-exercise-db](https://github.com/yuhonas/free-exercise-db), public domain, bundled unchanged. To update it, replace the file with that repo's `dist/exercises.json`. Its `id`s are catalog ids that plans and sets refer to, so check that none disappeared.
+- The catalog is [RepDB](https://github.com/RepDB/exercise-dataset)'s free dataset: 650 exercises in English, German and Spanish, at the commit `CatalogExercise.repdbCommit` pins. Its license allows in-app use with attribution but forbids republishing the dataset, and this repo is public, so it is never committed: `Core/fetch-catalog.sh` downloads `exercises.json` into `Core/Sources/Core/RepDB/` (ignored by git). The app and watch schemes run it as a build pre-action, CI as a step; run it once before `swift test`. A pre-action that can't download doesn't fail the build: the app then has an empty catalog.
+- Keep "Exercise data by RepDB (repdb.co)" visible, linked to https://repdb.co: `Credits` in Settings on the iPhone and the Mac, and the README. RepDB's images may not be fed to generative models, so never hand them to the plan assistant or Claude.
+- To update the catalog, change `repdbCommit`. Its `id`s are catalog ids that plans and sets refer to, so check that none disappeared.
 - The user's `CatalogEntry`s sit on top: their own exercises, and their name, description, video link and photo for any exercise. They live in the separate Catalog store of the same iCloud container (`Store.configurations`) with their own log, so the gym store stays small. Photos are stored as JPEGs of at most 1024 px (`Photo.jpeg`).
 - Weights step through what the exercise's equipment really comes in (`Weights`), never by a fixed amount.
 - Show a name with `ExerciseName` (`exerciseName(_:entry:)` outside views). A custom exercise whose entry hasn't synced yet shows a placeholder.
-- Photos load from the repo's GitHub raw URLs (see `CatalogExercise.imageURL`), so the picker needs internet to show them. Training never does: it shows only photos on the device, the user's own and the bundled ones `PhotoCache` downloaded (512 px) while the workout picker had network.
+- Illustrations load from RepDB's GitHub at the pinned commit (see `CatalogExercise.imageURL`), so the picker needs internet to show them. Training never does: it shows only photos on the device, the user's own and the illustrations `PhotoCache` downloaded (512 px) while the workout picker had network.
 
 ## Claude (MCP)
 

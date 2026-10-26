@@ -81,26 +81,44 @@
         }
       }
     },
-    "abdominals" : {
-      "comment" : "A muscle from the exercise catalog",
+    "ab_crunch_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bauch"
+            "value" : "Bauchmaschine"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abdominals"
+            "value" : "Ab crunch machine"
+          }
+        }
+      }
+    },
+    "ab_wheel" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bauchroller"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ab wheel"
           }
         }
       }
     },
     "abductors" : {
-      "comment" : "A muscle from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -118,7 +136,7 @@
       }
     },
     "adductors" : {
-      "comment" : "A muscle from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -131,6 +149,60 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adductors"
+          }
+        }
+      }
+    },
+    "advanced" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profi"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Advanced"
+          }
+        }
+      }
+    },
+    "air_bike" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Air Bike"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Air bike"
+          }
+        }
+      }
+    },
+    "anterior_deltoid" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vordere Schulter"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Front delts"
           }
         }
       }
@@ -155,6 +227,24 @@
         }
       }
     },
+    "assisted_pullup_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klimmzugmaschine mit Unterstützung"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assisted pull-up machine"
+          }
+        }
+      }
+    },
     "Back" : {
       "localizations" : {
         "de" : {
@@ -175,26 +265,26 @@
         }
       }
     },
-    "bands" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "back_extension_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Widerstandsbänder"
+            "value" : "Rückenstrecker-Maschine"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bands"
+            "value" : "Back extension machine"
           }
         }
       }
     },
     "barbell" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -211,8 +301,26 @@
         }
       }
     },
+    "battle_rope" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battle Rope"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Battle rope"
+          }
+        }
+      }
+    },
     "beginner" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -229,8 +337,26 @@
         }
       }
     },
-    "biceps" : {
-      "comment" : "A muscle from the exercise catalog",
+    "bicep_curl_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bizepsmaschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Biceps curl machine"
+          }
+        }
+      }
+    },
+    "biceps_brachii" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -247,26 +373,62 @@
         }
       }
     },
-    "body only" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "bicycle" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Körpergewicht"
+            "value" : "Fahrrad"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Body only"
+            "value" : "Bicycle"
+          }
+        }
+      }
+    },
+    "brachialis" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oberarmmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brachialis"
+          }
+        }
+      }
+    },
+    "brachioradialis" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oberarmspeichenmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brachioradialis"
           }
         }
       }
     },
     "cable" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -283,26 +445,8 @@
         }
       }
     },
-    "calves" : {
-      "comment" : "A muscle from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Waden"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calves"
-          }
-        }
-      }
-    },
     "cardio" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -329,30 +473,66 @@
         }
       }
     },
-    "chest" : {
-      "comment" : "A muscle from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brust"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Chest"
-          }
-        }
-      }
-    },
     "Chest-heavy" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brustbetont"
+          }
+        }
+      }
+    },
+    "chest_fly_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Butterfly-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chest fly machine"
+          }
+        }
+      }
+    },
+    "chest_press_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brustpresse"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chest press machine"
+          }
+        }
+      }
+    },
+    "climbing_rope" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kletterseil"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Climbing rope"
           }
         }
       }
@@ -407,6 +587,42 @@
         }
       }
     },
+    "dip_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dip-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dip machine"
+          }
+        }
+      }
+    },
+    "dip_station" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dipstation"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dip station"
+          }
+        }
+      }
+    },
     "Done" : {
       "localizations" : {
         "de" : {
@@ -417,8 +633,26 @@
         }
       }
     },
+    "donkey_calf_raise_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donkey-Wadenmaschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donkey calf raise machine"
+          }
+        }
+      }
+    },
     "dumbbell" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -435,8 +669,44 @@
         }
       }
     },
-    "e-z curl bar" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "elliptical" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crosstrainer"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elliptical"
+          }
+        }
+      }
+    },
+    "erector_spinae" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rückenstrecker"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lower back"
+          }
+        }
+      }
+    },
+    "ez_bar" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -448,43 +718,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-Z curl bar"
-          }
-        }
-      }
-    },
-    "exercise ball" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gymnastikball"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Exercise ball"
-          }
-        }
-      }
-    },
-    "expert" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Experte"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expert"
+            "value" : "EZ bar"
           }
         }
       }
@@ -499,38 +733,56 @@
         }
       }
     },
-    "foam roll" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "flat_bench" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faszienrolle"
+            "value" : "Flachbank"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Foam roll"
+            "value" : "Flat bench"
           }
         }
       }
     },
-    "forearms" : {
-      "comment" : "A muscle from the exercise catalog",
+    "forearm_extensors" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unterarme"
+            "value" : "Unterarmstrecker"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forearms"
+            "value" : "Forearm extensors"
+          }
+        }
+      }
+    },
+    "forearm_flexors" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unterarmbeuger"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forearm flexors"
           }
         }
       }
@@ -545,8 +797,44 @@
         }
       }
     },
-    "glutes" : {
-      "comment" : "A muscle from the exercise catalog",
+    "gastrocnemius" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waden"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calves"
+          }
+        }
+      }
+    },
+    "glute_ham_developer" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glute-Ham-Developer"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glute ham developer"
+          }
+        }
+      }
+    },
+    "gluteus_maximus" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -563,8 +851,44 @@
         }
       }
     },
+    "gluteus_medius" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mittlerer Gesäßmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glute medius"
+          }
+        }
+      }
+    },
+    "hack_squat" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hackenschmidt-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hack squat machine"
+          }
+        }
+      }
+    },
     "hamstrings" : {
-      "comment" : "A muscle from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -581,8 +905,80 @@
         }
       }
     },
+    "hip_abduction_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abduktoren-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hip abduction machine"
+          }
+        }
+      }
+    },
+    "hip_adduction_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adduktoren-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hip adduction machine"
+          }
+        }
+      }
+    },
+    "hip_flexors" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hüftbeuger"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hip flexors"
+          }
+        }
+      }
+    },
+    "hip_thrust_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hip-Thrust-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hip thrust machine"
+          }
+        }
+      }
+    },
     "intermediate" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -599,20 +995,38 @@
         }
       }
     },
-    "kettlebells" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "jump_rope" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kettlebells"
+            "value" : "Springseil"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kettlebells"
+            "value" : "Jump rope"
+          }
+        }
+      }
+    },
+    "kettlebell" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kettlebell"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kettlebell"
           }
         }
       }
@@ -627,8 +1041,44 @@
         }
       }
     },
-    "lats" : {
-      "comment" : "A muscle from the exercise catalog",
+    "lat_pulldown_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Latzugmaschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lat pulldown machine"
+          }
+        }
+      }
+    },
+    "lateral_deltoid" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seitliche Schulter"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Side delts"
+          }
+        }
+      }
+    },
+    "latissimus_dorsi" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -651,6 +1101,60 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beinbetont"
+          }
+        }
+      }
+    },
+    "leg_curl" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beincurl-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leg curl machine"
+          }
+        }
+      }
+    },
+    "leg_extension" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beinstrecker-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leg extension machine"
+          }
+        }
+      }
+    },
+    "leg_press" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beinpresse"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leg press"
           }
         }
       }
@@ -707,44 +1211,26 @@
         }
       }
     },
-    "lower back" : {
-      "comment" : "A muscle from the exercise catalog",
+    "loop_band" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unterer Rücken"
+            "value" : "Miniband"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lower back"
+            "value" : "Loop band"
           }
         }
       }
     },
-    "machine" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Maschine"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Machine"
-          }
-        }
-      }
-    },
-    "medicine ball" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "medicine_ball" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -757,42 +1243,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medicine ball"
-          }
-        }
-      }
-    },
-    "middle back" : {
-      "comment" : "A muscle from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mittlerer Rücken"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Middle back"
-          }
-        }
-      }
-    },
-    "neck" : {
-      "comment" : "A muscle from the exercise catalog",
-      "extractionState" : "manual",
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nacken"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Neck"
           }
         }
       }
@@ -857,8 +1307,26 @@
         }
       }
     },
-    "olympic weightlifting" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "obliques" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schräge Bauchmuskeln"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obliques"
+          }
+        }
+      }
+    },
+    "olympic" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -870,31 +1338,121 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Olympic weightlifting"
+            "value" : "Olympic lifting"
           }
         }
       }
     },
-    "other" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "pec_deck" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sonstiges"
+            "value" : "Butterfly"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Other"
+            "value" : "Pec deck"
+          }
+        }
+      }
+    },
+    "pectoralis_major" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brust"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chest"
+          }
+        }
+      }
+    },
+    "plate_loaded_dip_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dip-Maschine mit Scheiben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plate-loaded dip machine"
+          }
+        }
+      }
+    },
+    "plate_loaded_lateral_raise_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seitheben-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lateral raise machine"
+          }
+        }
+      }
+    },
+    "plates" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hantelscheiben"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plates"
+          }
+        }
+      }
+    },
+    "plyo_box" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sprungbox"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plyo box"
           }
         }
       }
     },
     "plyometrics" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -911,26 +1469,80 @@
         }
       }
     },
-    "powerlifting" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "posterior_deltoid" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Powerlifting"
+            "value" : "Hintere Schulter"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Powerlifting"
+            "value" : "Rear delts"
+          }
+        }
+      }
+    },
+    "preacher_curl_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scottcurl-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preacher curl machine"
+          }
+        }
+      }
+    },
+    "pull_up_bar" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klimmzugstange"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pull-up bar"
+          }
+        }
+      }
+    },
+    "quadratus_lumborum" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quadratischer Lendenmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quadratus lumborum"
           }
         }
       }
     },
     "quadriceps" : {
-      "comment" : "A muscle from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -947,12 +1559,174 @@
         }
       }
     },
+    "rectus_abdominis" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gerader Bauchmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abs"
+          }
+        }
+      }
+    },
+    "resistance_band" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widerstandsband"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Resistance band"
+          }
+        }
+      }
+    },
+    "reverse_fly_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse-Butterfly-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reverse fly machine"
+          }
+        }
+      }
+    },
+    "rhomboids" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rautenmuskeln"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rhomboids"
+          }
+        }
+      }
+    },
+    "rings" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ringe"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rings"
+          }
+        }
+      }
+    },
+    "rower" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rudergerät"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rower"
+          }
+        }
+      }
+    },
+    "seated_calf_raise_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wadenmaschine sitzend"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seated calf raise machine"
+          }
+        }
+      }
+    },
+    "seated_row_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rudermaschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seated row machine"
+          }
+        }
+      }
+    },
     "Shoulder-heavy" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Schulterbetont"
+          }
+        }
+      }
+    },
+    "shoulder_press_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulterpresse"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shoulder press machine"
           }
         }
       }
@@ -967,20 +1741,20 @@
         }
       }
     },
-    "shoulders" : {
-      "comment" : "A muscle from the exercise catalog",
+    "shrug_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schultern"
+            "value" : "Shrug-Maschine"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Shoulders"
+            "value" : "Shrug machine"
           }
         }
       }
@@ -995,8 +1769,170 @@
         }
       }
     },
+    "ski_erg" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SkiErg"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "SkiErg"
+          }
+        }
+      }
+    },
+    "slam_ball" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slamball"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slam ball"
+          }
+        }
+      }
+    },
+    "sled" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schlitten"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sled"
+          }
+        }
+      }
+    },
+    "smith_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Multipresse"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Smith machine"
+          }
+        }
+      }
+    },
+    "soleus" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schollenmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soleus"
+          }
+        }
+      }
+    },
+    "stability_ball" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gymnastikball"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stability ball"
+          }
+        }
+      }
+    },
+    "stair_climber" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treppensteiger"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stair climber"
+          }
+        }
+      }
+    },
+    "standing_calf_raise_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wadenmaschine stehend"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standing calf raise machine"
+          }
+        }
+      }
+    },
+    "stationary_bike" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ergometer"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stationary bike"
+          }
+        }
+      }
+    },
     "strength" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -1014,7 +1950,7 @@
       }
     },
     "stretching" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -1031,20 +1967,20 @@
         }
       }
     },
-    "strongman" : {
-      "comment" : "A level, piece of equipment or category from the exercise catalog",
+    "suspension_trainer" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Strongman"
+            "value" : "Schlingentrainer"
           }
         },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Strongman"
+            "value" : "Suspension trainer"
           }
         }
       }
@@ -1059,6 +1995,24 @@
         }
       }
     },
+    "tibialis_anterior" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schienbeinmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shins"
+          }
+        }
+      }
+    },
     "Train" : {
       "localizations" : {
         "de" : {
@@ -1069,8 +2023,44 @@
         }
       }
     },
-    "traps" : {
-      "comment" : "A muscle from the exercise catalog",
+    "transverse_abdominis" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Querer Bauchmuskel"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deep core"
+          }
+        }
+      }
+    },
+    "trap_bar" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trap Bar"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trap bar"
+          }
+        }
+      }
+    },
+    "trapezius" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -1087,8 +2077,44 @@
         }
       }
     },
-    "triceps" : {
-      "comment" : "A muscle from the exercise catalog",
+    "treadmill" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laufband"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treadmill"
+          }
+        }
+      }
+    },
+    "tricep_extension_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trizepsmaschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Triceps extension machine"
+          }
+        }
+      }
+    },
+    "triceps_brachii" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
@@ -1115,6 +2141,24 @@
         }
       }
     },
+    "wall_ball" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wall Ball"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wall ball"
+          }
+        }
+      }
+    },
     "Weight" : {
       "localizations" : {
         "de" : {
@@ -1131,6 +2175,24 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Training"
+          }
+        }
+      }
+    },
+    "wrist_roller" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handgelenkroller"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wrist roller"
           }
         }
       }

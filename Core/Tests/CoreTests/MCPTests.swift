@@ -52,32 +52,32 @@ import Testing
     // MARK: Tools
 
     @Test func createPlanBuildsThePlanWithTargets() throws {
-        _ = try tool("create_plan", ["name": "Legs", "exercises": [["name": "Barbell Squat", "sets": 5, "reps": 5, "weight_kg": 100], ["name": "Zercher Carry"]]])
+        _ = try tool("create_plan", ["name": "Legs", "exercises": [["name": "Barbell Back Squat", "sets": 5, "reps": 5, "weight_kg": 100], ["name": "Zercher Carry"]]])
         let plan = try #require(context.fetch(FetchDescriptor<Plan>()).first)
         let squat = plan.sortedItems[0]
         #expect(plan.name == "Legs" && plan.sortedItems.count == 2)
-        #expect((squat.exerciseID, squat.targetSets, squat.targetReps, squat.targetWeightKg) == ("Barbell_Squat", 5, 5, 100))
+        #expect((squat.exerciseID, squat.targetSets, squat.targetReps, squat.targetWeightKg) == ("squat", 5, 5, 100))
     }
 
     @Test func addExercisesExtendsAPlanFoundByName() throws {
-        let plan = makePlan(context, "Barbell_Squat")
+        let plan = makePlan(context, "squat")
         context.rename(plan, to: "Legs")
         _ = try tool("add_exercises", ["plan": "legs", "exercises": [["name": "Barbell Deadlift"]]])
-        #expect(plan.sortedItems.map(\.exerciseID) == ["Barbell_Squat", "Barbell_Deadlift"])
+        #expect(plan.sortedItems.map(\.exerciseID) == ["squat", "deadlift"])
     }
 
     @Test func addingToAPlanThatDoesNotExistIsAnError() throws {
-        #expect(try tool("add_exercises", ["plan": "Legs", "exercises": [["name": "Barbell Squat"]]]).isError)
+        #expect(try tool("add_exercises", ["plan": "Legs", "exercises": [["name": "Barbell Back Squat"]]]).isError)
     }
 
     @Test func listPlansShowsExercisesAndTargets() throws {
         #expect(try tool("list_plans").text == "No plans yet.")
-        context.rename(makePlan(context, "Barbell_Squat"), to: "Legs")
-        #expect(try tool("list_plans").text == "Legs\n- Barbell Squat: 3 × 10 at 0 kg")
+        context.rename(makePlan(context, "squat"), to: "Legs")
+        #expect(try tool("list_plans").text == "Legs\n- Barbell Back Squat: 3 × 10 at 0 kg")
     }
 
     @Test func searchFindsCatalogNames() throws {
-        #expect(try tool("search_exercises", ["query": "barbell squat"]).text.contains("Barbell Squat"))
+        #expect(try tool("search_exercises", ["query": "barbell squat"]).text.contains("Barbell Back Squat"))
     }
 
     @Test func editingWaitsForAnUpdateAfterNewerActions() throws {

@@ -3,9 +3,9 @@ import Testing
 
 struct WeightsTests {
     @Test func dumbbellsGoUpByOneKiloToTenThenByTwo() {
-        #expect(Weights.next(after: 5, for: "Dumbbell_Bicep_Curl") == 6)
-        #expect(Weights.next(after: 20, for: "Dumbbell_Bicep_Curl") == 22)
-        #expect(Weights.previous(before: 12, for: "Dumbbell_Bicep_Curl") == 10)
+        #expect(Weights.next(after: 5, for: "bicep-curl") == 6)
+        #expect(Weights.next(after: 20, for: "bicep-curl") == 22)
+        #expect(Weights.previous(before: 12, for: "bicep-curl") == 10)
     }
 
     @Test func typedWeightTakesACommaOrAPoint() {
@@ -18,20 +18,20 @@ struct WeightsTests {
     }
 
     @Test func barbellsGoUpByTheSmallestPlates() {
-        #expect(Weights.next(after: 60, for: "Barbell_Squat") == 62.5)
+        #expect(Weights.next(after: 60, for: "squat") == 62.5)
     }
 
     @Test func kettlebellsComeInTheirUsualSizes() {
-        #expect(Weights.next(after: 28, for: "Advanced_Kettlebell_Windmill") == 32)
+        #expect(Weights.next(after: 28, for: "kettlebell-swing") == 32)
     }
 
     @Test func machinesGoUpByTheirStack() {
-        #expect(Weights.next(after: 40, for: "Ab_Crunch_Machine") == 45)
+        #expect(Weights.next(after: 40, for: "machine-seated-crunch") == 45)
     }
 
     @Test func aWeightThatDoesNotExistStepsToTheNearestRealOne() {
-        #expect(Weights.next(after: 20.7, for: "Dumbbell_Bicep_Curl") == 22)
-        #expect(Weights.previous(before: 20.7, for: "Dumbbell_Bicep_Curl") == 20)
+        #expect(Weights.next(after: 20.7, for: "bicep-curl") == 22)
+        #expect(Weights.previous(before: 20.7, for: "bicep-curl") == 20)
     }
 
     @Test func ownExercisesStepByPlates() {
@@ -39,7 +39,7 @@ struct WeightsTests {
     }
 
     @Test func theEndsOfTheRangeHold() {
-        #expect(Weights.previous(before: 0, for: "Barbell_Squat") == 0)
-        #expect(Weights.next(after: 48, for: "Advanced_Kettlebell_Windmill") == 48)
+        #expect(Weights.previous(before: 0, for: "squat") == 0)
+        #expect(Weights.next(after: 48, for: "kettlebell-swing") == 48)
     }
 }

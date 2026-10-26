@@ -14,8 +14,8 @@ import Testing
     }
 
     @Test func backupHoldsBothLogs() throws {
-        makePlan(context, "Barbell_Squat")
-        context.editExercise("Barbell_Squat", details: "Below parallel")
+        makePlan(context, "squat")
+        context.editExercise("squat", details: "Below parallel")
         try context.save()
         try Backup.write(container, to: folder)
         let backup = try JSONDecoder().decode(Backup.File.self, from: Data(contentsOf: file))
@@ -24,20 +24,20 @@ import Testing
     }
 
     @Test func restoringReplacesTheStoreWithTheBackup() throws {
-        let workout = context.startWorkout(makePlan(context, "Barbell_Squat"))
-        context.log("Barbell_Squat", reps: 5, weightKg: 100, in: workout)
-        context.setPhoto("Barbell_Squat", to: testPhoto())
+        let workout = context.startWorkout(makePlan(context, "squat"))
+        context.log("squat", reps: 5, weightKg: 100, in: workout)
+        context.setPhoto("squat", to: testPhoto())
         try context.save()
         try Backup.write(container, to: folder)
         let backedUp = try snapshot(context)
         context.deleteWorkout(workout)
-        makePlan(context, "Pullups")
+        makePlan(context, "pull-up")
         try Backup.restore(file, into: context)
         #expect(try snapshot(context) == backedUp)
     }
 
     @Test func aBrokenBackupChangesNothing() throws {
-        makePlan(context, "Barbell_Squat")
+        makePlan(context, "squat")
         let before = try snapshot(context)
         try Data("not a backup".utf8).write(to: file)
         #expect(throws: (any Error).self) { try Backup.restore(file, into: context) }

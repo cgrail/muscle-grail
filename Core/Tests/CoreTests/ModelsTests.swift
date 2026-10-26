@@ -25,17 +25,17 @@ import Testing
     }
 
     @Test func planFocusIsTheRegionWithMoreThanHalfTheSets() {
-        #expect(makePlan(context, "Barbell_Squat", "Lying_Leg_Curls", "Barbell_Curl").focus == "Leg-heavy")
+        #expect(makePlan(context, "squat", "leg-curl", "barbell-curl").focus == "Leg-heavy")
     }
 
     @Test func planFocusNamesTheTopTwoRegionsWhenTheyGetTwoThirds() {
-        let plan = makePlan(context, "Barbell_Bench_Press_-_Medium_Grip", "Pullups", "Plank")
+        let plan = makePlan(context, "bench-press", "pull-up", "plank")
         context.setTargets(plan.sortedItems[2], sets: 1)
         #expect(plan.focus == "Chest & Back")
     }
 
     @Test func planFocusIsFullBodyWhenSpread() {
-        #expect(makePlan(context, "Barbell_Squat", "Barbell_Bench_Press_-_Medium_Grip", "Pullups").focus == "Full body")
+        #expect(makePlan(context, "squat", "bench-press", "pull-up").focus == "Full body")
     }
 
     @Test func planOfYourOwnExercisesHasNoFocus() {

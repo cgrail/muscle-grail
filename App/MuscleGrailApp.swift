@@ -46,7 +46,7 @@ struct MuscleGrailApp: App {
         Settings {
             TabView {
                 Tab("General", systemImage: "gear") {
-                    Form { LanguagePicker(); BackupSettings() }.formStyle(.grouped).frame(width: 560).environment(backup)
+                    Form { LanguagePicker(); BackupSettings(); Credits() }.formStyle(.grouped).frame(width: 560).environment(backup)
                 }
                 Tab("Claude", systemImage: "sparkles") { ClaudeSettings().environment(claude) }
             }

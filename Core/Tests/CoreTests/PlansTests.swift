@@ -10,8 +10,8 @@ import Testing
     @Test func describedExercisesUseTheirCatalogEntryIgnoringCase() {
         let custom = context.createExercise(named: "Cable Fly")
         let plan = makePlan(context)
-        context.add([PlannedExercise(name: "barbell squat", sets: 3, reps: 10, weightKg: 0), PlannedExercise(name: "cable fly", sets: 3, reps: 10, weightKg: 0)], to: plan)
-        #expect(plan.sortedItems.map(\.exerciseID) == ["Barbell_Squat", custom])
+        context.add([PlannedExercise(name: "barbell back squat", sets: 3, reps: 10, weightKg: 0), PlannedExercise(name: "cable fly", sets: 3, reps: 10, weightKg: 0)], to: plan)
+        #expect(plan.sortedItems.map(\.exerciseID) == ["squat", custom])
     }
 
     @Test func describedExerciseNotInTheCatalogBecomesYourOwn() {
@@ -23,7 +23,7 @@ import Testing
 
     @Test func describedExerciseGetsItsTargets() {
         let plan = makePlan(context)
-        context.add([PlannedExercise(name: "Barbell Squat", sets: 5, reps: 5, weightKg: 100)], to: plan)
+        context.add([PlannedExercise(name: "Barbell Back Squat", sets: 5, reps: 5, weightKg: 100)], to: plan)
         let item = plan.sortedItems[0]
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 100))
     }

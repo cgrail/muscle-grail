@@ -12,7 +12,7 @@ import Testing
         let custom = context.createExercise(named: "Cable Fly")
         context.editExercise(custom, details: "Slow and wide", videoURL: "https://youtu.be/example")
         context.setPhoto(custom, to: testPhoto())
-        context.editExercise("Barbell_Squat", details: "Below parallel")
+        context.editExercise("squat", details: "Below parallel")
         let plan = makePlan(context, "Bench", custom, "Row")
         context.rename(plan, to: "Push")
         let items = plan.sortedItems
@@ -65,7 +65,7 @@ import Testing
             #"{"addPlan":{"id":"00000000-0000-0000-0000-000000000001","name":"Push","order":0}}"#,
             #"{"renamePlan":{"id":"00000000-0000-0000-0000-000000000001","name":"Push day"}}"#,
             #"{"deletePlan":{"id":"00000000-0000-0000-0000-000000000001"}}"#,
-            #"{"addExercise":{"exerciseID":"Barbell_Bench_Press_-_Medium_Grip","id":"00000000-0000-0000-0000-000000000002","order":0,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
+            #"{"addExercise":{"exerciseID":"bench-press","id":"00000000-0000-0000-0000-000000000002","order":0,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
             #"{"setTargets":{"id":"00000000-0000-0000-0000-000000000002","reps":5,"sets":5,"weightKg":80}}"#,
             #"{"deleteExercise":{"id":"00000000-0000-0000-0000-000000000002"}}"#,
             #"{"reorder":{"ids":["00000000-0000-0000-0000-000000000002","00000000-0000-0000-0000-000000000003"]}}"#,

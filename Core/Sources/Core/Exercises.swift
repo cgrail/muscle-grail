@@ -18,10 +18,10 @@ public func exerciseName(_ id: String, entry: CatalogEntry?, localized: Bool = t
     return localized ? bundled.label : bundled.name
 }
 
-/// How to do `id`, a paragraph per step: the user's own description, else the bundled instructions.
+/// How to do `id`, a paragraph per step: the user's own description, else RepDB's steps in the user's language.
 public func instructions(_ id: String, entry: CatalogEntry?) -> [String] {
     if let details = entry?.details, !details.isEmpty { return [details] }
-    return CatalogExercise.byID[id]?.instructions.map { translated($0) } ?? []
+    return CatalogExercise.byID[id]?.steps ?? []
 }
 
 /// A video of `id`: the user's own link, else a YouTube search for its name.

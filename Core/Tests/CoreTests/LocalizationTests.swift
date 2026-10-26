@@ -25,7 +25,7 @@ struct LocalizationTests {
         }
     }
 
-    /// The catalog's text is looked up at runtime, so the build can't add it to a String Catalog.
+    /// The catalog's terms are looked up at runtime, so the build can't add them to the String Catalog.
     func german(_ table: String) throws -> [String: String] {
         let url = try #require(Bundle.module.url(forResource: table, withExtension: "strings", subdirectory: nil, localization: "de"))
         return try #require(NSDictionary(contentsOf: url) as? [String: String])
@@ -37,15 +37,10 @@ struct LocalizationTests {
         #expect(try terms.filter { try german("Localizable")[$0] == nil } == [])
     }
 
-    @Test func everyExerciseNameAndStepHasGerman() throws {
-        let german = try german("Exercises")
-        let text = CatalogExercise.all.flatMap { [$0.name] + $0.instructions }.filter { !$0.isEmpty }
-        #expect(text.filter { german[$0] == nil } == [])
-    }
-
-    @Test func exercisesTranslateFromTheirCatalog() throws {
-        let de = try #require(Bundle.module.url(forResource: "de", withExtension: "lproj").flatMap(Bundle.init(url:)))
-        #expect(translated("Barbell Squat", bundle: de) == "Langhantel-Kniebeuge")
+    /// RepDB brings German itself; a new commit of it must too.
+    @Test func everyExerciseComesInGerman() {
+        let missing = CatalogExercise.all.filter { $0.germanName.isEmpty || $0.germanInstructions.count != $0.instructions.count }
+        #expect(missing.map(\.id) == [])
     }
 
     @Test func coreShipsItsGermanStrings() {

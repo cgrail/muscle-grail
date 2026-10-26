@@ -13,8 +13,8 @@ import Testing
     }
 
     @Test func bundledExerciseKeepsItsNameWhenOnlyItsDetailsChange() {
-        context.editExercise("Barbell_Squat", details: "Below parallel")
-        #expect(exerciseName("Barbell_Squat", entry: context.catalogEntry("Barbell_Squat")) == "Barbell Squat")
+        context.editExercise("squat", details: "Below parallel")
+        #expect(exerciseName("squat", entry: context.catalogEntry("squat")) == "Barbell Back Squat")
     }
 
     @Test func customExerciseWhoseEntryHasNotSyncedGetsAPlaceholder() {
@@ -22,21 +22,21 @@ import Testing
     }
 
     @Test func bundledExerciseComesWithItsInstructions() {
-        #expect(instructions("Barbell_Squat", entry: nil).count == 6)
+        #expect(instructions("squat", entry: nil).count == 5)
     }
 
     @Test func yourDescriptionReplacesTheBundledInstructions() {
-        context.editExercise("Barbell_Squat", details: "Below parallel")
-        #expect(instructions("Barbell_Squat", entry: context.catalogEntry("Barbell_Squat")) == ["Below parallel"])
+        context.editExercise("squat", details: "Below parallel")
+        #expect(instructions("squat", entry: context.catalogEntry("squat")) == ["Below parallel"])
     }
 
     @Test func yourVideoLinkIsTheVideo() {
-        context.editExercise("Barbell_Squat", videoURL: "https://example.com/squat")
-        #expect(videoURL("Barbell_Squat", entry: context.catalogEntry("Barbell_Squat"))?.absoluteString == "https://example.com/squat")
+        context.editExercise("squat", videoURL: "https://example.com/squat")
+        #expect(videoURL("squat", entry: context.catalogEntry("squat"))?.absoluteString == "https://example.com/squat")
     }
 
     @Test func withoutYourLinkTheVideoIsAYouTubeSearch() {
-        #expect(videoURL("Barbell_Squat", entry: nil)?.absoluteString == "https://www.youtube.com/results?search_query=Barbell%20Squat%20form")
+        #expect(videoURL("squat", entry: nil)?.absoluteString == "https://www.youtube.com/results?search_query=Barbell%20Back%20Squat%20form")
     }
 
     @Test func customExercisesWithTheSameNameNeverShareAnID() {
@@ -83,14 +83,14 @@ import Testing
     let cache = PhotoCache(folder: URL.temporaryDirectory.appending(path: UUID().uuidString))
 
     @Test func photosDownloadOnceAndShowWithoutNetwork() async {
-        await cache.download(["Barbell_Squat", "Barbell_Squat"]) { _ in testPhoto() }
-        await cache.download(["Barbell_Squat"]) { _ in Issue.record("downloaded again"); return Data() }
-        #expect(cache.image(for: "Barbell_Squat", entry: nil) != nil)
+        await cache.download(["squat", "squat"]) { _ in testPhoto() }
+        await cache.download(["squat"]) { _ in Issue.record("downloaded again"); return Data() }
+        #expect(cache.image(for: "squat", entry: nil) != nil)
     }
 
     @Test func withoutNetworkThereIsNoPhoto() async {
-        await cache.download(["Barbell_Squat"]) { _ in throw URLError(.notConnectedToInternet) }
-        #expect(cache.image(for: "Barbell_Squat", entry: nil) == nil)
+        await cache.download(["squat"]) { _ in throw URLError(.notConnectedToInternet) }
+        #expect(cache.image(for: "squat", entry: nil) == nil)
     }
 
     @Test func yourOwnPhotoComesFirst() {

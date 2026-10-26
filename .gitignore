@@ -61,3 +61,7 @@ fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
 .DS_Store
+
+# RepDB exercise data: downloaded by Core/fetch-catalog.sh, never committed (its license forbids republishing)
+Core/Sources/Core/RepDB/exercises.json
+Core/Sources/Core/RepDB/.commit
