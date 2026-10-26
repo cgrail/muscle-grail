@@ -7,7 +7,7 @@ import SwiftData
 /// readable by every version, so an old app can always log in the gym.
 public enum Change: Codable, Equatable, Sendable {
     /// The format this app writes. An app that finds actions of a higher one leaves editing to an update.
-    public static let version = 1
+    public static let version = 2
 
     case addPlan(id: UUID, name: String, order: Int)
     case renamePlan(id: UUID, name: String)
@@ -17,6 +17,8 @@ public enum Change: Codable, Equatable, Sendable {
     case deleteExercise(id: UUID)
     /// Plans or exercises, in their new order.
     case reorder(ids: [UUID])
+    /// An exercise into another plan, at `order`, with its targets. Version 2.
+    case moveExercise(id: UUID, plan: UUID, order: Int)
     case startWorkout(id: UUID, plan: UUID, start: Date)
     case logSet(id: UUID, workout: UUID, exerciseID: String, reps: Int, weightKg: Double, date: Date)
     case deleteSet(id: UUID)
@@ -114,6 +116,9 @@ public extension ModelContext {
             (item.targetSets, item.targetReps, item.targetWeightKg) = (sets, reps, weightKg)
         case let .deleteExercise(id):
             if let item = item(id) { delete(item) }
+        case let .moveExercise(id, planID, order):
+            guard let item = item(id), let plan = plan(planID) else { return }
+            (item.plan, item.order) = (plan, order)
         case let .reorder(ids):
             for (index, id) in ids.enumerated() {
                 let row: (any Ordered)? = plan(id) ?? item(id)

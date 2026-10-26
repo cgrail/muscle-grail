@@ -19,6 +19,7 @@ import Testing
         context.setTargets(items[0], sets: 5, reps: 5, weightKg: 80)
         context.reorder(items, fromOffsets: [2], toOffset: 0)
         context.deleteExercise(items[1])
+        context.move(items[2], to: makePlan(context, "Squat"))
         let workout = context.startWorkout(plan)
         let mistake = context.log("Bench", reps: 50, weightKg: 80, in: workout)
         context.log("Bench", reps: 5, weightKg: 80, in: workout)
@@ -78,7 +79,18 @@ import Testing
             #"{"editExercise":{"details":"Slow","id":"00000000-0000-0000-0000-000000000007","name":"Cable Fly","videoURL":"https://youtu.be/example"}}"#,
             #"{"setPhoto":{"id":"00000000-0000-0000-0000-000000000007","photo":"AQID"}}"#,
         ]
-        for json in version1 {
+        expectReads(version1)
+    }
+
+    /// What version 2 added, frozen like version 1.
+    @Test func everyVersion2ChangeStillReads() throws {
+        expectReads([
+            #"{"moveExercise":{"id":"00000000-0000-0000-0000-000000000002","order":3,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
+        ])
+    }
+
+    func expectReads(_ changes: [String]) {
+        for json in changes {
             #expect(throws: Never.self, "\(json)") { try JSONDecoder().decode(Change.self, from: Data(json.utf8)) }
         }
     }

@@ -1,7 +1,7 @@
 # Todo
 
 - [ ] add import/export mechanism from gymbook
-- [ ] move an exercise to another plan in one step: a `moveExercise` change (`Change.version` 2) that keeps its sets, reps and weight, as "Move to" in an exercise's menu on the Mac and the iPhone
+- [x] move an exercise to another plan in one step: a `moveExercise` change (`Change.version` 2) that keeps its sets, reps and weight, as "Move to" in an exercise's menu on the Mac and the iPhone
 - [ ] replace an exercise in place: a `replaceExercise` change that keeps its position; the new exercise's weight comes from your own last set of it, else 0 kg. "Replace with…" in an exercise's menu on the Mac and the iPhone
 - [ ] when the store can't be opened, don't crash: say this version can't read the data on the device and offer "Download again" (delete this device's copy, refill from iCloud) or "Start from scratch" (after a confirmation, also delete the app's data in iCloud, so every device starts empty), on the iPhone, the Mac and the watch (PLAN.md, Model changes). Needed before the first field goes into `SchemaV1` in place
 - [ ] plan history (PLAN.md, Plan history): the list of plan changes across plans and per plan, saying what, in which plan, when and by whom, one entry per edit, on the Mac (sidebar under Library, plan page) and the iPhone (Plans tab, plan editor), built off the main actor. Add `Action.author` and `Action.batch` to `SchemaV1` in place (approved, PLAN.md, Model changes) and keep them in `Backup`

@@ -51,6 +51,11 @@ public extension ModelContext {
         record(.setTargets(id: item.id, sets: sets ?? item.targetSets, reps: reps ?? item.targetReps, weightKg: weightKg ?? item.targetWeightKg))
     }
 
+    /// Moves `item` to the end of `plan`, with its sets, reps and weight.
+    func move(_ item: PlanItem, to plan: Plan) {
+        record(.moveExercise(id: item.id, plan: plan.id, order: (plan.sortedItems.last?.order ?? -1) + 1))
+    }
+
     func deleteExercise(_ item: PlanItem) {
         record(.deleteExercise(id: item.id))
     }

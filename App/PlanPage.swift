@@ -89,6 +89,7 @@ private struct PlanRow: View {
             .frame(width: Column.weight, alignment: .leading)
             Menu {
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
+                MoveToPlan(item: item)
                 Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
             } label: {
                 Image(systemName: "ellipsis")

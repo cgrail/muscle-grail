@@ -5,6 +5,7 @@
 ### Plans
 - The Mac app looks like Apple Music: plans sit in the sidebar like playlists, with their first exercise's photo as artwork. A plan opens as a table of its exercises with sets, reps and weight to edit in place, and a search to find an exercise in it. Under Library, every exercise is listed with its muscles and equipment, to sort, search and add to a plan.
 - On the Mac, the up and down arrow keys move between a plan's exercises.
+- Move an exercise to another plan from its menu, on the Mac and the iPhone. It keeps its sets, reps and weight.
 - On the Mac, type a plan's sets and reps, or step to them.
 - Build plans on the Mac from a searchable catalog of 650 exercises by RepDB, each with illustrations and step-by-step instructions, or add your own, each with target sets, reps and weight. Settings credits RepDB.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.

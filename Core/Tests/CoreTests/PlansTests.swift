@@ -28,6 +28,15 @@ import Testing
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 100))
     }
 
+    @Test func movedExerciseKeepsItsTargetsAtTheEndOfTheOtherPlan() {
+        let item = makePlan(context, "Bench").sortedItems[0]
+        context.setTargets(item, sets: 5, reps: 5, weightKg: 80)
+        let other = makePlan(context, "Squat")
+        context.move(item, to: other)
+        #expect(other.sortedItems.map(\.exerciseID) == ["Squat", "Bench"])
+        #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 80))
+    }
+
     @Test func settingOneTargetKeepsTheOthers() {
         let item = makePlan(context, "Bench").sortedItems[0]
         context.setTargets(item, sets: 5)

@@ -47,6 +47,7 @@ struct PlanEditor: View {
                     ForEach(plan.sortedItems) { item in
                         PlanItemRow(item: item)
                             .contextMenu {
+                                MoveToPlan(item: item)
                                 Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
                             }
                     }
@@ -91,6 +92,21 @@ private struct PlanItemRow: View {
             }
         }
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
+    }
+}
+
+/// An exercise's "Move to" menu: every other plan, to move it to the end of, with its sets, reps and weight.
+struct MoveToPlan: View {
+    @Environment(\.modelContext) private var context
+    @Query(sort: \Plan.order) private var plans: [Plan]
+    let item: PlanItem
+
+    var body: some View {
+        Menu("Move to", systemImage: "arrow.turn.up.right") {
+            ForEach(plans.filter { $0.id != item.plan?.id }) { plan in
+                Button(plan.title) { context.move(item, to: plan) }
+            }
+        }
     }
 }
 
