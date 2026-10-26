@@ -10,6 +10,12 @@ public extension CatalogExercise {
     static let byID = Dictionary(all.map { ($0.id, $0) }, uniquingKeysWith: { first, _ in first })
 }
 
+public extension CatalogEntry {
+    /// An exercise the user made: named, and not bundled. An entry without a name only adds to a bundled exercise,
+    /// or to one the old catalog had, so it lists nowhere.
+    var isOwnExercise: Bool { !name.isEmpty && CatalogExercise.byID[id] == nil }
+}
+
 /// The name to show for `id`: the user's own, else the bundled one in the user's language, or in English (`localized: false`)
 /// where a machine reads it: Claude and the video search. A custom exercise whose entry hasn't synced yet gets a placeholder.
 public func exerciseName(_ id: String, entry: CatalogEntry?, localized: Bool = true) -> String {

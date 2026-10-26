@@ -53,7 +53,7 @@ import SwiftData
         case "list_plans":
             return plans.isEmpty ? "No plans yet." : plans.map(describe).joined(separator: "\n\n")
         case "search_exercises":
-            let custom = try context.fetch(FetchDescriptor<CatalogEntry>()).filter { CatalogExercise.byID[$0.id] == nil }.map(\.name)
+            let custom = try context.fetch(FetchDescriptor<CatalogEntry>()).filter(\.isOwnExercise).map(\.name)
             return catalogNames(matching: arguments["query"] as? String ?? "", custom: custom, limit: 20).joined(separator: "\n")
         case "create_plan":
             try requireEditing()

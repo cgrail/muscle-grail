@@ -17,6 +17,11 @@ import Testing
         #expect(exerciseName("squat", entry: context.catalogEntry("squat")) == "Barbell Back Squat")
     }
 
+    @Test func entryWithoutANameForAnExerciseNotBundledIsNoExerciseOfYourOwn() {
+        context.editExercise("Old_Catalog_Curl", details: "Slow")
+        #expect(context.catalogEntry("Old_Catalog_Curl")?.isOwnExercise == false)
+    }
+
     @Test func customExerciseWhoseEntryHasNotSyncedGetsAPlaceholder() {
         #expect(exerciseName(UUID().uuidString, entry: nil) == "Custom exercise")
     }

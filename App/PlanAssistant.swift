@@ -36,7 +36,7 @@ struct PlanAssistant: View {
     }
 
     private func send() {
-        let request = request, custom = entries.filter { CatalogExercise.byID[$0.id] == nil }.map(\.name)
+        let request = request, custom = entries.filter(\.isOwnExercise).map(\.name)
         (working, failed) = (true, false)
         Task {
             do {
