@@ -1,5 +1,6 @@
 import CoreData
 import Foundation
+import SwiftData
 import Testing
 @testable import Core
 
@@ -14,6 +15,35 @@ struct StoreTests {
         let url = URL.temporaryDirectory.appending(path: "x.store")
         let stores = Store.configurations(CurrentSchema.self, inMemory: true) + Store.configurations(CurrentSchema.self, url: url)
         #expect(stores.allSatisfy { $0.cloudKitContainerIdentifier == nil })
+    }
+}
+
+@MainActor struct OpenStoreTests {
+    @Test func storeThatDoesntOpenSaysWhy() {
+        let store = OpenStore { throw CocoaError(.fileReadCorruptFile) }
+        #expect(store.container == nil && store.error != nil)
+    }
+
+    @Test func storeOpensAgainOnceFixed() {
+        var broken = true
+        let store = OpenStore {
+            if broken { throw CocoaError(.fileReadCorruptFile) }
+            return try Store.makeContainer(inMemory: true)
+        }
+        broken = false
+        store.open()
+        #expect(store.container != nil && store.error == nil)
+    }
+
+    @Test func deletingTheLocalCopyEmptiesTheStore() throws {
+        let url = URL.temporaryDirectory.appending(path: "\(UUID()).store")
+        do {
+            let container = try Store.makeContainer(url: url)
+            makePlan(container.mainContext)
+            try container.mainContext.save()
+        }
+        try Store.deleteLocalCopy(of: Store.configurations(CurrentSchema.self, url: url))
+        #expect(try Store.makeContainer(url: url).mainContext.fetchCount(FetchDescriptor<Plan>()) == 0)
     }
 }
 

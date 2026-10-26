@@ -587,6 +587,16 @@
         }
       }
     },
+    "Delete everything" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles löschen"
+          }
+        }
+      }
+    },
     "dip_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -647,6 +657,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Donkey calf raise machine"
+          }
+        }
+      }
+    },
+    "Download again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu herunterladen"
           }
         }
       }
@@ -1913,6 +1933,26 @@
         }
       }
     },
+    "Start from scratch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu anfangen"
+          }
+        }
+      }
+    },
+    "Start from scratch?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu anfangen?"
+          }
+        }
+      }
+    },
     "stationary_bike" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1991,6 +2031,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vor %@ synchronisiert"
+          }
+        }
+      }
+    },
+    "This deletes your plans, workouts and exercises on every device and in iCloud. It can't be undone. A backup on the Mac can bring them back." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pläne, Trainings und deine Übungen werden auf allen deinen Geräten und in iCloud gelöscht. Das lässt sich nicht rückgängig machen. Ein Backup auf dem Mac bringt sie zurück."
+          }
+        }
+      }
+    },
+    "This version can't read the data on this device." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Version kann die Daten auf diesem Gerät nicht lesen."
           }
         }
       }

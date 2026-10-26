@@ -40,6 +40,7 @@
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
 - A device without an iCloud account says "Sign in to iCloud to sync" instead of a bare error code.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
+- If an update can't read the data on a device, the app says so instead of crashing. It offers to download the data again from iCloud, or to start from scratch on every device.
 - On the Mac, back up plans, workouts and your exercises to a folder you pick in Settings → General. The backup is rewritten at launch and whenever something changes or syncs in. Restore replaces everything, on every device, with a backup you choose.
 
 ### Watch face and Home Screen

@@ -18,6 +18,10 @@ import Testing
         RunLoop.main.run(until: .now.addingTimeInterval(0.1))
     }
 
+    @Test func unreadableStoreRenders() {
+        render(UnreadableStore(OpenStore { throw CocoaError(.fileReadCorruptFile) }))
+    }
+
     @Test func syncStatusRendersEveryState() {
         let prefs = TestDefaults()
         let sync = SyncMonitor(defaults: prefs.defaults)
