@@ -18,6 +18,13 @@ import Testing
         RunLoop.main.run(until: .now.addingTimeInterval(0.1))
     }
 
+    @Test func planChangesRenderEmptyAndFull() throws {
+        render(PlanChanges())
+        makePlan(context, "Bench")
+        try context.save()
+        render(PlanChanges())
+    }
+
     @Test func unreadableStoreRenders() {
         render(UnreadableStore(OpenStore { throw CocoaError(.fileReadCorruptFile) }))
     }

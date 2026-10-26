@@ -135,6 +135,16 @@
         }
       }
     },
+    "Added %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hinzugefügt"
+          }
+        }
+      }
+    },
     "adductors" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -463,6 +473,16 @@
         }
       }
     },
+    "Changes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen"
+          }
+        }
+      }
+    },
     "Chest" : {
       "localizations" : {
         "de" : {
@@ -567,6 +587,16 @@
         }
       }
     },
+    "Created the plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan erstellt"
+          }
+        }
+      }
+    },
     "Custom exercise" : {
       "localizations" : {
         "de" : {
@@ -593,6 +623,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alles löschen"
+          }
+        }
+      }
+    },
+    "Deleted the plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan gelöscht"
           }
         }
       }
@@ -1267,6 +1307,16 @@
         }
       }
     },
+    "Moved %@ from %@ to %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@ nach %3$@ verschoben"
+          }
+        }
+      }
+    },
     "New plan" : {
       "localizations" : {
         "de" : {
@@ -1283,6 +1333,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Als Nächstes"
+          }
+        }
+      }
+    },
+    "No changes yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Änderungen"
           }
         }
       }
@@ -1597,6 +1657,56 @@
         }
       }
     },
+    "Removed %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ entfernt"
+          }
+        }
+      }
+    },
+    "Renamed to %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umbenannt in %@"
+          }
+        }
+      }
+    },
+    "Reordered the exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen neu sortiert"
+          }
+        }
+      }
+    },
+    "Reordered the plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pläne neu sortiert"
+          }
+        }
+      }
+    },
+    "Replaced %@ with %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ durch %2$@ ersetzt"
+          }
+        }
+      }
+    },
     "resistance_band" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1719,6 +1829,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seated row machine"
+          }
+        }
+      }
+    },
+    "Set %@ to %lld × %lld at %@ kg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ auf %2$lld × %3$lld mit %4$@ kg gesetzt"
           }
         }
       }
@@ -2253,6 +2373,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wrist roller"
+          }
+        }
+      }
+    },
+    "You" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du"
           }
         }
       }

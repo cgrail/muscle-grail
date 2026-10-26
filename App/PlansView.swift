@@ -26,6 +26,7 @@ struct PlansView: View {
                 #if os(iOS)
                 EditButton()
                 #endif
+                NavigationLink { PlanChanges() } label: { Label("Changes", systemImage: "clock.arrow.circlepath") }
                 Button("Add plan", systemImage: "plus") { context.addPlan() }.disabled(locked)
             }
         }
@@ -68,7 +69,10 @@ struct PlanEditor: View {
             ExercisePicker(title: "Replace with") { context.replace(item, with: $0) }
         }
         #if os(iOS)
-        .toolbar { EditButton() }
+        .toolbar {
+            EditButton()
+            NavigationLink { PlanChanges(plan: plan.id) } label: { Label("Changes", systemImage: "clock.arrow.circlepath") }
+        }
         #endif
     }
 }

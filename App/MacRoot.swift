@@ -6,7 +6,7 @@ import SwiftUI
 /// The Mac app laid out like Apple Music: a sidebar with training, history, the exercise library and every plan
 /// as a playlist, and the selected page beside it.
 struct MacRootView: View {
-    enum Page: Hashable { case train, history, exercises, plan(Plan) }
+    enum Page: Hashable { case train, history, exercises, changes, plan(Plan) }
 
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -21,6 +21,7 @@ struct MacRootView: View {
                 Label("History", systemImage: "clock").tag(Page.history)
                 Section("Library") {
                     Label("Exercises", systemImage: "dumbbell").tag(Page.exercises)
+                    Label("Changes", systemImage: "clock.arrow.circlepath").tag(Page.changes)
                 }
                 Section("Plans") {
                     ForEach(plans) { plan in
@@ -46,6 +47,7 @@ struct MacRootView: View {
             case .train: TrainView()
             case .history: HistoryView()
             case .exercises: ExercisesLibrary()
+            case .changes: PlanChanges()
             case .plan(let plan) where plans.contains(plan): PlanPage(plan: plan).id(plan.id)
             case .plan, nil: ContentUnavailableView("Choose a plan", systemImage: "list.bullet.clipboard") // a sync or restore deleted it
             }

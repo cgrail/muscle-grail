@@ -11,6 +11,7 @@ struct PlanPage: View {
     @State private var search = ""
     @State private var picking = false
     @State private var selection: UUID? // lets the arrow keys move between the exercises
+    @State private var showingChanges = false
 
     var body: some View {
         let locked = !newer.isEmpty
@@ -52,7 +53,9 @@ struct PlanPage: View {
         .searchable(text: $search, prompt: "Find in Plan")
         .toolbar {
             Button("Add exercise", systemImage: "plus") { picking = true }.disabled(locked)
+            Button("Changes", systemImage: "clock.arrow.circlepath") { showingChanges.toggle() }
         }
+        .inspector(isPresented: $showingChanges) { PlanChanges(plan: plan.id) }
         .sheet(isPresented: $picking) { ExercisePicker { context.add($0, to: plan) } }
         .navigationTitle(plan.title)
     }
