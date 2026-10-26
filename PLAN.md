@@ -11,6 +11,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 - Workouts go to HealthKit. The watch runs an `HKWorkoutSession`.
 - A watch complication shows today's steps and walking km, replacing the step app currently in use.
 - Train with a partner: share plans with one invite, change them for both at once, and keep each person's own weights and history.
+- Every plan change shows in a history, with who made it, and can be undone. A plan can go back to an old version.
 
 ## Decisions
 
@@ -35,10 +36,13 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | Only the device that ran the workout writes to HealthKit, and stores the UUID in `Workout.healthKitID` | No duplicate workouts in Health. |
 | Minimum OS 26 on all platforms | All APIs used exist there. |
 | Plans are shared with a training partner through one zone-wide `CKShare`: a `Partner` zone in the sharer's private database, which the partner sees in their shared database | One invite covers every plan in the zone, now and later. No backend: CloudKit carries it, and each person keeps their own iCloud account. SwiftData can't share, so the zone syncs beside it with `CKSyncEngine`. |
-| The zone carries plan changes in the `Change` format, never models | The format is frozen and versioned, and applying a change twice is already safe. Each side applies it to its own plan through `record(_:)`, so the shared part needs no model migration. |
+| The zone carries plan changes in the `Change` format, never models | The format is frozen and versioned, and applying a change twice is already safe. Each side applies it to its own plan through `record(_:)`, so it lands in that side's log too. |
 | The partner's copy of a shared plan keeps the plan's and its exercises' ids | A change applies to the partner's plan as it is, with no mapping between ids. The two stores live in different iCloud accounts, so the ids never clash. |
-| Only a plan's structure is shared: adding, removing, moving and reordering exercises, and adding, renaming and deleting plans | Partners train the same routine with different weights. Sets, reps, weights and the order of the plan list stay personal, and prefill already comes from each person's own history. |
-| A structure change to a shared plan asks "Only me" or "Me and <partner>", unless Settings says "Always both" | Most changes are for both, but sometimes one person does a variation. |
+| A shared plan has the same exercises in the same order for both; each exercise is for both or one person's own | Partners train side by side, so position 5 is the same moment for both, even when one does curls there and the other bench press. Every change to the plan's exercises crosses, so the two lists never drift apart. |
+| Sets, reps, weights and the order of the plan list stay personal | Partners train the same routine with different weights. Prefill already comes from each person's own history. |
+| Adding, removing, replacing or moving an exercise that is for both asks "Only me" or "Me and <partner>", unless Settings says "Always both". Reordering and renaming never ask | Most changes are for both, but sometimes one person does a variation. The order is always for both, since they train together. |
+| The log of changes is the plans' history: per plan and across plans, with who made each change. Undo and restoring an old version record new changes | The log already holds every plan change, so the history needs no second record. Recording instead of rewinding keeps the log append-only, so an undo syncs, reaches the partner, and can be undone in turn. |
+| New fields go into `SchemaV1` in place, with no new schema version and no migration stage (the user's call, 2026-10-26) | Nothing has shipped yet. From the first TestFlight build on, the rules in CLAUDE.md apply. |
 
 ## How a device stays current without being opened
 
@@ -63,16 +67,44 @@ Two people who train together share plans, each with their own Apple ID, history
   - *All plans* (the default): every plan of the person who shares, and every plan either of them adds from then on, is shared.
   - *Chosen plans:* only the plans someone shares.
   - In both modes, a plan that isn't shared has "Share with <partner>" in its menu, a shared one has "Stop sharing", and shared plans show a badge. Plans the partner had before accepting stay theirs until they share one. Switching to all plans later shares the plans of whoever switches.
-- **The zone** holds `SharedPlan` records (one per shared plan, named by its id), `SharedChange` records (one per change sent: `payload`, `version`, `date`, and for a new exercise the sender's `sets` and `reps`), and one `PartnerSettings` record (all or chosen plans).
-- **Sharing a plan** writes its structure into the zone: `addPlan`, then `addExercise` for each exercise. On the partner's side it goes to the end of the plan list.
-- **Editing.** On a shared plan, a structure change asks "Only me" or "Me and <partner>", named from the share's participant, or follows "Always both" (Settings → Training partner, kept in iCloud's key-value store, so all of one person's devices follow it). With both, the same `Change` goes into the zone as well as into the local log. A rename asks once, when the name is done, not for every key. Changes to sets, reps and weight never ask and never reach the zone.
-- **Moving an exercise** to another plan is one change (`moveExercise`), so it asks once, and the partner's copy keeps their own sets, reps and weight. If only one of the two plans is shared, the partner sees a removal or an addition.
-- **A new exercise** on the partner's side starts with the sender's sets and reps. Its weight comes from the partner's own last set of that exercise, else 0 kg. An exercise of the sender's own brings its name along, as an `editExercise` with only the name; its description, video and photo stay with the sender.
-- **Receiving.** The iPhone and the Mac run the engine. The watch doesn't: it gets the changed plan through its own iCloud, as always. A device applies only the changes the other person wrote, oldest first, through `record(_:)`, so they are in its log, its backup and its replay, and it never sends them back. A device's own changes reach that person's other devices through SwiftData; applying them from the zone as well could undo a later "Only me" change. A change to a plan or exercise this side doesn't have changes nothing. A reorder moves only the exercises both have; one that only this side has stays after the exercise it followed.
-- **Offline.** An edit applies locally at once. `CKSyncEngine` keeps the outgoing change on the device and sends it when the network is back. Its state and a cache of the zone (shared plans, mode, the partner's name) are saved in a file on the device, so the question works offline. A device that has never fetched the zone doesn't know which plans are shared, so its edits stay "Only me".
+- **The zone** holds `SharedPlan` records (one per shared plan, named by its id), `SharedChange` records (one per change: `payload`, `version`, `date`, `batch`, and for a new exercise the sender's `sets` and `reps`), and one `PartnerSettings` record (all or chosen plans).
+- **Sharing a plan** writes its structure into the zone: `addPlan`, then `addExercise` for each exercise, in order. On the partner's side it goes to the end of the plan list.
+- **Same exercises, same order.** Both have every exercise of a shared plan, in one order, so they stay side by side. An exercise is for both, or one person's own (`PlanItem.owner`). One person's own exercise shows greyed in the other's plan, with its owner's name, and the other's training skips it, on the iPhone, the watch and the Mac, as does the plan's summary of what it trains. So at position 5 one can do curls and the other bench press, and moving the first exercise to the end keeps the two at the same place for both.
+- **Editing.** Adding, removing, replacing or moving an exercise that is for both asks "Only me" or "Me and <partner>", named from the share's participant, unless Settings → Training partner says "Always both" (kept in iCloud's key-value store, so all of one person's devices follow it). "Only me" keeps the two lists side by side:
+  - adding: the new exercise is your own.
+  - removing: the exercise becomes the partner's own.
+  - replacing: the old exercise becomes the partner's own, and the new one is your own, right after it.
+  - moving to another plan: the exercise becomes the partner's own where it was, and goes into the other plan as your own.
+- **What never asks.** Your own exercises, reordering and renaming: the order and the name are for both. Sets, reps and weights never ask and never leave your account. Every other change to a shared plan goes into the zone, "Only me" included, so both lists keep the same exercises.
+- **Moving and replacing.** Moving an exercise to another plan is one change (`moveExercise`): it asks once, and each side keeps its own sets, reps and weight. If only one of the two plans is shared, the partner sees a removal or an addition. Replacing (`replaceExercise`) keeps the exercise's place; the new exercise's weight comes from each person's own last set of it, else 0 kg.
+- **A new exercise** on the partner's side starts with the sender's sets and reps, and its weight from the partner's own last set of it, else 0 kg. An exercise the sender made themselves brings its name along, as an `editExercise` with only the name; its description, video and photo stay with the sender.
+- **Receiving.** The iPhone and the Mac run the engine. The watch doesn't: it gets the changed plan through its own iCloud, as always. A device applies only the changes the other person wrote, oldest first, through `record(_:)` with `Action.author` set, so they are in its log, its history and its backup, and it never sends them back. A device's own changes reach that person's other devices through SwiftData; applying them from the zone as well could undo a later change. A change to a plan this side doesn't have changes nothing.
+- **Both at once.** Changes made offline on both sides end the same everywhere, whatever order they arrive in. A received rename, reorder or move older than this side's last one of the same plan or exercise is skipped, so the later one wins. A removal wins over a move. Two exercises added at the same position sort by id.
+- **Offline.** An edit applies locally at once. `CKSyncEngine` keeps the outgoing change on the device and sends it when the network is back. Its state and a cache of the zone (shared plans, mode, the partner's name) are saved in a file on the device, so the question works offline. A device that has never fetched the zone doesn't know which plans are shared, so its edits stay its own.
 - **Wakes.** The engine has its own CloudKit subscription, so a change from the partner wakes the app with a silent push, like SwiftData's. The HealthKit step wake also fetches the zone. All of this runs off the main actor.
 - **Versions.** A received change this app version can't read waits in the cache until an update, and plan editing locks meanwhile, like for `Action.newer`. Training never waits.
-- **Claude (MCP).** `create_plan` and `add_exercises` share their changes when the call passes `shared: true`, or when Settings says "Always both"; otherwise they change only your plans.
+- **Claude (MCP).** On a shared plan, `add_exercises` adds for both when the call passes `shared: true` or Settings says "Always both"; otherwise the exercises are your own.
+
+## Plan history
+
+Every plan change is an action in the log, so the log is the history of the plans. It works without sharing too.
+
+- **Changes.** A list of plan changes across all plans (on the Mac in the sidebar under Library, on the iPhone from the Plans tab) and for one plan (the Mac's plan page, the iPhone's plan editor). Each entry says what changed, in which plan, when and by whom: "Yesterday · <partner> moved Curls from Push to Pull". Changes to one person's own exercises say so. Workouts and sets aren't in it; History shows those.
+- **One entry per edit.** Typing a weight or a name records an action per key, so changes of the same kind to the same exercise or plan, by the same person, in a row, show as one entry. The changes of one undo or restore share `Action.batch` and show as one entry too.
+- **Undo.** An entry's Undo records the changes that reverse it, as one batch: the log only grows, the undo syncs, and it can be undone in turn. It reaches whoever the change reached: undoing a change for both undoes it for both, whoever made it. A removed exercise comes back with its id, so each side gets back its own sets, reps and weight from its own log. When the exercise or plan an entry is about is gone, there is nothing to undo, and Undo is off.
+- **Old versions.** "Restore this version" on an entry of a plan's history brings the plan back to how it was right after that entry. Core replays the log up to there into an in-memory store, as `replay(into:)` does, and records, as one batch, the changes that turn today's plan into that one: exercises come back (from another plan, if they were moved there), later ones go, the order and the name are as they were, and so are your own sets, reps and weights. On a shared plan everything but the targets goes for both, and the partner keeps their own targets. Undoing the restore brings today's plan back.
+- **Off the main actor.** Building the list and an old version walks the log, so it runs in a context of its own off the main actor, and only the result reaches the view.
+- Going back for the whole store stays the Mac's backup restore.
+
+## Model changes for sharing and history
+
+Approved on 2026-10-26. Nothing has shipped, so they go into `SchemaV1` in place, with no new schema version and no migration stage. A development build may then fail to open the store it made before: delete the app on that device, and its data comes back from iCloud (the Mac also keeps a backup).
+
+- `PlanItem.owner`: empty for an exercise for both, else whose own it is, this person or the partner. It is relative to the store's person, so one exercise reads "mine" on one side and "theirs" on the other.
+- `Action.author`: nil for this person's own changes, else the partner's name, set when a received change is recorded.
+- `Action.batch`: the same id for the changes of one undo or restore.
+- `Change` gains `moveExercise`, `replaceExercise` and `setOwner`, and `addExercise` an optional owner. An owner in a change is relative to its author ("mine" or "the other's"), so one change reads right on both sides. `Change.version` goes to 2 once, for all of them, and ActionTests keeps their JSON.
+- `Backup` entries keep `author` and `batch`.
 
 ## Layout
 
@@ -112,9 +144,10 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [ ] **E — Complication.** It matches the step count in the Health app within about 15 min.
 - [ ] **F — One invite.** Share all plans from the Mac; the partner accepts the one link on their iPhone. Every plan shows on their iPhone and watch. A plan added on the Mac a week later reaches them without another invite.
 - [ ] **G — Both, offline.** With the Mac offline, move curls from one shared plan to another and choose "Me and <partner>". Go online, and don't touch the partner's devices. Within 24 h their iPhone and watch show curls in the new plan, with their own weight.
-- [ ] **H — Only me.** Change sets, reps and weights, and add an exercise with "Only me". The partner's plans don't change.
+- [ ] **H — Only me.** Change sets, reps and weights: the partner's stay as they are. Add curls "Only me" at position 5 while the partner adds bench press there "Only me": each trains their own and sees the other's greyed. Move the first exercise to the end: curls and bench press stay at the same place for both.
 - [ ] **I — Both at once.** With both iPhones offline, each person removes a different exercise from the same shared plan, for both. Back online, both exercises are gone on all devices, and nothing is doubled.
 - [ ] **J — Stop.** Stop sharing. Both keep their plans as they were, and changes no longer cross.
+- [ ] **K — History.** A day after the partner moved curls from Push to Pull, Pull's history and the history across plans show who moved it and when, on the Mac and the iPhone. Undo puts curls back in Push on every device of both, with each person's own weight. Restoring Push to last week brings back its exercises in their old order with your old weights; the partner keeps theirs.
 
 ## Status
 
@@ -124,7 +157,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [x] The iOS app builds with the watch app and complication embedded, and the macOS app builds.
 - [x] Smoke test in the iPhone simulator: the CloudKit store opens and the Health permission sheet appears.
 - [ ] Run on real devices, then acceptance tests A–E.
-- [ ] Plan sharing with a training partner (`todo.md`), then acceptance tests F–J with two Apple IDs.
+- [ ] Plan history, and plan sharing with a training partner (`todo.md`), then acceptance tests F–K with two Apple IDs.
 - [x] App icons: a flexed arm lifting a dumbbell, made from `Design/icon-source.jpg` by `Design/Icon.swift`.
 
 ## Known risks and fallbacks
@@ -146,5 +179,5 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - iPad layout
 - Siri and App Intents
 - Sharing history, weights, photos or descriptions with a training partner
-- Linking a plan the partner made on their own to a shared one: it needs a mapping between ids, so a model migration
+- Linking a plan the partner made on their own to a shared one: it needs a mapping between their ids. Sharing one of the two and deleting the other does the same, and history matches by exercise.
 - Unit settings (only kg, in 2.5 kg steps)
