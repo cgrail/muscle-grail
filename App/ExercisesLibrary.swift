@@ -21,7 +21,7 @@ struct ExercisesLibrary: View {
     @State private var selection = Set<String>()
     @State private var order = [KeyPathComparator(\Row.name)]
     @State private var detail: Detail?
-    @State private var previewing = true
+    @State private var previewing = false
 
     var body: some View {
         let own = entries.filter { filter.isEmpty && $0.isOwnExercise }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
@@ -66,6 +66,8 @@ struct ExercisesLibrary: View {
             }
             .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
             .navigationTitle("Exercises")
+            // Shown after the first layout: shown with the page, the preview runs up behind the toolbar until a resize.
+            .task { withTransaction(Transaction(animation: nil)) { previewing = true } }
         }
     }
 }
