@@ -7,9 +7,10 @@ import Testing
     let container = try! Store.makeContainer(inMemory: true)
     var context: ModelContext { container.mainContext }
 
-    /// Undoes the newest entry of the history.
+    /// Undoes the newest entry of the history, then saves, as the history view does.
     func undoLast() throws {
         context.undo(try #require(history(container).first))
+        try context.save()
     }
 
     @Test func undoingAnAddedExerciseRemovesIt() throws {

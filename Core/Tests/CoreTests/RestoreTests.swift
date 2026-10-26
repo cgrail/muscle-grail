@@ -7,9 +7,10 @@ import Testing
     let container = try! Store.makeContainer(inMemory: true)
     var context: ModelContext { container.mainContext }
 
-    /// Restores `plan` to how it was after the entry `back` entries before the newest of its history.
+    /// Restores `plan` to how it was after the entry `back` entries before the newest of its history, then saves, as the history view does.
     func restore(_ plan: Plan, back: Int) throws {
         context.restore(try history(container, of: plan)[back])
+        try context.save()
     }
 
     @Test func restoringBringsBackThePlanAsItWasAfterAnEntry() throws {
@@ -42,6 +43,7 @@ import Testing
         let plan = makePlan(context, "Bench", "Row")
         try restore(plan, back: 2)
         context.undo(try #require(history(container, of: plan).first))
+        try context.save()
         #expect(plan.sortedItems.map(\.exerciseID) == ["Bench", "Row"])
     }
 }
