@@ -92,7 +92,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Claude (MCP)
 
-- `MCP` (Core) answers JSON-RPC with four tools: `list_plans`, `search_exercises`, `create_plan`, `add_exercises`. They edit through the same Core functions as the app, so edits are recorded as actions and wait for an update after newer actions.
+- `MCP` (Core) answers JSON-RPC with four tools: `list_plans`, `search_exercises`, `create_plan`, `add_exercises`. They edit through the same Core functions as the app, so edits are recorded as actions and wait for an update after newer actions. In a plan shared with the training partner, `add_exercises` adds the user's own exercises unless its `shared` argument, or the always-both setting, says for both.
 - `MCPServer` (Core, macOS) serves it over Streamable HTTP at `http://127.0.0.1:7428/mcp` while the Mac app runs and Settings → Claude is on. It listens on the loopback interface only and refuses requests with a foreign `Origin` (DNS rebinding). The Mac app needs `com.apple.security.network.server` for it.
 - `MCPTests` call the real server over HTTP on a free port.
 

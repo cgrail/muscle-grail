@@ -39,9 +39,9 @@ public extension ModelContext {
     }
 
     /// Adds described exercises to `plan`, each by its catalog name or as a new exercise of the user's own.
-    func add(_ exercises: [PlannedExercise], to plan: Plan) {
+    func add(_ exercises: [PlannedExercise], to plan: Plan, own: Own? = nil) {
         for exercise in exercises {
-            let item = add(catalogID(named: exercise.name) ?? createExercise(named: exercise.name), to: plan)
+            let item = add(catalogID(named: exercise.name) ?? createExercise(named: exercise.name), to: plan, own: own)
             setTargets(item, sets: exercise.sets, reps: exercise.reps, weightKg: exercise.weightKg)
         }
     }

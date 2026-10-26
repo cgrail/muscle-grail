@@ -1,6 +1,9 @@
 import Foundation
 import SwiftData
 
+/// The iCloud key-value key that says changes to shared exercises are always for both, rather than asking.
+public let partnerAlwaysBothKey = "partnerAlwaysBoth"
+
 /// A plan change between training partners, as the shared zone holds it (PLAN.md, Sharing plans with a training partner).
 public struct PartnerChange: Codable, Equatable, Sendable {
     public var id: UUID

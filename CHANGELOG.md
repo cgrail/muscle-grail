@@ -12,7 +12,7 @@
 - Build plans on the Mac from a searchable catalog of 650 exercises by RepDB, each with illustrations and step-by-step instructions, or add your own, each with target sets, reps and weight. Settings credits RepDB.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.
 - On the Mac, add exercises to a plan by describing them, typed or dictated, in English or German: "3x10 bench press at 60 kg, then squats". Needs Apple Intelligence.
-- On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are.
+- On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are. In a plan shared with your training partner, what Claude adds is yours alone unless you ask for both, or Settings says always both.
 - Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 - Every plan says what it trains, from its exercises' muscles and sets: Leg-heavy, Chest & Back, or Full body. It shows under the plan when you pick a workout, on the watch too, and on the Mac's plan page.
 - In German, exercises are German too: their names, how to do them, and their muscles, equipment, level and category. Search finds an exercise by its English or German name. Plans and history from before the new catalog show their exercises as "Custom exercise".

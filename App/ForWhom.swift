@@ -5,12 +5,11 @@ import SwiftUI
 /// unless Settings → Training partner says always both. That choice is in iCloud's key-value store, so all of a person's
 /// devices follow it.
 enum ForWhom {
-    static let alwaysBoth = "partnerAlwaysBoth"
 
     /// Runs `edit` for both right away, or asks first, through `pending`.
     static func edit(_ plan: Plan?, _ item: PlanItem? = nil, asking pending: Binding<PendingEdit?>, _ edit: @escaping (_ forBoth: Bool) -> Void) {
         guard let plan, PartnerStatus.shared.plans.contains(plan.id), (item?.ownedBy ?? .both) == .both,
-              !NSUbiquitousKeyValueStore.default.bool(forKey: alwaysBoth) else { return edit(true) }
+              !NSUbiquitousKeyValueStore.default.bool(forKey: partnerAlwaysBothKey) else { return edit(true) }
         pending.wrappedValue = PendingEdit(run: edit)
     }
 }
@@ -54,13 +53,13 @@ struct OwnerNote: View {
 
 /// Settings → Training partner: whether changes to shared exercises ask, or are always for both.
 struct AlwaysBothPicker: View {
-    @State private var alwaysBoth = NSUbiquitousKeyValueStore.default.bool(forKey: ForWhom.alwaysBoth)
+    @State private var alwaysBoth = NSUbiquitousKeyValueStore.default.bool(forKey: partnerAlwaysBothKey)
 
     var body: some View {
         Picker("Changes to shared exercises", selection: $alwaysBoth) {
             Text("Ask each time").tag(false)
             Text("Always both").tag(true)
         }
-        .onChange(of: alwaysBoth) { NSUbiquitousKeyValueStore.default.set(alwaysBoth, forKey: ForWhom.alwaysBoth) }
+        .onChange(of: alwaysBoth) { NSUbiquitousKeyValueStore.default.set(alwaysBoth, forKey: partnerAlwaysBothKey) }
     }
 }

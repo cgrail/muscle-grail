@@ -12,7 +12,7 @@
 - [x] plan sharing, one invite: Settings → Training partner on the Mac and the iPhone, all plans (default) or chosen plans, one zone-wide `CKShare` through the share sheet, stop sharing or leave. "Share with <partner>" and "Stop sharing" in a plan's menu, and a badge on shared plans. `CKSharingSupported` in the Info.plists
 - [x] plan sharing, accept the invite on the iPhone and the Mac (`userDidAcceptCloudKitShareWith`) and add every shared plan with its ids, at the end of the plan list
 - [x] plan sharing, ask "Only me / Me and <partner>" when adding, removing, replacing or moving an exercise that is for both, in the Mac's plan page and the iPhone's plan editor, and show the partner's own exercises greyed with their name. Settings → Training partner: "Ask each time" (default) or "Always both", in iCloud's key-value store; add its key to CLAUDE.md's saved data
-- [ ] plan sharing, Claude: an optional `shared` argument for `add_exercises`; on a shared plan without it, the exercises are your own unless Settings says "Always both"
+- [x] plan sharing, Claude: an optional `shared` argument for `add_exercises`; on a shared plan without it, the exercises are your own unless Settings says "Always both"
 - [x] add backup mechanism to folder on mac with auto write on save/load/edit
 - [x] add filter for level, equipment and category
 - [x] show instructions

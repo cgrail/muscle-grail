@@ -7,15 +7,15 @@ import Testing
     let container = try! Store.makeContainer(inMemory: true)
     var context: ModelContext { container.mainContext }
 
-    /// Sends one JSON-RPC request and returns the whole reply.
-    func send(_ method: String, _ params: [String: Any] = [:]) throws -> [String: Any] {
+    /// Sends one JSON-RPC request and returns the whole reply. `shared` plans are shared with the training partner.
+    func send(_ method: String, _ params: [String: Any] = [:], shared: Set<UUID> = []) throws -> [String: Any] {
         let request = try JSONSerialization.data(withJSONObject: ["jsonrpc": "2.0", "id": 1, "method": method, "params": params])
-        let reply = try #require(MCP(context: context).handle(request))
+        let reply = try #require(MCP(context: context) { shared.contains($0) }.handle(request))
         return try #require(JSONSerialization.jsonObject(with: reply) as? [String: Any])
     }
 
-    func tool(_ name: String, _ arguments: [String: Any] = [:]) throws -> (text: String, isError: Bool) {
-        let result = try #require(send("tools/call", ["name": name, "arguments": arguments])["result"] as? [String: Any])
+    func tool(_ name: String, _ arguments: [String: Any] = [:], shared: Set<UUID> = []) throws -> (text: String, isError: Bool) {
+        let result = try #require(send("tools/call", ["name": name, "arguments": arguments], shared: shared)["result"] as? [String: Any])
         return ((result["content"] as? [[String: Any]])?.first?["text"] as? String ?? "", result["isError"] as? Bool ?? false)
     }
 
@@ -64,6 +64,14 @@ import Testing
         context.rename(plan, to: "Legs")
         _ = try tool("add_exercises", ["plan": "legs", "exercises": [["name": "Barbell Deadlift"]]])
         #expect(plan.sortedItems.map(\.exerciseID) == ["squat", "deadlift"])
+    }
+
+    @Test func exercisesAddedToASharedPlanAreYoursUnlessSharedToo() throws {
+        let plan = makePlan(context)
+        context.rename(plan, to: "Legs")
+        _ = try tool("add_exercises", ["plan": "Legs", "exercises": [["name": "Barbell Deadlift"]]], shared: [plan.id])
+        _ = try tool("add_exercises", ["plan": "Legs", "exercises": [["name": "Barbell Back Squat"]], "shared": true], shared: [plan.id])
+        #expect(plan.sortedItems.map(\.ownedBy) == [.me, .both])
     }
 
     @Test func addingToAPlanThatDoesNotExistIsAnError() throws {
