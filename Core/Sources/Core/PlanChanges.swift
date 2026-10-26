@@ -54,7 +54,9 @@ public struct PlanChanges: View {
 
     private func load() async {
         let (container, plan) = (context.container, plan)
-        changes = await Task.detached { (try? PlanChange.history(container, plan: plan)) ?? [] }.value
+        let history = await Task.detached { (try? PlanChange.history(container, plan: plan)) ?? [] }.value
+        withExtendedLifetime(container) {} // let go of it here, on the main actor: freed off it, its SwiftUI observers break
+        changes = history
     }
 
     /// Who and when, and in the history of every plan, which plan.
