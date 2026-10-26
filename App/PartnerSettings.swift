@@ -14,6 +14,7 @@ struct PartnerSettings: View {
             if status.sharing {
                 LabeledContent("Shared with", value: status.partner ?? String(localized: "Waiting for them to accept"))
                 Toggle("Share all plans", isOn: Binding { status.allPlans } set: { on in Task { await PartnerSync.current?.setAllPlans(on) } })
+                AlwaysBothPicker()
                 Button(status.owner ? "Stop sharing" : "Leave", role: .destructive) { stopping = true }
             } else {
                 Picker("Share", selection: $allPlans) {

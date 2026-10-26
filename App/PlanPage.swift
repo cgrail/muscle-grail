@@ -12,6 +12,7 @@ struct PlanPage: View {
     @State private var picking = false
     @State private var selection: UUID? // lets the arrow keys move between the exercises
     @State private var showingChanges = false
+    @State private var forWhom: PendingEdit?
 
     var body: some View {
         let locked = !newer.isEmpty
@@ -35,7 +36,7 @@ struct PlanPage: View {
             .padding(.vertical, 12)
             .listRowSeparator(.hidden)
             Section {
-                ForEach(items) { PlanRow(item: $0).disabled(locked).tag($0.id) }
+                ForEach(items) { PlanRow(item: $0, forWhom: $forWhom).disabled(locked || $0.ownedBy == .partner).tag($0.id) }
                     .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
                     .moveDisabled(locked || !search.isEmpty) // offsets count the filtered rows
             } header: {
@@ -56,7 +57,10 @@ struct PlanPage: View {
             Button("Changes", systemImage: "clock.arrow.circlepath") { showingChanges.toggle() }
         }
         .inspector(isPresented: $showingChanges) { PlanChanges(plan: plan.id) }
-        .sheet(isPresented: $picking) { ExercisePicker { context.add($0, to: plan) } }
+        .sheet(isPresented: $picking) {
+            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.add(id, to: plan, own: $0 ? nil : .mine) } }
+        }
+        .forWhom($forWhom)
         .navigationTitle(plan.title)
     }
 }
@@ -68,6 +72,7 @@ private enum Column {
 private struct PlanRow: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
+    @Binding var forWhom: PendingEdit?
     @State private var showingDetail = false
     @State private var replacing = false
 
@@ -77,6 +82,7 @@ private struct PlanRow: View {
             VStack(alignment: .leading) {
                 ExerciseName(item.exerciseID)
                 Text(verbatim: CatalogExercise.byID[item.exerciseID]?.detail ?? "").font(.caption).foregroundStyle(.secondary)
+                OwnerNote(item: item)
             }
             Spacer()
             count("Sets", item.targetSets, in: 1...20) { context.setTargets(item, sets: $0) }
@@ -94,8 +100,10 @@ private struct PlanRow: View {
             Menu {
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
                 Button("Replace with…", systemImage: "arrow.left.arrow.right") { replacing = true }
-                MoveToPlan(item: item)
-                Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
+                MoveToPlan(item: item, forWhom: $forWhom)
+                Button("Delete", systemImage: "trash", role: .destructive) {
+                    ForWhom.edit(item.plan, item, asking: $forWhom) { context.deleteExercise(item, forBoth: $0) }
+                }
             } label: {
                 Image(systemName: "ellipsis")
             }
@@ -105,7 +113,9 @@ private struct PlanRow: View {
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
-        .sheet(isPresented: $replacing) { ExercisePicker(title: "Replace with") { context.replace(item, with: $0) } }
+        .sheet(isPresented: $replacing) {
+            ExercisePicker(title: "Replace with") { id in ForWhom.edit(item.plan, item, asking: $forWhom) { context.replace(item, with: id, forBoth: $0) } }
+        }
     }
 
     /// A number to type, or to step to. A typed one outside `range` lands on its nearest end.

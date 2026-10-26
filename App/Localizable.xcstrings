@@ -289,12 +289,32 @@
         }
       }
     },
+    "Always both" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immer für beide"
+          }
+        }
+      }
+    },
     "Another app uses port %lld. Quit it and switch this on again." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eine andere App nutzt Port %lld. Beende sie und schalte das hier wieder ein."
+          }
+        }
+      }
+    },
+    "Ask each time" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedes Mal fragen"
           }
         }
       }
@@ -355,6 +375,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Änderungen"
+          }
+        }
+      }
+    },
+    "Changes to shared exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen an geteilten Übungen"
           }
         }
       }
@@ -599,6 +629,16 @@
         }
       }
     },
+    "For whom?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für wen?"
+          }
+        }
+      }
+    },
     "General" : {
       "localizations" : {
         "de" : {
@@ -759,6 +799,26 @@
         }
       }
     },
+    "Me and %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich und %@"
+          }
+        }
+      }
+    },
+    "Me and my training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich und mein Trainingspartner"
+          }
+        }
+      }
+    },
     "Month" : {
       "localizations" : {
         "de" : {
@@ -849,12 +909,52 @@
         }
       }
     },
+    "Only %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur %@"
+          }
+        }
+      }
+    },
     "Only apps on this Mac can connect, and only while Muscle Grail is open." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nur Apps auf diesem Mac können sich verbinden, und nur solange Muscle Grail geöffnet ist."
+          }
+        }
+      }
+    },
+    "Only me" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur ich"
+          }
+        }
+      }
+    },
+    "Only my training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur mein Trainingspartner"
+          }
+        }
+      }
+    },
+    "Only you" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur du"
           }
         }
       }

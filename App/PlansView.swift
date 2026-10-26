@@ -46,6 +46,7 @@ struct PlanEditor: View {
     let plan: Plan
     @State private var picking = false
     @State private var replacing: PlanItem?
+    @State private var forWhom: PendingEdit?
 
     var body: some View {
         Form {
@@ -57,9 +58,12 @@ struct PlanEditor: View {
                         PlanItemRow(item: item)
                             .contextMenu {
                                 Button("Replace with…", systemImage: "arrow.left.arrow.right") { replacing = item }
-                                MoveToPlan(item: item)
-                                Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
+                                MoveToPlan(item: item, forWhom: $forWhom)
+                                Button("Delete", systemImage: "trash", role: .destructive) {
+                                    ForWhom.edit(plan, item, asking: $forWhom) { context.deleteExercise(item, forBoth: $0) }
+                                }
                             }
+                            .disabled(item.ownedBy == .partner)
                     }
                     .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
                     Button("Add exercise", systemImage: "plus") { picking = true }
@@ -70,11 +74,12 @@ struct PlanEditor: View {
         .formStyle(.grouped)
         .navigationTitle(plan.title)
         .sheet(isPresented: $picking) {
-            ExercisePicker { context.add($0, to: plan) }
+            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.add(id, to: plan, own: $0 ? nil : .mine) } }
         }
         .sheet(item: $replacing) { item in
-            ExercisePicker(title: "Replace with") { context.replace(item, with: $0) }
+            ExercisePicker(title: "Replace with") { id in ForWhom.edit(plan, item, asking: $forWhom) { context.replace(item, with: id, forBoth: $0) } }
         }
+        .forWhom($forWhom)
         #if os(iOS)
         .toolbar {
             EditButton()
@@ -91,6 +96,7 @@ private struct PlanItemRow: View {
 
     var body: some View {
         VStack(alignment: .leading) {
+            OwnerNote(item: item)
             HStack {
                 ExerciseName(item.exerciseID)
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
@@ -116,11 +122,12 @@ struct MoveToPlan: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
     let item: PlanItem
+    @Binding var forWhom: PendingEdit?
 
     var body: some View {
         Menu("Move to", systemImage: "arrow.turn.up.right") {
             ForEach(plans.filter { $0.id != item.plan?.id }) { plan in
-                Button(plan.title) { context.move(item, to: plan) }
+                Button(plan.title) { ForWhom.edit(item.plan, item, asking: $forWhom) { context.move(item, to: plan, forBoth: $0) } }
             }
         }
     }
