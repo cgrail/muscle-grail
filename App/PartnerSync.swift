@@ -61,6 +61,18 @@ actor PartnerSync: CKSyncEngineDelegate {
         return saved as? CKShare ?? share
     }
 
+    /// Joins the partner's zone from their invite. Its first fetch brings every shared plan, at the end of the plan list.
+    func accept(_ metadata: CKShare.Metadata) async throws {
+        _ = try await CKContainer(identifier: metadata.containerIdentifier).accept(metadata)
+        let zone = metadata.share.recordID.zoneID
+        engine = nil
+        state = PartnerState()
+        (state.zoneName, state.ownerName) = (zone.zoneName, zone.ownerName)
+        state.partner = metadata.ownerIdentity.nameComponents?.formatted()
+        resume()
+        await sync()
+    }
+
     /// All plans, now and later, or only the chosen ones. Switching to all shares this person's plans.
     func setAllPlans(_ on: Bool) {
         guard let engine, let zone = state.zone else { return }

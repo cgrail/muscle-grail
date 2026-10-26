@@ -38,7 +38,7 @@
 - Statistics per week, month, quarter or year: workouts per period as a chart, and the current period's workouts, sets and volume.
 
 ### Sync
-- Share plans with your training partner with one invite, from Settings → Training partner on the iPhone or the Mac: all plans, now and later, or only the ones you choose from a plan's menu. Shared plans show two people beside their name. Either of you can stop; both keep the plans as they are. Each of you has your own Apple ID, history and weights.
+- Share plans with your training partner with one invite, from Settings → Training partner on the iPhone or the Mac: all plans, now and later, or only the ones you choose from a plan's menu. Shared plans show two people beside their name. Your partner accepts the invite on their iPhone or Mac, and the shared plans join the end of their plan list. Either of you can stop; both keep the plans as they are. Each of you has your own Apple ID, history and weights.
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
 - A device without an iCloud account says "Sign in to iCloud to sync" instead of a bare error code.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.

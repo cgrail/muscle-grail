@@ -7,6 +7,11 @@ import WidgetKit
 
 @main
 struct MuscleGrailApp: App {
+    #if os(iOS)
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+    #else
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+    #endif
     @State private var store: OpenStore
     #if os(macOS)
     @State private var mac: MacServices?
