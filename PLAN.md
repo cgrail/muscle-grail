@@ -173,6 +173,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
   - **Sync stays unreliable:** move to `CKSyncEngine`, whose fetch and send calls can be awaited in any background wake. It means a lot more code.
 - **SwiftData and `CKSyncEngine` in one private database.** SwiftData mirrors its own zone, and the engine fetches only `Partner` (`FetchChangesOptions.scope`). If they get in each other's way, move sharing to a container of its own. That container is permanent too, so name it once.
 - **Sharing is only checked by hand.** CloudKit doesn't run under `swift test`, so the engine stays a thin wrapper, like `Health.swift`, and the rules (what is shared, how a received change applies) live in `Core` with tests. Acceptance tests F–J need two Apple IDs, on devices or simulators.
+- **A big GymBook import syncs slowly.** Years of history are thousands of sets, each with its action (about 10,000 records for 5,000 sets), all uploaded at once. The import saves workout by workout, and the other devices catch up over the next syncs.
 - **Locked watch.** HealthKit can't be read while the watch is locked, so the complication then shows the last value read today.
 
 ## Skipped (not asked for)
@@ -185,4 +186,4 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - Siri and App Intents
 - Sharing history, weights, photos or descriptions with a training partner
 - Linking a plan the partner made on their own to a shared one: it needs a mapping between their ids. Sharing one of the two and deleting the other does the same, and history matches by exercise.
-- Unit settings (only kg, in 2.5 kg steps)
+- One unit setting for the whole app: each exercise shows kg or lb, as its machine does

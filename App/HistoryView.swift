@@ -21,6 +21,9 @@ struct HistoryView: View {
                 }
             }
             .navigationTitle("History")
+            #if os(macOS)
+            .toolbar { GymBookMenu() }
+            #endif
         }
     }
 }

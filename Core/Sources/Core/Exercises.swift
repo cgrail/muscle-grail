@@ -52,11 +52,13 @@ public extension ModelContext {
         Core.exerciseName(exerciseID, entry: catalogEntry(exerciseID), localized: localized)
     }
 
-    /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones.
+    /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones by their
+    /// English name, then by their German one, as GymBook in German names them.
     func catalogID(named name: String) -> String? {
         let custom = (try? fetch(FetchDescriptor<CatalogEntry>())) ?? []
         return custom.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.id
             ?? CatalogExercise.all.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.id
+            ?? CatalogExercise.all.first { $0.germanName.caseInsensitiveCompare(name) == .orderedSame }?.id
     }
 
     /// A new exercise of the user's own. Its id is a UUID, so devices can make exercises offline without clashing.

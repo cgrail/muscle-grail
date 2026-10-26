@@ -91,6 +91,12 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - Show a name with `ExerciseName` (`exerciseName(_:entry:)` outside views). A custom exercise whose entry hasn't synced yet shows a placeholder.
 - Illustrations load from RepDB's GitHub at the pinned commit (see `CatalogExercise.imageURL`), so the picker needs internet to show them. Training never does: it shows only photos on the device, the user's own and the illustrations `PhotoCache` downloaded (512 px) while the workout picker had network.
 
+## GymBook
+
+- `GymBook` (Core) reads GymBook's log export (XML in UTF-16, German dates, weights like "38,00 kg" or "130,00 lb") and writes the history in the same format. On the Mac, History's GymBook menu imports a file after a step that matches each GymBook exercise to one here (`GymBookMenu`), off the main actor.
+- An imported workout and its sets get ids from their day, workout name and position (`GymBook.id`), so importing the same file again adds nothing. Keep those keys as they are.
+- This repo is public: never commit a GymBook export. Tests use the made-up `gymBookSample`.
+
 ## Claude (MCP)
 
 - `MCP` (Core) answers JSON-RPC with four tools: `list_plans`, `search_exercises`, `create_plan`, `add_exercises`. They edit through the same Core functions as the app, so edits are recorded as actions and wait for an update after newer actions. In a plan shared with the training partner, `add_exercises` adds the user's own exercises unless its `shared` argument, or the always-both setting, says for both.

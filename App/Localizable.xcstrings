@@ -559,6 +559,16 @@
         }
       }
     },
+    "Each workout name becomes a plan, unless you have one by that name. Cardio stays out." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedes Training wird zu einem Plan mit seinem Namen, außer du hast schon einen mit diesem Namen. Cardio bleibt draußen."
+          }
+        }
+      }
+    },
     "Equipment" : {
       "localizations" : {
         "de" : {
@@ -595,6 +605,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Übungen"
+          }
+        }
+      }
+    },
+    "Export for GymBook…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für GymBook exportieren …"
           }
         }
       }
@@ -699,6 +719,16 @@
         }
       }
     },
+    "GymBook" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "GymBook"
+          }
+        }
+      }
+    },
     "History" : {
       "localizations" : {
         "de" : {
@@ -715,6 +745,86 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ausführung"
+          }
+        }
+      }
+    },
+    "Import" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importieren"
+          }
+        }
+      }
+    },
+    "Import as" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Importieren als"
+          }
+        }
+      }
+    },
+    "Import from GymBook" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus GymBook importieren"
+          }
+        }
+      }
+    },
+    "Import from GymBook…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus GymBook importieren …"
+          }
+        }
+      }
+    },
+    "Imported %lld workouts from GymBook." : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Training aus GymBook importiert."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Trainings aus GymBook importiert."
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Imported %lld workout from GymBook."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Imported %lld workouts from GymBook."
+                }
+              }
+            }
           }
         }
       }
@@ -875,6 +985,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Name"
+          }
+        }
+      }
+    },
+    "New exercise" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Übung"
           }
         }
       }
