@@ -22,6 +22,7 @@ struct ExercisesLibrary: View {
     @State private var order = [KeyPathComparator(\Row.name)]
     @State private var detail: Detail?
     @State private var previewing = false
+    @FocusState private var tableFocused: Bool
 
     var body: some View {
         let own = entries.filter { filter.isEmpty && $0.isOwnExercise }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
@@ -38,6 +39,7 @@ struct ExercisesLibrary: View {
                 TableColumn("Muscles", value: \.muscles)
                 TableColumn("Equipment", value: \.equipment)
             }
+            .focused($tableFocused)
             .contextMenu(forSelectionType: String.self) { ids in
                 Menu("Add to Plan") {
                     ForEach(plans) { plan in
@@ -70,6 +72,8 @@ struct ExercisesLibrary: View {
             .navigationTitle("Exercises")
             // Opened by selecting, not with the page.
             .onChange(of: selection.isEmpty) { _, empty in if !empty { previewing = true } }
+            // Opening or closing the preview takes the table's focus, and with it the arrow keys; take it back once it's laid out.
+            .onChange(of: previewing) { Task { tableFocused = true } }
         }
     }
 }
