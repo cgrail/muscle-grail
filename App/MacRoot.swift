@@ -3,10 +3,10 @@ import Core
 import SwiftData
 import SwiftUI
 
-/// The Mac app laid out like Apple Music: a sidebar with training, history, the exercise library and every plan
-/// as a playlist, and the selected page beside it.
+/// The Mac app laid out like Apple Music: a sidebar with training, history, the exercise library, all plans at a glance
+/// and every plan as a playlist, and the selected page beside it.
 struct MacRootView: View {
-    enum Page: Hashable { case train, history, exercises, changes, plan(Plan) }
+    enum Page: Hashable { case train, history, exercises, changes, overview, plan(Plan) }
 
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -24,6 +24,7 @@ struct MacRootView: View {
                     Label("Changes", systemImage: "clock.arrow.circlepath").tag(Page.changes)
                 }
                 Section("Plans") {
+                    Label("All plans", systemImage: "square.grid.2x2").tag(Page.overview)
                     ForEach(plans) { plan in
                         Label {
                             HStack {
@@ -57,6 +58,7 @@ struct MacRootView: View {
             case .history: HistoryView()
             case .exercises: ExercisesLibrary()
             case .changes: PlanChanges()
+            case .overview: PlansOverview { page = .plan($0) }
             case .plan(let plan) where plans.contains(plan): PlanPage(plan: plan).id(plan.id)
             case .plan, nil: ContentUnavailableView("Choose a plan", systemImage: "list.bullet.clipboard") // a sync or restore deleted it
             }
