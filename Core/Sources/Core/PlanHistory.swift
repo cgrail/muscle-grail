@@ -183,7 +183,6 @@ private struct Walk {
 /// The history of one plan's changes, or of every plan's, newest first. It reloads whenever the store saves.
 public struct PlanChanges: View {
     @Environment(\.modelContext) private var context
-    @Query(Action.newer) private var newer: [Action]
     let plan: UUID?
     @State private var changes: [PlanChange]?
 
@@ -192,6 +191,7 @@ public struct PlanChanges: View {
     }
 
     public var body: some View {
+        let locked = ((try? context.fetchCount(Action.newer)) ?? 0) > 0
         List(changes ?? []) { change in
             HStack {
                 VStack(alignment: .leading) {
@@ -207,7 +207,7 @@ public struct PlanChanges: View {
                         Text("Undo", bundle: .module)
                     }
                     .buttonStyle(.borderless)
-                    .disabled(!newer.isEmpty)
+                    .disabled(locked)
                 }
             }
         }
@@ -218,7 +218,9 @@ public struct PlanChanges: View {
         }
         .navigationTitle(Text("Changes", bundle: .module))
         .task { await load() }
-        .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave).receive(on: DispatchQueue.main)) { _ in Task { await load() } }
+        .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave).receive(on: DispatchQueue.main)) { saved in
+            if (saved.object as? ModelContext)?.container === context.container { Task { await load() } }
+        }
     }
 
     private func load() async {

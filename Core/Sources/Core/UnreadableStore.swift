@@ -1,5 +1,5 @@
 import CloudKit
-import CoreData
+import Foundation
 import SwiftData
 import SwiftUI
 
@@ -41,9 +41,17 @@ public extension Store {
 }
 
 extension Store {
+    /// Removes each store's files: the database, its journal (`-wal`, `-shm`) and its folder of large data (`.<name>_SUPPORT`).
+    /// Nothing has them open, since the store didn't open.
     static func deleteLocalCopy(of stores: [ModelConfiguration]) throws {
-        let coordinator = NSPersistentStoreCoordinator(managedObjectModel: NSManagedObjectModel())
-        for store in stores { try coordinator.destroyPersistentStore(at: store.url, type: .sqlite) }
+        let files = FileManager.default
+        for store in stores {
+            let folder = store.url.deletingLastPathComponent()
+            let support = ".\(store.url.deletingPathExtension().lastPathComponent)_SUPPORT"
+            for name in try files.contentsOfDirectory(atPath: folder.path()) where name.hasPrefix(store.url.lastPathComponent) || name == support {
+                try files.removeItem(at: folder.appending(path: name))
+            }
+        }
     }
 }
 

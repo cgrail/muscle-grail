@@ -35,15 +35,16 @@ struct StoreTests {
         #expect(store.container != nil && store.error == nil)
     }
 
-    @Test func deletingTheLocalCopyEmptiesTheStore() throws {
-        let url = URL.temporaryDirectory.appending(path: "\(UUID()).store")
-        do {
-            let container = try Store.makeContainer(url: url)
-            makePlan(container.mainContext)
-            try container.mainContext.save()
-        }
+    @Test func deletingTheLocalCopyRemovesTheStoresFiles() throws {
+        let folder = URL.temporaryDirectory.appending(path: UUID().uuidString)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let url = folder.appending(path: "store")
+        let container = try Store.makeContainer(url: url)
+        makePlan(container.mainContext, "Bench")
+        try container.mainContext.save()
         try Store.deleteLocalCopy(of: Store.configurations(CurrentSchema.self, url: url))
-        #expect(try Store.makeContainer(url: url).mainContext.fetchCount(FetchDescriptor<Plan>()) == 0)
+        #expect(try FileManager.default.contentsOfDirectory(atPath: folder.path()) == [])
     }
 }
 
