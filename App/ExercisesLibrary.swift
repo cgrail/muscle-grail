@@ -66,8 +66,8 @@ struct ExercisesLibrary: View {
             }
             .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
             .navigationTitle("Exercises")
-            // Shown after the first layout: shown with the page, the preview runs up behind the toolbar until a resize.
-            .task { withTransaction(Transaction(animation: nil)) { previewing = true } }
+            // Opened by selecting, not with the page: shown with it, the preview runs up behind the toolbar until a resize.
+            .onChange(of: selection.isEmpty) { _, empty in if !empty { previewing = true } }
         }
     }
 }
