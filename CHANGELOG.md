@@ -4,7 +4,7 @@
 
 ### Plans
 - The Mac app looks like Apple Music: plans sit in the sidebar like playlists, with their first exercise's photo as artwork. A plan opens as a table of its exercises with sets, reps and weight to edit in place, and a search to find an exercise in it. Under Library, every exercise is listed with its muscles and equipment, to sort, search and add to a plan.
-- On the Mac, the up and down arrow keys move between a plan's exercises.
+- On the Mac, the up and down arrow keys move between a plan's exercises and through the exercise library, with the preview following along.
 - Move an exercise to another plan from its menu, on the Mac and the iPhone. It keeps its sets, reps and weight.
 - See what changed in your plans, and when: across all plans on the Mac under Library → Changes and on the iPhone in Plans, and for one plan from its Changes button. Typing a weight or a name shows as one change. Undo any change from there while what it changed is still there: a removed exercise comes back with its sets, reps and weight, a deleted plan with its exercises. In a plan's own history, Restore brings the plan back to how it was after any change, your sets, reps and weights included; undo the restore to get today's plan back.
 - Replace an exercise with another in the same place, from its menu, on the Mac and the iPhone. Sets and reps stay; the weight starts at your last one for the new exercise, else 0 kg.
