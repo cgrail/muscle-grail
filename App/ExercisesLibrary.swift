@@ -62,11 +62,12 @@ struct ExercisesLibrary: View {
                         ContentUnavailableView("Select an exercise", systemImage: "dumbbell")
                     }
                 }
-                .inspectorColumnWidth(min: 240, ideal: 340, max: 420) // ideal: at least the toolbar's search field above it
+                // Up to about 345 pt, macOS runs the preview up behind the toolbar's search field; from 350 pt it sits below the toolbar.
+                .inspectorColumnWidth(min: 360, ideal: 360, max: 420)
             }
             .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
             .navigationTitle("Exercises")
-            // Opened by selecting, not with the page: shown with it, the preview runs up behind the toolbar until a resize.
+            // Opened by selecting, not with the page.
             .onChange(of: selection.isEmpty) { _, empty in if !empty { previewing = true } }
         }
     }
