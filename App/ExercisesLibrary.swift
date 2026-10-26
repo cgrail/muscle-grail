@@ -27,8 +27,7 @@ struct ExercisesLibrary: View {
         let own = entries.filter { filter.isEmpty && $0.isOwnExercise }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
         let bundled = CatalogExercise.all.filter(filter.admits).map { Row(id: $0.id, name: $0.label, muscles: $0.primaryMuscles.map(catalogTerm).joined(separator: ", "), equipment: $0.equipment.map(catalogTerm) ?? "") }
         let rows = (own + bundled).filter { search.isEmpty || matchesEveryWord(of: search, in: [$0.name, $0.muscles, $0.equipment]) }
-        // A split, not an inspector: macOS runs an inspector narrower than the toolbar's search field up behind the toolbar.
-        HSplitView {
+        NavigationStack { // puts the preview under the toolbar, which then spans the table and the preview in one color
             Table(rows.sorted(using: order), selection: $selection, sortOrder: $order) {
                 TableColumn("Exercise", value: \.name) { row in
                     HStack {
@@ -50,7 +49,12 @@ struct ExercisesLibrary: View {
             } primaryAction: { ids in
                 detail = ids.first.map(Detail.init)
             }
-            if previewing {
+            .searchable(text: $search, prompt: "Exercise, muscle or equipment")
+            .toolbar {
+                FilterMenu(filter: $filter)
+                Button("Preview", systemImage: "sidebar.trailing") { previewing.toggle() }
+            }
+            .inspector(isPresented: $previewing) {
                 Group {
                     if selection.count == 1, let id = selection.first {
                         ExercisePreview(id: id)
@@ -58,18 +62,14 @@ struct ExercisesLibrary: View {
                         ContentUnavailableView("Select an exercise", systemImage: "dumbbell")
                     }
                 }
-                .frame(minWidth: 240, idealWidth: 300, maxWidth: 420)
+                // Up to about 345 pt, macOS runs the preview up behind the toolbar's search field; from 350 pt it sits below the toolbar.
+                .inspectorColumnWidth(min: 360, ideal: 360, max: 420)
             }
+            .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
+            .navigationTitle("Exercises")
+            // Opened by selecting, not with the page.
+            .onChange(of: selection.isEmpty) { _, empty in if !empty { previewing = true } }
         }
-        .searchable(text: $search, prompt: "Exercise, muscle or equipment")
-        .toolbar {
-            FilterMenu(filter: $filter)
-            Button("Preview", systemImage: "sidebar.trailing") { previewing.toggle() }
-        }
-        .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
-        .navigationTitle("Exercises")
-        // Opened by selecting, not with the page.
-        .onChange(of: selection.isEmpty) { _, empty in if !empty { previewing = true } }
     }
 }
 #endif
