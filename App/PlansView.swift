@@ -37,6 +37,7 @@ struct PlanEditor: View {
     @Query(Action.newer) private var newer: [Action]
     let plan: Plan
     @State private var picking = false
+    @State private var replacing: PlanItem?
 
     var body: some View {
         Form {
@@ -47,6 +48,7 @@ struct PlanEditor: View {
                     ForEach(plan.sortedItems) { item in
                         PlanItemRow(item: item)
                             .contextMenu {
+                                Button("Replace with…", systemImage: "arrow.left.arrow.right") { replacing = item }
                                 MoveToPlan(item: item)
                                 Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
                             }
@@ -61,6 +63,9 @@ struct PlanEditor: View {
         .navigationTitle(plan.title)
         .sheet(isPresented: $picking) {
             ExercisePicker { context.add($0, to: plan) }
+        }
+        .sheet(item: $replacing) { item in
+            ExercisePicker(title: "Replace with") { context.replace(item, with: $0) }
         }
         #if os(iOS)
         .toolbar { EditButton() }

@@ -20,6 +20,7 @@ import Testing
         context.reorder(items, fromOffsets: [2], toOffset: 0)
         context.deleteExercise(items[1])
         context.move(items[2], to: makePlan(context, "Squat"))
+        context.replace(items[0], with: "Incline Bench")
         let workout = context.startWorkout(plan)
         let mistake = context.log("Bench", reps: 50, weightKg: 80, in: workout)
         context.log("Bench", reps: 5, weightKg: 80, in: workout)
@@ -86,6 +87,7 @@ import Testing
     @Test func everyVersion2ChangeStillReads() throws {
         expectReads([
             #"{"moveExercise":{"id":"00000000-0000-0000-0000-000000000002","order":3,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
+            #"{"replaceExercise":{"exerciseID":"squat","id":"00000000-0000-0000-0000-000000000002","weightKg":60}}"#,
         ])
     }
 

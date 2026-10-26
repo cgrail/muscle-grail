@@ -66,6 +66,7 @@ private struct PlanRow: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
     @State private var showingDetail = false
+    @State private var replacing = false
 
     var body: some View {
         HStack(spacing: 12) {
@@ -89,6 +90,7 @@ private struct PlanRow: View {
             .frame(width: Column.weight, alignment: .leading)
             Menu {
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
+                Button("Replace with…", systemImage: "arrow.left.arrow.right") { replacing = true }
                 MoveToPlan(item: item)
                 Button("Delete", systemImage: "trash", role: .destructive) { context.deleteExercise(item) }
             } label: {
@@ -100,6 +102,7 @@ private struct PlanRow: View {
         }
         .padding(.vertical, 4)
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
+        .sheet(isPresented: $replacing) { ExercisePicker(title: "Replace with") { context.replace(item, with: $0) } }
     }
 
     /// A number to type, or to step to. A typed one outside `range` lands on its nearest end.

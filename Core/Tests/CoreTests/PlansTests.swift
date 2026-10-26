@@ -37,6 +37,26 @@ import Testing
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 80))
     }
 
+    @Test func replacedExerciseStaysInItsPlace() {
+        let plan = makePlan(context, "Bench", "Squat", "Row")
+        context.replace(plan.sortedItems[1], with: "Curl")
+        #expect(plan.sortedItems.map(\.exerciseID) == ["Bench", "Curl", "Row"])
+    }
+
+    @Test func replacedExerciseStartsAtYourLastWeightOfIt() {
+        let plan = makePlan(context, "Bench")
+        context.log("Curl", reps: 10, weightKg: 12.5, in: context.startWorkout(plan))
+        context.replace(plan.sortedItems[0], with: "Curl")
+        #expect(plan.sortedItems[0].targetWeightKg == 12.5)
+    }
+
+    @Test func replacedExerciseYouNeverDidStartsAtZero() {
+        let item = makePlan(context, "Bench").sortedItems[0]
+        context.setTargets(item, weightKg: 80)
+        context.replace(item, with: "Curl")
+        #expect(item.targetWeightKg == 0)
+    }
+
     @Test func settingOneTargetKeepsTheOthers() {
         let item = makePlan(context, "Bench").sortedItems[0]
         context.setTargets(item, sets: 5)

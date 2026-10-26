@@ -19,6 +19,8 @@ public enum Change: Codable, Equatable, Sendable {
     case reorder(ids: [UUID])
     /// An exercise into another plan, at `order`, with its targets. Version 2.
     case moveExercise(id: UUID, plan: UUID, order: Int)
+    /// Another exercise in the same place, at `weightKg`. Version 2.
+    case replaceExercise(id: UUID, exerciseID: String, weightKg: Double)
     case startWorkout(id: UUID, plan: UUID, start: Date)
     case logSet(id: UUID, workout: UUID, exerciseID: String, reps: Int, weightKg: Double, date: Date)
     case deleteSet(id: UUID)
@@ -119,6 +121,9 @@ public extension ModelContext {
         case let .moveExercise(id, planID, order):
             guard let item = item(id), let plan = plan(planID) else { return }
             (item.plan, item.order) = (plan, order)
+        case let .replaceExercise(id, exerciseID, weightKg):
+            guard let item = item(id) else { return }
+            (item.exerciseID, item.targetWeightKg) = (exerciseID, weightKg)
         case let .reorder(ids):
             for (index, id) in ids.enumerated() {
                 let row: (any Ordered)? = plan(id) ?? item(id)

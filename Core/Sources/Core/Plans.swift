@@ -56,6 +56,13 @@ public extension ModelContext {
         record(.moveExercise(id: item.id, plan: plan.id, order: (plan.sortedItems.last?.order ?? -1) + 1))
     }
 
+    /// Swaps `item`'s exercise for `exerciseID` in its place. Sets and reps stay; the weight is your last set's of it, else 0 kg.
+    func replace(_ item: PlanItem, with exerciseID: String) {
+        var last = FetchDescriptor<LoggedSet>(predicate: #Predicate { $0.exerciseID == exerciseID }, sortBy: [SortDescriptor(\.date, order: .reverse)])
+        last.fetchLimit = 1
+        record(.replaceExercise(id: item.id, exerciseID: exerciseID, weightKg: (try? fetch(last))?.first?.weightKg ?? 0))
+    }
+
     func deleteExercise(_ item: PlanItem) {
         record(.deleteExercise(id: item.id))
     }

@@ -9,6 +9,7 @@ struct ExercisePicker: View {
     @Query(sort: \CatalogEntry.name) private var entries: [CatalogEntry]
     @State private var search = ""
     @State private var filter = CatalogFilter()
+    var title: LocalizedStringKey = "Add exercise"
     let onPick: (String) -> Void
 
     var body: some View {
@@ -30,7 +31,7 @@ struct ExercisePicker: View {
                 }
             }
             .searchable(text: $search, prompt: "Exercise, muscle or equipment")
-            .navigationTitle("Add exercise")
+            .navigationTitle(title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
                 ToolbarItem { FilterMenu(filter: $filter) }

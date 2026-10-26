@@ -909,6 +909,26 @@
         }
       }
     },
+    "Replace with" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersetzen durch"
+          }
+        }
+      }
+    },
+    "Replace with…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersetzen durch …"
+          }
+        }
+      }
+    },
     "Reps" : {
       "localizations" : {
         "de" : {
