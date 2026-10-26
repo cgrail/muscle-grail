@@ -13,6 +13,7 @@ import Testing
         context.editExercise(custom, details: "Slow and wide", videoURL: "https://youtu.be/example")
         context.setPhoto(custom, to: testPhoto())
         context.editExercise("squat", details: "Below parallel")
+        context.setUnit("squat", to: .lb)
         let plan = makePlan(context, "Bench", custom, "Row")
         context.rename(plan, to: "Push")
         let items = plan.sortedItems
@@ -93,6 +94,11 @@ import Testing
             #"{"setOwner":{"id":"00000000-0000-0000-0000-000000000002","own":"theirs"}}"#,
             #"{"addExercise":{"exerciseID":"bench-press","id":"00000000-0000-0000-0000-000000000002","order":0,"own":"mine","plan":"00000000-0000-0000-0000-000000000001"}}"#,
         ])
+    }
+
+    /// What version 3 added, frozen like version 1.
+    @Test func everyVersion3ChangeStillReads() throws {
+        expectReads([#"{"setUnit":{"id":"squat","unit":"lb"}}"#])
     }
 
     func expectReads(_ changes: [String]) {

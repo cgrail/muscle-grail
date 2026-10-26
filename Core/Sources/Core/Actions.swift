@@ -7,7 +7,7 @@ import SwiftData
 /// readable by every version, so an old app can always log in the gym.
 public enum Change: Codable, Equatable, Sendable {
     /// The format this app writes. An app that finds actions of a higher one leaves editing to an update.
-    public static let version = 2
+    public static let version = 3
 
     case addPlan(id: UUID, name: String, order: Int)
     case renamePlan(id: UUID, name: String)
@@ -33,10 +33,12 @@ public enum Change: Codable, Equatable, Sendable {
     // The catalog's changes, logged in its own store.
     case editExercise(id: String, name: String, details: String, videoURL: String)
     case setPhoto(id: String, photo: Data?)
+    /// The unit an exercise's weights show in, a `WeightUnit`. Version 3.
+    case setUnit(id: String, unit: String)
 
     var isCatalog: Bool {
         switch self {
-        case .editExercise, .setPhoto: true
+        case .editExercise, .setPhoto, .setUnit: true
         default: false
         }
     }
@@ -169,6 +171,8 @@ public extension ModelContext {
             (entry.name, entry.details, entry.videoURL) = (name, details, videoURL)
         case let .setPhoto(id, photo):
             (catalogEntry(id) ?? inserted(CatalogEntry(id: id))).photo = photo
+        case let .setUnit(id, unit):
+            (catalogEntry(id) ?? inserted(CatalogEntry(id: id))).unit = unit
         }
     }
 }

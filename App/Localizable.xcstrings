@@ -1389,6 +1389,16 @@
         }
       }
     },
+    "Weights in" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gewichte in"
+          }
+        }
+      }
+    },
     "Workouts" : {
       "localizations" : {
         "de" : {

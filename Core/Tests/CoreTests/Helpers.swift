@@ -39,7 +39,7 @@ final class TestDefaults {
         "set \($0.id) \(String(describing: $0.workout?.id)) \($0.exerciseID) \($0.reps) \($0.weightKg) \($0.date.timeIntervalSinceReferenceDate)"
     }
     let catalog = try context.fetch(FetchDescriptor<CatalogEntry>()).map {
-        "entry \($0.id) \($0.name) \($0.details) \($0.videoURL) \(String(describing: $0.photo))"
+        "entry \($0.id) \($0.name) \($0.details) \($0.videoURL) \(String(describing: $0.photo)) \($0.unit)"
     }
     return (plans + items + workouts + sets + catalog).sorted()
 }

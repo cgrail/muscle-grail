@@ -1,24 +1,4 @@
 # Todo
 
-- [ ] add import/export mechanism from gymbook
-- [x] move an exercise to another plan in one step: a `moveExercise` change (`Change.version` 2) that keeps its sets, reps and weight, as "Move to" in an exercise's menu on the Mac and the iPhone
-- [x] replace an exercise in place: a `replaceExercise` change that keeps its position; the new exercise's weight comes from your own last set of it, else 0 kg. "Replace with…" in an exercise's menu on the Mac and the iPhone
-- [x] when the store can't be opened, don't crash: say this version can't read the data on the device and offer "Download again" (delete this device's copy, refill from iCloud) or "Start from scratch" (after a confirmation, also delete the app's data in iCloud, so every device starts empty), on the iPhone, the Mac and the watch (PLAN.md, Model changes). Needed before the first field goes into `SchemaV1` in place
-- [x] plan history (PLAN.md, Plan history): the list of plan changes across plans and per plan, saying what, in which plan, when and by whom, one entry per edit, on the Mac (sidebar under Library, plan page) and the iPhone (Plans tab, plan editor), built off the main actor. Add `Action.author` and `Action.batch` to `SchemaV1` in place (approved, PLAN.md, Model changes) and keep them in `Backup`
-- [x] undo an entry of the plan history: record its reverse as one batch; a removed exercise comes back with its id and its own targets; Undo is off when the exercise or plan is gone
-- [x] restore a plan to how it was after a history entry: replay the log up to there in memory and record the difference as one batch, your own targets included
-- [x] plan sharing, the rules in Core (PLAN.md, Sharing plans with a training partner): `PlanItem.owner` in `SchemaV1` in place (approved), `setOwner` and an owner on `addExercise`, relative to the author. Which changes go to the partner (every change to a shared plan but targets and the plan list's order) and what "Only me" does when adding, removing, replacing and moving. How a received change applies: only the partner's, oldest first, through `record` with the author, never sent back; a missing plan changes nothing; the later rename, reorder or move wins; a removal beats a move; ties in order sort by id. Training, the watch and the plan's summary skip the partner's own exercises. Replace the least important integration test with "a change for both reaches the partner, their weights stay"
-- [x] plan sharing, sync: `CKSyncEngine` for the `Partner` zone on the iPhone and the Mac (the owner's on the private database, scoped to the zone; the partner's on the shared database), with `SharedPlan`, `SharedChange` and `PartnerSettings` records, its state and the zone cache saved in a file on the device, fetched on silent pushes and the HealthKit step wake, all off the main actor. A thin wrapper like `Health.swift`
-- [x] plan sharing, one invite: Settings → Training partner on the Mac and the iPhone, all plans (default) or chosen plans, one zone-wide `CKShare` through the share sheet, stop sharing or leave. "Share with <partner>" and "Stop sharing" in a plan's menu, and a badge on shared plans. `CKSharingSupported` in the Info.plists
-- [x] plan sharing, accept the invite on the iPhone and the Mac (`userDidAcceptCloudKitShareWith`) and add every shared plan with its ids, at the end of the plan list
-- [x] plan sharing, ask "Only me / Me and <partner>" when adding, removing, replacing or moving an exercise that is for both, in the Mac's plan page and the iPhone's plan editor, and show the partner's own exercises greyed with their name. Settings → Training partner: "Ask each time" (default) or "Always both", in iCloud's key-value store; add its key to CLAUDE.md's saved data
-- [x] plan sharing, Claude: an optional `shared` argument for `add_exercises`; on a shared plan without it, the exercises are your own unless Settings says "Always both"
-- [x] add backup mechanism to folder on mac with auto write on save/load/edit
-- [x] add filter for level, equipment and category
-- [x] show instructions
-- [x] enable keyboard up/down navigation on mac
-- [x] enable direct entry of reps/sets on mac via number
-- [x] add translation for excercise to german - name 
-- [x] restore from the Mac's backup folder: merge the backup's actions into the store, or replace the store with it? replace
-- [x] add github actions for pr and main build
-- [x] also include https://github.com/RepDB/exercise-dataset with correct attribution -  https://github.com/RepDB/exercise-dataset/blob/main/ATTRIBUTION.md
+- [ ] add import/export mechanism from gymbook using following sample file '/Users/christian/Library/Mobile Documents/comappleCloudDocs/Downloads/GymBook-Logs-2026-10-26.xml'
+- [x] show, type and step weights in lb per exercise, since some machines use kg and others lb (needed by the GymBook import)

@@ -95,6 +95,8 @@ public enum SchemaV1: StoreLayout {
         public var details = ""
         public var videoURL = ""
         @Attribute(.externalStorage) public var photo: Data?
+        /// The unit its machine shows, a `WeightUnit`: empty for kg. Weights stay stored in kg.
+        public var unit = ""
 
         public init(id: String) {
             self.id = id

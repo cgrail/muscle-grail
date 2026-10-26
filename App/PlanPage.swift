@@ -89,14 +89,8 @@ private struct PlanRow: View {
                 .frame(width: Column.sets, alignment: .leading)
             count("Reps", item.targetReps, in: 1...100) { context.setTargets(item, reps: $0) }
                 .frame(width: Column.reps, alignment: .leading)
-            Stepper {
-                WeightField(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) })
-            } onIncrement: {
-                context.setTargets(item, weightKg: Weights.next(after: item.targetWeightKg, for: item.exerciseID))
-            } onDecrement: {
-                context.setTargets(item, weightKg: Weights.previous(before: item.targetWeightKg, for: item.exerciseID))
-            }
-            .frame(width: Column.weight, alignment: .leading)
+            WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
+                .frame(width: Column.weight, alignment: .leading)
             Menu {
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
                 Button("Replace with…", systemImage: "arrow.left.arrow.right") { replacing = true }

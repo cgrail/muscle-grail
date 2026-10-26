@@ -105,13 +105,7 @@ private struct PlanItemRow: View {
             }
             Stepper("\(item.targetSets) sets", value: Binding { item.targetSets } set: { context.setTargets(item, sets: $0) }, in: 1...20)
             Stepper("\(item.targetReps) reps", value: Binding { item.targetReps } set: { context.setTargets(item, reps: $0) }, in: 1...100)
-            Stepper {
-                WeightField(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) })
-            } onIncrement: {
-                context.setTargets(item, weightKg: Weights.next(after: item.targetWeightKg, for: item.exerciseID))
-            } onDecrement: {
-                context.setTargets(item, weightKg: Weights.previous(before: item.targetWeightKg, for: item.exerciseID))
-            }
+            WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
         }
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
     }

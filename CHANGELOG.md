@@ -21,6 +21,7 @@
 - The Mac's exercise library previews the selected exercise on the right, like Finder: its photo, muscles and equipment, how to do it, and a video link. It opens when you select an exercise, below the toolbar. The Preview button in the toolbar hides and shows it.
 
 ### Training
+- Machines that show pounds: switch an exercise's details to lb, and its weights show, are typed and step in lb (by 5 lb) in plans, workouts and history, on the iPhone, the Mac and the watch.
 - Type a weight instead of stepping to it, with a comma or a point: in a workout on the iPhone and the Mac, and in plans. The watch keeps its stepper.
 - On the iPhone and the Mac, an exercise opened during a workout shows how to do it, step by step, under its sets, with a link to a video: your own video link, else a YouTube search for the exercise. Your own description replaces the steps.
 - An exercise's details, opened from a plan or the Mac's exercise library, show the catalog's steps for how to do it. On the watch, each exercise's page shows how to do it under its sets.

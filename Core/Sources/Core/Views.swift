@@ -97,34 +97,25 @@ public struct ExerciseSection: View {
 
     public var body: some View {
         let done = workout.sets(of: item.exerciseID)
+        let unit = context.weightUnit(of: item.exerciseID)
         Section {
             if let photo {
                 Image(decorative: photo, scale: 1).resizable().scaledToFit().frame(maxHeight: 90)
             }
             Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
-            Stepper {
-                #if os(watchOS)
-                Text("\(weight.formatted()) kg", bundle: .module)
-                #else
-                WeightField(kg: $weight)
-                #endif
-            } onIncrement: {
-                weight = Weights.next(after: weight, for: item.exerciseID)
-            } onDecrement: {
-                weight = Weights.previous(before: weight, for: item.exerciseID)
-            }
+            WeightStepper(kg: $weight, exerciseID: item.exerciseID)
             Button(String(localized: "Log set \(done.count + 1) of \(item.targetSets)", bundle: .module), systemImage: "checkmark") {
                 context.log(item.exerciseID, reps: reps, weightKg: weight, in: workout)
             }
             if item.targetSets - done.count > 1 {
                 let remaining = item.targetSets - done.count
-                Button(String(localized: "Log \(remaining) × \(reps) at \(weight.formatted()) kg", bundle: .module), systemImage: "checkmark.circle") {
+                Button(String(localized: "Log \(remaining) × \(reps) at \(unit.format(weight))", bundle: .module), systemImage: "checkmark.circle") {
                     context.logRemaining(of: item, in: workout, reps: reps, weightKg: weight)
                 }
             }
             ForEach(done) { set in
                 let delete = Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }
-                Text(verbatim: "\(set.reps) × \(set.weightKg.formatted()) kg")
+                Text(verbatim: "\(set.reps) × \(unit.format(set.weightKg))")
                     .swipeActions { delete }
                     #if os(macOS)
                     .contextMenu { delete } // a mouse can't swipe
@@ -172,7 +163,7 @@ public struct ExerciseRow: View {
                 ExerciseName(item.exerciseID)
                 Group {
                     if next.weightKg > 0 {
-                        Text("\(done)/\(item.targetSets) sets · \(next.reps) reps · \(next.weightKg.formatted()) kg", bundle: .module)
+                        Text("\(done)/\(item.targetSets) sets · \(next.reps) reps · \(context.weightUnit(of: item.exerciseID).format(next.weightKg))", bundle: .module)
                     } else {
                         Text("\(done)/\(item.targetSets) sets · \(next.reps) reps", bundle: .module)
                     }
@@ -208,19 +199,48 @@ public struct ExerciseName: View {
     }
 }
 
-#if !os(watchOS) // the watch steps with its crown
-/// A weight to type, beside the stepper. Every edit that reads as a weight applies at once: a decimal pad has no
-/// return key to commit with, and a set logged mid-edit must get the typed weight.
-public struct WeightField: View {
+/// A weight to step through the gym's real weights, or to type, in the exercise's unit, kept current as it changes.
+public struct WeightStepper: View {
+    @Query private var entries: [CatalogEntry]
     @Binding private var kg: Double
-    @State private var text: String
+    private let exerciseID: String
 
-    public init(kg: Binding<Double>) {
+    public init(kg: Binding<Double>, exerciseID: String) {
         _kg = kg
-        _text = State(initialValue: Self.format(kg.wrappedValue))
+        self.exerciseID = exerciseID
+        _entries = Query(filter: #Predicate { $0.id == exerciseID })
     }
 
     public var body: some View {
+        let unit = entries.first?.weightUnit ?? .kg
+        Stepper {
+            #if os(watchOS) // the watch steps with its crown
+            Text(verbatim: unit.format(kg))
+            #else
+            WeightField(kg: $kg, unit: unit)
+            #endif
+        } onIncrement: {
+            kg = Weights.next(after: kg, for: exerciseID, in: unit)
+        } onDecrement: {
+            kg = Weights.previous(before: kg, for: exerciseID, in: unit)
+        }
+    }
+}
+
+#if !os(watchOS)
+/// A weight to type, beside the stepper. Every edit that reads as a weight applies at once: a decimal pad has no
+/// return key to commit with, and a set logged mid-edit must get the typed weight.
+struct WeightField: View {
+    @Binding private var kg: Double
+    private let unit: WeightUnit
+    @State private var text: String
+
+    init(kg: Binding<Double>, unit: WeightUnit) {
+        (_kg, self.unit) = (kg, unit)
+        _text = State(initialValue: unit.number(kg.wrappedValue))
+    }
+
+    var body: some View {
         HStack(spacing: 4) {
             TextField(String(localized: "Weight", bundle: .module), text: $text)
                 .textFieldStyle(.roundedBorder)
@@ -229,12 +249,12 @@ public struct WeightField: View {
                 #if os(iOS)
                 .keyboardType(.decimalPad)
                 #endif
-            Text(verbatim: "kg")
+            Text(verbatim: unit.rawValue)
         }
-        .onChange(of: kg) { if Weights.parse(text) != kg { text = Self.format(kg) } }
-        .onChange(of: text) { if let typed = Weights.parse(text), typed != kg { kg = typed } }
+        .onChange(of: unit) { text = unit.number(kg) }
+        .onChange(of: kg) { if Weights.parse(text).map(unit.kg) != kg { text = unit.number(kg) } }
+        // A weight shown rounded (49.9 for 49.895) is no edit: only typing changes it.
+        .onChange(of: text) { if text != unit.number(kg), let typed = Weights.parse(text).map(unit.kg), typed != kg { kg = typed } }
     }
-
-    private static func format(_ kg: Double) -> String { kg.formatted(.number.grouping(.never)) }
 }
 #endif

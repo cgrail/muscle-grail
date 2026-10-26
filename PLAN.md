@@ -43,6 +43,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | Adding, removing, replacing or moving an exercise that is for both asks "Only me" or "Me and <partner>", unless Settings says "Always both". Reordering and renaming never ask | Most changes are for both, but sometimes one person does a variation. The order is always for both, since they train together. |
 | The log of changes is the plans' history: per plan and across plans, with who made each change. Undo and restoring an old version record new changes | The log already holds every plan change, so the history needs no second record. Recording instead of rewinding keeps the log append-only, so an undo syncs, reaches the partner, and can be undone in turn. |
 | New fields go into `SchemaV1` in place, with no new schema version and no migration stage (the user's call, 2026-10-26) | Nothing has shipped yet. From the first TestFlight build on, the rules in CLAUDE.md apply. |
+| Weights are stored in kg everywhere; an exercise's unit, `CatalogEntry.unit` (kg or lb, set with `setUnit`, `Change.version` 3, approved 2026-10-26, in `SchemaV1` in place), only changes how they show, are typed and step | Some machines in the gym show kg and others lb. Sets, targets, changes, statistics and Claude keep one unit, so switching an exercise's unit changes no data. |
 
 ## How a device stays current without being opened
 

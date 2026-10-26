@@ -35,6 +35,10 @@ struct ExerciseDetail: View {
                             TextField("Name", text: Binding { entry?.name ?? "" } set: { context.editExercise(id, name: $0) })
                         }
                         TextField("Description", text: Binding { entry?.details ?? "" } set: { context.editExercise(id, details: $0) }, axis: .vertical)
+                        Picker("Weights in", selection: Binding { entry?.weightUnit ?? .kg } set: { context.setUnit(id, to: $0) }) {
+                            ForEach(WeightUnit.allCases, id: \.self) { Text(verbatim: $0.rawValue) }
+                        }
+                        .pickerStyle(.segmented)
                     }
                     let steps = instructions(id, entry: nil) // the bundled steps: the user's own description is the field above
                     if !steps.isEmpty {
