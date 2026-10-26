@@ -2311,6 +2311,16 @@
         }
       }
     },
+    "Undo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widerrufen"
+          }
+        }
+      }
+    },
     "Untitled" : {
       "localizations" : {
         "de" : {

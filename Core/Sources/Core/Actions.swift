@@ -84,8 +84,15 @@ public extension CatalogAction {
 
 public extension ModelContext {
     /// Stores `change` in its log and applies it. Every change to the model goes through here.
-    func record(_ change: Change) {
-        if change.isCatalog { insert(CatalogAction(change)) } else { insert(Action(change)) }
+    /// The changes of one undo or restore share a `batch`, so the history shows them as one entry.
+    func record(_ change: Change, batch: UUID? = nil) {
+        if change.isCatalog {
+            insert(CatalogAction(change))
+        } else {
+            let action = Action(change)
+            action.batch = batch
+            insert(action)
+        }
         apply(change)
     }
 

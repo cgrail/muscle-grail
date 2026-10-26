@@ -12,6 +12,12 @@ func makePlan(_ context: ModelContext, _ exercises: String...) -> Plan {
     return plan
 }
 
+/// The plans' history as the apps read it: what's saved, in a context of its own.
+@MainActor func history(_ container: ModelContainer, of plan: Plan? = nil) throws -> [PlanChange] {
+    try container.mainContext.save()
+    return try PlanChange.history(container, plan: plan?.id)
+}
+
 /// A private defaults domain, removed when the test ends.
 final class TestDefaults {
     let name = "CoreTests-\(UUID())"
