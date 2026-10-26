@@ -5,11 +5,14 @@
 ### Plans
 - The Mac app looks like Apple Music: plans sit in the sidebar like playlists, with their first exercise's photo as artwork. A plan opens as a table of its exercises with sets, reps and weight to edit in place, and a search to find an exercise in it. Under Library, every exercise is listed with its muscles and equipment, to sort, search and add to a plan.
 - On the Mac, the up and down arrow keys move between a plan's exercises.
+- Move an exercise to another plan from its menu, on the Mac and the iPhone. It keeps its sets, reps and weight.
+- See what changed in your plans, and when: across all plans on the Mac under Library → Changes and on the iPhone in Plans, and for one plan from its Changes button. Typing a weight or a name shows as one change. Undo any change from there while what it changed is still there: a removed exercise comes back with its sets, reps and weight, a deleted plan with its exercises. In a plan's own history, Restore brings the plan back to how it was after any change, your sets, reps and weights included; undo the restore to get today's plan back.
+- Replace an exercise with another in the same place, from its menu, on the Mac and the iPhone. Sets and reps stay; the weight starts at your last one for the new exercise, else 0 kg.
 - On the Mac, type a plan's sets and reps, or step to them.
 - Build plans on the Mac from a searchable catalog of 650 exercises by RepDB, each with illustrations and step-by-step instructions, or add your own, each with target sets, reps and weight. Settings credits RepDB.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.
 - On the Mac, add exercises to a plan by describing them, typed or dictated, in English or German: "3x10 bench press at 60 kg, then squats". Needs Apple Intelligence.
-- On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are.
+- On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are. In a plan shared with your training partner, what Claude adds is yours alone unless you ask for both, or Settings says always both.
 - Exercise search finds every word anywhere and ignores plurals and hyphens: "dumbbell curls" finds Dumbbell Bicep Curl.
 - Every plan says what it trains, from its exercises' muscles and sets: Leg-heavy, Chest & Back, or Full body. It shows under the plan when you pick a workout, on the watch too, and on the Mac's plan page.
 - In German, exercises are German too: their names, how to do them, and their muscles, equipment, level and category. Search finds an exercise by its English or German name. Plans and history from before the new catalog show their exercises as "Custom exercise".
@@ -35,9 +38,11 @@
 - Statistics per week, month, quarter or year: workouts per period as a chart, and the current period's workouts, sets and volume.
 
 ### Sync
+- Share plans with your training partner with one invite, from Settings → Training partner on the iPhone or the Mac: all plans, now and later, or only the ones you choose from a plan's menu. Shared plans show two people beside their name. Your partner accepts the invite on their iPhone or Mac, and the shared plans join the end of their plan list. Either of you can stop; both keep the plans as they are. Each of you has your own Apple ID, history and weights. Adding, removing, replacing or moving a shared exercise asks whether it's for both of you or only for you, unless Settings says always both. An exercise only one of you does stays in both plans at its place, greyed for the other, and their training skips it.
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
 - A device without an iCloud account says "Sign in to iCloud to sync" instead of a bare error code.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
+- If an update can't read the data on a device, the app says so instead of crashing. It offers to download the data again from iCloud, or to start from scratch on every device.
 - On the Mac, back up plans, workouts and your exercises to a folder you pick in Settings → General. The backup is rewritten at launch and whenever something changes or syncs in. Restore replaces everything, on every device, with a backup you choose.
 
 ### Watch face and Home Screen

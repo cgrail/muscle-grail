@@ -32,6 +32,8 @@ public enum SchemaV1: StoreLayout {
         public var targetSets = 3
         public var targetReps = 10
         public var targetWeightKg = 0.0
+        /// Whose own it is in a shared plan, an `Owner`: empty for both. Relative to this store's person.
+        public var owner = ""
         public var plan: Plan?
 
         public init(exerciseID: String, order: Int) {
@@ -75,6 +77,10 @@ public enum SchemaV1: StoreLayout {
         /// The `Change.version` of the app that recorded it.
         public var version = 1
         public var payload = Data()
+        /// Who made it: nil for this person, else the training partner's name, set when a change from them is recorded.
+        public var author: String?
+        /// Shared by the changes of one undo or restore, so the history shows them as one entry.
+        public var batch: UUID?
 
         public init() {}
     }

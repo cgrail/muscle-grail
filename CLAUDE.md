@@ -67,6 +67,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Sync and HealthKit
 
 - SwiftData has no "sync now" API. Background wakes come from CloudKit silent pushes and the HealthKit step observer (`Health.observeSteps`). The observer must be registered at every launch, background launches included. `SyncMonitor.waitUntilIdle()` holds a wake open until sync settles.
+- Plans shared with a training partner sync through `PartnerSync` (App, so the iPhone and the Mac) with `CKSyncEngine` in the `Partner` zone, beside SwiftData: the owner's engine on the private database, the partner's on the shared one. What goes out and how what comes in applies are in Core (`Partner.swift`, the records in `PartnerRecords.swift`), with tests; the engine itself is checked by acceptance tests F–K. Its state is the file `Partner.json` in Application Support, which keeps its name and fields. The HealthKit step wake syncs it too.
 - A workout goes to HealthKit only from the device that ran it. That device stores the UUID in `Workout.healthKitID`.
 - The CloudKit container `iCloud.de.grails.musclegrail` is permanent: Apple can't delete or rename it.
 
@@ -75,7 +76,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - The apps ship through the App Store when the user releases a version; the watch app and complication ship inside the iPhone app. A push to `main` releases nothing.
 - `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` are set once in the project's build settings, so every target shares them (the watch app's version must match the iPhone app's). Each upload needs a higher `CURRENT_PROJECT_VERSION`.
 - TestFlight and App Store builds use CloudKit's Production environment. Before uploading a build with a model change, deploy the schema to Production in the CloudKit Console.
-- Saved data: the `UserDefaults` keys `lastSync` (`SyncMonitor`), `day`, `steps`, `km` (the complication), `mcpServer` (the Mac's Claude switch), `backupFolder` (the bookmark of the Mac's backup folder) and `AppleLanguages` (the language switch on iPhone and Mac, Apple's own key read at launch), and the iCloud key-value keys `goalSteps` and `goalKm` (daily goals), keep their names and meaning, so an update reads what the old version saved.
+- Saved data: the `UserDefaults` keys `lastSync` (`SyncMonitor`), `day`, `steps`, `km` (the complication), `mcpServer` (the Mac's Claude switch), `backupFolder` (the bookmark of the Mac's backup folder) and `AppleLanguages` (the language switch on iPhone and Mac, Apple's own key read at launch), and the iCloud key-value keys `goalSteps` and `goalKm` (daily goals) and `partnerAlwaysBoth` (whether changes to shared exercises are always for both), keep their names and meaning, so an update reads what the old version saved.
 - [CHANGELOG.md](CHANGELOG.md) gets an entry in the same commit as every change a user would notice, under `## <MARKETING_VERSION> (current)`. Say what the app does now, not what the diff did; refactors that change nothing visible stay out. When `MARKETING_VERSION` is bumped, the top section is closed and a new current one opens above it.
 - `WHATS-NEW.md` is the user-facing cut for App Store Connect's "What's New", in English and German, written when a version ships, not per commit. Plain text: App Store Connect rejects bullets, emoji and typographic dashes or quotes there (umlauts are fine).
 
@@ -91,7 +92,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Claude (MCP)
 
-- `MCP` (Core) answers JSON-RPC with four tools: `list_plans`, `search_exercises`, `create_plan`, `add_exercises`. They edit through the same Core functions as the app, so edits are recorded as actions and wait for an update after newer actions.
+- `MCP` (Core) answers JSON-RPC with four tools: `list_plans`, `search_exercises`, `create_plan`, `add_exercises`. They edit through the same Core functions as the app, so edits are recorded as actions and wait for an update after newer actions. In a plan shared with the training partner, `add_exercises` adds the user's own exercises unless its `shared` argument, or the always-both setting, says for both.
 - `MCPServer` (Core, macOS) serves it over Streamable HTTP at `http://127.0.0.1:7428/mcp` while the Mac app runs and Settings → Claude is on. It listens on the loopback interface only and refuses requests with a foreign `Origin` (DNS rebinding). The Mac app needs `com.apple.security.network.server` for it.
 - `MCPTests` call the real server over HTTP on a free port.
 

@@ -18,7 +18,7 @@ import SwiftUI
 
     func set(on: Bool) {
         server?.stop()
-        server = on ? try? MCPServer(context: context, port: Self.port) : nil
+        server = on ? try? MCPServer(context: context, port: Self.port) { PartnerStatus.shared.plans.contains($0) } : nil
         failed = on && server == nil
         guard let server else { return }
         Task { failed = await server.ready() == nil }

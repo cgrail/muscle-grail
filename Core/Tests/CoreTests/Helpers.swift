@@ -12,6 +12,12 @@ func makePlan(_ context: ModelContext, _ exercises: String...) -> Plan {
     return plan
 }
 
+/// The plans' history as the apps read it: what's saved, in a context of its own.
+@MainActor func history(_ container: ModelContainer, of plan: Plan? = nil) throws -> [PlanChange] {
+    try container.mainContext.save()
+    return try PlanChange.history(container, plan: plan?.id)
+}
+
 /// A private defaults domain, removed when the test ends.
 final class TestDefaults {
     let name = "CoreTests-\(UUID())"
@@ -24,7 +30,7 @@ final class TestDefaults {
 @MainActor func snapshot(_ context: ModelContext) throws -> [String] {
     let plans = try context.fetch(FetchDescriptor<Plan>()).map { "plan \($0.id) \($0.name) \($0.order)" }
     let items = try context.fetch(FetchDescriptor<PlanItem>()).map {
-        "item \($0.id) \(String(describing: $0.plan?.id)) \($0.exerciseID) \($0.order) \($0.targetSets) \($0.targetReps) \($0.targetWeightKg)"
+        "item \($0.id) \(String(describing: $0.plan?.id)) \($0.exerciseID) \($0.order) \($0.targetSets) \($0.targetReps) \($0.targetWeightKg) \($0.owner)"
     }
     let workouts = try context.fetch(FetchDescriptor<Workout>()).map {
         "workout \($0.id) \(String(describing: $0.plan?.id)) \($0.start) \(String(describing: $0.end)) \(String(describing: $0.healthKitID))"

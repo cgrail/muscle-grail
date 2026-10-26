@@ -279,12 +279,42 @@
         }
       }
     },
+    "All plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Pläne"
+          }
+        }
+      }
+    },
+    "Always both" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Immer für beide"
+          }
+        }
+      }
+    },
     "Another app uses port %lld. Quit it and switch this on again." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eine andere App nutzt Port %lld. Beende sie und schalte das hier wieder ein."
+          }
+        }
+      }
+    },
+    "Ask each time" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jedes Mal fragen"
           }
         }
       }
@@ -309,6 +339,16 @@
         }
       }
     },
+    "Both of you keep your plans as they are. They just stop changing together." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ihr behaltet beide eure Pläne, wie sie sind. Sie ändern sich nur nicht mehr gemeinsam."
+          }
+        }
+      }
+    },
     "Cancel" : {
       "localizations" : {
         "de" : {
@@ -325,6 +365,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kategorie"
+          }
+        }
+      }
+    },
+    "Changes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen"
+          }
+        }
+      }
+    },
+    "Changes to shared exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen an geteilten Übungen"
           }
         }
       }
@@ -365,6 +425,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Auswählen …"
+          }
+        }
+      }
+    },
+    "Chosen plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausgewählte Pläne"
           }
         }
       }
@@ -559,6 +629,16 @@
         }
       }
     },
+    "For whom?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für wen?"
+          }
+        }
+      }
+    },
     "General" : {
       "localizations" : {
         "de" : {
@@ -639,6 +719,16 @@
         }
       }
     },
+    "Invite your training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainingspartner einladen"
+          }
+        }
+      }
+    },
     "Kilometers walked per day" : {
       "localizations" : {
         "de" : {
@@ -665,6 +755,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Letztes Backup %@"
+          }
+        }
+      }
+    },
+    "Leave" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlassen"
           }
         }
       }
@@ -699,12 +799,52 @@
         }
       }
     },
+    "Me and %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich und %@"
+          }
+        }
+      }
+    },
+    "Me and my training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich und mein Trainingspartner"
+          }
+        }
+      }
+    },
     "Month" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Monat"
+          }
+        }
+      }
+    },
+    "Move to" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschieben nach"
+          }
+        }
+      }
+    },
+    "Muscle Grail plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muscle-Grail-Pläne"
           }
         }
       }
@@ -769,12 +909,52 @@
         }
       }
     },
+    "Only %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur %@"
+          }
+        }
+      }
+    },
     "Only apps on this Mac can connect, and only while Muscle Grail is open." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nur Apps auf diesem Mac können sich verbinden, und nur solange Muscle Grail geöffnet ist."
+          }
+        }
+      }
+    },
+    "Only me" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur ich"
+          }
+        }
+      }
+    },
+    "Only my training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur mein Trainingspartner"
+          }
+        }
+      }
+    },
+    "Only you" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur du"
           }
         }
       }
@@ -899,6 +1079,26 @@
         }
       }
     },
+    "Replace with" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersetzen durch"
+          }
+        }
+      }
+    },
+    "Replace with…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ersetzen durch …"
+          }
+        }
+      }
+    },
     "Reps" : {
       "localizations" : {
         "de" : {
@@ -949,6 +1149,56 @@
         }
       }
     },
+    "Share" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teilen"
+          }
+        }
+      }
+    },
+    "Share all plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Pläne teilen"
+          }
+        }
+      }
+    },
+    "Share with %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit %@ teilen"
+          }
+        }
+      }
+    },
+    "Shared" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilt"
+          }
+        }
+      }
+    },
+    "Shared with" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilt mit"
+          }
+        }
+      }
+    },
     "Short of goal" : {
       "localizations" : {
         "de" : {
@@ -989,12 +1239,42 @@
         }
       }
     },
+    "Stop sharing" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teilen beenden"
+          }
+        }
+      }
+    },
+    "Stop sharing plans?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Teilen der Pläne beenden?"
+          }
+        }
+      }
+    },
     "Train" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trainieren"
+          }
+        }
+      }
+    },
+    "Training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trainingspartner"
           }
         }
       }
@@ -1059,6 +1339,16 @@
         }
       }
     },
+    "Waiting for them to accept" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wartet auf die Annahme"
+          }
+        }
+      }
+    },
     "Watch video" : {
       "localizations" : {
         "de" : {
@@ -1105,6 +1395,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jahr"
+          }
+        }
+      }
+    },
+    "your training partner" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "deinem Trainingspartner"
           }
         }
       }

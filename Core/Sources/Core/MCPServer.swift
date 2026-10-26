@@ -9,12 +9,12 @@ import SwiftData
     private let listener: NWListener
     private let mcp: MCP
 
-    /// Port nil picks a free one, for tests.
-    public init(context: ModelContext, port: UInt16?) throws {
+    /// Port nil picks a free one, for tests. `isShared` says whether a plan is shared with the training partner.
+    public init(context: ModelContext, port: UInt16?, isShared: @escaping (UUID) -> Bool = { _ in false }) throws {
         let parameters = NWParameters.tcp
         parameters.requiredInterfaceType = .loopback
         listener = try NWListener(using: parameters, on: port.flatMap(NWEndpoint.Port.init(rawValue:)) ?? .any)
-        mcp = MCP(context: context)
+        mcp = MCP(context: context, isShared: isShared)
         listener.newConnectionHandler = { [weak self] connection in
             MainActor.assumeIsolated { self?.serve(connection) }
         }

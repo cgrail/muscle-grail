@@ -28,6 +28,41 @@ import Testing
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 100))
     }
 
+    @Test func reorderingMovesAnExercise() {
+        let plan = makePlan(context, "Bench", "Squat", "Row")
+        context.reorder(plan.sortedItems, fromOffsets: [2], toOffset: 0)
+        #expect(plan.sortedItems.map(\.exerciseID) == ["Row", "Bench", "Squat"])
+    }
+
+    @Test func movedExerciseKeepsItsTargetsAtTheEndOfTheOtherPlan() {
+        let item = makePlan(context, "Bench").sortedItems[0]
+        context.setTargets(item, sets: 5, reps: 5, weightKg: 80)
+        let other = makePlan(context, "Squat")
+        context.move(item, to: other)
+        #expect(other.sortedItems.map(\.exerciseID) == ["Squat", "Bench"])
+        #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 80))
+    }
+
+    @Test func replacedExerciseStaysInItsPlace() {
+        let plan = makePlan(context, "Bench", "Squat", "Row")
+        context.replace(plan.sortedItems[1], with: "Curl")
+        #expect(plan.sortedItems.map(\.exerciseID) == ["Bench", "Curl", "Row"])
+    }
+
+    @Test func replacedExerciseStartsAtYourLastWeightOfIt() {
+        let plan = makePlan(context, "Bench")
+        context.log("Curl", reps: 10, weightKg: 12.5, in: context.startWorkout(plan))
+        context.replace(plan.sortedItems[0], with: "Curl")
+        #expect(plan.sortedItems[0].targetWeightKg == 12.5)
+    }
+
+    @Test func replacedExerciseYouNeverDidStartsAtZero() {
+        let item = makePlan(context, "Bench").sortedItems[0]
+        context.setTargets(item, weightKg: 80)
+        context.replace(item, with: "Curl")
+        #expect(item.targetWeightKg == 0)
+    }
+
     @Test func settingOneTargetKeepsTheOthers() {
         let item = makePlan(context, "Bench").sortedItems[0]
         context.setTargets(item, sets: 5)

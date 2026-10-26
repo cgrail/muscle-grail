@@ -36,6 +36,16 @@ import Testing
         #expect(try snapshot(context) == backedUp)
     }
 
+    @Test func restoredBackupKeepsWhoMadeEachChange() throws {
+        makePlan(context)
+        let action = try #require(context.fetch(FetchDescriptor<Action>()).first)
+        action.author = "Partner"
+        try context.save()
+        try Backup.write(container, to: folder)
+        try Backup.restore(file, into: context)
+        #expect(try context.fetch(FetchDescriptor<Action>()).map(\.author) == ["Partner"])
+    }
+
     @Test func aBrokenBackupChangesNothing() throws {
         makePlan(context, "squat")
         let before = try snapshot(context)

@@ -16,6 +16,20 @@ import Testing
         window.contentView = NSHostingView(rootView: view.modelContainer(container))
         window.displayIfNeeded()
         RunLoop.main.run(until: .now.addingTimeInterval(0.1))
+        // The view goes while its test's store is still there: left behind, its SwiftData observers trapped on a later test's save.
+        window.contentView = nil
+    }
+
+    @Test func planChangesRenderEmptyAndFull() throws {
+        render(PlanChanges())
+        let plan = makePlan(context, "Bench")
+        try context.save()
+        render(PlanChanges())
+        render(PlanChanges(plan: plan.id))
+    }
+
+    @Test func unreadableStoreRenders() {
+        render(UnreadableStore(OpenStore { throw CocoaError(.fileReadCorruptFile) }))
     }
 
     @Test func syncStatusRendersEveryState() {

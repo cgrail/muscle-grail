@@ -11,6 +11,16 @@
         }
       }
     },
+    "%@ and %lld more" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ und %2$lld weitere"
+          }
+        }
+      }
+    },
     "%@ kg" : {
       "localizations" : {
         "de" : {
@@ -131,6 +141,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Abductors"
+          }
+        }
+      }
+    },
+    "Added %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ hinzugefügt"
           }
         }
       }
@@ -463,6 +483,26 @@
         }
       }
     },
+    "Changed who does %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geändert, wer %@ macht"
+          }
+        }
+      }
+    },
+    "Changes" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Änderungen"
+          }
+        }
+      }
+    },
     "Chest" : {
       "localizations" : {
         "de" : {
@@ -567,6 +607,16 @@
         }
       }
     },
+    "Created the plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan erstellt"
+          }
+        }
+      }
+    },
     "Custom exercise" : {
       "localizations" : {
         "de" : {
@@ -583,6 +633,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Löschen"
+          }
+        }
+      }
+    },
+    "Delete everything" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles löschen"
+          }
+        }
+      }
+    },
+    "Deleted the plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan gelöscht"
           }
         }
       }
@@ -647,6 +717,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Donkey calf raise machine"
+          }
+        }
+      }
+    },
+    "Download again" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu herunterladen"
           }
         }
       }
@@ -1247,6 +1327,16 @@
         }
       }
     },
+    "Moved %@ from %@ to %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ von %2$@ nach %3$@ verschoben"
+          }
+        }
+      }
+    },
     "New plan" : {
       "localizations" : {
         "de" : {
@@ -1263,6 +1353,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Als Nächstes"
+          }
+        }
+      }
+    },
+    "No changes yet" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch keine Änderungen"
           }
         }
       }
@@ -1577,6 +1677,56 @@
         }
       }
     },
+    "Removed %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ entfernt"
+          }
+        }
+      }
+    },
+    "Renamed to %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umbenannt in %@"
+          }
+        }
+      }
+    },
+    "Reordered the exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen neu sortiert"
+          }
+        }
+      }
+    },
+    "Reordered the plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pläne neu sortiert"
+          }
+        }
+      }
+    },
+    "Replaced %@ with %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ durch %2$@ ersetzt"
+          }
+        }
+      }
+    },
     "resistance_band" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1591,6 +1741,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resistance band"
+          }
+        }
+      }
+    },
+    "Restore" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederherstellen"
           }
         }
       }
@@ -1699,6 +1859,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Seated row machine"
+          }
+        }
+      }
+    },
+    "Set %@ to %lld × %lld at %@ kg" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ auf %2$lld × %3$lld mit %4$@ kg gesetzt"
           }
         }
       }
@@ -1913,6 +2083,26 @@
         }
       }
     },
+    "Start from scratch" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu anfangen"
+          }
+        }
+      }
+    },
+    "Start from scratch?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neu anfangen?"
+          }
+        }
+      }
+    },
     "stationary_bike" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1991,6 +2181,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vor %@ synchronisiert"
+          }
+        }
+      }
+    },
+    "This deletes your plans, workouts and exercises on every device and in iCloud. It can't be undone. A backup on the Mac can bring them back." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pläne, Trainings und deine Übungen werden auf allen deinen Geräten und in iCloud gelöscht. Das lässt sich nicht rückgängig machen. Ein Backup auf dem Mac bringt sie zurück."
+          }
+        }
+      }
+    },
+    "This version can't read the data on this device." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Version kann die Daten auf diesem Gerät nicht lesen."
           }
         }
       }
@@ -2131,6 +2341,16 @@
         }
       }
     },
+    "Undo" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Widerrufen"
+          }
+        }
+      }
+    },
     "Untitled" : {
       "localizations" : {
         "de" : {
@@ -2193,6 +2413,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wrist roller"
+          }
+        }
+      }
+    },
+    "You" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du"
           }
         }
       }

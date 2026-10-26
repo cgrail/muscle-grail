@@ -11,14 +11,19 @@ public enum Backup {
         var version: Int
         /// The `Change` as recorded, so changes from newer versions are kept too.
         var payload: Data
+        /// `Action`'s, so the history still says who made each change.
+        var author: String?
+        var batch: UUID?
 
         init(_ record: some ChangeRecord) {
             (id, date, version, payload) = (record.id, record.date, record.version, record.payload)
+            if let action = record as? Action { (author, batch) = (action.author, action.batch) }
         }
 
         func record<R: ChangeRecord>() -> R {
             let record = R()
             (record.id, record.date, record.version, record.payload) = (id, date, version, payload)
+            if let action = record as? Action { (action.author, action.batch) = (author, batch) }
             return record
         }
     }

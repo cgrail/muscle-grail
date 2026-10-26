@@ -7,24 +7,25 @@ import WidgetKit
 
 @main
 struct MuscleGrailApp: App {
-    let container: ModelContainer
+    #if os(iOS)
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+    #else
+    @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+    #endif
+    @State private var store: OpenStore
     #if os(macOS)
-    @State private var claude: ClaudeConnection
-    @State private var backup: BackupFolder
+    @State private var mac: MacServices?
     #endif
 
     init() {
         _ = SyncMonitor.shared // listen before the store's first sync event
-        do {
-            container = try Store.makeContainer()
-        } catch {
-            fatalError("Could not open the store: \(error)")
-        }
+        let store = OpenStore()
+        _store = State(initialValue: store)
+        if let container = store.container { PartnerSync.start(container) }
         #if os(iOS)
         Self.observeSteps()
         #else
-        _claude = State(initialValue: ClaudeConnection(context: container.mainContext))
-        _backup = State(initialValue: BackupFolder(container: container))
+        _mac = State(initialValue: store.container.map(MacServices.init))
         #endif
     }
 
@@ -32,6 +33,7 @@ struct MuscleGrailApp: App {
     static func observeSteps() {
         Health.observeSteps {
             WidgetCenter.shared.reloadAllTimelines() // new steps for the widget
+            await PartnerSync.current?.sync()
             await SyncMonitor.shared.waitUntilIdle()
         }
     }
@@ -39,21 +41,43 @@ struct MuscleGrailApp: App {
 
     var body: some Scene {
         WindowGroup {
-            RootView()
+            if let container = store.container {
+                RootView().modelContainer(container)
+                #if os(macOS)
+                    .onAppear { if mac == nil { mac = MacServices(container: container) } } // after the store opened again
+                #endif
+            } else {
+                UnreadableStore(store)
+            }
         }
-        .modelContainer(container)
         #if os(macOS)
         Settings {
-            TabView {
-                Tab("General", systemImage: "gear") {
-                    Form { LanguagePicker(); BackupSettings(); Credits() }.formStyle(.grouped).frame(width: 560).environment(backup)
+            if let mac {
+                TabView {
+                    Tab("General", systemImage: "gear") {
+                        Form { LanguagePicker(); BackupSettings(); Credits() }.formStyle(.grouped).frame(width: 560).environment(mac.backup)
+                    }
+                    Tab("Training partner", systemImage: "person.2") { Form { PartnerSettings() }.formStyle(.grouped).frame(width: 560) }
+                    Tab("Claude", systemImage: "sparkles") { ClaudeSettings().environment(mac.claude) }
                 }
-                Tab("Claude", systemImage: "sparkles") { ClaudeSettings().environment(claude) }
             }
         }
         #endif
     }
 }
+
+#if os(macOS)
+/// What the Mac runs on its store, made once the store opens.
+struct MacServices {
+    let claude: ClaudeConnection
+    let backup: BackupFolder
+
+    init(container: ModelContainer) {
+        claude = ClaudeConnection(context: container.mainContext)
+        backup = BackupFolder(container: container)
+    }
+}
+#endif
 
 struct RootView: View {
     var body: some View {

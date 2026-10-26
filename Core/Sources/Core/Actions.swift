@@ -7,16 +7,23 @@ import SwiftData
 /// readable by every version, so an old app can always log in the gym.
 public enum Change: Codable, Equatable, Sendable {
     /// The format this app writes. An app that finds actions of a higher one leaves editing to an update.
-    public static let version = 1
+    public static let version = 2
 
     case addPlan(id: UUID, name: String, order: Int)
     case renamePlan(id: UUID, name: String)
     case deletePlan(id: UUID)
-    case addExercise(id: UUID, plan: UUID, exerciseID: String, order: Int)
+    /// `own` since version 2.
+    case addExercise(id: UUID, plan: UUID, exerciseID: String, order: Int, own: Own? = nil)
     case setTargets(id: UUID, sets: Int, reps: Int, weightKg: Double)
     case deleteExercise(id: UUID)
     /// Plans or exercises, in their new order.
     case reorder(ids: [UUID])
+    /// An exercise into another plan, at `order`, with its targets. Version 2.
+    case moveExercise(id: UUID, plan: UUID, order: Int)
+    /// Another exercise in the same place, at `weightKg`. Version 2.
+    case replaceExercise(id: UUID, exerciseID: String, weightKg: Double)
+    /// An exercise of a shared plan for both (nil), or one person's own. Version 2.
+    case setOwner(id: UUID, own: Own?)
     case startWorkout(id: UUID, plan: UUID, start: Date)
     case logSet(id: UUID, workout: UUID, exerciseID: String, reps: Int, weightKg: Double, date: Date)
     case deleteSet(id: UUID)
@@ -33,6 +40,11 @@ public enum Change: Codable, Equatable, Sendable {
         default: false
         }
     }
+}
+
+/// Whose own an exercise of a shared plan is, as the change's author sees it, so one change reads right on both sides.
+public enum Own: String, Codable, Sendable {
+    case mine, theirs
 }
 
 /// A log entry: `Action` in the gym store, `CatalogAction` in the catalog's.
@@ -80,24 +92,34 @@ public extension CatalogAction {
 
 public extension ModelContext {
     /// Stores `change` in its log and applies it. Every change to the model goes through here.
-    func record(_ change: Change) {
-        if change.isCatalog { insert(CatalogAction(change)) } else { insert(Action(change)) }
-        apply(change)
+    /// The changes of one undo or restore share a `batch`, so the history shows them as one entry.
+    /// A change from the training partner has their name as `author`, and its `id` and `date` from their side.
+    func record(_ change: Change, batch: UUID? = nil, author: String? = nil, id: UUID? = nil, date: Date? = nil) {
+        if change.isCatalog {
+            insert(CatalogAction(change))
+        } else {
+            let action = Action(change)
+            (action.batch, action.author) = (batch, author)
+            if let id { action.id = id }
+            if let date { action.date = date }
+            insert(action)
+        }
+        apply(change, by: author)
     }
 
     /// Re-applies both logs, oldest first, to `target`: into an empty store it rebuilds the model, and into this one it
     /// changes nothing. Changes this version can't read are skipped.
     func replay(into target: ModelContext) throws {
-        let gym = try fetch(FetchDescriptor<Action>()).map { ($0.date, $0.change) }
-        let catalog = try fetch(FetchDescriptor<CatalogAction>()).map { ($0.date, $0.change) }
-        for (_, change) in (catalog + gym).sorted(by: { $0.0 < $1.0 }) {
-            if let change { target.apply(change) }
+        let gym = try fetch(FetchDescriptor<Action>()).map { ($0.date, $0.change, $0.author) }
+        let catalog = try fetch(FetchDescriptor<CatalogAction>()).map { ($0.date, $0.change, String?.none) }
+        for (_, change, author) in (catalog + gym).sorted(by: { $0.0 < $1.0 }) {
+            if let change { target.apply(change, by: author) }
         }
     }
 
     /// Applying a change twice changes nothing more, and a set creates its missing workout,
-    /// so actions from several devices can arrive in any order.
-    func apply(_ change: Change) {
+    /// so actions from several devices can arrive in any order. `author` is nil for this person's own changes.
+    func apply(_ change: Change, by author: String? = nil) {
         switch change {
         case let .addPlan(id, name, order):
             let plan = plan(id) ?? inserted(Plan(name: name, order: order))
@@ -106,14 +128,23 @@ public extension ModelContext {
             plan(id)?.name = name
         case let .deletePlan(id):
             if let plan = plan(id) { delete(plan) }
-        case let .addExercise(id, planID, exerciseID, order):
+        case let .addExercise(id, planID, exerciseID, order, own):
             let item = item(id) ?? inserted(PlanItem(exerciseID: exerciseID, order: order))
             (item.id, item.exerciseID, item.order, item.plan) = (id, exerciseID, order, plan(planID))
+            item.owner = Owner(own, by: author).rawValue
         case let .setTargets(id, sets, reps, weightKg):
             guard let item = item(id) else { return }
             (item.targetSets, item.targetReps, item.targetWeightKg) = (sets, reps, weightKg)
         case let .deleteExercise(id):
             if let item = item(id) { delete(item) }
+        case let .moveExercise(id, planID, order):
+            guard let item = item(id), let plan = plan(planID) else { return }
+            (item.plan, item.order) = (plan, order)
+        case let .replaceExercise(id, exerciseID, weightKg):
+            guard let item = item(id) else { return }
+            (item.exerciseID, item.targetWeightKg) = (exerciseID, weightKg)
+        case let .setOwner(id, own):
+            item(id)?.owner = Owner(own, by: author).rawValue
         case let .reorder(ids):
             for (index, id) in ids.enumerated() {
                 let row: (any Ordered)? = plan(id) ?? item(id)

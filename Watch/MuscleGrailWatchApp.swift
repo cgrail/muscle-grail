@@ -5,16 +5,12 @@ import WidgetKit
 
 @main
 struct MuscleGrailWatchApp: App {
-    let container: ModelContainer
+    @State private var store: OpenStore
     @State private var path: [Workout] = []
 
     init() {
         _ = SyncMonitor.shared // listen before the store's first sync event
-        do {
-            container = try Store.makeContainer()
-        } catch {
-            fatalError("Could not open the store: \(error)")
-        }
+        _store = State(initialValue: OpenStore())
         Self.observeSteps()
     }
 
@@ -27,15 +23,19 @@ struct MuscleGrailWatchApp: App {
 
     var body: some Scene {
         WindowGroup {
-            NavigationStack(path: $path) {
-                WorkoutPicker { path = [$0] }
-                    .navigationDestination(for: Workout.self) { WatchWorkoutView(workout: $0) }
-            }
-            .task {
-                await Health.requestAuthorization()
-                Self.observeSteps()
+            if let container = store.container {
+                NavigationStack(path: $path) {
+                    WorkoutPicker { path = [$0] }
+                        .navigationDestination(for: Workout.self) { WatchWorkoutView(workout: $0) }
+                }
+                .task {
+                    await Health.requestAuthorization()
+                    Self.observeSteps()
+                }
+                .modelContainer(container)
+            } else {
+                UnreadableStore(store)
             }
         }
-        .modelContainer(container)
     }
 }

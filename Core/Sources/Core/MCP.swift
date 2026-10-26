@@ -6,9 +6,12 @@ import SwiftData
 @MainActor public struct MCP {
     static let versions = ["2025-06-18", "2025-03-26"]
     let context: ModelContext
+    /// Whether a plan is shared with the training partner.
+    let isShared: (UUID) -> Bool
 
-    public init(context: ModelContext) {
+    public init(context: ModelContext, isShared: @escaping (UUID) -> Bool = { _ in false }) {
         self.context = context
+        self.isShared = isShared
     }
 
     /// Answers one JSON-RPC message, or returns nil for a notification, which gets no answer.
@@ -65,7 +68,9 @@ import SwiftData
             guard let plan = plans.first(where: { $0.name.caseInsensitiveCompare(name) == .orderedSame }) else {
                 throw Failure("No plan called \(name). list_plans shows them.")
             }
-            context.add(exercises(arguments), to: plan)
+            // In a shared plan, the user's own unless the call or the user's settings say for both, like the app's question.
+            let forBoth = arguments["shared"] as? Bool ?? NSUbiquitousKeyValueStore.default.bool(forKey: partnerAlwaysBothKey)
+            context.add(exercises(arguments), to: plan, own: isShared(plan.id) && !forBoth ? .mine : nil)
             try context.save()
             return describe(plan)
         default:
@@ -129,7 +134,9 @@ import SwiftData
                  ["query": ["type": "string"]], required: ["query"]),
             tool("create_plan", "Creates a workout plan.", ["name": ["type": "string"], "exercises": exercises], required: ["name", "exercises"]),
             tool("add_exercises", "Adds exercises to the end of an existing plan.",
-                 ["plan": ["type": "string", "description": "The plan's name"], "exercises": exercises], required: ["plan", "exercises"]),
+                 ["plan": ["type": "string", "description": "The plan's name"], "exercises": exercises,
+                  "shared": ["type": "boolean", "description": "For a plan shared with the user's training partner: true adds the exercises for both, false for the user only. Without it they're the user's own, unless the user's settings say always both."]],
+                 required: ["plan", "exercises"]),
         ]
     }
 }

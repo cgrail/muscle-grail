@@ -17,10 +17,23 @@ import Testing
         #expect(plan.sortedItems.map(\.exerciseID) == ["Bench", "Squat", "Row"])
     }
 
-    @Test func reorderExercisesOnTheMac() {
-        let plan = makePlan(context, "Bench", "Squat", "Row")
-        context.reorder(plan.sortedItems, fromOffsets: [2], toOffset: 0)
-        #expect(plan.sortedItems.map(\.exerciseID) == ["Row", "Bench", "Squat"])
+    /// Training partners share plans: moving curls to another plan once moves them for both, and each keeps their own weight.
+    @Test func aChangeForBothReachesThePartnerAndTheirWeightsStay() throws {
+        let partnerStore = try Store.makeContainer(inMemory: true)
+        let theirs = partnerStore.mainContext
+        let push = makePlan(context, "Bench", "Curl"), pull = makePlan(context, "Row")
+        let shared: Set = [push.id, pull.id]
+        func send(after: Date) throws {
+            try context.save()
+            theirs.receive(try PartnerChange.outgoing(container, after: after, shared: shared), from: "Partner")
+        }
+        try send(after: .distantPast)
+        let curl = try #require(theirs.item(push.sortedItems[1].id))
+        theirs.setTargets(curl, weightKg: 12)
+        let sent = try #require(context.fetch(FetchDescriptor<Action>()).map(\.date).max())
+        context.move(push.sortedItems[1], to: pull)
+        try send(after: sent)
+        #expect(curl.plan?.id == pull.id && curl.targetWeightKg == 12)
     }
 
     @Test func deletingAPlanKeepsItsHistory() throws {
