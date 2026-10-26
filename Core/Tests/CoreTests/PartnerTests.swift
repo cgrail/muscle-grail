@@ -33,6 +33,14 @@ import Testing
         #expect(partner.plan(plan.id)?.sortedItems.map(\.exerciseID) == ["Bench", "Row"])
     }
 
+    @Test func aPlanSharedLaterArrivesAsItIs() throws {
+        let plan = makePlan(me, "Bench", "Row")
+        me.setTargets(plan.sortedItems[0], sets: 5)
+        partner.receive(PartnerChange.snapshot(of: plan, in: me), from: "Me")
+        let theirs = try #require(partner.plan(plan.id))
+        #expect(theirs.sortedItems.map(\.exerciseID) == ["Bench", "Row"] && theirs.sortedItems[0].targetSets == 5)
+    }
+
     @Test func aPlanThatIsNotSharedStaysHere() throws {
         makePlan(me, "Bench")
         #expect(try outgoing().isEmpty)

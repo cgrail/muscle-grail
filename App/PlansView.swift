@@ -13,10 +13,17 @@ struct PlansView: View {
             List {
                 if locked { UpdateToEdit() }
                 ForEach(plans) { plan in
-                    NavigationLink(plan.title) { PlanEditor(plan: plan) }
-                        .contextMenu {
-                            Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
+                    NavigationLink { PlanEditor(plan: plan) } label: {
+                        HStack {
+                            Text(plan.title)
+                            Spacer()
+                            SharedBadge(plan: plan)
                         }
+                    }
+                    .contextMenu {
+                        PlanSharing(plan: plan)
+                        Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
+                    }
                 }
                 .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
                 .moveDisabled(locked)

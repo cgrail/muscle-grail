@@ -40,6 +40,21 @@ public extension PartnerChange {
     }
 }
 
+public extension PartnerChange {
+    /// A plan as the training partner gets it when it's shared: `addPlan`, then `addExercise` for each exercise in order,
+    /// with whose own it is, the sender's sets and reps, and the name of an exercise the sender made.
+    static func snapshot(of plan: Plan, in context: ModelContext) -> [PartnerChange] {
+        let now = Date.now
+        let add = PartnerChange(id: UUID(), date: now, change: .addPlan(id: plan.id, name: plan.name, order: plan.order))
+        return [add] + plan.sortedItems.enumerated().map { index, item in
+            let change = Change.addExercise(id: item.id, plan: plan.id, exerciseID: item.exerciseID, order: item.order, own: item.ownedBy.own)
+            // A millisecond apart, so the partner adds them in this order.
+            return PartnerChange(id: UUID(), date: now.addingTimeInterval(Double(index + 1) / 1000), change: change,
+                                 sets: item.targetSets, reps: item.targetReps, name: context.ownName(of: change))
+        }
+    }
+}
+
 extension Walk {
     /// What the training partner gets for `change`, from the state before it.
     func outgoing(_ change: Change, shared: Set<UUID>) -> Change? {

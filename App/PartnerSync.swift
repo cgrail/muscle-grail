@@ -38,6 +38,67 @@ actor PartnerSync: CKSyncEngineDelegate {
         if state.lastSent == .distantPast { state.lastSent = .now } // what came before sharing went with the plan itself
         applyUnapplied()
         queueOutgoing()
+        publish()
+    }
+
+    // MARK: Sharing
+
+    /// Starts sharing: this person's zone, with one zone-wide share for the share sheet to send, and every plan in it
+    /// or none yet. Asked again, it hands over the same share.
+    func share(allPlans: Bool) async throws -> CKShare {
+        let zone = CKRecordZone.ID(zoneName: PartnerRecords.zoneName, ownerName: CKCurrentUserDefaultName)
+        let database = CKContainer(identifier: Store.cloudKitContainer).privateCloudDatabase
+        let shareID = CKRecord.ID(recordName: CKRecordNameZoneWideShare, zoneID: zone)
+        if state.zone != nil, let share = try? await database.record(for: shareID) as? CKShare { return share }
+        _ = try await database.save(CKRecordZone(zoneID: zone))
+        let share = CKShare(recordZoneID: zone)
+        share[CKShare.SystemFieldKey.title] = String(localized: "Muscle Grail plans")
+        let saved = try await database.save(share)
+        state = PartnerState()
+        (state.zoneName, state.allPlans) = (zone.zoneName, allPlans)
+        resume()
+        setAllPlans(allPlans)
+        return saved as? CKShare ?? share
+    }
+
+    /// All plans, now and later, or only the chosen ones. Switching to all shares this person's plans.
+    func setAllPlans(_ on: Bool) {
+        guard let engine, let zone = state.zone else { return }
+        state.allPlans = on
+        engine.state.add(pendingRecordZoneChanges: [.saveRecord(PartnerRecords.settings(allPlans: on, in: zone).recordID)])
+        if on { share((try? ModelContext(container).fetch(FetchDescriptor<Plan>()))?.map(\.id) ?? []) }
+        save()
+    }
+
+    /// Shares these plans: their records, and each plan as it is now, for the partner to add.
+    func share(_ plans: [UUID]) {
+        guard let engine, let zone = state.zone else { return }
+        let context = ModelContext(container)
+        for id in plans where state.shared.insert(id).inserted {
+            guard let plan = try? context.fetch(FetchDescriptor<Plan>(predicate: #Predicate { $0.id == id })).first else { continue }
+            let changes = PartnerChange.snapshot(of: plan, in: context)
+            for change in changes { state.pending[change.id] = change }
+            engine.state.add(pendingRecordZoneChanges: [.saveRecord(PartnerRecords.plan(id, in: zone).recordID)]
+                             + changes.map { .saveRecord(CKRecord.ID(recordName: $0.id.uuidString, zoneID: zone)) })
+        }
+        save()
+    }
+
+    /// Stops sharing a plan: both keep it as it is.
+    func unshare(_ plan: UUID) {
+        guard let engine, let zone = state.zone, state.shared.remove(plan) != nil else { return }
+        engine.state.add(pendingRecordZoneChanges: [.deleteRecord(PartnerRecords.plan(plan, in: zone).recordID)])
+        save()
+    }
+
+    /// Stops sharing: the owner deletes the zone, the partner leaves it. Both keep their plans as they are.
+    func stop() async throws {
+        guard let zone = state.zone else { return }
+        let cloud = CKContainer(identifier: Store.cloudKitContainer)
+        _ = try await (state.ownerName == nil ? cloud.privateCloudDatabase : cloud.sharedCloudDatabase).deleteRecordZone(withID: zone)
+        state = PartnerState()
+        engine = nil
+        save()
     }
 
     /// Fetches and sends now: a background wake's chance to sync the zone too.
@@ -118,6 +179,11 @@ actor PartnerSync: CKSyncEngineDelegate {
         let context = ModelContext(container)
         var changes: [PartnerChange] = []
         for record in records {
+            if let share = record as? CKShare {
+                let partner = share.participants.first { $0 != share.currentUserParticipant }
+                state.partner = partner?.userIdentity.nameComponents?.formatted() ?? state.partner
+                continue
+            }
             switch record.recordType {
             case PartnerRecords.planType:
                 if let plan = PartnerRecords.planID(record.recordID) { state.shared.insert(plan) }
@@ -159,5 +225,27 @@ actor PartnerSync: CKSyncEngineDelegate {
 
     private func save() {
         try? state.save(to: Self.file)
+        publish()
+    }
+
+    private func publish() {
+        let state = state
+        Task { @MainActor in PartnerStatus.shared.update(state) }
+    }
+}
+
+/// What the views show of sharing, on the main actor. `PartnerSync` keeps it current.
+@MainActor @Observable final class PartnerStatus {
+    static let shared = PartnerStatus()
+
+    private(set) var sharing = false
+    /// Whether this person shares their zone, rather than takes part in the partner's.
+    private(set) var owner = true
+    private(set) var allPlans = true
+    private(set) var partner: String?
+    private(set) var plans: Set<UUID> = []
+
+    func update(_ state: PartnerState) {
+        (sharing, owner, allPlans, partner, plans) = (state.zone != nil, state.ownerName == nil, state.allPlans, state.partner, state.shared)
     }
 }

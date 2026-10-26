@@ -52,6 +52,7 @@ struct MuscleGrailApp: App {
                     Tab("General", systemImage: "gear") {
                         Form { LanguagePicker(); BackupSettings(); Credits() }.formStyle(.grouped).frame(width: 560).environment(mac.backup)
                     }
+                    Tab("Training partner", systemImage: "person.2") { Form { PartnerSettings() }.formStyle(.grouped).frame(width: 560) }
                     Tab("Claude", systemImage: "sparkles") { ClaudeSettings().environment(mac.claude) }
                 }
             }

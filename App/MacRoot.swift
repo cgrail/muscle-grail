@@ -25,11 +25,20 @@ struct MacRootView: View {
                 }
                 Section("Plans") {
                     ForEach(plans) { plan in
-                        Label { Text(plan.title) } icon: { PlanArtwork(plan: plan, size: 20) }
-                            .tag(Page.plan(plan))
-                            .contextMenu {
-                                Button("Delete", systemImage: "trash", role: .destructive) { delete(plan) }.disabled(locked)
+                        Label {
+                            HStack {
+                                Text(plan.title)
+                                Spacer()
+                                SharedBadge(plan: plan)
                             }
+                        } icon: {
+                            PlanArtwork(plan: plan, size: 20)
+                        }
+                        .tag(Page.plan(plan))
+                        .contextMenu {
+                            PlanSharing(plan: plan)
+                            Button("Delete", systemImage: "trash", role: .destructive) { delete(plan) }.disabled(locked)
+                        }
                     }
                     .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
                     .moveDisabled(locked)

@@ -24,7 +24,7 @@ struct SettingsSheet: View {
 
     var body: some View {
         NavigationStack {
-            Form { LanguagePicker(); Credits() }
+            Form { LanguagePicker(); PartnerSettings(); Credits() }
                 .navigationTitle("Settings")
                 .toolbar { Button("Done") { dismiss() } }
         }
