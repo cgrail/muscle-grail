@@ -61,7 +61,7 @@ struct ExercisesLibrary: View {
                     ContentUnavailableView("Select an exercise", systemImage: "dumbbell")
                 }
             }
-            .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
+            .inspectorColumnWidth(min: 240, ideal: 340, max: 420) // ideal: at least the toolbar's search field above it
         }
         .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
         .navigationTitle("Exercises")
