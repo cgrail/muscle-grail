@@ -67,6 +67,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Sync and HealthKit
 
 - SwiftData has no "sync now" API. Background wakes come from CloudKit silent pushes and the HealthKit step observer (`Health.observeSteps`). The observer must be registered at every launch, background launches included. `SyncMonitor.waitUntilIdle()` holds a wake open until sync settles.
+- Plans shared with a training partner sync through `PartnerSync` (App, so the iPhone and the Mac) with `CKSyncEngine` in the `Partner` zone, beside SwiftData: the owner's engine on the private database, the partner's on the shared one. What goes out and how what comes in applies are in Core (`Partner.swift`, the records in `PartnerRecords.swift`), with tests; the engine itself is checked by acceptance tests F–K. Its state is the file `Partner.json` in Application Support, which keeps its name and fields. The HealthKit step wake syncs it too.
 - A workout goes to HealthKit only from the device that ran it. That device stores the UUID in `Workout.healthKitID`.
 - The CloudKit container `iCloud.de.grails.musclegrail` is permanent: Apple can't delete or rename it.
 

@@ -2,7 +2,7 @@ import Foundation
 import SwiftData
 
 /// A plan change between training partners, as the shared zone holds it (PLAN.md, Sharing plans with a training partner).
-public struct PartnerChange: Equatable, Sendable {
+public struct PartnerChange: Codable, Equatable, Sendable {
     public var id: UUID
     public var date: Date
     public var change: Change

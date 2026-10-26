@@ -16,6 +16,7 @@ struct MuscleGrailApp: App {
         _ = SyncMonitor.shared // listen before the store's first sync event
         let store = OpenStore()
         _store = State(initialValue: store)
+        if let container = store.container { PartnerSync.start(container) }
         #if os(iOS)
         Self.observeSteps()
         #else
@@ -27,6 +28,7 @@ struct MuscleGrailApp: App {
     static func observeSteps() {
         Health.observeSteps {
             WidgetCenter.shared.reloadAllTimelines() // new steps for the widget
+            await PartnerSync.current?.sync()
             await SyncMonitor.shared.waitUntilIdle()
         }
     }
