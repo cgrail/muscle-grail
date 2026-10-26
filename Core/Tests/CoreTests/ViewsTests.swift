@@ -10,8 +10,13 @@ import Testing
     let container = try! Store.makeContainer(inMemory: true)
     var context: ModelContext { container.mainContext }
 
+    /// Every store a view was rendered with, kept for the whole run: SwiftUI can hold a taken-down view's SwiftData
+    /// observers past its test, and once their store is gone they trap on a later test's save.
+    private static var rendered: [ModelContainer] = []
+
     /// Renders in a real window, so lists build their rows and `onAppear` runs.
     func render(_ view: some View) {
+        Self.rendered.append(container)
         let window = NSWindow(contentRect: CGRect(x: 0, y: 0, width: 400, height: 800), styleMask: [.titled], backing: .buffered, defer: false)
         window.contentView = NSHostingView(rootView: view.modelContainer(container))
         window.displayIfNeeded()

@@ -14,7 +14,7 @@ struct ExercisePicker: View {
 
     var body: some View {
         let query = search.trimmingCharacters(in: .whitespaces)
-        let custom = entries.filter { filter.isEmpty && CatalogExercise.byID[$0.id] == nil && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
+        let custom = entries.filter { filter.isEmpty && $0.isOwnExercise && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
         let results = CatalogExercise.alphabetical.filter { filter.admits($0) && (query.isEmpty || $0.matches(query)) }
         NavigationStack {
             List {
