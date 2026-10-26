@@ -26,7 +26,7 @@ private struct WorkoutView: View {
 
     var body: some View {
         List {
-            ForEach(workout.plan?.sortedItems ?? []) { item in
+            ForEach(workout.plan?.trainedItems ?? []) { item in
                 NavigationLink {
                     List {
                         ExerciseSection(item: item, workout: workout)

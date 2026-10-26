@@ -13,7 +13,7 @@ struct WatchWorkoutView: View {
 
     var body: some View {
         TabView {
-            ForEach(workout.plan?.sortedItems ?? []) { item in
+            ForEach(workout.plan?.trainedItems ?? []) { item in
                 List {
                     ExerciseSection(item: item, workout: workout)
                     let steps = instructions(item.exerciseID, entry: entries.first { $0.id == item.exerciseID })

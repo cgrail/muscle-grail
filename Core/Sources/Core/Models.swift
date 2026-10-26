@@ -30,8 +30,39 @@ enum MigrationPlan: SchemaMigrationPlan {
     static var stages: [MigrationStage] { [] } // CloudKit stores only migrate lightweight, which additive changes are
 }
 
+/// Whose own an exercise of a shared plan is, in this person's store.
+public enum Owner: String, Sendable {
+    case both = "", me, partner
+
+    /// `own` as this store's person reads it: `author` is nil for their own changes, else the training partner's name.
+    init(_ own: Own?, by author: String?) {
+        switch (own, author == nil) {
+        case (nil, _): self = .both
+        case (.mine?, true), (.theirs?, false): self = .me
+        case (.mine?, false), (.theirs?, true): self = .partner
+        }
+    }
+
+    /// As this store's person says it in a change of their own.
+    var own: Own? {
+        switch self {
+        case .both: nil
+        case .me: .mine
+        case .partner: .theirs
+        }
+    }
+}
+
+public extension PlanItem {
+    var ownedBy: Owner { Owner(rawValue: owner) ?? .both }
+}
+
 public extension Plan {
-    var sortedItems: [PlanItem] { (items ?? []).sorted { $0.order < $1.order } }
+    /// In plan order. Two exercises added at the same place, offline on two devices, sort by id, so every device shows the same order.
+    var sortedItems: [PlanItem] { (items ?? []).sorted { ($0.order, $0.id.uuidString) < ($1.order, $1.id.uuidString) } }
+
+    /// The exercises this person trains: all but the training partner's own.
+    var trainedItems: [PlanItem] { sortedItems.filter { $0.ownedBy != .partner } }
 
     var title: String { name.isEmpty ? String(localized: "Untitled", bundle: .module) : name }
 
@@ -42,7 +73,7 @@ public extension Plan {
     /// else its top two while they get more than two thirds, else "Full body". Nil while it has no bundled exercise.
     var focus: String? {
         var sets = [BodyRegion: Int]()
-        for item in items ?? [] {
+        for item in trainedItems {
             for region in CatalogExercise.byID[item.exerciseID]?.regions ?? [] { sets[region, default: 0] += item.targetSets }
         }
         let ranked = BodyRegion.allCases.filter { sets[$0, default: 0] > 0 }.sorted { sets[$0]! > sets[$1]! }

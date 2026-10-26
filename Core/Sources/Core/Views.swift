@@ -59,7 +59,7 @@ public struct WorkoutPicker: View {
             }
         }
         .navigationTitle(Text("Train", bundle: .module))
-        .task(id: plans.count) { await PhotoCache.shared.download(plans.flatMap { $0.sortedItems.map(\.exerciseID) }) }
+        .task(id: plans.count) { await PhotoCache.shared.download(plans.flatMap { $0.trainedItems.map(\.exerciseID) }) }
     }
 
     private func start(_ plan: Plan) -> some View {

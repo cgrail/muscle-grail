@@ -30,11 +30,11 @@ public extension ModelContext {
         record(.deletePlan(id: plan.id))
     }
 
-    /// Appends the catalog exercise `exerciseID` to the end of `plan`.
+    /// Appends the catalog exercise `exerciseID` to the end of `plan`: for both, or in a shared plan one person's own.
     @discardableResult
-    func add(_ exerciseID: String, to plan: Plan) -> PlanItem {
+    func add(_ exerciseID: String, to plan: Plan, own: Own? = nil) -> PlanItem {
         let id = UUID()
-        record(.addExercise(id: id, plan: plan.id, exerciseID: exerciseID, order: (plan.sortedItems.last?.order ?? -1) + 1))
+        record(.addExercise(id: id, plan: plan.id, exerciseID: exerciseID, order: (plan.sortedItems.last?.order ?? -1) + 1, own: own))
         return item(id)!
     }
 
@@ -51,20 +51,41 @@ public extension ModelContext {
         record(.setTargets(id: item.id, sets: sets ?? item.targetSets, reps: reps ?? item.targetReps, weightKg: weightKg ?? item.targetWeightKg))
     }
 
-    /// Moves `item` to the end of `plan`, with its sets, reps and weight.
-    func move(_ item: PlanItem, to plan: Plan) {
-        record(.moveExercise(id: item.id, plan: plan.id, order: (plan.sortedItems.last?.order ?? -1) + 1))
+    /// Moves `item` to the end of `plan`, with its sets, reps and weight. Only for you, an exercise for both stays where it was
+    /// as the training partner's own, and goes into `plan` as yours.
+    func move(_ item: PlanItem, to plan: Plan, forBoth: Bool = true) {
+        guard !forBoth, item.ownedBy == .both else {
+            return record(.moveExercise(id: item.id, plan: plan.id, order: (plan.sortedItems.last?.order ?? -1) + 1))
+        }
+        record(.setOwner(id: item.id, own: .theirs))
+        setTargets(add(item.exerciseID, to: plan, own: .mine), sets: item.targetSets, reps: item.targetReps, weightKg: item.targetWeightKg)
     }
 
     /// Swaps `item`'s exercise for `exerciseID` in its place. Sets and reps stay; the weight is your last set's of it, else 0 kg.
-    func replace(_ item: PlanItem, with exerciseID: String) {
-        var last = FetchDescriptor<LoggedSet>(predicate: #Predicate { $0.exerciseID == exerciseID }, sortBy: [SortDescriptor(\.date, order: .reverse)])
-        last.fetchLimit = 1
-        record(.replaceExercise(id: item.id, exerciseID: exerciseID, weightKg: (try? fetch(last))?.first?.weightKg ?? 0))
+    /// Only for you, an exercise for both stays as the training partner's own, and yours goes right after it.
+    func replace(_ item: PlanItem, with exerciseID: String, forBoth: Bool = true) {
+        let weightKg = lastWeight(of: exerciseID) ?? 0
+        guard !forBoth, item.ownedBy == .both, let plan = item.plan else {
+            return record(.replaceExercise(id: item.id, exerciseID: exerciseID, weightKg: weightKg))
+        }
+        record(.setOwner(id: item.id, own: .theirs))
+        let yours = add(exerciseID, to: plan, own: .mine)
+        setTargets(yours, sets: item.targetSets, reps: item.targetReps, weightKg: weightKg)
+        var ids = plan.sortedItems.map(\.id).filter { $0 != yours.id }
+        ids.insert(yours.id, at: (ids.firstIndex(of: item.id) ?? ids.count - 1) + 1)
+        record(.reorder(ids: ids))
     }
 
-    func deleteExercise(_ item: PlanItem) {
-        record(.deleteExercise(id: item.id))
+    /// Removes `item`. Only for you, an exercise for both stays in the plan as the training partner's own.
+    func deleteExercise(_ item: PlanItem, forBoth: Bool = true) {
+        record(!forBoth && item.ownedBy == .both ? .setOwner(id: item.id, own: .theirs) : .deleteExercise(id: item.id))
+    }
+
+    /// Your weight in your last set of `exerciseID`, if you ever did it.
+    func lastWeight(of exerciseID: String) -> Double? {
+        var last = FetchDescriptor<LoggedSet>(predicate: #Predicate { $0.exerciseID == exerciseID }, sortBy: [SortDescriptor(\.date, order: .reverse)])
+        last.fetchLimit = 1
+        return (try? fetch(last))?.first?.weightKg
     }
 
     /// Applies a `List.onMove` to plans or to the exercises of one plan.

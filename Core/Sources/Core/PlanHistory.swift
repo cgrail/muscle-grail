@@ -37,8 +37,9 @@ public extension PlanChange {
         var walk = Walk(context: context)
         var changes: [PlanChange] = []
         var versions: [Walk.Version?] = [] // the plan after each entry, in a plan's history
-        for action in try context.fetch(FetchDescriptor<Action>(sortBy: [SortDescriptor(\.date)])) {
-            guard let change = action.change, let step = walk.step(change) else { continue }
+        var seen = Set<UUID>() // a partner's change both their devices recorded before they synced
+        for action in try context.fetch(FetchDescriptor<Action>(sortBy: [SortDescriptor(\.date)])) where seen.insert(action.id).inserted {
+            guard let change = action.change, let step = walk.step(change, by: action.author) else { continue }
             if let last = changes.last, last.author == action.author, joins(step, action.batch, last) {
                 let index = changes.count - 1
                 if action.batch == nil {
@@ -89,7 +90,7 @@ private func joins(_ step: Step, _ batch: UUID?, _ last: PlanChange) -> Bool {
 }
 
 /// A change in words, and what reverses it.
-private struct Step {
+struct Step {
     var key: String?
     var plans: [UUID]
     var planName: String
@@ -100,9 +101,9 @@ private struct Step {
 }
 
 /// The log, walked oldest first, applied to a model of the plans as `apply` changes them, to say what each change did.
-private struct Walk {
+struct Walk {
     struct PlanState { var name: String, order: Int }
-    struct ItemState { var plan: UUID, exerciseID: String, order: Int, sets = 3, reps = 10, weightKg = 0.0 }
+    struct ItemState { var plan: UUID, exerciseID: String, order: Int, sets = 3, reps = 10, weightKg = 0.0, owner = Owner.both }
 
     let context: ModelContext
     var plans: [UUID: PlanState] = [:]
@@ -141,6 +142,7 @@ private struct Walk {
             if (now.sets, now.reps, now.weightKg) != (was.sets, was.reps, was.weightKg) {
                 changes.append(.setTargets(id: id, sets: was.sets, reps: was.reps, weightKg: was.weightKg))
             }
+            if now.owner != was.owner { changes.append(.setOwner(id: id, own: was.owner.own)) }
         }
         let later = items.filter { $0.value.plan == plan && version.items[$0.key] == nil }
         changes += later.keys.map { Change.deleteExercise(id: $0) }
@@ -150,7 +152,8 @@ private struct Walk {
     }
 
     /// `change` in words and what reverses it, from the state before; then the state after. Nil for training and the catalog.
-    mutating func step(_ change: Change) -> Step? {
+    /// `author` is nil for this person's own changes, as in `apply`.
+    mutating func step(_ change: Change, by author: String?) -> Step? {
         switch change {
         case let .addPlan(id, name, order):
             plans[id] = PlanState(name: name, order: order)
@@ -168,9 +171,9 @@ private struct Walk {
             for (item, _) in gone { items[item] = nil }
             let undo = [Change.addPlan(id: id, name: plan.name, order: plan.order)] + gone.flatMap { add($0.key, $0.value) }
             return Step(plans: [id], planName: planName, text: String(localized: "Deleted the plan", bundle: .module), undo: undo, needs: [], absent: [id])
-        case let .addExercise(id, plan, exerciseID, order):
+        case let .addExercise(id, plan, exerciseID, order, own):
             var item = items[id] ?? ItemState(plan: plan, exerciseID: exerciseID, order: order)
-            (item.plan, item.exerciseID, item.order) = (plan, exerciseID, order)
+            (item.plan, item.exerciseID, item.order, item.owner) = (plan, exerciseID, order, Owner(own, by: author))
             items[id] = item
             return Step(plans: [plan], planName: title(plan), text: String(localized: "Added \(name(exerciseID))", bundle: .module),
                         undo: [.deleteExercise(id: id)], needs: [id])
@@ -211,6 +214,11 @@ private struct Walk {
             let text = String(localized: "Replaced \(name(item.exerciseID)) with \(name(exerciseID))", bundle: .module)
             return Step(plans: [item.plan], planName: title(item.plan), text: text,
                         undo: [.replaceExercise(id: id, exerciseID: item.exerciseID, weightKg: item.weightKg)], needs: [id])
+        case let .setOwner(id, own):
+            guard let item = items[id] else { return nil }
+            items[id]?.owner = Owner(own, by: author)
+            return Step(plans: [item.plan], planName: title(item.plan), text: String(localized: "Changed who does \(name(item.exerciseID))", bundle: .module),
+                        undo: [.setOwner(id: id, own: item.owner.own)], needs: [id])
         default:
             return nil
         }
@@ -218,7 +226,7 @@ private struct Walk {
 
     /// The changes that bring back a removed exercise, with its id and targets.
     func add(_ id: UUID, _ item: ItemState) -> [Change] {
-        [.addExercise(id: id, plan: item.plan, exerciseID: item.exerciseID, order: item.order),
+        [.addExercise(id: id, plan: item.plan, exerciseID: item.exerciseID, order: item.order, own: item.owner.own),
          .setTargets(id: id, sets: item.sets, reps: item.reps, weightKg: item.weightKg)]
     }
 

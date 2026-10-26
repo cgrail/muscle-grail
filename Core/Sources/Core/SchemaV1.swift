@@ -32,6 +32,8 @@ public enum SchemaV1: StoreLayout {
         public var targetSets = 3
         public var targetReps = 10
         public var targetWeightKg = 0.0
+        /// Whose own it is in a shared plan, an `Owner`: empty for both. Relative to this store's person.
+        public var owner = ""
         public var plan: Plan?
 
         public init(exerciseID: String, order: Int) {

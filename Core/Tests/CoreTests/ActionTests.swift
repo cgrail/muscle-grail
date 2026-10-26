@@ -21,6 +21,8 @@ import Testing
         context.deleteExercise(items[1])
         context.move(items[2], to: makePlan(context, "Squat"))
         context.replace(items[0], with: "Incline Bench")
+        context.deleteExercise(context.add("Curl", to: plan, own: .mine))
+        context.deleteExercise(context.add("Fly", to: plan), forBoth: false)
         let workout = context.startWorkout(plan)
         let mistake = context.log("Bench", reps: 50, weightKg: 80, in: workout)
         context.log("Bench", reps: 5, weightKg: 80, in: workout)
@@ -88,6 +90,8 @@ import Testing
         expectReads([
             #"{"moveExercise":{"id":"00000000-0000-0000-0000-000000000002","order":3,"plan":"00000000-0000-0000-0000-000000000001"}}"#,
             #"{"replaceExercise":{"exerciseID":"squat","id":"00000000-0000-0000-0000-000000000002","weightKg":60}}"#,
+            #"{"setOwner":{"id":"00000000-0000-0000-0000-000000000002","own":"theirs"}}"#,
+            #"{"addExercise":{"exerciseID":"bench-press","id":"00000000-0000-0000-0000-000000000002","order":0,"own":"mine","plan":"00000000-0000-0000-0000-000000000001"}}"#,
         ])
     }
 

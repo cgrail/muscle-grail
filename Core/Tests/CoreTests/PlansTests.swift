@@ -28,6 +28,12 @@ import Testing
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 100))
     }
 
+    @Test func reorderingMovesAnExercise() {
+        let plan = makePlan(context, "Bench", "Squat", "Row")
+        context.reorder(plan.sortedItems, fromOffsets: [2], toOffset: 0)
+        #expect(plan.sortedItems.map(\.exerciseID) == ["Row", "Bench", "Squat"])
+    }
+
     @Test func movedExerciseKeepsItsTargetsAtTheEndOfTheOtherPlan() {
         let item = makePlan(context, "Bench").sortedItems[0]
         context.setTargets(item, sets: 5, reps: 5, weightKg: 80)

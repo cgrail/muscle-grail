@@ -483,6 +483,16 @@
         }
       }
     },
+    "Changed who does %@" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geändert, wer %@ macht"
+          }
+        }
+      }
+    },
     "Changes" : {
       "localizations" : {
         "de" : {
