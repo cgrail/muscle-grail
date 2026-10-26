@@ -20,9 +20,10 @@ import Testing
 
     @Test func planChangesRenderEmptyAndFull() throws {
         render(PlanChanges())
-        makePlan(context, "Bench")
+        let plan = makePlan(context, "Bench")
         try context.save()
         render(PlanChanges())
+        render(PlanChanges(plan: plan.id))
     }
 
     @Test func unreadableStoreRenders() {

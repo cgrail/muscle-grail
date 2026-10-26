@@ -11,6 +11,16 @@
         }
       }
     },
+    "%@ and %lld more" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ und %2$lld weitere"
+          }
+        }
+      }
+    },
     "%@ kg" : {
       "localizations" : {
         "de" : {
@@ -1721,6 +1731,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Resistance band"
+          }
+        }
+      }
+    },
+    "Restore" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wiederherstellen"
           }
         }
       }

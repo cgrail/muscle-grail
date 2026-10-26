@@ -1,7 +1,5 @@
-import Combine
 import Foundation
 import SwiftData
-import SwiftUI
 
 /// One entry of the plans' history: a plan change, or edits of the same kind to the same thing in a row, or one undo.
 public struct PlanChange: Identifiable, Equatable, Sendable {
@@ -16,6 +14,8 @@ public struct PlanChange: Identifiable, Equatable, Sendable {
     public fileprivate(set) var text: String
     /// False once what it changed is gone, or for a deletion, once it's back.
     public fileprivate(set) var canUndo = false
+    /// In a plan's history: whether the plan is different now from how it was after this entry.
+    public var canRestore: Bool { !restore.isEmpty }
     /// Edits in a row with the same key show as one entry; nil never merges.
     fileprivate let key: String?
     fileprivate let batch: UUID?
@@ -24,6 +24,10 @@ public struct PlanChange: Identifiable, Equatable, Sendable {
     /// What its undo needs to still exist, and what it brings back, so must be gone.
     fileprivate var needs: [UUID]
     fileprivate var absent: [UUID]
+    /// The changes that make the plan what it was after this entry.
+    fileprivate var restore: [Change] = []
+    /// A batch reads as its first change and how many more it made.
+    fileprivate var first = "", more = 0
 }
 
 public extension PlanChange {
@@ -32,23 +36,33 @@ public extension PlanChange {
         let context = ModelContext(container)
         var walk = Walk(context: context)
         var changes: [PlanChange] = []
+        var versions: [Walk.Version?] = [] // the plan after each entry, in a plan's history
         for action in try context.fetch(FetchDescriptor<Action>(sortBy: [SortDescriptor(\.date)])) {
             guard let change = action.change, let step = walk.step(change) else { continue }
             if let last = changes.last, last.author == action.author, joins(step, action.batch, last) {
                 let index = changes.count - 1
-                if action.batch == nil { changes[index].text = step.text } // a batch reads as its first change
+                if action.batch == nil {
+                    changes[index].text = step.text
+                } else {
+                    changes[index].more += 1
+                    changes[index].text = String(localized: "\(last.first) and \(changes[index].more) more", bundle: .module)
+                }
                 changes[index].date = action.date
                 changes[index].undo = step.undo + last.undo
                 changes[index].needs += step.needs
                 changes[index].absent += step.absent
             } else {
                 changes.append(PlanChange(id: action.id, date: action.date, author: action.author, plans: step.plans, planName: step.planName,
-                                          text: step.text, key: step.key, batch: action.batch, undo: step.undo, needs: step.needs, absent: step.absent))
+                                          text: step.text, key: step.key, batch: action.batch, undo: step.undo, needs: step.needs, absent: step.absent,
+                                          first: step.text))
+                versions.append(nil)
             }
+            if let plan, step.plans.contains(plan) { versions[versions.count - 1] = walk.version(of: plan) }
         }
         // The walk ends where the store is now.
         for index in changes.indices {
             changes[index].canUndo = changes[index].needs.allSatisfy(walk.exists) && !changes[index].absent.contains(where: walk.exists)
+            if let plan, let version = versions[index] { changes[index].restore = walk.restoring(plan, to: version) }
         }
         return changes.filter { change in plan.map { change.plans.contains($0) } ?? true }.reversed()
     }
@@ -59,6 +73,12 @@ public extension ModelContext {
     func undo(_ change: PlanChange) {
         let batch = UUID()
         for reverse in change.undo { record(reverse, batch: batch) }
+    }
+
+    /// Makes the plan what it was after `change`, an entry of its history, as one batch: undoing that brings today's back.
+    func restore(_ change: PlanChange) {
+        let batch = UUID()
+        for step in change.restore { record(step, batch: batch) }
     }
 }
 
@@ -90,6 +110,44 @@ private struct Walk {
     var names: [String: String] = [:]
 
     func exists(_ id: UUID) -> Bool { plans[id] != nil || items[id] != nil }
+
+    /// A plan as it is at one point of the walk: nil once deleted.
+    struct Version {
+        var plan: PlanState?
+        var items: [UUID: ItemState]
+    }
+
+    func version(of plan: UUID) -> Version {
+        Version(plan: plans[plan], items: items.filter { $0.value.plan == plan })
+    }
+
+    /// The changes that turn `plan` as it is now back into `version`: its name, its exercises with their targets, their order.
+    func restoring(_ plan: UUID, to version: Version) -> [Change] {
+        guard let then = version.plan else { return [] }
+        var changes: [Change] = []
+        if let now = plans[plan] {
+            if now.name != then.name { changes.append(.renamePlan(id: plan, name: then.name)) }
+        } else {
+            changes.append(.addPlan(id: plan, name: then.name, order: then.order))
+        }
+        let order = version.items.sorted { $0.value.order < $1.value.order }
+        for (id, was) in order {
+            guard let now = items[id] else {
+                changes += add(id, was)
+                continue
+            }
+            if now.plan != plan { changes.append(.moveExercise(id: id, plan: plan, order: was.order)) }
+            if now.exerciseID != was.exerciseID { changes.append(.replaceExercise(id: id, exerciseID: was.exerciseID, weightKg: was.weightKg)) }
+            if (now.sets, now.reps, now.weightKg) != (was.sets, was.reps, was.weightKg) {
+                changes.append(.setTargets(id: id, sets: was.sets, reps: was.reps, weightKg: was.weightKg))
+            }
+        }
+        let later = items.filter { $0.value.plan == plan && version.items[$0.key] == nil }
+        changes += later.keys.map { Change.deleteExercise(id: $0) }
+        let current = items.filter { $0.value.plan == plan }.sorted { $0.value.order < $1.value.order }.map(\.key)
+        if !order.isEmpty, !changes.isEmpty || current != order.map(\.key) { changes.append(.reorder(ids: order.map(\.key))) }
+        return changes
+    }
 
     /// `change` in words and what reverses it, from the state before; then the state after. Nil for training and the catalog.
     mutating func step(_ change: Change) -> Step? {
@@ -177,61 +235,5 @@ private struct Walk {
         let name = context.exerciseName(exerciseID)
         names[exerciseID] = name
         return name
-    }
-}
-
-/// The history of one plan's changes, or of every plan's, newest first. It reloads whenever the store saves.
-public struct PlanChanges: View {
-    @Environment(\.modelContext) private var context
-    let plan: UUID?
-    @State private var changes: [PlanChange]?
-
-    public init(plan: UUID? = nil) {
-        self.plan = plan
-    }
-
-    public var body: some View {
-        let locked = ((try? context.fetchCount(Action.newer)) ?? 0) > 0
-        List(changes ?? []) { change in
-            HStack {
-                VStack(alignment: .leading) {
-                    Text(verbatim: change.text)
-                    Text(verbatim: detail(change)).font(.caption).foregroundStyle(.secondary)
-                }
-                Spacer()
-                if change.canUndo {
-                    Button {
-                        context.undo(change)
-                        try? context.save() // the history reads what's saved
-                    } label: {
-                        Text("Undo", bundle: .module)
-                    }
-                    .buttonStyle(.borderless)
-                    .disabled(locked)
-                }
-            }
-        }
-        .overlay {
-            if changes?.isEmpty == true {
-                ContentUnavailableView { Label { Text("No changes yet", bundle: .module) } icon: { Image(systemName: "clock.arrow.circlepath") } }
-            }
-        }
-        .navigationTitle(Text("Changes", bundle: .module))
-        .task { await load() }
-        .onReceive(NotificationCenter.default.publisher(for: ModelContext.didSave).receive(on: DispatchQueue.main)) { saved in
-            if (saved.object as? ModelContext)?.container === context.container { Task { await load() } }
-        }
-    }
-
-    private func load() async {
-        let (container, plan) = (context.container, plan)
-        changes = await Task.detached { (try? PlanChange.history(container, plan: plan)) ?? [] }.value
-    }
-
-    /// Who and when, and in the history of every plan, which plan.
-    private func detail(_ change: PlanChange) -> String {
-        let who = change.author ?? String(localized: "You", bundle: .module)
-        let when = change.date.formatted(.relative(presentation: .named))
-        return (plan == nil && !change.planName.isEmpty ? [change.planName, who, when] : [who, when]).joined(separator: " · ")
     }
 }
