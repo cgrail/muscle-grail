@@ -54,6 +54,8 @@ struct ExercisesLibrary: View {
                 FilterMenu(filter: $filter)
                 Button("Preview", systemImage: "sidebar.trailing") { previewing.toggle() }
             }
+            // Solid: narrower than the toolbar's search field, the preview runs up behind a see-through toolbar.
+            .toolbarBackgroundVisibility(.visible, for: .windowToolbar)
             .inspector(isPresented: $previewing) {
                 Group {
                     if selection.count == 1, let id = selection.first {
@@ -62,8 +64,7 @@ struct ExercisesLibrary: View {
                         ContentUnavailableView("Select an exercise", systemImage: "dumbbell")
                     }
                 }
-                // Up to about 345 pt, macOS runs the preview up behind the toolbar's search field; from 350 pt it sits below the toolbar.
-                .inspectorColumnWidth(min: 360, ideal: 360, max: 420)
+                .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
             }
             .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
             .navigationTitle("Exercises")

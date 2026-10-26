@@ -17,7 +17,7 @@
 - Every plan says what it trains, from its exercises' muscles and sets: Leg-heavy, Chest & Back, or Full body. It shows under the plan when you pick a workout, on the watch too, and on the Mac's plan page.
 - In German, exercises are German too: their names, how to do them, and their muscles, equipment, level and category. Search finds an exercise by its English or German name. Plans and history from before the new catalog show their exercises as "Custom exercise". Your description, video link or photo for an exercise the new catalog doesn't have no longer lists as a blank exercise in the library, the exercise picker or Claude's search.
 - Filter the exercise catalog by body region, level, equipment and category, like legs for beginners with dumbbells, when adding an exercise and in the Mac's exercise library.
-- The Mac's exercise library previews the selected exercise on the right, like Finder: its photo, muscles and equipment, how to do it, and a video link. It opens when you select an exercise, below the toolbar and at least as wide as the search field above it. The Preview button in the toolbar hides and shows it.
+- The Mac's exercise library previews the selected exercise on the right, like Finder: its photo, muscles and equipment, how to do it, and a video link. It opens when you select an exercise, below the toolbar. The Preview button in the toolbar hides and shows it.
 
 ### Training
 - Type a weight instead of stepping to it, with a comma or a point: in a workout on the iPhone and the Mac, and in plans. The watch keeps its stepper.
