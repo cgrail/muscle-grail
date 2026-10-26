@@ -98,7 +98,10 @@ Every plan change is an action in the log, so the log is the history of the plan
 
 ## Model changes for sharing and history
 
-Approved on 2026-10-26. Nothing has shipped, so they go into `SchemaV1` in place, with no new schema version and no migration stage. A development build may then fail to open the store it made before: delete the app on that device, and its data comes back from iCloud (the Mac also keeps a backup).
+Approved on 2026-10-26. Nothing has shipped, so they go into `SchemaV1` in place, with no new schema version and no migration stage. A build may then fail to open the store an older build made on the same device. Instead of crashing at launch (today's `fatalError` in `MuscleGrailApp` and `MuscleGrailWatchApp`), the iPhone, the Mac and the watch then say that this version can't read the data on the device, and offer two choices:
+
+- **Download again** (the default): deletes this device's copy and opens a new store, which fills again from iCloud. iCloud's records still read, because fields were only added.
+- **Start from scratch:** after a confirmation that says it can't be undone, deletes this device's copy and the app's data in iCloud, so every device starts empty. The Mac's backup restore brings the data back, because replay reads a backup of any version.
 
 - `PlanItem.owner`: empty for an exercise for both, else whose own it is, this person or the partner. It is relative to the store's person, so one exercise reads "mine" on one side and "theirs" on the other.
 - `Action.author`: nil for this person's own changes, else the partner's name, set when a received change is recorded.
@@ -148,6 +151,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [ ] **I — Both at once.** With both iPhones offline, each person removes a different exercise from the same shared plan, for both. Back online, both exercises are gone on all devices, and nothing is doubled.
 - [ ] **J — Stop.** Stop sharing. Both keep their plans as they were, and changes no longer cross.
 - [ ] **K — History.** A day after the partner moved curls from Push to Pull, Pull's history and the history across plans show who moved it and when, on the Mac and the iPhone. Undo puts curls back in Push on every device of both, with each person's own weight. Restoring Push to last week brings back its exercises in their old order with your old weights; the partner keeps theirs.
+- [ ] **L — Old store.** Install a build with the changed `SchemaV1` over an older one. It offers both choices instead of crashing. Download again brings the data back. Start from scratch empties the iPhone, the watch and the Mac, and the Mac's backup restore brings everything back.
 
 ## Status
 
@@ -157,7 +161,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [x] The iOS app builds with the watch app and complication embedded, and the macOS app builds.
 - [x] Smoke test in the iPhone simulator: the CloudKit store opens and the Health permission sheet appears.
 - [ ] Run on real devices, then acceptance tests A–E.
-- [ ] Plan history, and plan sharing with a training partner (`todo.md`), then acceptance tests F–K with two Apple IDs.
+- [ ] Plan history, and plan sharing with a training partner (`todo.md`), then acceptance tests F–L with two Apple IDs.
 - [x] App icons: a flexed arm lifting a dumbbell, made from `Design/icon-source.jpg` by `Design/Icon.swift`.
 
 ## Known risks and fallbacks
