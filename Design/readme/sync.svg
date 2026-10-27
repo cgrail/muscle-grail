@@ -1,0 +1,129 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>A week with Muscle Grail: plan on the Mac, the plan arrives on iPhone and Watch, sets are logged offline at the gym, and everything syncs at home</title>
+  <defs>
+    <pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <rect width="10" height="10" fill="#E9ECF2"/>
+      <rect width="4" height="10" fill="#D5DAE4"/>
+    </pattern>
+    <filter id="card" x="-10%" y="-10%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#03235A" flood-opacity="0.12"/>
+    </filter>
+    <path id="cloud" d="M-34 18h68a20 20 0 0 0 2-40a28 28 0 0 0-53-8a22 22 0 0 0-17 48z"/>
+  </defs>
+
+  <rect width="1200" height="470" rx="28" fill="#F4F6FB"/>
+
+  <!-- Connectivity band -->
+  <g font-size="13" font-weight="700">
+    <rect x="40" y="32" width="548" height="34" rx="17" fill="#D8F5E1"/>
+    <text x="314" y="54" fill="#1B7A3D" text-anchor="middle">ONLINE AT HOME</text>
+    <rect x="612" y="32" width="262" height="34" rx="17" fill="url(#hatch)"/>
+    <text x="743" y="54" fill="#5B6478" text-anchor="middle">NO INTERNET AT THE GYM</text>
+    <rect x="898" y="32" width="262" height="34" rx="17" fill="#D8F5E1"/>
+    <text x="1029" y="54" fill="#1B7A3D" text-anchor="middle">ONLINE AGAIN</text>
+  </g>
+
+  <!-- Cards -->
+  <g filter="url(#card)" fill="#FFFFFF">
+    <rect x="40" y="88" width="262" height="350" rx="20"/>
+    <rect x="326" y="88" width="262" height="350" rx="20"/>
+    <rect x="612" y="88" width="262" height="350" rx="20"/>
+    <rect x="898" y="88" width="262" height="350" rx="20"/>
+  </g>
+
+  <!-- Chevrons -->
+  <g fill="none" stroke="#9AA6BF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M309 180l8 8-8 8"/>
+    <path d="M595 180l8 8-8 8"/>
+    <path d="M881 180l8 8-8 8"/>
+  </g>
+
+  <!-- 1: plan on the Mac -->
+  <g transform="translate(171 188)">
+    <rect x="-70" y="-60" width="140" height="92" rx="10" fill="#03235A"/>
+    <rect x="-62" y="-52" width="124" height="76" rx="4" fill="#FFFFFF"/>
+    <rect x="-62" y="-52" width="34" height="76" fill="#EEF1F6"/>
+    <rect x="-56" y="-30" width="22" height="8" rx="3" fill="#0A5BDB"/>
+    <g fill="#C9D1E0">
+      <rect x="-20" y="-42" width="50" height="6" rx="3" fill="#1C2333"/>
+      <rect x="-20" y="-26" width="74" height="4" rx="2"/>
+      <rect x="-20" y="-14" width="74" height="4" rx="2"/>
+      <rect x="-20" y="-2" width="74" height="4" rx="2"/>
+      <rect x="-20" y="10" width="74" height="4" rx="2"/>
+    </g>
+    <path d="M-20 32h40l6 14h-52z" fill="#03235A"/>
+  </g>
+
+  <!-- 2: arrives on its own -->
+  <g transform="translate(457 162)">
+    <use href="#cloud" fill="#0A5BDB"/>
+    <path d="M0-4v28m-8-8l8 8 8-8" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(424 206)">
+    <rect x="-18" y="0" width="36" height="66" rx="8" fill="#1A1D24"/>
+    <rect x="-14" y="4" width="28" height="58" rx="5" fill="#FFFFFF"/>
+    <rect x="-9" y="14" width="18" height="4" rx="2" fill="#1C2333"/>
+    <rect x="-9" y="24" width="18" height="3" rx="1.5" fill="#C9D1E0"/>
+    <rect x="-9" y="32" width="18" height="3" rx="1.5" fill="#C9D1E0"/>
+    <rect x="-9" y="40" width="18" height="3" rx="1.5" fill="#C9D1E0"/>
+  </g>
+  <g transform="translate(492 222)">
+    <rect x="-12" y="-10" width="24" height="56" rx="6" fill="#2A3550"/>
+    <rect x="-22" y="0" width="44" height="50" rx="13" fill="#1A1D24"/>
+    <rect x="-17" y="5" width="34" height="40" rx="9" fill="#000000"/>
+    <rect x="-11" y="15" width="22" height="4" rx="2" fill="#5AC8FA"/>
+    <rect x="-11" y="24" width="22" height="3" rx="1.5" fill="#4A5163"/>
+  </g>
+
+  <!-- 3: log every set offline -->
+  <g transform="translate(743 150)">
+    <rect x="-24" y="-12" width="48" height="128" rx="12" fill="#2A3550"/>
+    <rect x="-44" y="10" width="88" height="96" rx="24" fill="#1A1D24"/>
+    <rect x="-36" y="18" width="72" height="80" rx="18" fill="#000000"/>
+    <rect x="-28" y="66" width="56" height="20" rx="10" fill="#30D158"/>
+    <path d="M-7 76l5 5 10-10" fill="none" stroke="#002B0E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="-28" y="32" width="38" height="6" rx="3" fill="#5AC8FA"/>
+    <rect x="-28" y="46" width="56" height="10" rx="4" fill="#1F2229"/>
+    <circle cx="52" cy="12" r="18" fill="#FFFFFF" stroke="#E3E7EF" stroke-width="2"/>
+    <g fill="none" stroke="#8A93A6" stroke-width="2.5" stroke-linecap="round">
+      <path d="M41 9a16 16 0 0 1 22 0"/>
+      <path d="M45 14a10 10 0 0 1 14 0"/>
+      <path d="M41 1l22 22" stroke="#FF3B30"/>
+    </g>
+    <circle cx="52" cy="19" r="2" fill="#8A93A6"/>
+  </g>
+
+  <!-- 4: everything catches up -->
+  <g transform="translate(1029 162)">
+    <use href="#cloud" fill="#30A75A"/>
+    <path d="M-10 0l7 7 14-14" fill="none" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <g transform="translate(1029 236)" font-size="12" font-weight="700" text-anchor="middle">
+    <circle cx="-60" cy="0" r="20" fill="#E6EEFC"/>
+    <text x="-60" y="4" fill="#0A5BDB">Mac</text>
+    <circle cx="0" cy="0" r="20" fill="#E6EEFC"/>
+    <text x="0" y="4" fill="#0A5BDB">iPhone</text>
+    <circle cx="60" cy="0" r="20" fill="#E6EEFC"/>
+    <text x="60" y="4" fill="#0A5BDB">Watch</text>
+  </g>
+
+  <!-- Captions -->
+  <g font-size="12" font-weight="700" fill="#8A93A6" letter-spacing="1">
+    <text x="64" y="304">SUNDAY · MAC</text>
+    <text x="350" y="304">OVERNIGHT</text>
+    <text x="636" y="304">THURSDAY · GYM</text>
+    <text x="922" y="304">BACK HOME</text>
+  </g>
+  <g font-size="20" font-weight="800" fill="#1C2333">
+    <text x="64" y="332">Plan at your desk</text>
+    <text x="350" y="332">Arrives on its own</text>
+    <text x="636" y="332">Log every set</text>
+    <text x="922" y="332">Everything catches up</text>
+  </g>
+  <g font-size="14" fill="#4A5366">
+    <text x="64" y="360"><tspan x="64">Edit a plan in a table, add</tspan><tspan x="64" dy="20">exercises by describing them.</tspan><tspan x="64" dy="20">iCloud takes it from there.</tspan></text>
+    <text x="350" y="360"><tspan x="350">A silent push wakes iPhone</tspan><tspan x="350" dy="20">and Watch. The new plan is</tspan><tspan x="350" dy="20">there without opening an app.</tspan></text>
+    <text x="636" y="360"><tspan x="636">One tap per set, saved on the</tspan><tspan x="636" dy="20">device at once. The workout</tspan><tspan x="636" dy="20">goes to Health.</tspan></text>
+    <text x="922" y="360"><tspan x="922">Hourly step updates wake the</tspan><tspan x="922" dy="20">app. The sets upload and show</tspan><tspan x="922" dy="20">up everywhere, exactly once.</tspan></text>
+  </g>
+</svg>

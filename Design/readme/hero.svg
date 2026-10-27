@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 540" font-family="-apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Helvetica, Arial, sans-serif">
+  <title>Muscle Grail on the Mac, iPhone and Apple Watch</title>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#03235A"/>
+      <stop offset="1" stop-color="#0B3F8F"/>
+    </linearGradient>
+    <linearGradient id="watchStrap" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2A3550"/>
+      <stop offset="1" stop-color="#1B2338"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%">
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000814" flood-opacity="0.45"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="540" rx="28" fill="url(#bg)"/>
+  <circle cx="1080" cy="-40" r="260" fill="#FFFFFF" opacity="0.04"/>
+  <circle cx="140" cy="600" r="220" fill="#FFFFFF" opacity="0.04"/>
+
+  <!-- Pitch -->
+  <text x="64" y="104" fill="#8FB4FF" font-size="16" font-weight="700" letter-spacing="3">MUSCLE GRAIL</text>
+  <text x="64" y="166" fill="#FFFFFF" font-size="50" font-weight="800">Train offline.</text>
+  <text x="64" y="226" fill="#FFFFFF" font-size="50" font-weight="800">Sync later.</text>
+  <text fill="#C9D6F0" font-size="19">
+    <tspan x="64" y="282">Log every set on your iPhone or Apple Watch,</tspan>
+    <tspan x="64" y="310">even in a basement gym without signal.</tspan>
+    <tspan x="64" y="338">Plan at your Mac. iCloud catches up on its own.</tspan>
+  </text>
+
+  <g font-size="15" font-weight="600">
+    <rect x="64" y="378" width="164" height="36" rx="18" fill="#FFFFFF" fill-opacity="0.12"/>
+    <text x="146" y="401" fill="#FFFFFF" text-anchor="middle">No signal needed</text>
+    <rect x="240" y="378" width="132" height="36" rx="18" fill="#FFFFFF" fill-opacity="0.12"/>
+    <text x="306" y="401" fill="#FFFFFF" text-anchor="middle">No sign-up</text>
+    <rect x="64" y="424" width="210" height="36" rx="18" fill="#FFFFFF" fill-opacity="0.12"/>
+    <text x="169" y="447" fill="#FFFFFF" text-anchor="middle">iPhone · Watch · Mac</text>
+    <rect x="286" y="424" width="150" height="36" rx="18" fill="#FFFFFF" fill-opacity="0.12"/>
+    <text x="361" y="447" fill="#FFFFFF" text-anchor="middle">English · Deutsch</text>
+  </g>
+
+  <!-- Mac window: a plan as a table -->
+  <g filter="url(#shadow)">
+    <rect x="540" y="56" width="610" height="352" rx="14" fill="#FFFFFF"/>
+    <path d="M540 70a14 14 0 0 1 14-14h176v352H554a14 14 0 0 1-14-14z" fill="#EEF1F6"/>
+    <circle cx="562" cy="78" r="6" fill="#FF5F57"/>
+    <circle cx="582" cy="78" r="6" fill="#FEBC2E"/>
+    <circle cx="602" cy="78" r="6" fill="#28C840"/>
+    <g font-size="13" fill="#1C2333">
+      <text x="560" y="118">Train</text>
+      <text x="560" y="142">History</text>
+      <text x="560" y="174" font-size="11" font-weight="700" fill="#8A93A6">LIBRARY</text>
+      <text x="560" y="196">Exercises</text>
+      <text x="560" y="220">Changes</text>
+      <text x="560" y="252" font-size="11" font-weight="700" fill="#8A93A6">PLANS</text>
+      <text x="560" y="274">All plans</text>
+      <rect x="552" y="284" width="166" height="26" rx="6" fill="#0A5BDB"/>
+      <text x="560" y="302" fill="#FFFFFF" font-weight="600">Upper A</text>
+      <text x="560" y="330">Lower A</text>
+      <text x="560" y="354">Upper B</text>
+      <text x="560" y="378">Lower B</text>
+    </g>
+    <text x="756" y="112" font-size="24" font-weight="800" fill="#1C2333">Upper A</text>
+    <text x="756" y="134" font-size="13" fill="#6B7487">Chest &amp; Back · 5 exercises</text>
+    <g font-size="11" font-weight="700" fill="#8A93A6">
+      <text x="756" y="170">EXERCISE</text>
+      <text x="980" y="170">SETS</text>
+      <text x="1030" y="170">REPS</text>
+      <text x="1080" y="170">WEIGHT</text>
+    </g>
+    <line x1="756" y1="180" x2="1132" y2="180" stroke="#E3E7EF"/>
+    <g font-size="13" fill="#1C2333">
+      <text x="756" y="206">Barbell Bench Press</text><text x="992" y="206">3</text><text x="1040" y="206">10</text><text x="1080" y="206">60 kg</text>
+      <line x1="756" y1="220" x2="1132" y2="220" stroke="#F0F2F6"/>
+      <text x="756" y="246">Bent-Over Barbell Row</text><text x="992" y="246">3</text><text x="1040" y="246">10</text><text x="1080" y="246">50 kg</text>
+      <line x1="756" y1="260" x2="1132" y2="260" stroke="#F0F2F6"/>
+      <rect x="748" y="266" width="392" height="30" rx="6" fill="#E6EEFC"/>
+      <text x="756" y="286">Dumbbell Shoulder Press</text><text x="992" y="286">3</text><text x="1040" y="286">12</text><text x="1080" y="286">18 kg</text>
+      <text x="756" y="326">Lat Pulldown</text><text x="992" y="326">3</text><text x="1040" y="326">10</text><text x="1080" y="326">55 kg</text>
+      <line x1="756" y1="340" x2="1132" y2="340" stroke="#F0F2F6"/>
+      <text x="756" y="366">Cable Fly</text><text x="992" y="366">3</text><text x="1040" y="366">12</text><text x="1080" y="366">40 lb</text>
+    </g>
+  </g>
+
+  <!-- Apple Watch: log a set -->
+  <g filter="url(#shadow)">
+    <rect x="608" y="300" width="96" height="60" rx="14" fill="url(#watchStrap)"/>
+    <rect x="608" y="470" width="96" height="70" rx="14" fill="url(#watchStrap)"/>
+    <rect x="578" y="330" width="156" height="180" rx="42" fill="#1A1D24"/>
+    <rect x="732" y="378" width="10" height="34" rx="4" fill="#3A3F4B"/>
+    <rect x="590" y="342" width="132" height="156" rx="32" fill="#000000"/>
+    <text x="604" y="368" font-size="11" font-weight="700" fill="#5AC8FA">Upper A</text>
+    <text x="604" y="386" font-size="10" font-weight="700" fill="#9AA3B2">BENCH PRESS</text>
+    <rect x="600" y="394" width="112" height="24" rx="8" fill="#1F2229"/>
+    <text x="608" y="410" font-size="11" fill="#FFFFFF">10 reps</text>
+    <text x="702" y="411" font-size="13" fill="#5AC8FA" text-anchor="end">− +</text>
+    <rect x="600" y="422" width="112" height="24" rx="8" fill="#1F2229"/>
+    <text x="608" y="438" font-size="11" fill="#FFFFFF">60 kg</text>
+    <text x="702" y="439" font-size="13" fill="#5AC8FA" text-anchor="end">− +</text>
+    <rect x="600" y="452" width="112" height="28" rx="14" fill="#30D158"/>
+    <text x="656" y="470" font-size="11" font-weight="700" fill="#002B0E" text-anchor="middle">✓ Log set 2 of 3</text>
+  </g>
+
+  <!-- iPhone: the workout list, offline -->
+  <g filter="url(#shadow)">
+    <rect x="964" y="196" width="196" height="330" rx="34" fill="#1A1D24"/>
+    <rect x="972" y="204" width="180" height="314" rx="27" fill="#FFFFFF"/>
+    <rect x="1034" y="212" width="56" height="16" rx="8" fill="#000000"/>
+    <text x="990" y="225" font-size="11" font-weight="700" fill="#1C2333">9:41</text>
+    <path d="M1124 218l5 5m0-5l-5 5" stroke="#1C2333" stroke-width="1.6"/>
+    <text x="1132" y="226" font-size="9" fill="#1C2333">SOS</text>
+    <text x="986" y="262" font-size="20" font-weight="800" fill="#1C2333">Upper A</text>
+    <g font-size="11">
+      <rect x="986" y="276" width="30" height="30" rx="6" fill="#EEF1F6"/>
+      <text x="1024" y="288" font-weight="600" fill="#1C2333">Bench Press</text>
+      <text x="1024" y="302" fill="#6B7487">1/3 sets · 10 · 60 kg</text>
+      <circle cx="1136" cy="291" r="9" fill="none" stroke="#0A5BDB" stroke-width="2"/>
+      <rect x="986" y="318" width="30" height="30" rx="6" fill="#EEF1F6"/>
+      <text x="1024" y="330" font-weight="600" fill="#1C2333">Barbell Row</text>
+      <text x="1024" y="344" fill="#6B7487">0/3 sets · 10 · 50 kg</text>
+      <circle cx="1136" cy="333" r="9" fill="none" stroke="#0A5BDB" stroke-width="2"/>
+      <rect x="986" y="360" width="30" height="30" rx="6" fill="#EEF1F6"/>
+      <text x="1024" y="372" font-weight="600" fill="#1C2333">Shoulder Press</text>
+      <text x="1024" y="386" fill="#6B7487">0/3 sets · 12 · 18 kg</text>
+      <circle cx="1136" cy="375" r="9" fill="none" stroke="#0A5BDB" stroke-width="2"/>
+      <rect x="986" y="402" width="30" height="30" rx="6" fill="#EEF1F6"/>
+      <text x="1024" y="414" font-weight="600" fill="#1C2333">Lat Pulldown</text>
+      <text x="1024" y="428" fill="#6B7487">0/3 sets · 10 · 55 kg</text>
+      <circle cx="1136" cy="417" r="9" fill="none" stroke="#0A5BDB" stroke-width="2"/>
+    </g>
+    <rect x="986" y="452" width="152" height="40" rx="10" fill="#FFF4E5"/>
+    <path d="M1004 478h16a5 5 0 0 0 0-10a7 7 0 0 0-13-2a5 5 0 0 0-3 12z" fill="#FF9500"/>
+    <text x="1028" y="476" font-size="11" font-weight="600" fill="#9A5800">Waiting to upload</text>
+  </g>
+</svg>
