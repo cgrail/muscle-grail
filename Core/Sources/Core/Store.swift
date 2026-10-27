@@ -52,10 +52,9 @@ public enum Store {
     public var waitingToUpload: Bool { changed > exported }
 
     /// Whether an export took every change saved here to `plan` and its exercises: until one does, no other device has them.
-    /// A model not saved yet has a temporary identifier.
     public func inICloud(_ plan: Plan) -> Bool {
         let ids = [plan.persistentModelID] + (plan.items ?? []).map(\.persistentModelID)
-        return ids.allSatisfy { !$0.isTemporary && unsent[$0.storeIdentifier ?? ""]?[Self.key($0)] == nil }
+        return ids.allSatisfy { unsent[$0.storeIdentifier ?? ""]?[Self.key($0)] == nil }
     }
 
     init(defaults: UserDefaults = .standard) {
