@@ -1,13 +1,17 @@
-import Core
 import SwiftUI
 
 /// One column per week, one square per day, with month and weekday labels: gym days red, goals reached blue,
-/// short of them light blue. Tapping a day selects it.
-struct ActivityGrid: View {
+/// short of them light blue. Tapping a day selects it. The iPhone and Mac show it in Activity, the watch from its complication.
+public struct ActivityGrid: View {
     let weeks: [GridWeek]
     @Binding var selected: Date
 
-    var body: some View {
+    public init(weeks: [GridWeek], selected: Binding<Date>) {
+        self.weeks = weeks
+        _selected = selected
+    }
+
+    public var body: some View {
         let months = monthLabels(weeks)
         HStack(alignment: .top, spacing: 4) {
             VStack(alignment: .trailing, spacing: 3) {
@@ -29,7 +33,7 @@ struct ActivityGrid: View {
             .defaultScrollAnchor(.trailing)
         }
         .accessibilityElement()
-        .accessibilityLabel(Text("Gym on \(weeks.flatMap(\.days).filter { $0 == 3 }.count) days in the last \(weeks.count) weeks"))
+        .accessibilityLabel(Text("Gym on \(weeks.flatMap(\.days).filter { $0 == 3 }.count) days in the last \(weeks.count) weeks", bundle: .module))
     }
 
     private func square(_ week: GridWeek, _ day: Int) -> some View {
@@ -42,7 +46,7 @@ struct ActivityGrid: View {
             .onTapGesture { if week.days[day] != nil { selected = date } }
     }
 
-    static func color(_ level: Int?) -> Color {
+    public static func color(_ level: Int?) -> Color {
         switch level {
         case 3: .red
         case 2: .blue

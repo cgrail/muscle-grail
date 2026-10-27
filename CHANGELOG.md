@@ -51,9 +51,10 @@
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
 - If an update can't read the data on a device, the app says so instead of crashing. It offers to download the data again from iCloud, or to start from scratch on every device.
 - On the Mac, back up plans, workouts and your exercises to a folder you pick in Settings → General. The backup is rewritten at launch and whenever something changes or syncs in. Restore replaces everything, on every device, with a backup you choose.
+- The watch's info button (i) shows the app version, the commit it was built from and the sync status, and Plan changes lists every plan change that has reached the watch: what changed, in which plan, by whom and when.
 
 ### Watch face and Home Screen
-- A complication shows today's steps and walking distance.
+- A complication shows today's steps and walking distance. Tapping it opens the watch's Activity: the day's steps and kilometers toward the daily goal, its workouts, and the activity chart of the last year as on the iPhone. Tap a day in the chart to see it. The button with the walking figure opens it too.
 - An iPhone widget shows today's walking and running distance and steps, on the Home Screen and the Lock Screen. A ring (round) or a bar shows how far the day got toward the daily goal: kilometers if you set a km goal, else steps. The watch's round complication shows the ring too.
 
 ### Look

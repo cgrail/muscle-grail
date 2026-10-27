@@ -202,6 +202,7 @@
 				0E0000000000000000000022 /* Frameworks */,
 				0E0000000000000000000023 /* Resources */,
 				0E0000000000000000000024 /* Embed Foundation Extensions */,
+				0E0000000000000000000025 /* Stamp Git Commit */,
 			);
 			buildRules = (
 			);
@@ -345,6 +346,29 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0E0000000000000000000025 /* Stamp Git Commit */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Stamp Git Commit";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# The commit this build comes from, for the watch app's info screen. Runs every build, since HEAD moves.\nplist=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\ncommit=$(git -C \"$SRCROOT\" rev-parse --short HEAD 2>/dev/null || echo unknown)\n/usr/libexec/PlistBuddy -c \"Delete :GitCommit\" \"$plist\" 2>/dev/null\n/usr/libexec/PlistBuddy -c \"Add :GitCommit string $commit\" \"$plist\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		0E0000000000000000000011 /* Sources */ = {
@@ -530,6 +554,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Config/MuscleGrailWatch.entitlements;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Config/MuscleGrailWatch-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Muscle Grail";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads your steps for the complication and to stay in sync in the background.";
@@ -553,6 +578,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Config/MuscleGrailWatch.entitlements;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				INFOPLIST_FILE = "Config/MuscleGrailWatch-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "Muscle Grail";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Reads your steps for the complication and to stay in sync in the background.";

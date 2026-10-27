@@ -939,6 +939,16 @@
         }
       }
     },
+    "Gym on %lld days in the last %lld weeks" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An %1$lld Tagen im Gym in den letzten %2$lld Wochen"
+          }
+        }
+      }
+    },
     "hack_squat" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",

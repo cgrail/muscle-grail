@@ -4,6 +4,7 @@ import SwiftData
 import SwiftUI
 
 /// The history of one plan's changes, or of every plan's, newest first. It reloads whenever the store saves.
+/// On the watch it is the log of what synced to it, without undo or restore.
 public struct PlanChanges: View {
     @Environment(\.modelContext) private var context
     let plan: UUID?
@@ -14,13 +15,16 @@ public struct PlanChanges: View {
     }
 
     public var body: some View {
+        #if !os(watchOS)
         let locked = ((try? context.fetchCount(Action.newer)) ?? 0) > 0
+        #endif
         List(changes ?? []) { change in
             HStack {
                 VStack(alignment: .leading) {
                     Text(verbatim: change.text)
                     Text(verbatim: detail(change)).font(.caption).foregroundStyle(.secondary)
                 }
+                #if !os(watchOS) // the watch shows what synced to it; plans are edited elsewhere
                 Spacer()
                 if change.canUndo {
                     Button { edit { context.undo(change) } } label: { Text("Undo", bundle: .module) }
@@ -32,6 +36,7 @@ public struct PlanChanges: View {
                         .buttonStyle(.borderless)
                         .disabled(locked)
                 }
+                #endif
             }
         }
         .overlay {
