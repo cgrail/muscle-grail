@@ -25,7 +25,7 @@ struct MuscleGrailApp: App {
         #if os(iOS)
         Self.observeSteps()
         #else
-        _mac = State(initialValue: store.container.map(MacServices.init))
+        _mac = State(initialValue: store.container.map { MacServices(container: $0) })
         #endif
     }
 
