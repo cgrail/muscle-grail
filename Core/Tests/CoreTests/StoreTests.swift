@@ -87,6 +87,51 @@ struct StoreTests {
         #expect(sync.lastSync == nil && sync.lastError == nil)
     }
 
+    @Test func runningSyncShowsAsSyncing() {
+        sync.update(id: UUID(), finished: false, isSync: true, error: nil)
+        #expect(sync.syncing)
+    }
+
+    @Test func savedChangeWaitsForUpload() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        makePlan(container.mainContext, "Bench")
+        try container.mainContext.save()
+        let deadline = ContinuousClock.now + .seconds(30) // the save reaches the monitor through the main actor
+        while !sync.waitingToUpload, ContinuousClock.now < deadline { try await Task.sleep(for: .milliseconds(10)) }
+        #expect(sync.waitingToUpload)
+    }
+
+    @Test func changeWaitingForUploadIsRememberedAcrossLaunches() {
+        sync.saved(at: .now)
+        #expect(SyncMonitor(defaults: prefs.defaults).waitingToUpload)
+    }
+
+    @Test func saveWithoutChangesHasNothingToUpload() {
+        let save = Notification(name: ModelContext.didSave, userInfo: [ModelContext.NotificationKey.insertedIdentifiers.rawValue: [PersistentIdentifier]()])
+        #expect(!SyncMonitor.changes(save))
+    }
+
+    @Test func exportTakesTheChangesSavedBeforeIt() {
+        let save = Date.now
+        sync.saved(at: save)
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, exportStart: save + 1)
+        #expect(!sync.waitingToUpload)
+    }
+
+    @Test func changeSavedAfterTheExportStartedStillWaits() {
+        let save = Date.now
+        sync.saved(at: save)
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, exportStart: save - 1)
+        #expect(sync.waitingToUpload)
+    }
+
+    @Test func failedExportLeavesChangesWaiting() {
+        let save = Date.now
+        sync.saved(at: save)
+        sync.update(id: UUID(), finished: true, isSync: true, error: "Offline", exportStart: save + 1)
+        #expect(sync.waitingToUpload)
+    }
+
     // Waits use long timeouts and check for "well before the timeout": other main-actor tests can delay any step.
 
     @Test func waitReturnsRightAwayWhenNothingRuns() async {
