@@ -1,3 +1,4 @@
+import CloudKit
 import CoreData
 import Foundation
 import SwiftData
@@ -109,6 +110,10 @@ public enum Store {
         let error = error as NSError
         // 134400: no iCloud account on this device. Core Data has no public constant for it.
         if error.domain == NSCocoaErrorDomain, error.code == 134400 { return String(localized: "Sign in to iCloud to sync", bundle: .module) }
+        // A partial failure only says "Failed to modify some records". In an atomic batch, the record that failed says why;
+        // the others only say the batch failed.
+        let records = error.userInfo[CKPartialErrorsByItemIDKey] as? [AnyHashable: any Error] ?? [:]
+        if let cause = records.values.first(where: { ($0 as NSError).code != CKError.batchRequestFailed.rawValue }) { return message(cause) }
         return error.localizedDescription
     }
 

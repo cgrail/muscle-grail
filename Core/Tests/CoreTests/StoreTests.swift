@@ -1,3 +1,4 @@
+import CloudKit
 import CoreData
 import Foundation
 import SwiftData
@@ -93,6 +94,15 @@ struct StoreTests {
     @Test func missingICloudAccountAsksToSignIn() {
         let message = SyncMonitor.message(NSError(domain: NSCocoaErrorDomain, code: 134400))
         #expect(message == String(localized: "Sign in to iCloud to sync", bundle: .module))
+    }
+
+    @Test func partialFailureSaysWhyItsRecordFailed() {
+        let refused = NSError(domain: CKErrorDomain, code: CKError.invalidArguments.rawValue,
+                              userInfo: [NSLocalizedDescriptionKey: "Cannot create new type CD_Plan in production schema"])
+        let others = NSError(domain: CKErrorDomain, code: CKError.batchRequestFailed.rawValue)
+        let error = NSError(domain: CKErrorDomain, code: CKError.partialFailure.rawValue,
+                            userInfo: [CKPartialErrorsByItemIDKey: ["a": others, "b": refused, "c": others]])
+        #expect(SyncMonitor.message(error) == refused.localizedDescription)
     }
 
     @Test func otherErrorsKeepTheirDescription() {
