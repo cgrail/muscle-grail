@@ -42,6 +42,8 @@ public enum Store {
     // shortcut: one date for both stores, so a gym export also clears a catalog save; track per store if that shows.
     private var changed = Date.distantPast
     private var exported = Date.distantPast
+    /// Plans and exercises saved here, by when, until an export of their own store takes them. Outlasts a relaunch too.
+    private var unsent: [PersistentIdentifier: Date] = [:]
     private let defaults: UserDefaults
 
     /// An import or export is running.
@@ -49,11 +51,17 @@ public enum Store {
     /// Changes saved here that no export has taken yet, which "Synced" alone would hide.
     public var waitingToUpload: Bool { changed > exported }
 
+    /// Whether an export took every change saved here to `plan` and its exercises: until one does, no other device has them.
+    public func inICloud(_ plan: Plan) -> Bool {
+        unsent[plan.persistentModelID] == nil && (plan.items ?? []).allSatisfy { unsent[$0.persistentModelID] == nil }
+    }
+
     init(defaults: UserDefaults = .standard) {
         self.defaults = defaults
         lastSync = defaults.object(forKey: "lastSync") as? Date
         changed = defaults.object(forKey: "lastChange") as? Date ?? .distantPast
         exported = defaults.object(forKey: "lastExport") as? Date ?? .distantPast
+        unsent = defaults.data(forKey: "unsentPlans").flatMap { try? JSONDecoder().decode([PersistentIdentifier: Date].self, from: $0) } ?? [:]
         _ = NotificationCenter.default.addObserver(
             forName: NSPersistentCloudKitContainer.eventChangedNotification, object: nil, queue: .main
         ) { note in
@@ -68,8 +76,8 @@ public enum Store {
         // On the saving thread, so a save off the main actor never waits for it.
         _ = NotificationCenter.default.addObserver(forName: ModelContext.didSave, object: nil, queue: nil) { note in
             guard Self.changes(note) else { return }
-            let date = Date.now
-            Task { @MainActor in self.saved(at: date) }
+            let (date, plans) = (Date.now, Self.plans(note))
+            Task { @MainActor in self.saved(at: date, plans: plans) }
         }
     }
 
@@ -78,6 +86,13 @@ public enum Store {
         [ModelContext.NotificationKey.insertedIdentifiers, .updatedIdentifiers, .deletedIdentifiers].contains {
             (save.userInfo?[$0.rawValue] as? any Collection)?.isEmpty == false
         }
+    }
+
+    /// The plans and exercises a save inserted or changed. Removing an exercise changes its plan too.
+    nonisolated static func plans(_ save: Notification) -> [PersistentIdentifier] {
+        [ModelContext.NotificationKey.insertedIdentifiers, .updatedIdentifiers]
+            .flatMap { save.userInfo?[$0.rawValue] as? [PersistentIdentifier] ?? [] }
+            .filter { ["Plan", "PlanItem"].contains($0.entityName) }
     }
 
     /// Core Data's CloudKit errors only say "The operation couldn't be completed", so the one users can fix gets words.
@@ -96,6 +111,10 @@ public enum Store {
         if isSync, error == nil {
             lastSync = .now
             defaults.set(lastSync, forKey: "lastSync")
+            if let exportStart {
+                // The store's identifier is the one in its models' identifiers, so an export of the catalog leaves plans waiting.
+                remember(unsent.filter { $0.key.storeIdentifier != store || $0.value > exportStart })
+            }
             if let exportStart, exportStart > exported {
                 exported = exportStart
                 defaults.set(exported, forKey: "lastExport")
@@ -103,10 +122,16 @@ public enum Store {
         }
     }
 
-    func saved(at date: Date) {
+    func saved(at date: Date, plans: [PersistentIdentifier] = []) {
+        if !plans.isEmpty { remember(unsent.merging(plans.map { ($0, date) }, uniquingKeysWith: max)) }
         guard date > changed else { return }
         changed = date
         defaults.set(changed, forKey: "lastChange")
+    }
+
+    private func remember(_ unsent: [PersistentIdentifier: Date]) {
+        self.unsent = unsent
+        defaults.set(try? JSONEncoder().encode(unsent), forKey: "unsentPlans")
     }
 
     /// Gives a background wake-up time to sync: returns once no import or export is running, or after `timeout`.

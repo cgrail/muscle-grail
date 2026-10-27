@@ -46,6 +46,7 @@
 - A device without an iCloud account says "Sign in to iCloud to sync" instead of a bare error code.
 - The sync status under the plan list, on the iPhone, the watch and the Mac, says "Syncing…" while iCloud is at work and "Waiting to upload" while changes made on that device haven't reached iCloud yet, so "Synced" means nothing is left waiting.
 - The sync status shows a sync error until it's resolved, even while the exercise catalog keeps syncing fine. Before, the catalog's next sync could hide a failed sync of plans and workouts behind "Synced".
+- Every plan shows whether it's in iCloud, in the plan list on the iPhone and in the Mac's sidebar: a cloud with a checkmark once the changes made to it on that device are uploaded, an orange cloud with an arrow while they still wait. Until then, no other device has them.
 - Settings → Training partner → Sync now fetches your partner's plan changes and sends yours right away, on the iPhone and the Mac.
 - Training works in every app version. Once a newer version has changed your plans, editing them asks for an update.
 - If an update can't read the data on a device, the app says so instead of crashing. It offers to download the data again from iCloud, or to start from scratch on every device.

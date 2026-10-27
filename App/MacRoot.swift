@@ -31,6 +31,7 @@ struct MacRootView: View {
                                 Text(plan.title)
                                 Spacer()
                                 SharedBadge(plan: plan)
+                                PlanSyncBadge(plan: plan)
                             }
                         } icon: {
                             PlanArtwork(plan: plan, size: 20)
