@@ -78,6 +78,18 @@ struct StoreTests {
         #expect(sync.lastError == "Quota")
     }
 
+    @Test func importKeepsAFailedExportsError() {
+        sync.update(id: UUID(), finished: true, isSync: true, error: "Quota", exportStart: .now, store: "Gym")
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, store: "Gym")
+        #expect(sync.lastError == "Quota")
+    }
+
+    @Test func exportThatWorksClearsTheFailedOnesError() {
+        sync.update(id: UUID(), finished: true, isSync: true, error: "Quota", exportStart: .now, store: "Gym")
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, exportStart: .now, store: "Gym")
+        #expect(sync.lastError == nil)
+    }
+
     @Test func missingICloudAccountAsksToSignIn() {
         let message = SyncMonitor.message(NSError(domain: NSCocoaErrorDomain, code: 134400))
         #expect(message == String(localized: "Sign in to iCloud to sync", bundle: .module))
