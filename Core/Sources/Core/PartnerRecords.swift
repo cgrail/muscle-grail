@@ -49,7 +49,7 @@ public extension PartnerChange {
 }
 
 /// What a device knows of sharing, in a file: so the question works offline, and the engine goes on where it stopped.
-public struct PartnerState: Codable {
+public struct PartnerState: Codable, Sendable {
     /// Nil while this device shares nothing.
     public var zoneName: String?
     /// The zone's owner, the partner's user record name; nil for this person's own zone.
