@@ -14,6 +14,8 @@ public extension CatalogEntry {
     /// An exercise the user made: named, and not bundled. An entry without a name only adds to a bundled exercise,
     /// or to one the old catalog had, so it lists nowhere.
     var isOwnExercise: Bool { !name.isEmpty && CatalogExercise.byID[id] == nil }
+
+    var weightUnit: WeightUnit { WeightUnit(rawValue: unit) ?? .kg }
 }
 
 /// The name to show for `id`: the user's own, else the bundled one in the user's language, or in English (`localized: false`)
@@ -50,11 +52,13 @@ public extension ModelContext {
         Core.exerciseName(exerciseID, entry: catalogEntry(exerciseID), localized: localized)
     }
 
-    /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones.
+    /// The catalog id of the exercise called `name`, ignoring case: the user's own first, then the bundled ones by their
+    /// English name, then by their German one, as GymBook in German names them.
     func catalogID(named name: String) -> String? {
         let custom = (try? fetch(FetchDescriptor<CatalogEntry>())) ?? []
         return custom.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.id
             ?? CatalogExercise.all.first { $0.name.caseInsensitiveCompare(name) == .orderedSame }?.id
+            ?? CatalogExercise.all.first { $0.germanName.caseInsensitiveCompare(name) == .orderedSame }?.id
     }
 
     /// A new exercise of the user's own. Its id is a UUID, so devices can make exercises offline without clashing.
@@ -71,6 +75,14 @@ public extension ModelContext {
             id: id, name: name ?? entry?.name ?? "", details: details ?? entry?.details ?? "", videoURL: videoURL ?? entry?.videoURL ?? ""
         ))
     }
+
+    /// Shows, types and steps the weights of `id` in `unit`. They stay stored in kg.
+    func setUnit(_ id: String, to unit: WeightUnit) {
+        record(.setUnit(id: id, unit: unit.rawValue))
+    }
+
+    /// The unit `exerciseID`'s weights show in once, where a view can't keep it current (`WeightStepper` does).
+    func weightUnit(of exerciseID: String) -> WeightUnit { catalogEntry(exerciseID)?.weightUnit ?? .kg }
 
     /// Stores `image` shrunk to sync, or removes the photo for nil. Data that isn't an image changes nothing.
     func setPhoto(_ id: String, to image: Data?) {

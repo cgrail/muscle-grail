@@ -38,6 +38,14 @@ struct WeightsTests {
         #expect(Weights.next(after: 20, for: "00000000-0000-0000-0000-000000000007") == 22.5)
     }
 
+    @Test func poundsStepByFive() {
+        #expect(Weights.next(after: WeightUnit.lb.kg(110), for: "machine-seated-crunch", in: .lb) == WeightUnit.lb.kg(115))
+    }
+
+    @Test func aWeightShowsInItsUnit() {
+        #expect(WeightUnit.lb.format(WeightUnit.lb.kg(110)) == "110 lb")
+    }
+
     @Test func theEndsOfTheRangeHold() {
         #expect(Weights.previous(before: 0, for: "squat") == 0)
         #expect(Weights.next(after: 48, for: "kettlebell-swing") == 48)

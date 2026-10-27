@@ -182,7 +182,7 @@ struct Walk {
             items[id]?.sets = sets
             items[id]?.reps = reps
             items[id]?.weightKg = weightKg
-            let text = String(localized: "Set \(name(item.exerciseID)) to \(sets) × \(reps) at \(weightKg.formatted()) kg", bundle: .module)
+            let text = String(localized: "Set \(name(item.exerciseID)) to \(sets) × \(reps) at \(context.weightUnit(of: item.exerciseID).format(weightKg))", bundle: .module)
             return Step(key: "targets \(id)", plans: [item.plan], planName: title(item.plan), text: text,
                         undo: [.setTargets(id: id, sets: item.sets, reps: item.reps, weightKg: item.weightKg)], needs: [id])
         case let .deleteExercise(id):

@@ -21,12 +21,16 @@ struct HistoryView: View {
                 }
             }
             .navigationTitle("History")
+            #if os(macOS)
+            .toolbar { GymBookMenu() }
+            #endif
         }
     }
 }
 
 /// A workout's title, start, and each exercise with its sets.
 struct WorkoutSummary: View {
+    @Environment(\.modelContext) private var context
     let workout: Workout
 
     var body: some View {
@@ -37,7 +41,8 @@ struct WorkoutSummary: View {
             ForEach(workout.exercises, id: \.id) { exercise in
                 HStack(spacing: 0) {
                     ExerciseName(exercise.id)
-                    Text(verbatim: ": \(exercise.sets.map { "\($0.reps)×\($0.weightKg.formatted())" }.joined(separator: "  "))")
+                    let unit = context.weightUnit(of: exercise.id)
+                    Text(verbatim: ": \(exercise.sets.map { "\($0.reps)×\(unit.number($0.weightKg))" }.joined(separator: "  ")) \(unit.rawValue)")
                 }
             }
         }

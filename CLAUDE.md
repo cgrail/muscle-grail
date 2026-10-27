@@ -87,8 +87,15 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - To update the catalog, change `repdbCommit`. Its `id`s are catalog ids that plans and sets refer to, so check that none disappeared.
 - The user's `CatalogEntry`s sit on top: their own exercises, and their name, description, video link and photo for any exercise. They live in the separate Catalog store of the same iCloud container (`Store.configurations`) with their own log, so the gym store stays small. Photos are stored as JPEGs of at most 1024 px (`Photo.jpeg`).
 - Weights step through what the exercise's equipment really comes in (`Weights`), never by a fixed amount.
+- Weights are stored in kg. An exercise's unit (`CatalogEntry.unit`, kg or lb, because some machines show pounds) only changes how they show and are typed: show one with `WeightUnit.format`, edit one with `WeightStepper`, never with a fixed "kg".
 - Show a name with `ExerciseName` (`exerciseName(_:entry:)` outside views). A custom exercise whose entry hasn't synced yet shows a placeholder.
 - Illustrations load from RepDB's GitHub at the pinned commit (see `CatalogExercise.imageURL`), so the picker needs internet to show them. Training never does: it shows only photos on the device, the user's own and the illustrations `PhotoCache` downloaded (512 px) while the workout picker had network.
+
+## GymBook
+
+- `GymBook` (Core) reads GymBook's log export (XML in UTF-16, German dates, weights like "38,00 kg" or "130,00 lb") and writes the history in the same format. On the Mac, History's GymBook menu imports a file after a step that matches each GymBook exercise to one here (`GymBookMenu`), off the main actor.
+- An imported workout and its sets get ids from their day, workout name and position (`GymBook.id`), so importing the same file again adds nothing. Keep those keys as they are.
+- This repo is public: never commit a GymBook export. Tests use the made-up `gymBookSample`.
 
 ## Claude (MCP)
 

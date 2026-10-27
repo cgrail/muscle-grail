@@ -44,6 +44,11 @@ import Testing
         #expect(videoURL("squat", entry: nil)?.absoluteString == "https://www.youtube.com/results?search_query=Barbell%20Back%20Squat%20form")
     }
 
+    @Test func anExerciseKeepsTheUnitItsMachineShows() {
+        context.setUnit("squat", to: .lb)
+        #expect(context.weightUnit(of: "squat") == .lb)
+    }
+
     @Test func customExercisesWithTheSameNameNeverShareAnID() {
         #expect(context.createExercise(named: "Cable Fly") != context.createExercise(named: "Cable Fly"))
     }

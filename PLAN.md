@@ -43,6 +43,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | Adding, removing, replacing or moving an exercise that is for both asks "Only me" or "Me and <partner>", unless Settings says "Always both". Reordering and renaming never ask | Most changes are for both, but sometimes one person does a variation. The order is always for both, since they train together. |
 | The log of changes is the plans' history: per plan and across plans, with who made each change. Undo and restoring an old version record new changes | The log already holds every plan change, so the history needs no second record. Recording instead of rewinding keeps the log append-only, so an undo syncs, reaches the partner, and can be undone in turn. |
 | New fields go into `SchemaV1` in place, with no new schema version and no migration stage (the user's call, 2026-10-26) | Nothing has shipped yet. From the first TestFlight build on, the rules in CLAUDE.md apply. |
+| Weights are stored in kg everywhere; an exercise's unit, `CatalogEntry.unit` (kg or lb, set with `setUnit`, `Change.version` 3, approved 2026-10-26, in `SchemaV1` in place), only changes how they show, are typed and step | Some machines in the gym show kg and others lb. Sets, targets, changes, statistics and Claude keep one unit, so switching an exercise's unit changes no data. |
 
 ## How a device stays current without being opened
 
@@ -172,6 +173,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
   - **Sync stays unreliable:** move to `CKSyncEngine`, whose fetch and send calls can be awaited in any background wake. It means a lot more code.
 - **SwiftData and `CKSyncEngine` in one private database.** SwiftData mirrors its own zone, and the engine fetches only `Partner` (`FetchChangesOptions.scope`). If they get in each other's way, move sharing to a container of its own. That container is permanent too, so name it once.
 - **Sharing is only checked by hand.** CloudKit doesn't run under `swift test`, so the engine stays a thin wrapper, like `Health.swift`, and the rules (what is shared, how a received change applies) live in `Core` with tests. Acceptance tests F–J need two Apple IDs, on devices or simulators.
+- **A big GymBook import syncs slowly.** Years of history are thousands of sets, each with its action (about 10,000 records for 5,000 sets), all uploaded at once. The import saves workout by workout, and the other devices catch up over the next syncs.
 - **Locked watch.** HealthKit can't be read while the watch is locked, so the complication then shows the last value read today.
 
 ## Skipped (not asked for)
@@ -184,4 +186,4 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - Siri and App Intents
 - Sharing history, weights, photos or descriptions with a training partner
 - Linking a plan the partner made on their own to a shared one: it needs a mapping between their ids. Sharing one of the two and deleting the other does the same, and history matches by exercise.
-- Unit settings (only kg, in 2.5 kg steps)
+- One unit setting for the whole app: each exercise shows kg or lb, as its machine does
