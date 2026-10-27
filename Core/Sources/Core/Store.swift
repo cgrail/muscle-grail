@@ -33,7 +33,8 @@ public enum Store {
     public static let shared = SyncMonitor()
 
     public private(set) var lastSync: Date?
-    /// Kept per store: the gym data and the catalog sync apart, and one store's success mustn't hide the other's failure.
+    /// Kept per store and per setup, import and export: the gym data and the catalog sync apart, and a download that
+    /// went fine says nothing about an upload that failed. One success mustn't hide another failure.
     public var lastError: String? { errors.values.sorted().first }
     private var errors: [String: String] = [:]
     private var running: Set<UUID> = []
@@ -115,7 +116,7 @@ public enum Store {
     func update(id: UUID, finished: Bool, isSync: Bool, error: String?, exportStart: Date? = nil, store: String = "") {
         guard finished else { running.insert(id); return }
         running.remove(id)
-        errors[store] = error
+        errors[store + (exportStart != nil ? " export" : isSync ? " import" : " setup")] = error
         if isSync, error == nil {
             lastSync = .now
             defaults.set(lastSync, forKey: "lastSync")
