@@ -114,6 +114,7 @@ struct StepsComplication: Widget {
         StaticConfiguration(kind: "Steps", provider: StepsProvider()) { entry in
             #if os(watchOS)
             StepsView(entry: entry).containerBackground(.fill.tertiary, for: .widget)
+                .widgetURL(URL(string: "musclegrail://activity")) // the watch app opens its activity
             #else
             StepsView(entry: entry).containerBackground(.background, for: .widget)
             #endif

@@ -33,6 +33,13 @@ import Testing
         render(PlanChanges(plan: plan.id))
     }
 
+    @Test func activityGridRendersEveryLevel() {
+        let today = Calendar.current.startOfDay(for: .now)
+        let daysAgo = { (days: Int) in Calendar.current.date(byAdding: .day, value: -days, to: today)! }
+        let weeks = activityWeeks(gym: [today], steps: [daysAgo(1): 12_000, daysAgo(2): 3_000], stepGoal: 10_000, weeks: 53)
+        render(ActivityGrid(weeks: weeks, selected: .constant(today)))
+    }
+
     @Test func unreadableStoreRenders() {
         render(UnreadableStore(OpenStore { throw CocoaError(.fileReadCorruptFile) }))
     }

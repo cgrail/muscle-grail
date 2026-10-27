@@ -7,7 +7,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 ## Platform roles
 
 - Mac: create and maintain plans. Full plan editing lives here, laid out like Apple Music (`MacRootView`): a sidebar with Train, History, the exercise library and every plan as a playlist; a plan opens as a table to edit in place (`PlanPage`). It can also train, like the iPhone, but saves nothing to Health (macOS has no HealthKit). Exercises can be added by describing them, typed or dictated (`PlanAssistant`, Apple's on-device model with a catalog search tool; the model's side has no tests, so check it by hand). Claude can create and extend plans through MCP, switched on in Settings (see below).
-- Watch: the gym device. It logs sets and makes small adjustments to the running workout: add a set, delete a set. Plan creation and editing stay on the Mac.
+- Watch: the gym device. It logs sets and makes small adjustments to the running workout: add a set, delete a set. Plan creation and editing stay on the Mac. Its info screen (i) shows the version, the commit (`GitCommit`, stamped into the built Info.plist by the watch target's "Stamp Git Commit" phase) and the plan changes that synced to it (`PlanChanges`, without undo there). Its Activity, which the complication opens (`widgetURL`), shows steps and the activity grid (`ActivityGrid`, Core).
 - Every platform is fast: each tap answers from the local store. Network calls, sync waits and heavy work stay off the main actor and out of user paths.
 
 ## Build and test
@@ -32,7 +32,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 - The Xcode project uses synchronized folders. Add a file by creating it in `App/`, `Watch/` or `Complication/`; it joins that target automatically. Edit `project.pbxproj` only for targets, build settings or capabilities.
 - `App/` is one multiplatform target (iOS + macOS). Gate platform-specific code with `#if os(iOS)` / `#if os(macOS)`.
-- `Complication/` builds twice: as `StepsComplication` inside the watch app, and as `StepsWidget`, the iPhone's Home Screen and Lock Screen widget, inside the iPhone app only. Gate watch-only families with `#if os(watchOS)`; both targets share its string catalogs, and both read the daily goals from the iPhone app's iCloud key-value store (`dailyGoals`), so their entitlement names the app's store.
+- `Complication/` builds twice: as `StepsComplication` inside the watch app, and as `StepsWidget`, the iPhone's Home Screen and Lock Screen widget, inside the iPhone app only. Gate watch-only families with `#if os(watchOS)`; both targets share its string catalogs, and both read the daily goals from the iPhone app's iCloud key-value store (`dailyGoals`), so their entitlement names the app's store. So does the watch app's.
 - In the app's tabs, navigate with `navigationDestination(item:)` or plain `NavigationLink`s, never a typed `NavigationStack(path:)`. The sidebar-adaptable `TabView` (Mac, iPad) compares navigation paths across tabs and crashes on a typed one (`AnyNavigationPath.Error.comparisonTypeMismatch`).
 - Code used by more than one target lives in the `Core` package: models, `Store` + `SyncMonitor`, `Health`, shared SwiftUI views, the exercise catalog.
 - Concurrency: app targets use Swift 5 mode with default actor isolation `MainActor`. `Core` uses Swift 6 strict concurrency and is nonisolated by default.
