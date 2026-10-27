@@ -18,6 +18,7 @@ struct PlansView: View {
                             Text(plan.title)
                             Spacer()
                             SharedBadge(plan: plan)
+                            PlanSyncBadge(plan: plan)
                         }
                     }
                     .contextMenu {
@@ -132,5 +133,18 @@ struct UpdateToEdit: View {
     var body: some View {
         Label("Update Muscle Grail to edit plans. A newer version changed them. Training works as usual.", systemImage: "arrow.down.app")
             .foregroundStyle(.secondary)
+    }
+}
+
+/// Whether this device's changes to a plan have reached iCloud, from where the other devices fetch them.
+struct PlanSyncBadge: View {
+    let plan: Plan
+
+    var body: some View {
+        if SyncMonitor.shared.inICloud(plan) {
+            Image(systemName: "checkmark.icloud").foregroundStyle(.secondary).accessibilityLabel("In iCloud").help("In iCloud")
+        } else {
+            Image(systemName: "icloud.and.arrow.up").foregroundStyle(.orange).accessibilityLabel("Waiting to upload").help("Waiting to upload")
+        }
     }
 }

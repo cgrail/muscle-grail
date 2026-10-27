@@ -72,6 +72,12 @@ struct StoreTests {
         #expect(sync.lastSync == nil)
     }
 
+    @Test func oneStoresSuccessKeepsTheOthersError() {
+        sync.update(id: UUID(), finished: true, isSync: true, error: "Quota", store: "Gym")
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, store: "Catalog")
+        #expect(sync.lastError == "Quota")
+    }
+
     @Test func missingICloudAccountAsksToSignIn() {
         let message = SyncMonitor.message(NSError(domain: NSCocoaErrorDomain, code: 134400))
         #expect(message == String(localized: "Sign in to iCloud to sync", bundle: .module))
@@ -123,6 +129,66 @@ struct StoreTests {
         sync.saved(at: save)
         sync.update(id: UUID(), finished: true, isSync: true, error: nil, exportStart: save - 1)
         #expect(sync.waitingToUpload)
+    }
+
+    @Test func savedPlanWaitsForUpload() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        let plan = try await savedPlan(in: container)
+        #expect(!sync.inICloud(plan))
+    }
+
+    @Test func exportOfItsStoreTakesThePlan() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        let plan = try await savedPlan(in: container)
+        try export(plan)
+        #expect(sync.inICloud(plan))
+    }
+
+    @Test func exportOfTheOtherStoreLeavesThePlanWaiting() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        let plan = try await savedPlan(in: container)
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, exportStart: .now + 1, store: "Catalog")
+        #expect(!sync.inICloud(plan))
+    }
+
+    @Test func planWaitsWhileOneOfItsExercisesDoes() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        let plan = try await savedPlan(in: container)
+        try export(plan)
+        sync.saved(at: .now + 2, plans: [plan.sortedItems[0].persistentModelID])
+        #expect(!sync.inICloud(plan))
+    }
+
+    @Test func removedExerciseLeavesItsPlanWaiting() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        let plan = try await savedPlan(in: container)
+        try export(plan)
+        container.mainContext.deleteExercise(plan.sortedItems[0])
+        try container.mainContext.save()
+        let deadline = ContinuousClock.now + .seconds(30)
+        while sync.inICloud(plan), ContinuousClock.now < deadline { try await Task.sleep(for: .milliseconds(10)) }
+        #expect(!sync.inICloud(plan))
+    }
+
+    @Test func waitingPlanIsRememberedAcrossLaunches() async throws {
+        let container = try Store.makeContainer(inMemory: true)
+        let plan = try await savedPlan(in: container)
+        #expect(!SyncMonitor(defaults: prefs.defaults).inICloud(plan))
+    }
+
+    /// A saved plan with one exercise, once the save has reached the monitor through the main actor.
+    func savedPlan(in container: ModelContainer) async throws -> Plan {
+        let plan = makePlan(container.mainContext, "Bench")
+        try container.mainContext.save()
+        let deadline = ContinuousClock.now + .seconds(30)
+        while sync.inICloud(plan), ContinuousClock.now < deadline { try await Task.sleep(for: .milliseconds(10)) }
+        return plan
+    }
+
+    /// A finished export of the plan's store that started after every save so far.
+    func export(_ plan: Plan) throws {
+        let store = try #require(plan.persistentModelID.storeIdentifier)
+        sync.update(id: UUID(), finished: true, isSync: true, error: nil, exportStart: .now + 1, store: store)
     }
 
     @Test func failedExportLeavesChangesWaiting() {
