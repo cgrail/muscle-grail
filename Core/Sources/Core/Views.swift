@@ -13,6 +13,10 @@ public struct SyncStatusView: View {
     public var body: some View {
         if let error = sync.lastError {
             Label(error, systemImage: "exclamationmark.icloud").foregroundStyle(.red).lineLimit(3)
+        } else if sync.syncing {
+            Label { Text("Syncing…", bundle: .module) } icon: { Image(systemName: "arrow.triangle.2.circlepath.icloud") }
+        } else if sync.waitingToUpload {
+            Label { Text("Waiting to upload", bundle: .module) } icon: { Image(systemName: "icloud.and.arrow.up") }
         } else if let date = sync.lastSync {
             Label { Text("Synced \(date, style: .relative) ago", bundle: .module) } icon: { Image(systemName: "checkmark.icloud") }
         } else {

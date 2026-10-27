@@ -2,10 +2,11 @@ import CloudKit
 import Core
 import SwiftUI
 
-/// Settings → Training partner: share plans with one invite, all of them or the chosen ones, and stop sharing or leave.
+/// Settings → Training partner: share plans with one invite, all of them or the chosen ones, sync them now, and stop sharing or leave.
 struct PartnerSettings: View {
     @State private var allPlans = true
     @State private var stopping = false
+    @State private var syncing = false
     @State private var failure: String?
 
     var body: some View {
@@ -15,6 +16,14 @@ struct PartnerSettings: View {
                 LabeledContent("Shared with", value: status.partner ?? String(localized: "Waiting for them to accept"))
                 Toggle("Share all plans", isOn: Binding { status.allPlans } set: { on in Task { await PartnerSync.current?.setAllPlans(on) } })
                 AlwaysBothPicker()
+                Button("Sync now", systemImage: "arrow.triangle.2.circlepath") {
+                    syncing = true
+                    Task {
+                        await PartnerSync.current?.sync()
+                        syncing = false
+                    }
+                }
+                .disabled(syncing)
                 Button(status.owner ? "Stop sharing" : "Leave", role: .destructive) { stopping = true }
             } else {
                 Picker("Share", selection: $allPlans) {

@@ -2175,6 +2175,16 @@
         }
       }
     },
+    "Syncing…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wird synchronisiert …"
+          }
+        }
+      }
+    },
     "This deletes your plans, workouts and exercises on every device and in iCloud. It can't be undone. A backup on the Mac can bring them back." : {
       "localizations" : {
         "de" : {
@@ -2347,6 +2357,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ohne Titel"
+          }
+        }
+      }
+    },
+    "Waiting to upload" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noch nicht hochgeladen"
           }
         }
       }

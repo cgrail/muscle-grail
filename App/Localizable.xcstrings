@@ -1389,6 +1389,16 @@
         }
       }
     },
+    "Sync now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jetzt synchronisieren"
+          }
+        }
+      }
+    },
     "Train" : {
       "localizations" : {
         "de" : {
