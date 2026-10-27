@@ -33,7 +33,9 @@ public enum Store {
     public static let shared = SyncMonitor()
 
     public private(set) var lastSync: Date?
-    public private(set) var lastError: String?
+    /// Kept per store: the gym data and the catalog sync apart, and one store's success mustn't hide the other's failure.
+    public var lastError: String? { errors.values.sorted().first }
+    private var errors: [String: String] = [:]
     private var running: Set<UUID> = []
     /// When this device last saved a change, and when the last finished export started: it took everything saved before.
     /// Both outlast a relaunch, since the watch app can be killed between sets.
@@ -58,8 +60,10 @@ public enum Store {
             guard let event = note.userInfo?[NSPersistentCloudKitContainer.eventNotificationUserInfoKey]
                 as? NSPersistentCloudKitContainer.Event else { return }
             let (id, finished, isSync, error) = (event.identifier, event.endDate != nil, event.type != .setup, event.error.map(Self.message))
-            let exportStart = event.type == .export ? event.startDate : nil
-            MainActor.assumeIsolated { self.update(id: id, finished: finished, isSync: isSync, error: error, exportStart: exportStart) }
+            let (exportStart, store) = (event.type == .export ? event.startDate : nil, event.storeIdentifier)
+            MainActor.assumeIsolated {
+                self.update(id: id, finished: finished, isSync: isSync, error: error, exportStart: exportStart, store: store)
+            }
         }
         // On the saving thread, so a save off the main actor never waits for it.
         _ = NotificationCenter.default.addObserver(forName: ModelContext.didSave, object: nil, queue: nil) { note in
@@ -84,11 +88,11 @@ public enum Store {
         return error.localizedDescription
     }
 
-    /// `exportStart` is when an export began, so a finished one takes every change saved before it.
-    func update(id: UUID, finished: Bool, isSync: Bool, error: String?, exportStart: Date? = nil) {
+    /// `exportStart` is when an export began, so a finished one takes every change saved before it. `store` is the store's identifier.
+    func update(id: UUID, finished: Bool, isSync: Bool, error: String?, exportStart: Date? = nil, store: String = "") {
         guard finished else { running.insert(id); return }
         running.remove(id)
-        lastError = error
+        errors[store] = error
         if isSync, error == nil {
             lastSync = .now
             defaults.set(lastSync, forKey: "lastSync")
