@@ -131,6 +131,11 @@ struct StoreTests {
         #expect(sync.waitingToUpload)
     }
 
+    @Test func unsavedPlanIsNotInICloud() throws {
+        let container = try Store.makeContainer(inMemory: true)
+        #expect(!sync.inICloud(makePlan(container.mainContext)))
+    }
+
     @Test func savedPlanWaitsForUpload() async throws {
         let container = try Store.makeContainer(inMemory: true)
         let plan = try await savedPlan(in: container)

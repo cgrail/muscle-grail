@@ -42,8 +42,8 @@ public enum Store {
     // shortcut: one date for both stores, so a gym export also clears a catalog save; track per store if that shows.
     private var changed = Date.distantPast
     private var exported = Date.distantPast
-    /// Plans and exercises saved here, by when, until an export of their own store takes them. Outlasts a relaunch too.
-    private var unsent: [PersistentIdentifier: Date] = [:]
+    /// Plans and exercises saved here, by store and `key`, with when, until an export of their store takes them. Outlasts a relaunch too.
+    private var unsent: [String: [String: Date]] = [:]
     private let defaults: UserDefaults
 
     /// An import or export is running.
@@ -52,8 +52,10 @@ public enum Store {
     public var waitingToUpload: Bool { changed > exported }
 
     /// Whether an export took every change saved here to `plan` and its exercises: until one does, no other device has them.
+    /// A model not saved yet has a temporary identifier.
     public func inICloud(_ plan: Plan) -> Bool {
-        unsent[plan.persistentModelID] == nil && (plan.items ?? []).allSatisfy { unsent[$0.persistentModelID] == nil }
+        let ids = [plan.persistentModelID] + (plan.items ?? []).map(\.persistentModelID)
+        return ids.allSatisfy { !$0.isTemporary && unsent[$0.storeIdentifier ?? ""]?[Self.key($0)] == nil }
     }
 
     init(defaults: UserDefaults = .standard) {
@@ -61,7 +63,7 @@ public enum Store {
         lastSync = defaults.object(forKey: "lastSync") as? Date
         changed = defaults.object(forKey: "lastChange") as? Date ?? .distantPast
         exported = defaults.object(forKey: "lastExport") as? Date ?? .distantPast
-        unsent = defaults.data(forKey: "unsentPlans").flatMap { try? JSONDecoder().decode([PersistentIdentifier: Date].self, from: $0) } ?? [:]
+        unsent = defaults.dictionary(forKey: "unsentPlans") as? [String: [String: Date]] ?? [:]
         _ = NotificationCenter.default.addObserver(
             forName: NSPersistentCloudKitContainer.eventChangedNotification, object: nil, queue: .main
         ) { note in
@@ -95,6 +97,13 @@ public enum Store {
             .filter { ["Plan", "PlanItem"].contains($0.entityName) }
     }
 
+    /// A model's identifier as text, to compare with a remembered one: a decoded `PersistentIdentifier` never equals the store's own.
+    nonisolated static func key(_ id: PersistentIdentifier) -> String {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        return (try? encoder.encode(id)).map { String(decoding: $0, as: UTF8.self) } ?? "\(id)"
+    }
+
     /// Core Data's CloudKit errors only say "The operation couldn't be completed", so the one users can fix gets words.
     nonisolated static func message(_ error: any Error) -> String {
         let error = error as NSError
@@ -111,9 +120,11 @@ public enum Store {
         if isSync, error == nil {
             lastSync = .now
             defaults.set(lastSync, forKey: "lastSync")
-            if let exportStart {
+            if let exportStart, let saved = unsent[store] {
                 // The store's identifier is the one in its models' identifiers, so an export of the catalog leaves plans waiting.
-                remember(unsent.filter { $0.key.storeIdentifier != store || $0.value > exportStart })
+                var waiting = unsent
+                waiting[store] = saved.filter { $0.value > exportStart }
+                remember(waiting)
             }
             if let exportStart, exportStart > exported {
                 exported = exportStart
@@ -123,15 +134,20 @@ public enum Store {
     }
 
     func saved(at date: Date, plans: [PersistentIdentifier] = []) {
-        if !plans.isEmpty { remember(unsent.merging(plans.map { ($0, date) }, uniquingKeysWith: max)) }
+        var waiting = unsent
+        for id in plans {
+            let (store, key) = (id.storeIdentifier ?? "", Self.key(id))
+            waiting[store, default: [:]][key] = max(waiting[store]?[key] ?? date, date)
+        }
+        if !plans.isEmpty { remember(waiting) }
         guard date > changed else { return }
         changed = date
         defaults.set(changed, forKey: "lastChange")
     }
 
-    private func remember(_ unsent: [PersistentIdentifier: Date]) {
+    private func remember(_ unsent: [String: [String: Date]]) {
         self.unsent = unsent
-        defaults.set(try? JSONEncoder().encode(unsent), forKey: "unsentPlans")
+        defaults.set(unsent, forKey: "unsentPlans")
     }
 
     /// Gives a background wake-up time to sync: returns once no import or export is running, or after `timeout`.
