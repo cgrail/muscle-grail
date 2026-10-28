@@ -8,6 +8,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 - Mac: create and maintain plans. Full plan editing lives here, laid out like Apple Music (`MacRootView`): a sidebar with Train, History, the exercise library and every plan as a playlist; a plan opens as a table to edit in place (`PlanPage`). It can also train, like the iPhone, but saves nothing to Health (macOS has no HealthKit). Exercises can be added by describing them, typed or dictated (`PlanAssistant`, Apple's on-device model with a catalog search tool; the model's side has no tests, so check it by hand). Claude can create and extend plans through MCP, switched on in Settings (see below).
 - Watch: the gym device. It logs sets and makes small adjustments to the running workout: add a set, delete a set. Plan creation and editing stay on the Mac. Its info screen (i) shows the version, the commit (`GitCommit`, stamped into the built Info.plist by the watch target's "Stamp Git Commit" phase) and the plan changes that synced to it (`PlanChanges`, without undo there). Its Activity, which the complication opens (`widgetURL`), shows steps and the activity grid (`ActivityGrid`, Core).
+- iPhone and Mac: Settings → About shows the version and the commit (`AppInfo`, stamped by the app target's own "Stamp Git Commit" phase), linked to the commit on GitHub, and a link to the repository.
 - Every platform is fast: each tap answers from the local store. Network calls, sync waits and heavy work stay off the main actor and out of user paths.
 
 ## Build and test

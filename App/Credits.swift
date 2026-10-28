@@ -4,6 +4,7 @@ import SwiftUI
 struct Credits: View {
     var body: some View {
         Section("About") {
+            AppInfo()
             Link(destination: URL(string: "https://repdb.co")!) { Text(verbatim: "Exercise data by RepDB (repdb.co)") }
         }
     }

@@ -176,6 +176,7 @@
 				0E0000000000000000000013 /* Resources */,
 				0E0000000000000000000014 /* Embed Watch Content */,
 				0E0000000000000000000015 /* Embed Foundation Extensions */,
+				0E0000000000000000000016 /* Stamp Git Commit */,
 			);
 			buildRules = (
 			);
@@ -348,6 +349,26 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0E0000000000000000000016 /* Stamp Git Commit */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(TARGET_BUILD_DIR)/$(INFOPLIST_PATH)",
+			);
+			name = "Stamp Git Commit";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# The commit this build comes from, for the About section in Settings. Runs every build, since HEAD moves.\nplist=\"$TARGET_BUILD_DIR/$INFOPLIST_PATH\"\ncommit=$(git -C \"$SRCROOT\" rev-parse --short HEAD 2>/dev/null || echo unknown)\n/usr/libexec/PlistBuddy -c \"Delete :GitCommit\" \"$plist\" 2>/dev/null\n/usr/libexec/PlistBuddy -c \"Add :GitCommit string $commit\" \"$plist\"\n";
+		};
 		0E0000000000000000000025 /* Stamp Git Commit */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
