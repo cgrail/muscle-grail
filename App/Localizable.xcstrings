@@ -1409,6 +1409,16 @@
         }
       }
     },
+    "Sync errors (%lld)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync-Fehler (%lld)"
+          }
+        }
+      }
+    },
     "Sync now" : {
       "localizations" : {
         "de" : {

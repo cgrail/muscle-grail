@@ -5,6 +5,7 @@ struct Credits: View {
     var body: some View {
         Section("About") {
             AppInfo()
+            SyncLog()
             Link(destination: URL(string: "https://repdb.co")!) { Text(verbatim: "Exercise data by RepDB (repdb.co)") }
         }
     }

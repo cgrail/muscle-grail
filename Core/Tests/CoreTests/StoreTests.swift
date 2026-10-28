@@ -96,13 +96,34 @@ struct StoreTests {
         #expect(message == String(localized: "Sign in to iCloud to sync", bundle: .module))
     }
 
-    @Test func partialFailureSaysWhyItsRecordFailed() {
+    /// An atomic batch CloudKit refused: record "b" says why, the others only that the batch failed.
+    func partialFailure() -> (error: NSError, refused: NSError) {
         let refused = NSError(domain: CKErrorDomain, code: CKError.invalidArguments.rawValue,
                               userInfo: [NSLocalizedDescriptionKey: "Cannot create new type CD_Plan in production schema"])
         let others = NSError(domain: CKErrorDomain, code: CKError.batchRequestFailed.rawValue)
         let error = NSError(domain: CKErrorDomain, code: CKError.partialFailure.rawValue,
                             userInfo: [CKPartialErrorsByItemIDKey: ["a": others, "b": refused, "c": others]])
+        return (error, refused)
+    }
+
+    @Test func partialFailureSaysWhyItsRecordFailed() {
+        let (error, refused) = partialFailure()
         #expect(SyncMonitor.message(error) == refused.localizedDescription)
+    }
+
+    @Test func partialFailureDetailsShowTheRefusedRecordInFull() {
+        let (error, refused) = partialFailure()
+        #expect(SyncMonitor.details(error) == "b\n\(refused)")
+    }
+
+    @Test func failedSyncGoesIntoTheLogInFull() {
+        sync.update(id: UUID(), finished: true, isSync: true, error: "Quota", details: "CKError 25 Quota exceeded")
+        #expect(sync.failures.first?.details == "CKError 25 Quota exceeded")
+    }
+
+    @Test func logKeepsTheLatest20Failures() {
+        for number in 1...21 { sync.update(id: UUID(), finished: true, isSync: true, error: "\(number)") }
+        #expect(sync.failures.map(\.details) == (2...21).reversed().map { "\($0)" })
     }
 
     @Test func otherErrorsKeepTheirDescription() {
