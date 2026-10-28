@@ -18,6 +18,9 @@ struct MuscleGrailApp: App {
     #endif
 
     init() {
+        #if DEBUG
+        CloudKitSchema.initializeIfAsked() // quits after, when the scheme asks for it
+        #endif
         _ = SyncMonitor.shared // listen before the store's first sync event
         let store = OpenStore()
         _store = State(initialValue: store)

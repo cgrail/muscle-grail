@@ -136,6 +136,7 @@ The CloudKit container is `iCloud.de.grails.musclegrail`, which is defined in `C
 
 Builds installed from Xcode use CloudKit's **Development** environment. With a paid account they run for a year.
 TestFlight and App Store builds use **Production**, and data doesn't cross between the two environments. Before the first TestFlight build:
+- run the app from Xcode once with the scheme's `-initializeCloudKitSchema` argument, which creates every SwiftData record type and field in Development
 - deploy the schema in the CloudKit Console, the `Partner` zone's record types included
 - from then on, only add model fields; never rename or delete them
 
