@@ -28,6 +28,14 @@ public enum Store {
     }
 }
 
+/// One failed setup, import or export: when, which, and all CloudKit or Core Data said about it.
+public struct SyncFailure: Identifiable, Sendable {
+    public let id = UUID()
+    public let date: Date
+    public let kind: String
+    public let details: String
+}
+
 /// SwiftData syncs through NSPersistentCloudKitContainer, which reports every setup, import and export here.
 /// There is no "sync now": the system picks when to import and export (TN3163), so this says what happened and what still waits.
 @MainActor @Observable public final class SyncMonitor {
@@ -38,6 +46,8 @@ public enum Store {
     /// went fine says nothing about an upload that failed. One success mustn't hide another failure.
     public var lastError: String? { errors.values.sorted().first }
     private var errors: [String: String] = [:]
+    /// The latest failed setups, imports and exports since launch, newest first, in full, so the About section can show what went wrong.
+    public private(set) var failures: [SyncFailure] = []
     private var running: Set<UUID> = []
     /// When this device last saved a change, and when the last finished export started: it took everything saved before.
     /// Both outlast a relaunch, since the watch app can be killed between sets.
@@ -72,8 +82,9 @@ public enum Store {
                 as? NSPersistentCloudKitContainer.Event else { return }
             let (id, finished, isSync, error) = (event.identifier, event.endDate != nil, event.type != .setup, event.error.map(Self.message))
             let (exportStart, store) = (event.type == .export ? event.startDate : nil, event.storeIdentifier)
+            let details = event.error.map(Self.details)
             MainActor.assumeIsolated {
-                self.update(id: id, finished: finished, isSync: isSync, error: error, exportStart: exportStart, store: store)
+                self.update(id: id, finished: finished, isSync: isSync, error: error, details: details, exportStart: exportStart, store: store)
             }
         }
         // On the saving thread, so a save off the main actor never waits for it.
@@ -112,16 +123,31 @@ public enum Store {
         if error.domain == NSCocoaErrorDomain, error.code == 134400 { return String(localized: "Sign in to iCloud to sync", bundle: .module) }
         // A partial failure only says "Failed to modify some records". In an atomic batch, the record that failed says why;
         // the others only say the batch failed.
-        let records = error.userInfo[CKPartialErrorsByItemIDKey] as? [AnyHashable: any Error] ?? [:]
-        if let cause = records.values.first(where: { ($0 as NSError).code != CKError.batchRequestFailed.rawValue }) { return message(cause) }
+        if let cause = refused(error).values.first { return message(cause) }
         return error.localizedDescription
     }
 
+    /// What a failed sync says in full, with codes and server messages: each record a partial failure refused, else the error.
+    nonisolated static func details(_ error: any Error) -> String {
+        let error = error as NSError
+        let records = refused(error)
+        return records.isEmpty ? "\(error)" : records.prefix(5).map { "\($0.key)\n\($0.value)" }.joined(separator: "\n\n")
+    }
+
+    /// The records a partial failure refused, without those that only say their atomic batch failed.
+    nonisolated static func refused(_ error: NSError) -> [AnyHashable: any Error] {
+        (error.userInfo[CKPartialErrorsByItemIDKey] as? [AnyHashable: any Error] ?? [:])
+            .filter { ($0.value as NSError).code != CKError.batchRequestFailed.rawValue }
+    }
+
     /// `exportStart` is when an export began, so a finished one takes every change saved before it. `store` is the store's identifier.
-    func update(id: UUID, finished: Bool, isSync: Bool, error: String?, exportStart: Date? = nil, store: String = "") {
+    /// `details` is all the error says, for the log.
+    func update(id: UUID, finished: Bool, isSync: Bool, error: String?, details: String? = nil, exportStart: Date? = nil, store: String = "") {
         guard finished else { running.insert(id); return }
         running.remove(id)
-        errors[store + (exportStart != nil ? " export" : isSync ? " import" : " setup")] = error
+        let kind = exportStart != nil ? "export" : isSync ? "import" : "setup"
+        errors[store + " " + kind] = error
+        if let error { failures = Array(([SyncFailure(date: .now, kind: kind, details: details ?? error)] + failures).prefix(20)) }
         if isSync, error == nil {
             lastSync = .now
             defaults.set(lastSync, forKey: "lastSync")

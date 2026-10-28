@@ -53,6 +53,7 @@
 - If an update can't read the data on a device, the app says so instead of crashing. It offers to download the data again from iCloud, or to start from scratch on every device.
 - On the Mac, back up plans, workouts and your exercises to a folder you pick in Settings → General. The backup is rewritten at launch and whenever something changes or syncs in. Restore replaces everything, on every device, with a backup you choose.
 - The watch's info button (i) shows the app version, the commit it was built from and the sync status, and Plan changes lists every plan change that has reached the watch: what changed, in which plan, by whom and when.
+- Settings → About on the iPhone and the Mac shows the app version and the commit it was built from, with links to that commit and to Muscle Grail on GitHub. Below it, Sync errors lists every failed sync since the app opened in full, as iCloud reports it, with error codes, server messages and the records it refused, to read, copy or share.
 
 ### Watch face and Home Screen
 - A complication shows today's steps and walking distance. Tapping it opens the watch's Activity: the day's steps and kilometers toward the daily goal, its workouts, and the activity chart of the last year as on the iPhone. Tap a day in the chart to see it. The button with the walking figure opens it too.

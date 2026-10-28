@@ -469,6 +469,16 @@
         }
       }
     },
+    "Commit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commit"
+          }
+        }
+      }
+    },
     "Connect Claude" : {
       "localizations" : {
         "de" : {
@@ -959,6 +969,16 @@
         }
       }
     },
+    "Muscle Grail on GitHub" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muscle Grail auf GitHub"
+          }
+        }
+      }
+    },
     "Muscle Grail plans" : {
       "localizations" : {
         "de" : {
@@ -1389,6 +1409,16 @@
         }
       }
     },
+    "Sync errors (%lld)" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sync-Fehler (%lld)"
+          }
+        }
+      }
+    },
     "Sync now" : {
       "localizations" : {
         "de" : {
@@ -1445,6 +1475,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktualisiere Muscle Grail, um Pläne zu bearbeiten. Eine neuere Version hat sie geändert. Das Training funktioniert wie gewohnt."
+          }
+        }
+      }
+    },
+    "Version" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version"
           }
         }
       }
