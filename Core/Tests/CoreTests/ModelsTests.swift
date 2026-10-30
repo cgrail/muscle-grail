@@ -24,6 +24,15 @@ import Testing
         #expect(workout.exercises.map { $0.sets.map(\.reps) } == [[10, 8], [5]])
     }
 
+    @Test func workoutIsCompleteOnceEveryExerciseHasItsTargetSets() {
+        let plan = makePlan(context, "Bench", "Squat")
+        let workout = context.startWorkout(plan)
+        context.logRemaining(of: plan.sortedItems[0], in: workout, reps: 10, weightKg: 50)
+        #expect(!workout.isComplete)
+        context.logRemaining(of: plan.sortedItems[1], in: workout, reps: 5, weightKg: 80)
+        #expect(workout.isComplete)
+    }
+
     @Test func planFocusIsTheRegionWithMoreThanHalfTheSets() {
         #expect(makePlan(context, "squat", "leg-curl", "barbell-curl").focus == "Leg-heavy")
     }

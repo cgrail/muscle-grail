@@ -109,6 +109,12 @@ public extension Workout {
         (sets ?? []).filter { $0.exerciseID == exerciseID }.sorted { $0.date < $1.date }
     }
 
+    /// Reps times weight, over every set.
+    var volumeKg: Double { (sets ?? []).map { Double($0.reps) * $0.weightKg }.reduce(0, +) }
+
+    /// Whether every exercise this person trains in the plan has its target sets.
+    var isComplete: Bool { plan?.trainedItems.allSatisfy { sets(of: $0.exerciseID).count >= $0.targetSets } ?? false }
+
     /// Exercises in the order they were first done, each with its sets in order.
     var exercises: [(id: String, sets: [LoggedSet])] {
         let sorted = (sets ?? []).sorted { $0.date < $1.date }

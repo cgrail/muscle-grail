@@ -46,7 +46,7 @@ public func stats(_ workouts: [Workout], per period: Period, count: Int, now: Da
         periods[index].workouts += 1
         periods[index].sets += sets.count
         periods[index].reps += sets.map(\.reps).reduce(0, +)
-        periods[index].volumeKg += sets.map { Double($0.reps) * $0.weightKg }.reduce(0, +)
+        periods[index].volumeKg += workout.volumeKg
     }
     return periods
 }

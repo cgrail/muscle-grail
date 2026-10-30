@@ -31,7 +31,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | Daily goals live in iCloud's key-value store; each day's steps and distance come from Health | Tiny settings need no model or migration, and still reach every device. The widget and the complication read the same store for their progress ring. |
 | The iPhone widget is the complication's code built again for iOS (`StepsWidget`) | One source for both. The iPhone app reloads it on every HealthKit step wake, like the watch does its complication. |
 | The complication reads HealthKit directly | No App Group or shared store is needed. |
-| Watch: steppers instead of the Digital Crown | The crown already pages between exercises. |
+| Watch: the Digital Crown steps the weight when adjusting a set, beside steppers | The workout is a list of exercises, so the crown is free there, and gloves find it easier than small buttons. |
 | iPhone saves the workout with `HKWorkoutBuilder`; the watch uses `HKWorkoutSession` | The phone has no heart rate sensor. On the watch, the session keeps the app frontmost and running for the whole workout, and records heart rate and calories. |
 | Only the device that ran the workout writes to HealthKit, and stores the UUID in `Workout.healthKitID` | No duplicate workouts in Health. |
 | Minimum OS 26 on all platforms | All APIs used exist there. |
@@ -115,7 +115,7 @@ Approved on 2026-10-26. Nothing has shipped, so they go into `SchemaV1` in place
 ```
 MuscleGrail.xcodeproj   folders are synced: new files in App/, Watch/, Complication/ are picked up automatically
 App/                    iOS + macOS app (one multiplatform target). iPhone: tabs Train, Plans, History. Mac: an Apple Music-style sidebar
-Watch/                  watchOS app. Plan picker, one page per exercise, HKWorkoutSession
+Watch/                  watchOS app. Plan picker, exercise list, one screen per exercise, summary, HKWorkoutSession
 Complication/           WidgetKit: today's steps + km, as the watch complication and the iPhone widget
 Core/                   Swift package: models, Store + SyncMonitor, Health, shared views, exercise catalog, tests
 Config/                 entitlements and Info.plists
