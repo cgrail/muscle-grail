@@ -21,10 +21,11 @@
 - The Mac's exercise library previews the selected exercise on the right, like Finder: its photo, muscles and equipment, how to do it, and a video link. It opens when you select an exercise, below the toolbar. The Preview button in the toolbar hides and shows it.
 
 ### Training
+- On the watch, a workout lists its exercises as cards with the next set's reps and weight and how many sets are done. Open one to log the next set in one tap, adjust its weight (with the Digital Crown) and reps first, or log all remaining sets at once; once its sets are done, the list comes back. Finish workout shows the volume lifted, how long you trained and each exercise's sets before it saves the workout to Health, and shows on its own after the last set of the last exercise.
 - Machines that show pounds: switch an exercise's details to lb, and its weights show, are typed and step in lb (by 5 lb) in plans, workouts and history, on the iPhone, the Mac and the watch.
 - Type a weight instead of stepping to it, with a comma or a point: in a workout on the iPhone and the Mac, and in plans. The watch keeps its stepper.
 - On the iPhone and the Mac, an exercise opened during a workout shows how to do it, step by step, under its sets, with a link to a video: your own video link, else a YouTube search for the exercise. Your own description replaces the steps.
-- An exercise's details, opened from a plan or the Mac's exercise library, show the catalog's steps for how to do it. On the watch, each exercise's page shows how to do it under its sets.
+- An exercise's details, opened from a plan or the Mac's exercise library, show the catalog's steps for how to do it. On the watch, an opened exercise shows how to do it under its sets.
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.
 - Only one workout runs at a time: finish it before starting another plan.
 - Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.

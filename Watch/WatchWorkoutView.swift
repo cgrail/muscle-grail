@@ -3,38 +3,77 @@ import HealthKit
 import SwiftData
 import SwiftUI
 
-/// One page per exercise, its sets then how to do it, then a finish page.
+/// The workout's exercises as cards, each with its next set and how many sets are done. A card opens the exercise to
+/// log it; finishing shows a summary first, as does logging the last set of the last exercise.
 struct WatchWorkoutView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    @Query private var entries: [CatalogEntry]
     let workout: Workout
     @State private var session = WorkoutSession()
+    @State private var exercise: PlanItem?
+    @State private var finishing = false
 
     var body: some View {
-        TabView {
+        List {
             ForEach(workout.plan?.trainedItems ?? []) { item in
-                List {
-                    ExerciseSection(item: item, workout: workout)
-                    let steps = instructions(item.exerciseID, entry: entries.first { $0.id == item.exerciseID })
-                    if !steps.isEmpty {
-                        Section("How to") { ForEach(steps, id: \.self) { Text(verbatim: $0).font(.footnote) } }
-                    }
-                }
+                Button { exercise = item } label: { ExerciseCard(item: item, workout: workout) }
             }
-            Button("Finish", systemImage: "checkmark") {
+            Button("Finish workout", systemImage: "flag.checkered") { finishing = true }
+        }
+        .navigationTitle(workout.title)
+        .navigationBarBackButtonHidden()
+        .navigationDestination(item: $exercise) { item in
+            ExerciseView(item: item, workout: workout) {
+                exercise = nil
+                if workout.isComplete { finishing = true }
+            }
+        }
+        .sheet(isPresented: $finishing) {
+            FinishView(workout: workout) {
                 context.finish(workout)
                 session.end { id in
                     if let id { context.savedToHealth(workout, as: id) }
                 }
+                finishing = false
                 dismiss()
             }
-            .tint(.green)
         }
-        .tabViewStyle(.verticalPage)
-        .navigationTitle(workout.title)
-        .navigationBarBackButtonHidden()
         .onAppear { session.start() }
+    }
+}
+
+/// An exercise in the workout list: its name, the next set as prefilled, and how many of its sets are done.
+private struct ExerciseCard: View {
+    @Environment(\.modelContext) private var context
+    let item: PlanItem
+    let workout: Workout
+
+    var body: some View {
+        let done = workout.sets(of: item.exerciseID).count
+        let next = context.nextSet(for: item, in: workout)
+        VStack(alignment: .leading, spacing: 4) {
+            HStack(alignment: .firstTextBaseline) {
+                ExerciseName(item.exerciseID).font(.headline)
+                Spacer(minLength: 4)
+                if done >= item.targetSets {
+                    Image(systemName: "checkmark.circle.fill").foregroundStyle(.green).accessibilityLabel(Text("Done"))
+                } else {
+                    Text("\(done)/\(item.targetSets) sets")
+                        .font(.caption2.monospacedDigit())
+                        .foregroundStyle(done > 0 ? Color.green : Color.secondary)
+                        .padding(.horizontal, 6).padding(.vertical, 2)
+                        .background((done > 0 ? Color.green : Color.gray).opacity(0.2), in: .capsule)
+                }
+            }
+            HStack {
+                Text("\(next.reps) reps").foregroundStyle(.secondary)
+                Spacer()
+                if next.weightKg > 0 {
+                    Text(verbatim: context.weightUnit(of: item.exerciseID).format(next.weightKg)).foregroundStyle(.cyan)
+                }
+            }
+            .font(.footnote.monospacedDigit())
+        }
     }
 }
 
