@@ -22,6 +22,7 @@
 
 ### Training
 - On the watch, a workout lists its exercises as cards with the next set's reps and weight and how many sets are done. Open one to log the next set in one tap, adjust its weight (with the Digital Crown) and reps first, or log all remaining sets at once; once its sets are done, the list comes back. Finish workout shows the volume lifted, how long you trained and each exercise's sets before it saves the workout to Health, and shows on its own after the last set of the last exercise.
+- On the watch, an adjusted set's weight and reps fit between their − and + buttons, and an exercise's Adjust and Log all buttons each get a row of their own, so German labels no longer break mid-word.
 - Machines that show pounds: switch an exercise's details to lb, and its weights show, are typed and step in lb (by 5 lb) in plans, workouts and history, on the iPhone, the Mac and the watch.
 - Type a weight instead of stepping to it, with a comma or a point: in a workout on the iPhone and the Mac, and in plans. The watch keeps its stepper.
 - On the iPhone and the Mac, an exercise opened during a workout shows how to do it, step by step, under its sets, with a link to a video: your own video link, else a YouTube search for the exercise. Your own description replaces the steps.

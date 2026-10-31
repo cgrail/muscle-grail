@@ -31,8 +31,8 @@ struct AdjustSetView: View {
                     weightKg = new > old ? Weights.next(after: weightKg, for: exerciseID, in: unit)
                         : Weights.previous(before: weightKg, for: exerciseID, in: unit)
                 }
-            Stepper(value: $reps, in: 0...200) { Text("\(reps) reps") }
-            Button("Log adjusted set", systemImage: "checkmark") {
+            Stepper(value: $reps, in: 0...200) { Text("\(reps) reps").font(.title3).minimumScaleFactor(0.5) }
+            Button("Log set \(number)", systemImage: "checkmark") {
                 dismiss()
                 onLog(reps, weightKg)
             }

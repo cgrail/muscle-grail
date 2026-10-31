@@ -42,12 +42,14 @@ struct ExerciseView: View {
                     }
                 }
                 .monospacedDigit()
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
                 .frame(maxWidth: .infinity)
                 Button("Log set \(done.count + 1)", systemImage: "checkmark") { log(reps: next.reps, weightKg: next.weightKg) }
                     .buttonStyle(.borderedProminent)
                     .tint(.green)
                     .listRowBackground(Color.clear)
-                HStack {
+                VStack { // side by side, German labels break mid-word
                     Button("Adjust", systemImage: "slider.horizontal.3") { adjusting = true }
                     if item.targetSets - done.count > 1 {
                         Button("Log all", systemImage: "checkmark.circle") {

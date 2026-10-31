@@ -219,7 +219,7 @@ public struct WeightStepper: View {
         let unit = entries.first?.weightUnit ?? .kg
         Stepper {
             #if os(watchOS) // the watch steps with its crown
-            Text(verbatim: unit.format(kg))
+            Text(verbatim: unit.format(kg)).font(.title3).minimumScaleFactor(0.5) // the stepper's own font truncates "47.5 kg"
             #else
             WeightField(kg: $kg, unit: unit)
             #endif
