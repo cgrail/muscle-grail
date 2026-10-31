@@ -65,6 +65,7 @@ struct MacRootView: View {
             }
         }
         .task { if page == nil { page = plans.first.map(Page.plan) ?? .train } }
+        .modifier(GymBookImporter())
     }
 
     private func delete(_ plan: Plan) {

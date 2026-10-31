@@ -75,7 +75,7 @@ struct FilterMenu: View {
     }
 }
 
-private struct CatalogRow: View {
+struct CatalogRow: View {
     let name: String
     let detail: String
     var photo: Data?

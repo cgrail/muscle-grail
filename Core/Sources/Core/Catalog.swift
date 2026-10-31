@@ -17,6 +17,7 @@ public struct CatalogExercise: Identifiable, Sendable {
     public var category: String?
     var germanName = ""
     var germanInstructions: [String] = []
+    var spanishName = ""
 
     public static let all = load(Bundle.module.url(forResource: "exercises", withExtension: "json", subdirectory: "RepDB"))
 
@@ -56,12 +57,39 @@ public struct CatalogExercise: Identifiable, Sendable {
 
     /// The catalog in the order of its names in the user's language.
     public static let alphabetical = all.sorted { $0.label.localizedStandardCompare($1.label) == .orderedAscending }
+
+    /// The `limit` exercises whose name in English, German or Spanish is most like one of `names`, the likeliest first, with
+    /// how alike, 1 for the same words: "Beinpressen" finds Leg Press by its German name, Beinpresse.
+    public static func closest(to names: [String], limit: Int = 8) -> [(id: String, score: Double)] {
+        let queries = names.map(trigrams)
+        let scored = nameTrigrams.map { id, names in (id: id, score: queries.flatMap { query in names.map { dice(query, $0) } }.max() ?? 0) }
+        return Array(scored.sorted { $0.score > $1.score }.prefix(limit))
+    }
+
+    private static let nameTrigrams = all.map { ($0.id, [$0.name, $0.germanName, $0.spanishName].map(trigrams)) }
+}
+
+/// The runs of three letters in `name`'s words, counted, without filler words: what `closest` compares. Camel case splits
+/// into words, so GymBook's `legPresses` reads as "leg presses".
+func trigrams(_ name: String) -> [String: Int] {
+    let fillers: Set = ["a", "al", "am", "an", "and", "con", "das", "de", "del", "der", "die", "el", "en", "im", "in", "la", "mit",
+                        "on", "the", "to", "und", "with", "y", "zum", "zur"]
+    let words = name.replacing(#/(\p{Ll})(\p{Lu})/#) { "\($0.output.1) \($0.output.2)" }.lowercased()
+        .split { !$0.isLetter && !$0.isNumber }.filter { !fillers.contains(String($0)) }
+    let letters = Array(" \(words.joined(separator: " ")) ")
+    return letters.indices.dropLast(2).reduce(into: [:]) { $0[String(letters[$1..<$1 + 3]), default: 0] += 1 }
+}
+
+/// How alike two names' `trigrams` are, from 0 to 1 (Dice's coefficient).
+func dice(_ a: [String: Int], _ b: [String: Int]) -> Double {
+    let total = a.values.reduce(0, +) + b.values.reduce(0, +)
+    return total == 0 ? 0 : Double(2 * a.reduce(0) { $0 + min($1.value, b[$1.key] ?? 0) }) / Double(total)
 }
 
 extension CatalogExercise: Decodable {
     enum CodingKeys: String, CodingKey {
         case id, equipment, images, category
-        case name = "name_en", germanName = "name_de", instructions = "instructions_en", germanInstructions = "instructions_de"
+        case name = "name_en", germanName = "name_de", spanishName = "name_es", instructions = "instructions_en", germanInstructions = "instructions_de"
         case primaryMuscles = "primary_muscles", level = "difficulty"
     }
 
@@ -79,7 +107,8 @@ extension CatalogExercise: Decodable {
             level: try row.decodeIfPresent(String.self, forKey: .level),
             category: try row.decodeIfPresent(String.self, forKey: .category),
             germanName: try row.decodeIfPresent(String.self, forKey: .germanName) ?? "",
-            germanInstructions: try row.decodeIfPresent([String].self, forKey: .germanInstructions) ?? []
+            germanInstructions: try row.decodeIfPresent([String].self, forKey: .germanInstructions) ?? [],
+            spanishName: try row.decodeIfPresent(String.self, forKey: .spanishName) ?? ""
         )
     }
 }
