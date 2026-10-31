@@ -58,7 +58,7 @@ struct PlanPage: View {
         }
         .inspector(isPresented: $showingChanges) { PlanChanges(plan: plan.id) }
         .sheet(isPresented: $picking) {
-            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.add(id, to: plan, own: $0 ? nil : .mine) } }
+            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.addNew(id, to: plan, own: $0 ? nil : .mine) } }
         }
         .forWhom($forWhom)
         .navigationTitle(plan.title)
