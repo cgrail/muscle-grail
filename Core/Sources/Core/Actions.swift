@@ -182,7 +182,7 @@ extension ModelContext {
     func item(_ id: UUID) -> PlanItem? { first(#Predicate { $0.id == id }) }
     func workout(_ id: UUID) -> Workout? { first(#Predicate { $0.id == id }) }
     func loggedSet(_ id: UUID) -> LoggedSet? { first(#Predicate { $0.id == id }) }
-    func catalogEntry(_ id: String) -> CatalogEntry? { first(#Predicate { $0.id == id }) }
+    public func catalogEntry(_ id: String) -> CatalogEntry? { first(#Predicate { $0.id == id }) }
 
     private func workout(_ id: UUID, orNewAt start: Date) -> Workout {
         if let workout = workout(id) { return workout }

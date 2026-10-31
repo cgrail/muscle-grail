@@ -22,6 +22,7 @@
 
 ### Training
 - On the watch, a workout lists its exercises as cards with the next set's reps and weight and how many sets are done. Open one to log the next set in one tap, adjust its weight (with the Digital Crown) and reps first, or log all remaining sets at once; once its sets are done, the list comes back. Finish workout shows the volume lifted, how long you trained and each exercise's sets before it saves the workout to Health, and shows on its own after the last set of the last exercise.
+- On the watch, an adjusted set's weight and reps fit between their − and + buttons, and an exercise's Adjust and Log all buttons each get a row of their own, so German labels no longer break mid-word.
 - Machines that show pounds: switch an exercise's details to lb, and its weights show, are typed and step in lb (by 5 lb) in plans, workouts and history, on the iPhone, the Mac and the watch.
 - Type a weight instead of stepping to it, with a comma or a point: in a workout on the iPhone and the Mac, and in plans. The watch keeps its stepper.
 - On the iPhone and the Mac, an exercise opened during a workout shows how to do it, step by step, under its sets, with a link to a video: your own video link, else a YouTube search for the exercise. Your own description replaces the steps.
@@ -30,8 +31,8 @@
 - Only one workout runs at a time: finish it before starting another plan.
 - Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.
-- On the iPhone and the Mac, a workout lists its exercises like GymBook: tick off the next set right in the list, or open an exercise for its details.
-- Log a set with one tap, or tick off a whole exercise like "3 × 10 at 20 kg" with one tap; swipe a logged set to delete it.
+- On the iPhone and the Mac, a workout lists its exercises as cards with the next set's weight and reps and how many sets are done, the next exercise to do outlined; tick off its next set right in the list. Open one to see its sets as dots and the next set in large type: log it in one tap, adjust it first with large − and + buttons that step through the gym's weights (or type the weight), or log all remaining sets at once; once its sets are done, the list comes back. Summary shows the volume lifted, the sets done, how long you trained and each exercise's sets before Finish workout ends it, and shows on its own after the last set of the last exercise.
+- Log a set with one tap, or all of an exercise's remaining sets with Log all; swipe a logged set to delete it.
 - Exercise photos show while training, on the watch too, once they're on the device. They download while there is network; in a gym without internet the workout runs as usual and leaves missing photos out.
 - Finished workouts go to Health, and the watch records heart rate and calories.
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.

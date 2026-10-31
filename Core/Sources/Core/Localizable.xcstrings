@@ -21,66 +21,6 @@
         }
       }
     },
-    "%lld reps" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Wdh."
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld rep"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld reps"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "%lld/%lld sets · %lld reps" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld/%2$lld Sätze · %3$lld Wdh."
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld/%2$lld sets · %3$lld reps"
-          }
-        }
-      }
-    },
-    "%lld/%lld sets · %lld reps · %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld/%2$lld Sätze · %3$lld Wdh. · %4$@"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld/%2$lld sets · %3$lld reps · %4$@"
-          }
-        }
-      }
-    },
     "ab_crunch_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -617,16 +557,6 @@
         }
       }
     },
-    "Delete" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Löschen"
-          }
-        }
-      }
-    },
     "Delete everything" : {
       "localizations" : {
         "de" : {
@@ -679,16 +609,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dip station"
-          }
-        }
-      }
-    },
-    "Done" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Erledigt"
           }
         }
       }
@@ -1245,48 +1165,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Beine"
-          }
-        }
-      }
-    },
-    "Log %lld × %lld at %@" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$lld × %2$lld mit %3$@ eintragen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log %1$lld × %2$lld at %3$@"
-          }
-        }
-      }
-    },
-    "Log set" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Satz eintragen"
-          }
-        }
-      }
-    },
-    "Log set %lld of %lld" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Satz %1$lld von %2$lld eintragen"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Log set %1$lld of %2$lld"
           }
         }
       }

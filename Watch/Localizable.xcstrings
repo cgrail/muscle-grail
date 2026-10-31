@@ -165,16 +165,6 @@
         }
       }
     },
-    "Log adjusted set" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Angepassten Satz eintragen"
-          }
-        }
-      }
-    },
     "Log all" : {
       "localizations" : {
         "de" : {

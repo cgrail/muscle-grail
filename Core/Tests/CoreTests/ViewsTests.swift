@@ -70,26 +70,10 @@ import Testing
         #expect(try context.fetchCount(FetchDescriptor<Workout>()) == 1)
     }
 
-    @Test func exerciseSectionRendersLoggedSets() {
-        let plan = makePlan(context, "Bench")
-        let workout = context.startWorkout(plan)
-        context.log("Bench", reps: 8, weightKg: 60, in: workout)
-        render(List { ExerciseSection(item: plan.sortedItems[0], workout: workout) })
-    }
-
-    @Test func exerciseRowRendersOpenAndFinished() {
-        let plan = makePlan(context, "Bench", "Squat")
-        let workout = context.startWorkout(plan)
-        context.setTargets(plan.sortedItems[1], sets: 1, weightKg: 0)
-        context.log("Squat", reps: 10, weightKg: 0, in: workout)
-        render(NavigationStack { List(plan.sortedItems) { ExerciseRow(item: $0, workout: workout) } })
-    }
-
-    @Test func exerciseSectionRendersYourOwnPhoto() {
+    @Test func weightStepperRendersInTheExercisesUnit() {
         let id = context.createExercise(named: "Cable Fly")
-        context.setPhoto(id, to: testPhoto())
-        let plan = makePlan(context, id)
-        render(List { ExerciseSection(item: plan.sortedItems[0], workout: context.startWorkout(plan)) })
+        context.setUnit(id, to: .lb)
+        render(Form { ExerciseName(id); WeightStepper(kg: .constant(20), exerciseID: id) })
     }
 }
 #endif

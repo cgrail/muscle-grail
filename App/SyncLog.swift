@@ -14,7 +14,7 @@ struct SyncLog: View {
         }
     }
 
-    private static func text(_ failure: SyncFailure) -> String {
+    nonisolated private static func text(_ failure: SyncFailure) -> String {
         "\(failure.date.formatted(date: .abbreviated, time: .standard)) · \(failure.kind)\n\(failure.details)"
     }
 }

@@ -11,7 +11,11 @@ struct MuscleGrailWatchApp: App {
 
     init() {
         _ = SyncMonitor.shared // listen before the store's first sync event
-        _store = State(initialValue: OpenStore())
+        let store = OpenStore()
+        _store = State(initialValue: store)
+        #if targetEnvironment(simulator)
+        if let container = store.container { SampleData.addIfAsked(to: container.mainContext) }
+        #endif
         Self.observeSteps()
     }
 
