@@ -95,9 +95,9 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## GymBook
 
-- `GymBook` (Core) reads GymBook's log export (XML in UTF-16, German dates, weights like "38,00 kg" or "130,00 lb") and writes the history in the same format. On the Mac, History's GymBook menu imports a file after a step that matches each GymBook exercise to one here (`GymBookMenu`), off the main actor.
+- `GymBook.read` (Core) reads GymBook's log export (XML in UTF-16, German dates, weights like "38,00 kg" or "130,00 lb") or its full backup (a `.database` file, its Core Data store as SQLite: `GymBookBackup`) into a `GymBook.File`: the logs, the workouts, and the plans, the backup's own or, from the export, each workout name's newest workout. The export writes the history in the log export's format. On the Mac, File → Import from GymBook… and History's GymBook menu start `GymBookImporter`, which shows what a file brings first (`GymBookImport`): its plans to pick (GymBook's active ones ticked), the history, and each exercise beside the one it becomes, with its photo. A click opens `ExerciseChooser`: the likeliest first, then the catalog to search, with the selected one's `ExercisePreview` beside the list. `gymBookMatches` finds one by name, else by letter-trigram likeness of its English, German or Spanish name (`CatalogExercise.closest`, 0.85 or more); the others show the closest as alternatives, and `ExerciseMatcher` (App) lets Apple's on-device model guess among those. It seldom answers that none fits, so the sheet marks its guesses to check; it has no tests, so check it by hand. Reading, matching and importing run off the main actor.
 - An imported workout and its sets get ids from their day, workout name and position (`GymBook.id`), so importing the same file again adds nothing. Keep those keys as they are.
-- This repo is public: never commit a GymBook export. Tests use the made-up `gymBookSample`.
+- This repo is public: never commit a GymBook export or backup (keep them in the ignored `temp/`). Tests use the made-up `gymBookSample` and `gymBookBackupSample`.
 
 ## Claude (MCP)
 

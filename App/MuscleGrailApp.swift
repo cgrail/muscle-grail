@@ -54,6 +54,9 @@ struct MuscleGrailApp: App {
             }
         }
         #if os(macOS)
+        .commands { GymBookCommands() }
+        #endif
+        #if os(macOS)
         Settings {
             if let mac {
                 TabView {
