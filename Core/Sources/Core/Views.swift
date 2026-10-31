@@ -84,110 +84,6 @@ public struct WorkoutPicker: View {
     }
 }
 
-/// One exercise of a running workout: adjust reps and weight, log a set or all the rest in one tap, swipe a logged set to delete it (right-click on the Mac).
-public struct ExerciseSection: View {
-    @Environment(\.modelContext) private var context
-    private let item: PlanItem
-    private let workout: Workout
-    @State private var reps = 0
-    @State private var weight = 0.0
-    @State private var prefilled = false
-    @State private var photo: CGImage?
-
-    public init(item: PlanItem, workout: Workout) {
-        self.item = item
-        self.workout = workout
-    }
-
-    public var body: some View {
-        let done = workout.sets(of: item.exerciseID)
-        let unit = context.weightUnit(of: item.exerciseID)
-        Section {
-            if let photo {
-                Image(decorative: photo, scale: 1).resizable().scaledToFit().frame(maxHeight: 90)
-            }
-            Stepper(String(localized: "\(reps) reps", bundle: .module), value: $reps, in: 0...200)
-            WeightStepper(kg: $weight, exerciseID: item.exerciseID)
-            Button(String(localized: "Log set \(done.count + 1) of \(item.targetSets)", bundle: .module), systemImage: "checkmark") {
-                context.log(item.exerciseID, reps: reps, weightKg: weight, in: workout)
-            }
-            if item.targetSets - done.count > 1 {
-                let remaining = item.targetSets - done.count
-                Button(String(localized: "Log \(remaining) × \(reps) at \(unit.format(weight))", bundle: .module), systemImage: "checkmark.circle") {
-                    context.logRemaining(of: item, in: workout, reps: reps, weightKg: weight)
-                }
-            }
-            ForEach(done) { set in
-                let delete = Button(String(localized: "Delete", bundle: .module), systemImage: "trash", role: .destructive) { context.undo(set) }
-                Text(verbatim: "\(set.reps) × \(unit.format(set.weightKg))")
-                    .swipeActions { delete }
-                    #if os(macOS)
-                    .contextMenu { delete } // a mouse can't swipe
-                    #endif
-            }
-        } header: {
-            ExerciseName(item.exerciseID)
-        }
-        .onAppear {
-            guard !prefilled else { return }
-            prefilled = true
-            (reps, weight) = context.nextSet(for: item, in: workout)
-        }
-        .task { photo = PhotoCache.shared.image(for: item.exerciseID, entry: context.catalogEntry(item.exerciseID)) }
-    }
-}
-
-/// One exercise in the workout list, as GymBook shows it: tick off the next set as prefilled, or open it for the details.
-public struct ExerciseRow: View {
-    @Environment(\.modelContext) private var context
-    private let item: PlanItem
-    private let workout: Workout
-    @State private var photo: CGImage?
-
-    public init(item: PlanItem, workout: Workout) {
-        self.item = item
-        self.workout = workout
-    }
-
-    public var body: some View {
-        let done = workout.sets(of: item.exerciseID).count
-        let next = context.nextSet(for: item, in: workout)
-        HStack {
-            Group {
-                if let photo {
-                    Image(decorative: photo, scale: 1).resizable().scaledToFill()
-                } else {
-                    Image(systemName: "dumbbell").foregroundStyle(.secondary)
-                }
-            }
-            .frame(width: 48, height: 48)
-            .clipShape(.rect(cornerRadius: 8))
-            .accessibilityHidden(true)
-            VStack(alignment: .leading) {
-                ExerciseName(item.exerciseID)
-                Group {
-                    if next.weightKg > 0 {
-                        Text("\(done)/\(item.targetSets) sets · \(next.reps) reps · \(context.weightUnit(of: item.exerciseID).format(next.weightKg))", bundle: .module)
-                    } else {
-                        Text("\(done)/\(item.targetSets) sets · \(next.reps) reps", bundle: .module)
-                    }
-                }
-                .font(.subheadline).foregroundStyle(.secondary)
-            }
-            Spacer(minLength: 0)
-            if done >= item.targetSets {
-                Image(systemName: "checkmark.circle.fill").font(.title2).foregroundStyle(.green).accessibilityLabel(Text("Done", bundle: .module))
-            } else {
-                Button(String(localized: "Log set", bundle: .module), systemImage: "checkmark.circle") { context.tick(item, in: workout) }
-                    .labelStyle(.iconOnly)
-                    .font(.title2)
-                    .buttonStyle(.borderless) // in a row that opens the details, only this button logs
-            }
-        }
-        .task { photo = PhotoCache.shared.image(for: item.exerciseID, entry: context.catalogEntry(item.exerciseID)) }
-    }
-}
-
 /// An exercise's name, kept current as its catalog entry changes or arrives.
 public struct ExerciseName: View {
     @Query private var entries: [CatalogEntry]
@@ -232,19 +128,19 @@ public struct WeightStepper: View {
 }
 
 #if !os(watchOS)
-/// A weight to type, beside the stepper. Every edit that reads as a weight applies at once: a decimal pad has no
+/// A weight to type, beside a stepper's buttons. Every edit that reads as a weight applies at once: a decimal pad has no
 /// return key to commit with, and a set logged mid-edit must get the typed weight.
-struct WeightField: View {
+public struct WeightField: View {
     @Binding private var kg: Double
     private let unit: WeightUnit
     @State private var text: String
 
-    init(kg: Binding<Double>, unit: WeightUnit) {
+    public init(kg: Binding<Double>, unit: WeightUnit) {
         (_kg, self.unit) = (kg, unit)
         _text = State(initialValue: unit.number(kg.wrappedValue))
     }
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 4) {
             TextField(String(localized: "Weight", bundle: .module), text: $text)
                 .textFieldStyle(.roundedBorder)
