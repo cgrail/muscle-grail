@@ -75,7 +75,7 @@ struct PlanEditor: View {
         .formStyle(.grouped)
         .navigationTitle(plan.title)
         .sheet(isPresented: $picking) {
-            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.add(id, to: plan, own: $0 ? nil : .mine) } }
+            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.addNew(id, to: plan, own: $0 ? nil : .mine) } }
         }
         .sheet(item: $replacing) { item in
             ExercisePicker(title: "Replace with") { id in ForWhom.edit(plan, item, asking: $forWhom) { context.replace(item, with: id, forBoth: $0) } }

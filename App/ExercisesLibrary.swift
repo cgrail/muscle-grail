@@ -43,7 +43,7 @@ struct ExercisesLibrary: View {
             .contextMenu(forSelectionType: String.self) { ids in
                 Menu("Add to Plan") {
                     ForEach(plans) { plan in
-                        Button(plan.title) { for id in ids { context.add(id, to: plan) } }
+                        Button(plan.title) { for id in ids { context.addNew(id, to: plan) } }
                     }
                 }
                 .disabled(ids.isEmpty || plans.isEmpty || !newer.isEmpty)

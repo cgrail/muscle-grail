@@ -625,6 +625,16 @@
         }
       }
     },
+    "Every exercise you add starts with these, on all your devices." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jede Übung, die du hinzufügst, beginnt damit, auf all deinen Geräten."
+          }
+        }
+      }
+    },
     "Exercise" : {
       "localizations" : {
         "de" : {
@@ -711,6 +721,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ordner"
+          }
+        }
+      }
+    },
+    "For both" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für beide"
+          }
+        }
+      }
+    },
+    "For both. Click to make it only yours." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für beide. Klicke, damit sie nur deine ist."
           }
         }
       }
@@ -935,6 +965,16 @@
         }
       }
     },
+    "Layout" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ansicht"
+          }
+        }
+      }
+    },
     "Leave" : {
       "localizations" : {
         "de" : {
@@ -1085,6 +1125,16 @@
         }
       }
     },
+    "My plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meine Pläne"
+          }
+        }
+      }
+    },
     "Name" : {
       "localizations" : {
         "de" : {
@@ -1111,6 +1161,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neue Übung"
+          }
+        }
+      }
+    },
+    "New exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Übungen"
           }
         }
       }
@@ -1191,6 +1251,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nur du"
+          }
+        }
+      }
+    },
+    "Only yours. Click to do it together." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nur deine. Klicke, um sie gemeinsam zu machen."
           }
         }
       }
@@ -1435,6 +1505,16 @@
         }
       }
     },
+    "Shared plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geteilte Pläne"
+          }
+        }
+      }
+    },
     "Shared with" : {
       "localizations" : {
         "de" : {
@@ -1461,6 +1541,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alle Übungen zeigen"
+          }
+        }
+      }
+    },
+    "Single plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einzelner Plan"
           }
         }
       }
@@ -1531,6 +1621,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jetzt synchronisieren"
+          }
+        }
+      }
+    },
+    "The shared plans as %@ trains them. Sets, reps and weights stay personal, so they don't show here." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die geteilten Pläne, wie %@ sie trainiert. Sätze, Wiederholungen und Gewichte bleiben persönlich und werden hier daher nicht angezeigt."
+          }
+        }
+      }
+    },
+    "The shared plans as your training partner trains them. Sets, reps and weights stay personal, so they don't show here." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die geteilten Pläne, wie dein Trainingspartner sie trainiert. Sätze, Wiederholungen und Gewichte bleiben persönlich und werden hier daher nicht angezeigt."
           }
         }
       }
@@ -1611,6 +1721,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Videolink"
+          }
+        }
+      }
+    },
+    "View as" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ansehen als"
           }
         }
       }
@@ -1721,6 +1841,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jahr"
+          }
+        }
+      }
+    },
+    "You" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du"
           }
         }
       }

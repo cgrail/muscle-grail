@@ -70,4 +70,22 @@ import Testing
         context.setTargets(item, weightKg: 70)
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 6, 70))
     }
+
+    @Test func newExerciseStartsAtTheDefaultSetsAndReps() {
+        let item = context.addNew("Bench", to: makePlan(context), defaults: (4, 12))
+        #expect((item.targetSets, item.targetReps) == (4, 12))
+    }
+
+    @Test func unsetDefaultsAreThreeSetsOfEleven() {
+        let defaults = targetDefaults() // nothing stored for the tests
+        #expect((defaults.sets, defaults.reps) == (3, 11))
+    }
+
+    @Test func exerciseSwitchesBetweenYourOwnAndForBoth() {
+        let item = makePlan(context, "Bench").sortedItems[0]
+        context.setForBoth(item, false)
+        #expect(item.ownedBy == .me)
+        context.setForBoth(item, true)
+        #expect(item.ownedBy == .both)
+    }
 }

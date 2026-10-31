@@ -12,45 +12,36 @@ struct MacRootView: View {
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Action.newer) private var newer: [Action]
     @State private var page: Page?
+    @State private var lastPlan: Plan? // the one Single plan opens
 
     var body: some View {
-        let locked = !newer.isEmpty
+        let shared = plans.filter { PartnerStatus.shared.plans.contains($0.id) }
         NavigationSplitView {
             List(selection: $page) {
                 Label("Train", systemImage: "figure.strengthtraining.traditional").tag(Page.train)
                 Label("History", systemImage: "clock").tag(Page.history)
+                Label("All plans", systemImage: "rectangle.split.3x1").tag(Page.overview)
                 Section("Library") {
                     Label("Exercises", systemImage: "dumbbell").tag(Page.exercises)
                     Label("Changes", systemImage: "clock.arrow.circlepath").tag(Page.changes)
                 }
-                Section("Plans") {
-                    Label("All plans", systemImage: "square.grid.2x2").tag(Page.overview)
-                    ForEach(plans) { plan in
-                        Label {
-                            HStack {
-                                Text(plan.title)
-                                Spacer()
-                                SharedBadge(plan: plan)
-                                PlanSyncBadge(plan: plan)
-                            }
-                        } icon: {
-                            PlanArtwork(plan: plan, size: 20)
-                        }
-                        .tag(Page.plan(plan))
-                        .contextMenu {
-                            PlanSharing(plan: plan)
-                            Button("Delete", systemImage: "trash", role: .destructive) { delete(plan) }.disabled(locked)
-                        }
-                    }
-                    .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
-                    .moveDisabled(locked)
+                if shared.isEmpty {
+                    Section("Plans") { rows(plans) }
+                } else {
+                    Section("Shared plans") { rows(shared) }
+                    Section("My plans") { rows(plans.filter { !shared.contains($0) }) }
                 }
             }
             .safeAreaInset(edge: .bottom) {
-                SyncStatusView().font(.caption).foregroundStyle(.secondary).frame(maxWidth: .infinity, alignment: .leading).padding(12)
+                VStack(alignment: .leading, spacing: 12) {
+                    TargetDefaultsPanel()
+                    SyncStatusView().font(.caption).foregroundStyle(.secondary)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(12)
             }
             .toolbar {
-                Button("New Plan", systemImage: "plus") { page = .plan(context.addPlan()) }.disabled(locked)
+                Button("New Plan", systemImage: "plus") { page = .plan(context.addPlan()) }.disabled(!newer.isEmpty)
             }
             .navigationSplitViewColumnWidth(min: 200, ideal: 230)
         } detail: {
@@ -59,12 +50,55 @@ struct MacRootView: View {
             case .history: HistoryView()
             case .exercises: ExercisesLibrary()
             case .changes: PlanChanges()
-            case .overview: PlansOverview { page = .plan($0) }
-            case .plan(let plan) where plans.contains(plan): PlanPage(plan: plan).id(plan.id)
+            case .overview: PlansOverview { page = .plan($0) }.toolbar { layoutPicker }
+            case .plan(let plan) where plans.contains(plan): PlanPage(plan: plan).id(plan.id).toolbar { layoutPicker }
             case .plan, nil: ContentUnavailableView("Choose a plan", systemImage: "list.bullet.clipboard") // a sync or restore deleted it
             }
         }
         .task { if page == nil { page = plans.first.map(Page.plan) ?? .train } }
+        .onChange(of: page) { if case .plan(let plan) = page { lastPlan = plan } }
+    }
+
+    /// Plans as playlists, each with its exercise count. Reordering one section keeps the others' places in the one plan list.
+    private func rows(_ section: [Plan]) -> some View {
+        let locked = !newer.isEmpty
+        return ForEach(section) { plan in
+            Label {
+                HStack {
+                    Text(plan.title)
+                    Spacer()
+                    PlanSyncBadge(plan: plan)
+                }
+            } icon: {
+                PlanArtwork(plan: plan, size: 20)
+            }
+            .badge(plan.sortedItems.count)
+            .tag(Page.plan(plan))
+            .contextMenu {
+                PlanSharing(plan: plan)
+                Button("Delete", systemImage: "trash", role: .destructive) { delete(plan) }.disabled(locked)
+            }
+        }
+        .onMove { source, destination in
+            var moved = section
+            moved.move(fromOffsets: source, toOffset: destination)
+            var reordered = moved.makeIterator()
+            context.record(.reorder(ids: plans.map { section.contains($0) ? reordered.next()!.id : $0.id }))
+        }
+        .moveDisabled(locked)
+    }
+
+    /// Switches between every plan side by side and one plan on its own, like Finder's view buttons.
+    private var layoutPicker: some ToolbarContent {
+        ToolbarItem(placement: .principal) {
+            Picker("Layout", selection: Binding { page == .overview } set: { board in
+                page = board ? .overview : (plans.first { $0 == lastPlan } ?? plans.first).map(Page.plan)
+            }) {
+                Text("All plans").tag(true)
+                Text("Single plan").tag(false)
+            }
+            .pickerStyle(.segmented)
+        }
     }
 
     private func delete(_ plan: Plan) {
