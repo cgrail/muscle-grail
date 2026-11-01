@@ -199,7 +199,7 @@
         },
         "en" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "%1$lld/%2$lld sets"
           }
         }
@@ -305,6 +305,16 @@
         }
       }
     },
+    "All exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Übungen"
+          }
+        }
+      }
+    },
     "All plans" : {
       "localizations" : {
         "de" : {
@@ -331,6 +341,42 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Eine andere App nutzt Port %lld. Beende sie und schalte das hier wieder ein."
+          }
+        }
+      }
+    },
+    "Apple Intelligence guessed the ones marked %@: check them." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence hat die mit %@ markierten erraten: Prüfe sie."
+          }
+        }
+      }
+    },
+    "Apple Intelligence is guessing…" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apple Intelligence rät …"
+          }
+        }
+      }
+    },
+    "Archived · Exercises: %lld · Workouts: %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archiviert · Übungen: %lld · Trainings: %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Archived · Exercises: %1$lld · Workouts: %2$lld"
           }
         }
       }
@@ -385,6 +431,16 @@
         }
       }
     },
+    "Cardio and skipped sets stay out. Importing again adds nothing." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cardio und übersprungene Sätze bleiben draußen. Ein erneuter Import fügt nichts hinzu."
+          }
+        }
+      }
+    },
     "Category" : {
       "localizations" : {
         "de" : {
@@ -415,6 +471,16 @@
         }
       }
     },
+    "Choose" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wählen"
+          }
+        }
+      }
+    },
     "Choose Backup…" : {
       "localizations" : {
         "de" : {
@@ -431,6 +497,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wähle einen Plan"
+          }
+        }
+      }
+    },
+    "Choose an exercise" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wähle eine Übung"
           }
         }
       }
@@ -491,6 +567,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Claude Desktop"
+          }
+        }
+      }
+    },
+    "Click one to see the likeliest with their photos and steps, or to search the catalog. New exercise keeps it as your own." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klicke auf eine, um die passendsten mit Fotos und Schritten zu sehen oder im Katalog zu suchen. „Neue Übung“ behält sie als deine eigene."
           }
         }
       }
@@ -605,12 +691,12 @@
         }
       }
     },
-    "Each workout name becomes a plan, unless you have one by that name. Cardio stays out." : {
+    "Each comes in with its exercises, sets, reps and weight. A workout of a plan left out has no plan here." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jedes Training wird zu einem Plan mit seinem Namen, außer du hast schon einen mit diesem Namen. Cardio bleibt draußen."
+            "value" : "Jeder kommt mit seinen Übungen, Sätzen, Wiederholungen und Gewichten. Ein Training eines ausgelassenen Plans hat hier keinen Plan."
           }
         }
       }
@@ -621,6 +707,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gerät"
+          }
+        }
+      }
+    },
+    "Every workout of this file is here already." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle Trainings dieser Datei sind schon da."
           }
         }
       }
@@ -651,6 +747,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Übungen"
+          }
+        }
+      }
+    },
+    "Exercises: %lld · Workouts: %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen: %lld · Trainings: %lld"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Exercises: %1$lld · Workouts: %2$lld"
           }
         }
       }
@@ -725,6 +837,26 @@
         }
       }
     },
+    "Found in the catalog" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Im Katalog gefunden"
+          }
+        }
+      }
+    },
+    "From" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von"
+          }
+        }
+      }
+    },
     "General" : {
       "localizations" : {
         "de" : {
@@ -751,6 +883,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ziele"
+          }
+        }
+      }
+    },
+    "Guessed by Apple Intelligence" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von Apple Intelligence geraten"
           }
         }
       }
@@ -801,16 +943,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Importieren"
-          }
-        }
-      }
-    },
-    "Import as" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Importieren als"
           }
         }
       }
@@ -905,6 +1037,16 @@
         }
       }
     },
+    "Keep it as your own, by this name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als deine eigene mit diesem Namen behalten"
+          }
+        }
+      }
+    },
     "Kilometers walked per day" : {
       "localizations" : {
         "de" : {
@@ -971,6 +1113,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mediathek"
+          }
+        }
+      }
+    },
+    "Likeliest" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am passendsten"
           }
         }
       }
@@ -1131,6 +1283,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kein Gym-Training"
+          }
+        }
+      }
+    },
+    "Not found by name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht über den Namen gefunden"
           }
         }
       }
@@ -1385,6 +1547,16 @@
         }
       }
     },
+    "Sets: %lld" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sätze: %lld"
+          }
+        }
+      }
+    },
     "Settings" : {
       "localizations" : {
         "de" : {
@@ -1531,6 +1703,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jetzt synchronisieren"
+          }
+        }
+      }
+    },
+    "To" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bis"
           }
         }
       }
@@ -1685,6 +1867,26 @@
         }
       }
     },
+    "With Apple Intelligence on, it guesses these." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit Apple Intelligence rät sie diese."
+          }
+        }
+      }
+    },
+    "Without a plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ohne Plan"
+          }
+        }
+      }
+    },
     "Workout complete!" : {
       "localizations" : {
         "de" : {
@@ -1721,6 +1923,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jahr"
+          }
+        }
+      }
+    },
+    "You have a plan by this name: it stays as it is." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast einen Plan mit diesem Namen: Er bleibt, wie er ist."
+          }
+        }
+      }
+    },
+    "Your own, by its GymBook name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine eigene, mit ihrem Namen aus GymBook"
           }
         }
       }

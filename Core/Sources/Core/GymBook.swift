@@ -2,8 +2,9 @@ import CryptoKit
 import Foundation
 import SwiftData
 
-/// GymBook's log export: an XML file with a `<log>` per set, the newest workout first. Importing it brings the history over
-/// from GymBook, with a plan per workout; exporting writes the history back in its format.
+/// What GymBook gives to take along: its log export, an XML file with a `<log>` per set, the newest workout first, or its
+/// full backup (`backup`), which has its plans too. Importing either brings the history and plans over from GymBook;
+/// exporting writes the history back in the log export's format.
 // shortcut: reads and writes the German export's dates (dd.MM.yy HH:mm); add an English GymBook's once there is a sample
 public enum GymBook {
     /// One `<log>`: a set, or a cardio entry, which has no reps.
@@ -19,18 +20,74 @@ public enum GymBook {
         public var skipped = false
     }
 
-    /// The logs in `data`. A file that isn't GymBook's log export throws.
-    public static func logs(_ data: Data) throws -> [Log] {
+    /// A plan, named like the workouts trained from it.
+    public struct Plan: Equatable, Sendable {
+        public var name: String
+        public var exercises: [Planned] = []
+        /// Put away in GymBook, which keeps an archived plan for its history.
+        public var archived = false
+    }
+
+    /// An exercise of a plan with its sets, reps and weight.
+    public struct Planned: Equatable, Sendable {
+        public var exercise: String
+        public var sets: Int
+        public var reps: Int?
+        public var weightKg = 0.0
+        public var unit = WeightUnit.kg
+    }
+
+    /// A workout: the sets of one day under one workout name.
+    public struct Session: Sendable {
+        /// The day and workout name, which its id and its sets' come from.
+        let key: String
+        /// Its sets as listed, the skipped ones too.
+        public let logs: [Log]
+        public var plan: String { logs[0].workout }
+        /// The sets done, in the order they were.
+        public var done: [Log] { logs.filter { !$0.skipped }.sorted { $0.date < $1.date } }
+        var id: UUID { GymBook.id("workout \(key)") }
+    }
+
+    /// What a GymBook file holds. Cardio has no reps, so it is in `logs` only.
+    public struct File: Sendable {
+        public let logs: [Log]
+        /// The workouts with a set done, the newest first.
+        public let sessions: [Session]
+        /// The backup's plans, the active ones first; for the log export, a plan per workout name from its newest workout.
+        public let plans: [Plan]
+        /// The English name GymBook keeps beside the one it shows, like `legPresses`: only the backup has them.
+        public let englishNames: [String: String]
+
+        init(logs: [Log], plans: [Plan]? = nil, englishNames: [String: String] = [:]) {
+            self.logs = logs
+            sessions = Dictionary(grouping: logs.filter { $0.reps != nil }, by: GymBook.session)
+                .map { Session(key: $0.key, logs: $0.value) }.filter { !$0.done.isEmpty }.sorted { $0.logs[0].date > $1.logs[0].date }
+            self.plans = plans ?? sessions.reduce(into: []) { plans, session in
+                guard !plans.contains(where: { $0.name == session.plan }) else { return }
+                let names = session.logs.map(\.exercise).reduce(into: [String]()) { if !$0.contains($1) { $0.append($1) } }
+                plans.append(Plan(name: session.plan, exercises: names.map { name in
+                    let sets = session.logs.filter { $0.exercise == name } // skipped ones too: they were planned
+                    return Planned(exercise: name, sets: sets.count, reps: sets.last!.reps, weightKg: sets.last!.weightKg, unit: sets.last!.unit)
+                }))
+            }
+            self.englishNames = englishNames
+        }
+
+        /// The exercises with sets, done or planned, to map to exercises here before importing.
+        public var exercises: [String] {
+            Set(sessions.flatMap { $0.logs.map(\.exercise) } + plans.flatMap { $0.exercises.map(\.exercise) }).sorted()
+        }
+    }
+
+    /// What `data` holds: GymBook's log export or its full backup. A file that is neither throws.
+    public static func read(_ data: Data) throws -> File {
+        if data.starts(with: Data("SQLite format 3\u{0}".utf8)) { return try backup(data) }
         let reader = Reader()
         let parser = XMLParser(data: data)
         parser.delegate = reader
         guard parser.parse(), reader.isLogs else { throw parser.parserError ?? CocoaError(.fileReadCorruptFile) }
-        return reader.logs
-    }
-
-    /// The exercises with sets, to map to exercises here before importing. Cardio has no reps and stays out.
-    public static func exercises(in logs: [Log]) -> [String] {
-        Set(logs.filter { $0.reps != nil }.map(\.exercise)).sorted()
+        return File(logs: reader.logs)
     }
 
     static func dateFormatter() -> DateFormatter {
@@ -91,49 +148,6 @@ private final class Reader: NSObject, XMLParserDelegate {
 }
 
 public extension ModelContext {
-    /// Imports GymBook's `logs`: each workout with the sets done in it, under the plan of its name. A workout name without a
-    /// plan gets one with its newest workout's exercises, sets, reps and weight. `exercises` maps a GymBook name to an
-    /// exercise here; one it leaves out becomes the exercise by that name, else a new one of the user's own. An exercise
-    /// GymBook last showed in lb shows in lb. Returns how many workouts it added: importing the same logs again adds none.
-    @discardableResult
-    func importGymBook(_ logs: [GymBook.Log], exercises: [String: String] = [:]) -> Int {
-        let logs = logs.filter { $0.reps != nil }
-        var ids = exercises
-        for name in GymBook.exercises(in: logs) where ids[name] == nil {
-            ids[name] = catalogID(named: name) ?? createExercise(named: name)
-        }
-        for name in GymBook.exercises(in: logs) where weightUnit(of: ids[name]!) != .lb {
-            if logs.filter({ $0.exercise == name }).max(by: { $0.date < $1.date })?.unit == .lb { setUnit(ids[name]!, to: .lb) }
-        }
-        // Newest first, so the plans GymBook trained last come first.
-        let sessions = Dictionary(grouping: logs, by: GymBook.session).sorted { $0.value[0].date > $1.value[0].date }
-        var plans = Dictionary(((try? fetch(FetchDescriptor<Plan>())) ?? []).map { ($0.name, $0.id) }) { first, _ in first }
-        for (_, rows) in sessions where plans[rows[0].workout] == nil {
-            let plan = addPlan()
-            rename(plan, to: rows[0].workout)
-            for name in rows.map(\.exercise).reduce(into: [String](), { if !$0.contains($1) { $0.append($1) } }) {
-                let sets = rows.filter { $0.exercise == name } // skipped ones too: they were planned
-                setTargets(add(ids[name]!, to: plan), sets: sets.count, reps: sets.last!.reps!, weightKg: sets.last!.weightKg)
-            }
-            plans[rows[0].workout] = plan.id
-        }
-        var added = 0
-        for (session, rows) in sessions {
-            let id = GymBook.id("workout \(session)")
-            let done = rows.filter { !$0.skipped }.sorted { $0.date < $1.date }
-            guard workout(id) == nil, let start = done.first?.date else { continue }
-            record(.startWorkout(id: id, plan: plans[rows[0].workout]!, start: start))
-            for (index, log) in done.enumerated() { // a second apart, so the sets of one minute keep their order
-                record(.logSet(id: GymBook.id("set \(index) \(session)"), workout: id, exerciseID: ids[log.exercise]!,
-                               reps: log.reps!, weightKg: log.weightKg, date: log.date.addingTimeInterval(Double(index))))
-            }
-            record(.finishWorkout(id: id, end: done.last!.date.addingTimeInterval(Double(done.count))))
-            try? save() // a workout at a time: each change's lookup by id slows with every unsaved one
-            added += 1
-        }
-        return added
-    }
-
     /// Every workout as GymBook's log export, the newest first, each weight in its exercise's unit.
     func gymBookExport() throws -> Data {
         let format = GymBook.dateFormatter()
