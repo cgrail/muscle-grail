@@ -43,8 +43,13 @@ struct PlanPage: View {
                 HStack {
                     Text("Exercise")
                     Spacer()
-                    Text("Sets").frame(width: Column.sets, alignment: .leading)
-                    Text("Reps").frame(width: Column.reps, alignment: .leading)
+                    Color.clear.frame(width: Column.owner)
+                    HStack(spacing: 4) {
+                        Text("Sets")
+                        Text(verbatim: "×")
+                        Text("Reps")
+                    }
+                    .frame(width: Column.targets, alignment: .leading)
                     Text("Weight").frame(width: Column.weight, alignment: .leading)
                     Color.clear.frame(width: Column.menu)
                 }
@@ -58,7 +63,7 @@ struct PlanPage: View {
         }
         .inspector(isPresented: $showingChanges) { PlanChanges(plan: plan.id) }
         .sheet(isPresented: $picking) {
-            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.add(id, to: plan, own: $0 ? nil : .mine) } }
+            ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.addNew(id, to: plan, own: $0 ? nil : .mine) } }
         }
         .forWhom($forWhom)
         .navigationTitle(plan.title)
@@ -66,7 +71,7 @@ struct PlanPage: View {
 }
 
 private enum Column {
-    static let sets = 90.0, reps = 90.0, weight = 120.0, menu = 28.0
+    static let owner = 28.0, targets = 100.0, weight = 120.0, menu = 28.0
 }
 
 private struct PlanRow: View {
@@ -82,13 +87,11 @@ private struct PlanRow: View {
             VStack(alignment: .leading) {
                 ExerciseName(item.exerciseID)
                 Text(verbatim: CatalogExercise.byID[item.exerciseID]?.detail ?? "").font(.caption).foregroundStyle(.secondary)
-                OwnerNote(item: item)
+                if item.ownedBy == .partner { OwnerNote(item: item) }
             }
             Spacer()
-            count("Sets", item.targetSets, in: 1...20) { context.setTargets(item, sets: $0) }
-                .frame(width: Column.sets, alignment: .leading)
-            count("Reps", item.targetReps, in: 1...100) { context.setTargets(item, reps: $0) }
-                .frame(width: Column.reps, alignment: .leading)
+            OwnerButton(item: item).frame(width: Column.owner)
+            TargetsButton(item: item).frame(width: Column.targets, alignment: .leading)
             WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
                 .frame(width: Column.weight, alignment: .leading)
             Menu {
@@ -109,6 +112,39 @@ private struct PlanRow: View {
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
         .sheet(isPresented: $replacing) {
             ExercisePicker(title: "Replace with") { id in ForWhom.edit(item.plan, item, asking: $forWhom) { context.replace(item, with: id, forBoth: $0) } }
+        }
+    }
+}
+
+/// An exercise's sets and reps as text, "3 × 10". A click opens them to type or step.
+struct TargetsButton: View {
+    @Environment(\.modelContext) private var context
+    let item: PlanItem
+    @State private var editing = false
+
+    var body: some View {
+        Button { editing = true } label: {
+            HStack(spacing: 4) {
+                Text(verbatim: "\(item.targetSets)").fontWeight(.semibold)
+                Text(verbatim: "× \(item.targetReps)").foregroundStyle(.secondary)
+            }
+            .monospacedDigit()
+            .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
+        .help("Click to change the sets and reps.")
+        .popover(isPresented: $editing) {
+            Grid(alignment: .leading) {
+                GridRow {
+                    Text("Sets")
+                    count("Sets", item.targetSets, in: 1...20) { context.setTargets(item, sets: $0) }
+                }
+                GridRow {
+                    Text("Reps")
+                    count("Reps", item.targetReps, in: 1...100) { context.setTargets(item, reps: $0) }
+                }
+            }
+            .padding()
         }
     }
 

@@ -38,6 +38,19 @@ public extension ModelContext {
         return item(id)!
     }
 
+    /// Appends `exerciseID` like `add`, at the sets and reps every new exercise starts with (`targetDefaults`).
+    @discardableResult
+    func addNew(_ exerciseID: String, to plan: Plan, own: Own? = nil, defaults: (sets: Int, reps: Int) = targetDefaults()) -> PlanItem {
+        let item = add(exerciseID, to: plan, own: own)
+        setTargets(item, sets: defaults.sets, reps: defaults.reps)
+        return item
+    }
+
+    /// Makes an exercise of a shared plan for both, or your own; the training partner then has it as theirs.
+    func setForBoth(_ item: PlanItem, _ forBoth: Bool) {
+        record(.setOwner(id: item.id, own: forBoth ? nil : .mine))
+    }
+
     /// Adds described exercises to `plan`, each by its catalog name or as a new exercise of the user's own.
     func add(_ exercises: [PlannedExercise], to plan: Plan, own: Own? = nil) {
         for exercise in exercises {
@@ -94,6 +107,14 @@ public extension ModelContext {
         ids.move(fromOffsets: source, toOffset: destination)
         record(.reorder(ids: ids))
     }
+}
+
+/// The iCloud key-value keys of the sets and reps a new exercise starts with, set on the Mac.
+public let defaultSetsKey = "defaultSets", defaultRepsKey = "defaultReps"
+
+/// The sets and reps a new exercise starts with, from iCloud's key-value store, so every device adds alike: 3 × 11 unless set.
+public func targetDefaults(in store: NSUbiquitousKeyValueStore = .default) -> (sets: Int, reps: Int) {
+    (store.object(forKey: defaultSetsKey) as? Int ?? 3, store.object(forKey: defaultRepsKey) as? Int ?? 11)
 }
 
 /// An exercise someone described for a plan, by name, as the plan assistant hands it over.
