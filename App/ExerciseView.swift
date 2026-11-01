@@ -8,13 +8,13 @@ import SwiftUI
 struct ExerciseView: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
-    let workout: Workout
+    @Binding var workout: Workout?
     let onDone: () -> Void
     @State private var adjusting = false
     @State private var photo: CGImage?
 
     var body: some View {
-        let done = workout.sets(of: item.exerciseID)
+        let done = workout?.sets(of: item.exerciseID) ?? []
         let next = context.nextSet(for: item, in: workout)
         let unit = context.weightUnit(of: item.exerciseID)
         List {
@@ -57,7 +57,7 @@ struct ExerciseView: View {
                         }
                         if item.targetSets - done.count > 1 {
                             Button {
-                                context.logRemaining(of: item, in: workout, reps: next.reps, weightKg: next.weightKg)
+                                workout = context.logRemaining(of: item, in: workout, reps: next.reps, weightKg: next.weightKg)
                                 onDone()
                             } label: {
                                 Label("Log all", systemImage: "checkmark.circle").frame(maxWidth: .infinity)
@@ -100,6 +100,8 @@ struct ExerciseView: View {
     }
 
     private func log(reps: Int, weightKg: Double) {
+        guard let workout = context.started(workout, for: item) else { return }
+        self.workout = workout
         context.log(item.exerciseID, reps: reps, weightKg: weightKg, in: workout)
         if workout.sets(of: item.exerciseID).count >= item.targetSets { onDone() }
     }

@@ -4,44 +4,55 @@ import SwiftUI
 
 /// The running workout's exercises as cards, the next one to do outlined: tick a card to log its next set as prefilled,
 /// or open it to log and adjust. Finish shows the workout before it ends, as does logging the last set of the last exercise.
+/// A plan picked to train has no workout until its first set is logged, so going back before that leaves nothing behind.
 struct WorkoutView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    let workout: Workout
+    let plan: Plan?
+    @State private var workout: Workout?
     @State private var exercise: PlanItem?
     @State private var finishing = false
 
+    init(plan: Plan?, workout: Workout?) {
+        self.plan = plan
+        _workout = State(initialValue: workout)
+    }
+
     var body: some View {
-        let items = workout.plan?.trainedItems ?? []
-        let next = items.first { workout.sets(of: $0.exerciseID).count < $0.targetSets }
+        let items = plan?.trainedItems ?? []
+        let next = items.first { (workout?.sets(of: $0.exerciseID).count ?? 0) < $0.targetSets }
         ScrollView {
             VStack(spacing: 12) {
                 ForEach(items) { item in
-                    ExerciseCard(item: item, workout: workout, isNext: item == next) { exercise = item }
+                    ExerciseCard(item: item, workout: $workout, isNext: item == next) { exercise = item }
                 }
             }
             .padding()
         }
-        .navigationTitle(workout.title)
-        .navigationSubtitle(workout.plan?.focus ?? "")
-        .toolbar { Button("Finish") { finishing = true }.buttonStyle(.borderedProminent).tint(.green) }
+        .navigationTitle(workout?.title ?? plan?.title ?? "")
+        .navigationSubtitle(plan?.focus ?? "")
+        .toolbar {
+            if workout != nil { Button("Finish") { finishing = true }.buttonStyle(.borderedProminent).tint(.green) }
+        }
         .navigationDestination(item: $exercise) { item in
-            ExerciseView(item: item, workout: workout) {
+            ExerciseView(item: item, workout: $workout) {
                 exercise = nil
-                if workout.isComplete { finishing = true }
+                if workout?.isComplete == true { finishing = true }
             }
         }
         .sheet(isPresented: $finishing) {
-            NavigationStack {
-                FinishView(workout: workout) {
-                    context.finish(workout)
-                    #if os(iOS) // the Mac has no HealthKit
-                    Task {
-                        if let id = await Health.save(workout) { context.savedToHealth(workout, as: id) }
+            if let workout {
+                NavigationStack {
+                    FinishView(workout: workout) {
+                        context.finish(workout)
+                        #if os(iOS) // the Mac has no HealthKit
+                        Task {
+                            if let id = await Health.save(workout) { context.savedToHealth(workout, as: id) }
+                        }
+                        #endif
+                        finishing = false
+                        dismiss()
                     }
-                    #endif
-                    finishing = false
-                    dismiss()
                 }
             }
         }
@@ -53,13 +64,13 @@ struct WorkoutView: View {
 private struct ExerciseCard: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
-    let workout: Workout
+    @Binding var workout: Workout?
     let isNext: Bool
     let open: () -> Void
     @State private var photo: CGImage?
 
     var body: some View {
-        let done = workout.sets(of: item.exerciseID).count
+        let done = workout?.sets(of: item.exerciseID).count ?? 0
         let next = context.nextSet(for: item, in: workout)
         HStack(spacing: 12) {
             Button(action: open) {
@@ -100,7 +111,7 @@ private struct ExerciseCard: View {
             if done >= item.targetSets {
                 Image(systemName: "checkmark.circle.fill").font(.title2).foregroundStyle(.green).accessibilityLabel(Text("Done"))
             } else {
-                Button("Log set", systemImage: "checkmark.circle") { context.tick(item, in: workout) }
+                Button("Log set", systemImage: "checkmark.circle") { workout = context.tick(item, in: workout) }
                     .labelStyle(.iconOnly)
                     .font(.title2)
                     .buttonStyle(.borderless)

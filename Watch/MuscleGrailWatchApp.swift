@@ -6,7 +6,7 @@ import WidgetKit
 @main
 struct MuscleGrailWatchApp: App {
     @State private var store: OpenStore
-    @State private var path: [Workout] = []
+    @State private var path = NavigationPath()
     @State private var showingActivity = false
 
     init() {
@@ -30,8 +30,9 @@ struct MuscleGrailWatchApp: App {
         WindowGroup {
             if let container = store.container {
                 NavigationStack(path: $path) {
-                    WorkoutPicker { path = [$0] }
-                        .navigationDestination(for: Workout.self) { WatchWorkoutView(workout: $0) }
+                    WorkoutPicker { path = NavigationPath([$0]) } onStart: { path = NavigationPath([$0]) }
+                        .navigationDestination(for: Workout.self) { WatchWorkoutView(plan: $0.plan, workout: $0) }
+                        .navigationDestination(for: Plan.self) { WatchWorkoutView(plan: $0, workout: nil) }
                         .toolbar {
                             ToolbarItem(placement: .topBarLeading) {
                                 NavigationLink { InfoView() } label: { Label("Info", systemImage: "info.circle") }

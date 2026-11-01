@@ -61,21 +61,21 @@ import Testing
     }
 
     @Test func emptyWorkoutPickerRenders() {
-        render(NavigationStack { WorkoutPicker { _ in } })
+        render(NavigationStack { WorkoutPicker { _ in } onStart: { _ in } })
     }
 
     @Test func showingWorkoutPickerStartsNoWorkout() throws {
         context.log("Bench", reps: 8, weightKg: 60, in: context.startWorkout(makePlan(context, "Bench")))
-        render(NavigationStack { WorkoutPicker { _ in } })
+        render(NavigationStack { WorkoutPicker { _ in } onStart: { _ in } })
         #expect(try context.fetchCount(FetchDescriptor<Workout>()) == 1)
     }
 
     @Test func trainOverviewRendersEmptyAndWhileTraining() {
-        render(NavigationStack { TrainOverview { _ in } })
+        render(NavigationStack { TrainOverview { _ in } onStart: { _ in } })
         let plan = makePlan(context, "bench-press")
         makePlan(context, "squat")
         context.log("bench-press", reps: 8, weightKg: 60, in: context.startWorkout(plan))
-        render(NavigationStack { TrainOverview { _ in } })
+        render(NavigationStack { TrainOverview { _ in } onStart: { _ in } })
     }
 
     @Test func weightStepperRendersInTheExercisesUnit() {

@@ -9,19 +9,20 @@ struct ExerciseView: View {
     @Environment(\.modelContext) private var context
     @Query private var entries: [CatalogEntry]
     private let item: PlanItem
-    private let workout: Workout
+    @Binding private var workout: Workout?
     private let onDone: () -> Void
     @State private var adjusting = false
     @State private var photo: CGImage?
 
-    init(item: PlanItem, workout: Workout, onDone: @escaping () -> Void) {
-        (self.item, self.workout, self.onDone) = (item, workout, onDone)
+    init(item: PlanItem, workout: Binding<Workout?>, onDone: @escaping () -> Void) {
+        (self.item, self.onDone) = (item, onDone)
+        _workout = workout
         let id = item.exerciseID
         _entries = Query(filter: #Predicate { $0.id == id })
     }
 
     var body: some View {
-        let done = workout.sets(of: item.exerciseID)
+        let done = workout?.sets(of: item.exerciseID) ?? []
         let next = context.nextSet(for: item, in: workout)
         let unit = context.weightUnit(of: item.exerciseID)
         List {
@@ -53,7 +54,7 @@ struct ExerciseView: View {
                     Button("Adjust", systemImage: "slider.horizontal.3") { adjusting = true }
                     if item.targetSets - done.count > 1 {
                         Button("Log all", systemImage: "checkmark.circle") {
-                            context.logRemaining(of: item, in: workout, reps: next.reps, weightKg: next.weightKg)
+                            workout = context.logRemaining(of: item, in: workout, reps: next.reps, weightKg: next.weightKg)
                             onDone()
                         }
                         .foregroundStyle(.yellow)
@@ -92,6 +93,8 @@ struct ExerciseView: View {
     }
 
     private func log(reps: Int, weightKg: Double) {
+        guard let workout = context.started(workout, for: item) else { return }
+        self.workout = workout
         context.log(item.exerciseID, reps: reps, weightKg: weightKg, in: workout)
         if workout.sets(of: item.exerciseID).count >= item.targetSets { onDone() }
     }
