@@ -1162,7 +1162,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mediathek"
+            "value" : "Bibliothek"
           }
         }
       }
@@ -1173,6 +1173,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Am passendsten"
+          }
+        }
+      }
+    },
+    "List" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liste"
           }
         }
       }
@@ -1747,6 +1757,16 @@
         }
       }
     },
+    "Size" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Größe"
+          }
+        }
+      }
+    },
     "Statistics" : {
       "localizations" : {
         "de" : {
@@ -1837,6 +1857,16 @@
         }
       }
     },
+    "Thumbnails" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Miniaturen"
+          }
+        }
+      }
+    },
     "To" : {
       "localizations" : {
         "de" : {
@@ -1923,6 +1953,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Videolink"
+          }
+        }
+      }
+    },
+    "View" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Darstellung"
           }
         }
       }

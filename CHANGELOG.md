@@ -23,6 +23,9 @@
 - In German, exercises are German too: their names, how to do them, and their muscles, equipment, level and category. Search finds an exercise by its English or German name. Plans and history from before the new catalog show their exercises as "Custom exercise". Your description, video link or photo for an exercise the new catalog doesn't have no longer lists as a blank exercise in the library, the exercise picker or Claude's search.
 - Filter the exercise catalog by body region, level, equipment and category, like legs for beginners with dumbbells, when adding an exercise and in the Mac's exercise library.
 - The Mac's exercise library previews the selected exercise on the right, like Finder: its photo, muscles and equipment, how to do it, and a video link. It opens when you select an exercise, below the toolbar. The Preview button in the toolbar hides and shows it.
+- The Mac's exercise library shows the exercises as thumbnails too: switch between the list and thumbnails in the toolbar, and make the thumbnails larger or smaller with the slider beside it or by pinching on the trackpad. The Mac remembers both.
+- On the Mac, a plan's page previews the selected exercise on the right, like the exercise library. Its Preview button hides and shows it, beside the Changes button.
+- In German, the Mac's sidebar calls the library Bibliothek instead of Mediathek.
 
 ### Training
 - On the watch, a workout lists its exercises as cards with the next set's reps and weight and how many sets are done. Open one to log the next set in one tap, adjust its weight (with the Digital Crown) and reps first, or log all remaining sets at once; once its sets are done, the list comes back. Finish workout shows the volume lifted, how long you trained and each exercise's sets before it saves the workout to Health, and shows on its own after the last set of the last exercise.
