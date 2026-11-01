@@ -9,6 +9,11 @@ struct CatalogTests {
         #expect(CatalogExercise.all.count >= 650)
     }
 
+    @Test func repdbsExerciseReplacesOursOfTheSameID() {
+        let theirs = CatalogExercise(id: "machine-torso-rotation", name: "Rotary Torso", equipment: nil, primaryMuscles: [], images: [])
+        #expect(CatalogExercise.withExtras([theirs]).map(\.name) == ["Rotary Torso"])
+    }
+
     @Test func missingOrBrokenCatalogLoadsEmpty() {
         #expect(CatalogExercise.load(nil).isEmpty)
         #expect(CatalogExercise.load(URL(filePath: #filePath)).isEmpty)
@@ -16,6 +21,10 @@ struct CatalogTests {
 
     @Test func imageLoadsFromTheRepo() {
         #expect(bench.imageURL?.absoluteString == "https://raw.githubusercontent.com/RepDB/exercise-dataset/\(CatalogExercise.repdbCommit)/images/flat/b-start.webp")
+    }
+
+    @Test func anExtraShowsItsOwnDrawing() {
+        #expect(CatalogExercise.byID["machine-torso-rotation"]?.imageURL?.isFileURL == true)
     }
 
     @Test func exerciseWithoutImagesHasNoImageURL() {

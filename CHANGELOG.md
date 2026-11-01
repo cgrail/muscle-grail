@@ -14,6 +14,7 @@
 - Replace an exercise with another in the same place, from its menu, on the Mac and the iPhone. Sets and reps stay; the weight starts at your last one for the new exercise, else 0 kg.
 - On the Mac, a plan shows its sets and reps as plain text, like 3 × 11. Click them to type or step to new ones.
 - Build plans on the Mac from a searchable catalog of 650 exercises by RepDB, each with illustrations and step-by-step instructions, or add your own, each with target sets, reps and weight. Settings credits RepDB.
+- Rumpfdrehung am Gerät (Machine Torso Rotation) is in the catalog with its steps in English and German, and a GymBook import finds it by that name. It shows a line drawing of the movement with the obliques in red, adapted from Open Exercise Art and credited in Settings, until you give it a photo of your machine. An exercise of that name you imported before stays your own.
 - Make your own exercises, and give any exercise a description, a video link and a photo. Renaming an exercise keeps its history.
 - On the Mac, add exercises to a plan by describing them, typed or dictated, in English or German: "3x10 bench press at 60 kg, then squats". Needs Apple Intelligence.
 - On the Mac, let Claude create and extend plans through MCP: switch it on in Settings, where the commands for Claude Code and Claude Desktop are. In a plan shared with your training partner, what Claude adds is yours alone unless you ask for both, or Settings says always both.

@@ -124,3 +124,5 @@ Core tests: `cd Core && ./fetch-catalog.sh && swift test`. The exercise catalog 
 ## Credits
 
 Exercise data by [RepDB](https://repdb.co) ([exercise-dataset](https://github.com/RepDB/exercise-dataset), free tier, used under its [data license](https://github.com/RepDB/exercise-dataset/blob/main/LICENSE-DATA.md)).
+
+The Machine Torso Rotation drawing (`Design/machine-torso-rotation.svg` and its PNG in `Core/Sources/Core/Extras/`) is adapted from "Machine Row" by [Open Exercise Art](https://github.com/AlexMollard/Open-Exercise-Art) / Alex Mollard, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/): placed on a square background, ink colour set, the rowing lever replaced by an arm from the column to the chest pad, the near hand moved forward, the obliques in red and a rotation arrow added. The adaptation is licensed CC BY-SA 4.0 too.

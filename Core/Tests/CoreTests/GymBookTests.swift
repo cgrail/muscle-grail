@@ -119,7 +119,7 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
         context.importGymBook(file)
         let plan = try #require(context.fetch(FetchDescriptor<Plan>()).first)
         #expect(plan.name == "MoDi 1")
-        #expect(plan.sortedItems.map { context.exerciseName($0.exerciseID) } == ["Rumpfdrehung am Gerät", "Incline Dumbbell Press"])
+        #expect(plan.sortedItems.map { context.exerciseName($0.exerciseID) } == ["Machine Torso Rotation", "Incline Dumbbell Press"])
         #expect(plan.sortedItems.map(\.targetSets) == [2, 1]) // the skipped set was planned
         #expect(workouts.allSatisfy { $0.plan == plan })
     }
@@ -151,8 +151,8 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
     }
 
     @Test func aNameWithoutAMatchSuggestsTheClosest() {
-        #expect(context.gymBookMatches(gymBookFile("Rumpfdrehung am Gerät")).isEmpty)
-        #expect(gymBookFile().suggestions(for: "Rumpfdrehung am Gerät").first?.id == "torso-twists")
+        #expect(context.gymBookMatches(gymBookFile("Ellipsentrainer")).isEmpty)
+        #expect(gymBookFile().suggestions(for: "Ellipsentrainer").first?.id == "elliptical-trainer")
     }
 
     @Test func aWorkoutNameWithAPlanKeepsIt() throws {
@@ -170,10 +170,10 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
     }
 
     @Test func anExerciseWithoutAMatchBecomesYourOwn() throws {
-        context.importGymBook(file)
+        context.importGymBook(gymBookFile("Seitbeuge am Gerät"))
         let id = try #require(workouts[0].exercises.first?.id)
         #expect(context.catalogEntry(id)?.isOwnExercise == true)
-        #expect(context.exerciseName(id) == "Rumpfdrehung am Gerät")
+        #expect(context.exerciseName(id) == "Seitbeuge am Gerät")
     }
 
     @Test func theExerciseChosenForAGymBookNameIsUsed() {
