@@ -51,12 +51,27 @@ enum CloudKitSchema {
     private nonisolated static func initializePartner() async throws {
         let database = CKContainer(identifier: Store.cloudKitContainer).privateCloudDatabase
         let zone = CKRecordZone.ID(zoneName: "Schema")
-        _ = try await database.save(CKRecordZone(zoneID: zone))
+        _ = try await retrying { try await database.save(CKRecordZone(zoneID: zone)) }
         let change = PartnerChange(id: UUID(), date: .now, change: .renamePlan(id: UUID(), name: "Schema"), batch: UUID(), sets: 1, reps: 1, name: "Schema")
         let records = [PartnerRecords.plan(UUID(), in: zone), PartnerRecords.settings(allPlans: true, in: zone), change.record(in: zone), CKShare(recordZoneID: zone)]
-        let saved = try await database.modifyRecords(saving: records, deleting: [])
-        _ = try await database.deleteRecordZone(withID: zone)
+        let saved = try await retrying { try await database.modifyRecords(saving: records, deleting: []) }
+        _ = try await retrying { try await database.deleteRecordZone(withID: zone) }
         for result in saved.saveResults.values { _ = try result.get() }
+    }
+
+    /// The model's run just before uploads a burst, and CloudKit throttles what follows ("Request Rate Limited", HTTP 429).
+    /// A throttled call waits as long as CloudKit asks, then tries again, up to five times.
+    private nonisolated static func retrying<T>(_ call: () async throws -> T) async throws -> T {
+        for _ in 1..<5 {
+            do {
+                return try await call()
+            } catch let error as CKError {
+                guard let wait = error.retryAfterSeconds else { throw error }
+                print("CloudKit throttles the Partner zone's schema run: trying again in \(Int(wait.rounded(.up))) s.")
+                try await Task.sleep(for: .seconds(wait))
+            }
+        }
+        return try await call()
     }
 }
 #endif
