@@ -8,7 +8,10 @@ public enum PartnerRecords {
 
     /// A shared plan's record, named by the plan's id.
     public static func plan(_ id: UUID, in zone: CKRecordZone.ID) -> CKRecord {
-        CKRecord(recordType: planType, recordID: CKRecord.ID(recordName: "plan-\(id.uuidString)", zoneID: zone))
+        let record = CKRecord(recordType: planType, recordID: CKRecord.ID(recordName: "plan-\(id.uuidString)", zoneID: zone))
+        // CloudKit won't deploy a record type without fields to Production, and the name alone gives it none.
+        record["plan"] = id.uuidString
+        return record
     }
 
     /// The plan a shared plan's record is for.

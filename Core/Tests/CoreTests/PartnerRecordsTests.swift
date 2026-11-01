@@ -23,6 +23,11 @@ struct PartnerRecordsTests {
         #expect(PartnerRecords.planID(PartnerRecords.plan(plan, in: zone).recordID) == plan)
     }
 
+    @Test func everyRecordHasAFieldForProductionToDeploy() {
+        let records = [PartnerRecords.plan(UUID(), in: zone), PartnerRecords.settings(allPlans: true, in: zone), change.record(in: zone)]
+        #expect(records.allSatisfy { !$0.allKeys().isEmpty })
+    }
+
     @Test func theSettingsSayWhetherAllPlansAreShared() {
         #expect(PartnerRecords.settings(allPlans: false, in: zone)["allPlans"] as? Int == 0)
     }
