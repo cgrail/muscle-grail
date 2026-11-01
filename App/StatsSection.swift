@@ -2,10 +2,12 @@ import Charts
 import Core
 import SwiftUI
 
-/// Workouts per week, month, quarter or year, with the totals of the current one.
+/// Workouts per week, month, quarter or year, with the totals of the current one. Tapping a bar opens its period.
 struct StatsSection: View {
     let workouts: [Workout]
+    @Binding var opened: OpenedPeriod?
     @State private var period = Period.week
+    @State private var tapped: String?
 
     var body: some View {
         let periods = stats(workouts, per: period, count: [.week: 12, .month: 12, .quarter: 8, .year: 5][period]!)
@@ -23,6 +25,13 @@ struct StatsSection: View {
                 BarMark(x: .value("Period", label(stats.start)), y: .value("Workouts", stats.workouts))
             }
             .frame(height: 140)
+            .chartXSelection(value: $tapped)
+            .chartGesture { proxy in SpatialTapGesture().onEnded { proxy.selectXValue(at: $0.location.x) } } // a tap, so scrolling opens nothing
+            .onChange(of: tapped) { _, bar in
+                guard let stats = periods.first(where: { label($0.start) == bar }) else { return }
+                opened = OpenedPeriod(period: period, interval: period.interval(containing: stats.start))
+                tapped = nil
+            }
             HStack {
                 total("Workouts", current.workouts.formatted())
                 total("Sets", current.sets.formatted())
