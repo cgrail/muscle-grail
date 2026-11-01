@@ -26,15 +26,16 @@ public struct SyncStatusView: View {
 }
 
 /// A running workout on top, then the plans in `trainingOrder`: the one done longest ago is next up, the one done last comes last.
-/// Picking a plan starts a workout, once none runs.
+/// Picking a plan opens it to train, once no workout runs; its workout starts with the first set logged.
 public struct WorkoutPicker: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Workout.unfinished) private var unfinished: [Workout]
-    private let onPick: (Workout) -> Void
+    private let onContinue: (Workout) -> Void
+    private let onStart: (Plan) -> Void
 
-    public init(onPick: @escaping (Workout) -> Void) {
-        self.onPick = onPick
+    public init(onContinue: @escaping (Workout) -> Void, onStart: @escaping (Plan) -> Void) {
+        (self.onContinue, self.onStart) = (onContinue, onStart)
     }
 
     public var body: some View {
@@ -71,7 +72,7 @@ public struct WorkoutPicker: View {
     }
 
     private func running(_ workout: Workout) -> some View {
-        Button { onPick(workout) } label: {
+        Button { onContinue(workout) } label: {
             HStack {
                 if let plan = workout.plan { PlanLabel(plan, among: plans) } else { Text(workout.title).font(.headline) }
                 #if !os(watchOS) // no room beside the name
@@ -84,7 +85,7 @@ public struct WorkoutPicker: View {
     }
 
     private func start(_ plan: Plan) -> some View {
-        Button { onPick(context.startWorkout(plan)) } label: { PlanLabel(plan, among: plans) }
+        Button { onStart(plan) } label: { PlanLabel(plan, among: plans) }
     }
 }
 

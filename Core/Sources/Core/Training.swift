@@ -7,6 +7,7 @@ public extension ModelContext {
     /// `startWorkout` itself doesn't refuse: two offline devices can each start one, and both must apply.
     var isTraining: Bool { ((try? fetchCount(Workout.unfinished)) ?? 0) > 0 }
 
+    /// Starts a workout of `plan` now. The apps start one with its first set (`started`), not when a plan is picked.
     func startWorkout(_ plan: Plan) -> Workout {
         let id = UUID()
         record(.startWorkout(id: id, plan: plan.id, start: .now))
@@ -22,18 +23,32 @@ public extension ModelContext {
         return loggedSet(id)!
     }
 
+    /// The workout to log `item` in: `workout`, or, at the first set, a new one of the item's plan. Picking a plan records
+    /// nothing, so until a set is logged no device shows the workout running and History has none.
+    func started(_ workout: Workout?, for item: PlanItem) -> Workout? {
+        workout ?? item.plan.map { startWorkout($0) }
+    }
+
     /// Ticks off the next set as prefilled (`nextSet`), from the workout list. An exercise with all its sets done stays as it is.
-    func tick(_ item: PlanItem, in workout: Workout) {
-        guard workout.sets(of: item.exerciseID).count < item.targetSets else { return }
+    /// Returns the workout, which the first set starts (`started`).
+    @discardableResult
+    func tick(_ item: PlanItem, in workout: Workout?) -> Workout? {
+        guard (workout?.sets(of: item.exerciseID).count ?? 0) < item.targetSets, let workout = started(workout, for: item) else { return workout }
         let (reps, weightKg) = nextSet(for: item, in: workout)
         log(item.exerciseID, reps: reps, weightKg: weightKg, in: workout)
+        return workout
     }
 
     /// Ticks off an exercise in one go: logs its remaining sets with the same reps and weight.
-    func logRemaining(of item: PlanItem, in workout: Workout, reps: Int, weightKg: Double) {
-        for _ in 0..<max(0, item.targetSets - workout.sets(of: item.exerciseID).count) {
+    /// Returns the workout, which the first set starts (`started`).
+    @discardableResult
+    func logRemaining(of item: PlanItem, in workout: Workout?, reps: Int, weightKg: Double) -> Workout? {
+        let remaining = item.targetSets - (workout?.sets(of: item.exerciseID).count ?? 0)
+        guard remaining > 0, let workout = started(workout, for: item) else { return workout }
+        for _ in 0..<remaining {
             log(item.exerciseID, reps: reps, weightKg: weightKg, in: workout)
         }
+        return workout
     }
 
     /// The undo for `log`: logged sets are never edited, only deleted.
@@ -58,7 +73,7 @@ public extension ModelContext {
     }
 
     /// Sets of the most recent earlier workout that included `exerciseID`, in the order they were done.
-    func lastSets(of exerciseID: String, excluding current: Workout) -> [LoggedSet] {
+    func lastSets(of exerciseID: String, excluding current: Workout?) -> [LoggedSet] {
         let descriptor = FetchDescriptor<LoggedSet>(
             predicate: #Predicate { $0.exerciseID == exerciseID },
             sortBy: [SortDescriptor(\.date, order: .reverse)]
@@ -69,8 +84,8 @@ public extension ModelContext {
     }
 
     /// Prefill for the next set: repeat the set just done, else the first set of last time, else the plan.
-    func nextSet(for item: PlanItem, in workout: Workout) -> (reps: Int, weightKg: Double) {
-        let set = workout.sets(of: item.exerciseID).last ?? lastSets(of: item.exerciseID, excluding: workout).first
+    func nextSet(for item: PlanItem, in workout: Workout?) -> (reps: Int, weightKg: Double) {
+        let set = workout?.sets(of: item.exerciseID).last ?? lastSets(of: item.exerciseID, excluding: workout).first
         guard let set else { return (item.targetReps, item.targetWeightKg) }
         return (set.reps, set.weightKg)
     }

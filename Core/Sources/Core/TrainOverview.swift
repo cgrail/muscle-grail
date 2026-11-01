@@ -3,15 +3,17 @@ import SwiftData
 import SwiftUI
 
 /// The Mac's Train page, like Apple Music's Home: a running workout to continue, the plan next up large with what's in it,
-/// then the other plans as covers, in `trainingOrder`. Clicking a plan starts a workout, once none runs.
+/// then the other plans as covers, in `trainingOrder`. Clicking a plan opens it to train, once no workout runs; its workout
+/// starts with the first set logged.
 public struct TrainOverview: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Workout.unfinished) private var unfinished: [Workout]
-    private let onPick: (Workout) -> Void
+    private let onContinue: (Workout) -> Void
+    private let onStart: (Plan) -> Void
 
-    public init(onPick: @escaping (Workout) -> Void) {
-        self.onPick = onPick
+    public init(onContinue: @escaping (Workout) -> Void, onStart: @escaping (Plan) -> Void) {
+        (self.onContinue, self.onStart) = (onContinue, onStart)
     }
 
     public var body: some View {
@@ -55,7 +57,7 @@ public struct TrainOverview: View {
                 Text("Finish the running workout to start another.", bundle: .module).foregroundStyle(.secondary)
             }
             Spacer()
-            Button { onPick(workout) } label: { Label { Text("Continue", bundle: .module) } icon: { Image(systemName: "play.fill") } }
+            Button { onContinue(workout) } label: { Label { Text("Continue", bundle: .module) } icon: { Image(systemName: "play.fill") } }
                 .buttonStyle(.borderedProminent)
                 .controlSize(.large)
         }
@@ -73,7 +75,7 @@ public struct TrainOverview: View {
                 Text(verbatim: plan.trainedItems.map { context.exerciseName($0.exerciseID) }.joined(separator: " · "))
                     .foregroundStyle(.secondary)
                     .lineLimit(2)
-                Button { onPick(context.startWorkout(plan)) } label: { Label { Text("Start", bundle: .module) } icon: { Image(systemName: "play.fill") } }
+                Button { onStart(plan) } label: { Label { Text("Start", bundle: .module) } icon: { Image(systemName: "play.fill") } }
                     .buttonStyle(.borderedProminent)
                     .controlSize(.large)
                     .tint(plan.color)
@@ -86,7 +88,7 @@ public struct TrainOverview: View {
     }
 
     private func cover(_ plan: Plan) -> some View {
-        Button { onPick(context.startWorkout(plan)) } label: {
+        Button { onStart(plan) } label: {
             VStack(alignment: .leading, spacing: 3) {
                 PlanPicture(plan, size: 160).shadow(radius: 4, y: 2).padding(.bottom, 6)
                 Text(plan.title).font(.headline).lineLimit(1)
