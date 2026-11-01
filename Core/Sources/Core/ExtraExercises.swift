@@ -1,8 +1,8 @@
 extension CatalogExercise {
     /// Exercises RepDB lacks, written for Muscle Grail in RepDB's form: names in English, German and Spanish, and steps in
-    /// English and German. Their drawing is our own (`Extras/<id>.png`, from `Design/<id>.svg`), never in RepDB's style: its
-    /// license forbids deriving one from its images. Their ids are catalog ids like RepDB's, so a RepDB update that brings
-    /// one of them replaces ours.
+    /// English and German. Their drawing (`Extras/<id>.png`, from `Design/<id>.svg`) is adapted from Open Exercise Art, CC BY-SA
+    /// 4.0, never from RepDB's images: its license forbids deriving one from them. Their ids are catalog ids like RepDB's, so a
+    /// RepDB update that brings one of them replaces ours.
     static let extras = [
         CatalogExercise(
             id: "machine-torso-rotation", name: "Machine Torso Rotation", equipment: "rotary_torso_machine", primaryMuscles: ["obliques"],
