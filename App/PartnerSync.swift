@@ -44,12 +44,20 @@ actor PartnerSync: CKSyncEngineDelegate {
     // MARK: Sharing
 
     /// Starts sharing: this person's zone, with one zone-wide share for the share sheet to send, and every plan in it
-    /// or none yet. Asked again, it hands over the same share.
+    /// or none yet. Asked again, or after another of this person's devices started, it hands over the same share.
     func share(allPlans: Bool) async throws -> CKShare {
         let zone = CKRecordZone.ID(zoneName: PartnerRecords.zoneName, ownerName: CKCurrentUserDefaultName)
         let database = CKContainer(identifier: Store.cloudKitContainer).privateCloudDatabase
         let shareID = CKRecord.ID(recordName: CKRecordNameZoneWideShare, zoneID: zone)
-        if state.zone != nil, let share = try? await database.record(for: shareID) as? CKShare { return share }
+        if let share = try? await database.record(for: shareID) as? CKShare {
+            if state.zone == nil { // a new share would clash with it; the zone's first fetch brings its plans and mode
+                state = PartnerState()
+                state.zoneName = zone.zoneName
+                resume()
+                save()
+            }
+            return share
+        }
         _ = try await database.save(CKRecordZone(zoneID: zone))
         let share = CKShare(recordZoneID: zone)
         share[CKShare.SystemFieldKey.title] = String(localized: "Muscle Grail plans")
