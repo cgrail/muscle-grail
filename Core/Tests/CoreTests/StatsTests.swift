@@ -74,14 +74,21 @@ import Testing
     @Test func gymDaysWinOverGoals() {
         let day = date("2026-10-20")
         let week = activityWeeks(gym: [day], steps: [midnight("2026-10-20"): 12_000], stepGoal: 10_000, weeks: 1, now: day, calendar: calendar)[0]
-        #expect(week.days == [0, 3, nil, nil, nil, nil, nil])
+        #expect(week.days == [0, 5, nil, nil, nil, nil, nil])
     }
 
     @Test func goalDaysShowWhetherEveryGoalWasReached() {
         let steps = [midnight("2026-10-19"): 12_000, midnight("2026-10-20"): 12_000.0]
-        let km = [midnight("2026-10-19"): 11, midnight("2026-10-20"): 5.0]
+        let km = [midnight("2026-10-19"): 11.0]
         let week = activityWeeks(steps: steps, km: km, stepGoal: 10_000, kmGoal: 10, weeks: 1, now: date("2026-10-22"), calendar: calendar)[0]
-        #expect(week.days == [2, 1, 0, 0, nil, nil, nil]) // both goals, steps only, nothing, today with nothing yet
+        #expect(week.days == [4, 1, 0, 0, nil, nil, nil]) // both goals, steps only, nothing, today with nothing yet
+    }
+
+    @Test func shortDaysShadeByThirdsOfTheFurthestOffGoal() {
+        let steps = [midnight("2026-10-19"): 3_000, midnight("2026-10-20"): 12_000, midnight("2026-10-21"): 9_999.0]
+        let km = [midnight("2026-10-19"): 9, midnight("2026-10-20"): 5, midnight("2026-10-21"): 9.0]
+        let week = activityWeeks(steps: steps, km: km, stepGoal: 10_000, kmGoal: 10, weeks: 1, now: date("2026-10-21"), calendar: calendar)[0]
+        #expect(week.days.prefix(3) == [1, 2, 3]) // 30 %, 50 %, 90 % of the goal furthest off
     }
 
     @Test func withoutGoalsMovingIsShortOfThem() {

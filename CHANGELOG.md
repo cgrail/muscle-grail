@@ -52,7 +52,7 @@
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.
 
 ### History
-- One activity chart shows the last year day by day: gym days in red, and on the iPhone days that reached every daily goal for steps and walking distance in blue, short of them in light blue. Every weekday and month is labeled. Tap a day, or step through the days, to see its workouts, steps and kilometers. Strength workouts from the watch or other apps count as gym days right away. Goals sync through iCloud.
+- One activity chart shows the last year day by day: gym days in red, and on the iPhone days that reached every daily goal for steps and walking distance in blue, short of them in lighter blue the further short they fell. Every weekday and month is labeled. Tap a day, or step through the days, to see its workouts, steps and kilometers. Strength workouts from the watch or other apps count as gym days right away. Goals sync through iCloud.
 - On the Mac, a day in the activity chart also shows its steps and kilometers walked, as the iPhone last read them from Health.
 - Statistics per week, month, quarter or year: workouts per period as a chart, and the current period's workouts, sets and volume.
 - History lists your workouts by year instead of all at once. Open a year to see how often you trained each plan and its months, open a month for the same and its workouts, and tap a workout for its exercises and sets. Tap a bar in Statistics to open its week, month, quarter or year the same way.

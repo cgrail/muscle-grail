@@ -1,7 +1,8 @@
 import SwiftUI
 
 /// One column per week, one square per day, with month and weekday labels: gym days red, goals reached blue,
-/// short of them light blue. Tapping a day selects it. The iPhone and Mac show it in Activity, the watch from its complication.
+/// short of them a lighter blue the further short they fell. Tapping a day selects it. The iPhone and Mac show it
+/// in Activity, the watch from its complication.
 public struct ActivityGrid: View {
     let weeks: [GridWeek]
     @Binding var selected: Date
@@ -33,7 +34,7 @@ public struct ActivityGrid: View {
             .defaultScrollAnchor(.trailing)
         }
         .accessibilityElement()
-        .accessibilityLabel(Text("Gym on \(weeks.flatMap(\.days).filter { $0 == 3 }.count) days in the last \(weeks.count) weeks", bundle: .module))
+        .accessibilityLabel(Text("Gym on \(weeks.flatMap(\.days).filter { $0 == 5 }.count) days in the last \(weeks.count) weeks", bundle: .module))
     }
 
     private func square(_ week: GridWeek, _ day: Int) -> some View {
@@ -48,9 +49,8 @@ public struct ActivityGrid: View {
 
     public static func color(_ level: Int?) -> Color {
         switch level {
-        case 3: .red
-        case 2: .blue
-        case 1: .blue.opacity(0.3)
+        case 5: .red
+        case let level? where level > 0: .blue.opacity(Double(level) / 4)
         case 0: .secondary.opacity(0.15)
         default: .clear
         }
