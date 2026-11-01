@@ -3,8 +3,8 @@ import Core
 import SwiftData
 import SwiftUI
 
-/// The Mac app laid out like Apple Music: a sidebar with training, history, the exercise library, all plans at a glance
-/// and every plan as a playlist, and the selected page beside it.
+/// The Mac app laid out like Apple Music: a sidebar with training, history, the exercises and the changes, then all plans
+/// at a glance and every plan as a playlist, and the selected page beside it.
 struct MacRootView: View {
     enum Page: Hashable { case train, history, exercises, changes, overview, plan(Plan) }
 
@@ -20,14 +20,13 @@ struct MacRootView: View {
             List(selection: $page) {
                 Label("Train", systemImage: "figure.strengthtraining.traditional").tag(Page.train)
                 Label("History", systemImage: "clock").tag(Page.history)
-                Label("All plans", systemImage: "rectangle.split.3x1").tag(Page.overview)
-                Section("Library") {
-                    Label("Exercises", systemImage: "dumbbell").tag(Page.exercises)
-                    Label("Changes", systemImage: "clock.arrow.circlepath").tag(Page.changes)
+                Label("Exercises", systemImage: "dumbbell").tag(Page.exercises)
+                Label("Changes", systemImage: "clock.arrow.circlepath").tag(Page.changes)
+                Section("Plans") {
+                    Label("All plans", systemImage: "rectangle.split.3x1").tag(Page.overview)
+                    if shared.isEmpty { rows(plans) }
                 }
-                if shared.isEmpty {
-                    Section("Plans") { rows(plans) }
-                } else {
+                if !shared.isEmpty {
                     Section("Shared plans") { rows(shared) }
                     Section("My plans") { rows(plans.filter { !shared.contains($0) }) }
                 }
