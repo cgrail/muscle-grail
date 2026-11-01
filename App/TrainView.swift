@@ -4,12 +4,14 @@ import SwiftUI
 
 struct TrainView: View {
     @State private var workout: Workout?
+    @State private var plan: Plan?
 
     var body: some View {
         // Not NavigationStack(path:): the sidebar tabs on Mac and iPad compare paths across tabs and crash on a typed one.
         NavigationStack {
             picker
-                .navigationDestination(item: $workout) { WorkoutView(workout: $0) }
+                .navigationDestination(item: $workout) { WorkoutView(plan: $0.plan, workout: $0) }
+                .navigationDestination(item: $plan) { WorkoutView(plan: $0, workout: nil) }
                 #if os(iOS)
                 .toolbar { SettingsButton() }
                 #endif
@@ -19,9 +21,9 @@ struct TrainView: View {
     /// The Mac has the room for covers; the iPhone and iPad list the plans.
     @ViewBuilder private var picker: some View {
         #if os(macOS)
-        TrainOverview { workout = $0 }
+        TrainOverview { workout = $0 } onStart: { plan = $0 }
         #else
-        WorkoutPicker { workout = $0 }
+        WorkoutPicker { workout = $0 } onStart: { plan = $0 }
         #endif
     }
 }

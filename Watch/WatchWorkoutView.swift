@@ -4,41 +4,52 @@ import SwiftData
 import SwiftUI
 
 /// The workout's exercises as cards, each with its next set and how many sets are done. A card opens the exercise to
-/// log it; finishing shows a summary first, as does logging the last set of the last exercise.
+/// log it; finishing shows a summary first, as does logging the last set of the last exercise. A plan picked to train has
+/// no workout, here or in Health, until its first set is logged, and can be left until then.
 struct WatchWorkoutView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    let workout: Workout
+    let plan: Plan?
+    @State private var workout: Workout?
     @State private var session = WorkoutSession()
     @State private var exercise: PlanItem?
     @State private var finishing = false
 
+    init(plan: Plan?, workout: Workout?) {
+        self.plan = plan
+        _workout = State(initialValue: workout)
+    }
+
     var body: some View {
         List {
-            ForEach(workout.plan?.trainedItems ?? []) { item in
+            ForEach(plan?.trainedItems ?? []) { item in
                 Button { exercise = item } label: { ExerciseCard(item: item, workout: workout) }
             }
-            Button("Finish workout", systemImage: "flag.checkered") { finishing = true }
+            if workout != nil {
+                Button("Finish workout", systemImage: "flag.checkered") { finishing = true }
+            }
         }
-        .navigationTitle(workout.title)
-        .navigationBarBackButtonHidden()
+        .navigationTitle(workout?.title ?? plan?.title ?? "")
+        .navigationBarBackButtonHidden(workout != nil)
         .navigationDestination(item: $exercise) { item in
-            ExerciseView(item: item, workout: workout) {
+            ExerciseView(item: item, workout: $workout) {
                 exercise = nil
-                if workout.isComplete { finishing = true }
+                if workout?.isComplete == true { finishing = true }
             }
         }
         .sheet(isPresented: $finishing) {
-            FinishView(workout: workout) {
-                context.finish(workout)
-                session.end { id in
-                    if let id { context.savedToHealth(workout, as: id) }
+            if let workout {
+                FinishView(workout: workout) {
+                    context.finish(workout)
+                    session.end { id in
+                        if let id { context.savedToHealth(workout, as: id) }
+                    }
+                    finishing = false
+                    dismiss()
                 }
-                finishing = false
-                dismiss()
             }
         }
-        .onAppear { session.start() }
+        .onChange(of: workout != nil, initial: true) { if workout != nil { session.start() } }
     }
 }
 
@@ -46,10 +57,10 @@ struct WatchWorkoutView: View {
 private struct ExerciseCard: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
-    let workout: Workout
+    let workout: Workout?
 
     var body: some View {
-        let done = workout.sets(of: item.exerciseID).count
+        let done = workout?.sets(of: item.exerciseID).count ?? 0
         let next = context.nextSet(for: item, in: workout)
         VStack(alignment: .leading, spacing: 4) {
             HStack(alignment: .firstTextBaseline) {

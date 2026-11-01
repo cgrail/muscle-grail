@@ -47,9 +47,9 @@ import Testing
 
     // MARK: Gym: phone and watch
 
-    @Test func startAWorkoutFromAPlan() throws {
+    @Test func aPlansWorkoutStartsWithItsFirstSet() throws {
         let plan = makePlan(context, "Bench")
-        let workout = context.startWorkout(plan)
+        let workout = try #require(context.tick(plan.sortedItems[0], in: nil))
         #expect(try context.fetch(Workout.unfinished) == [workout])
         #expect(workout.plan == plan)
     }
