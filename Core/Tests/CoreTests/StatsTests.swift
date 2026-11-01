@@ -125,4 +125,10 @@ import Testing
         let goals = dailyGoals() // nothing stored for the tests
         #expect((goals.steps, goals.km) == (10_000, 0))
     }
+
+    @Test func dailyTotalsKeepTheirDaysInTheKeyValueStore() {
+        let today = Calendar.current.startOfDay(for: .now)
+        let totals = [today: 8_000, Calendar.current.date(byAdding: .day, value: -400, to: today)!: 2.5]
+        #expect(byDay(dayKeyed(totals)) == totals)
+    }
 }
