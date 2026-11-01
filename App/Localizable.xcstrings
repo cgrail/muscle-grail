@@ -621,6 +621,16 @@
         }
       }
     },
+    "Credits" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danksagungen"
+          }
+        }
+      }
+    },
     "Daily goals" : {
       "localizations" : {
         "de" : {

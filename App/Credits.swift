@@ -7,17 +7,19 @@ struct Credits: View {
     var body: some View {
         #if os(iOS)
         Section {
-            NavigationLink("About") { Form { Section { about } }.navigationTitle("About") }
+            NavigationLink("About") { Form { Section { AppInfo() }; syncAndCredits }.navigationTitle("About") }
         }
         #else
-        Section("About") { about }
+        Section("About") { AppInfo() }
+        syncAndCredits
         #endif
     }
 
-    @ViewBuilder private var about: some View {
-        AppInfo()
-        SyncLog()
-        Link(destination: URL(string: "https://repdb.co")!) { Text(verbatim: "Exercise data by RepDB (repdb.co)") }
-        Text("Machine Torso Rotation drawing adapted from [Open Exercise Art](https://github.com/AlexMollard/Open-Exercise-Art) by Alex Mollard, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)")
+    @ViewBuilder private var syncAndCredits: some View {
+        Section { SyncLog() }
+        Section("Credits") {
+            Link(destination: URL(string: "https://repdb.co")!) { Text(verbatim: "Exercise data by RepDB (repdb.co)") }
+            Text("Machine Torso Rotation drawing adapted from [Open Exercise Art](https://github.com/AlexMollard/Open-Exercise-Art) by Alex Mollard, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)")
+        }
     }
 }

@@ -1,7 +1,7 @@
 import Core
 import SwiftUI
 
-/// Settings → About: every failed sync since launch in full, as CloudKit and Core Data describe it, to read, copy or share.
+/// Settings, below the version: every failed sync since launch in full, as CloudKit and Core Data describe it, to read, copy or share.
 struct SyncLog: View {
     private let sync = SyncMonitor.shared
 
