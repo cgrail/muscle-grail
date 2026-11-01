@@ -3,7 +3,6 @@ import SwiftData
 import SwiftUI
 
 struct HistoryView: View {
-    @Environment(\.modelContext) private var context
     @Query(Workout.history) private var workouts: [Workout]
 
     var body: some View {
@@ -11,14 +10,7 @@ struct HistoryView: View {
             List {
                 ActivitySection(workouts: workouts)
                 StatsSection(workouts: workouts)
-                Section("Workouts") {
-                    ForEach(workouts) { workout in
-                        WorkoutSummary(workout: workout)
-                        .contextMenu {
-                            Button("Delete", systemImage: "trash", role: .destructive) { context.deleteWorkout(workout) }
-                        }
-                    }
-                }
+                Section("Workouts") { PeriodLinks(workouts: workouts, period: .year) }
             }
             .navigationTitle("History")
             #if os(macOS)

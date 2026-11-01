@@ -16,10 +16,10 @@ import Testing
     func date(_ text: String) -> Date { try! Date(text + "T12:00:00Z", strategy: .iso8601) }
     func midnight(_ text: String) -> Date { try! Date(text + "T00:00:00Z", strategy: .iso8601) }
 
-    /// A workout on `day` with one set per entry of `sets` (reps, kg).
+    /// A workout of `plan`, else of a new one, on `day` with one set per entry of `sets` (reps, kg).
     @discardableResult
-    func workout(on day: String, _ sets: [(Int, Double)] = [(10, 50)]) -> Workout {
-        let workout = context.startWorkout(makePlan(context, "Bench"))
+    func workout(on day: String, _ sets: [(Int, Double)] = [(10, 50)], of plan: Plan? = nil) -> Workout {
+        let workout = context.startWorkout(plan ?? makePlan(context, "Bench"))
         workout.start = date(day)
         for (reps, kg) in sets { context.log("Bench", reps: reps, weightKg: kg, in: workout) }
         return workout
@@ -103,6 +103,55 @@ import Testing
         workout(on: "2026-10-20")
         workout(on: "2026-10-19", [])
         #expect(trained(all(), on: date("2026-10-19"), calendar: calendar) == [monday])
+    }
+
+    /// A plan named `name`.
+    func plan(_ name: String) -> Plan {
+        let plan = makePlan(context, "Bench")
+        context.rename(plan, to: name)
+        return plan
+    }
+
+    @Test func historyInAnIntervalHasItsWorkoutsNewestFirst() throws {
+        workout(on: "2026-09-30")
+        let (first, last) = (workout(on: "2026-10-01"), workout(on: "2026-10-31"))
+        workout(on: "2026-11-01")
+        let october = DateInterval(start: midnight("2026-10-01"), end: midnight("2026-11-01"))
+        #expect(try context.fetch(Workout.history(in: october)) == [last, first])
+    }
+
+    @Test func periodsListNewestFirstWithHowManyWorkouts() {
+        workout(on: "2025-12-30")
+        workout(on: "2026-01-05")
+        workout(on: "2026-01-20")
+        let months = periods(all(), per: .month, calendar: calendar)
+        #expect(months.map { $0.interval } == [DateInterval(start: midnight("2026-01-01"), end: midnight("2026-02-01")),
+                                               DateInterval(start: midnight("2025-12-01"), end: midnight("2026-01-01"))])
+        #expect(months.map { $0.count } == [2, 1])
+    }
+
+    @Test func periodsCountOnlyWorkoutsWithSets() {
+        workout(on: "2026-10-19", [])
+        #expect(periods(all(), per: .year, calendar: calendar).map { $0.count } == [0])
+    }
+
+    @Test func timesDoneCountsEachTrainingMostOftenFirst() {
+        let (arms, legs) = (plan("Arms"), plan("Legs"))
+        workout(on: "2026-10-19", of: arms)
+        workout(on: "2026-10-20", of: legs)
+        workout(on: "2026-10-21", of: legs)
+        #expect(timesDone(all()).map { "\($0.title) \($0.count)" } == ["Legs 2", "Arms 1"])
+    }
+
+    @Test func trainingsDoneEquallyOftenSortByName() {
+        workout(on: "2026-10-19", of: plan("Legs"))
+        workout(on: "2026-10-20", of: plan("Arms"))
+        #expect(timesDone(all()).map { $0.title } == ["Arms", "Legs"])
+    }
+
+    @Test func timesDoneSkipsWorkoutsWithoutSets() {
+        workout(on: "2026-10-19", [])
+        #expect(timesDone(all()).isEmpty)
     }
 
     @Test func everyWeekdayIsLabeledFromTheFirst() {
