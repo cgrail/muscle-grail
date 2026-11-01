@@ -85,10 +85,11 @@ import SwiftData
     }
 
     private func exercises(_ arguments: [String: Any]) -> [PlannedExercise] {
-        (arguments["exercises"] as? [[String: Any]] ?? []).compactMap { exercise in
+        let defaults = targetDefaults()
+        return (arguments["exercises"] as? [[String: Any]] ?? []).compactMap { exercise in
             guard let name = exercise["name"] as? String else { return nil }
             return PlannedExercise(
-                name: name, sets: exercise["sets"] as? Int ?? 3, reps: exercise["reps"] as? Int ?? 10,
+                name: name, sets: exercise["sets"] as? Int ?? defaults.sets, reps: exercise["reps"] as? Int ?? defaults.reps,
                 weightKg: (exercise["weight_kg"] as? NSNumber)?.doubleValue ?? 0
             )
         }
@@ -114,14 +115,15 @@ import SwiftData
     }
 
     static var tools: [[String: Any]] {
+        let defaults = targetDefaults()
         let exercises: [String: Any] = [
             "type": "array",
             "description": "Exercises in order. Use the catalog's exact names from search_exercises; other names become the user's own exercises.",
             "items": [
                 "type": "object", "required": ["name"],
                 "properties": [
-                    "name": ["type": "string"], "sets": ["type": "integer", "description": "Default 3"],
-                    "reps": ["type": "integer", "description": "Default 10"], "weight_kg": ["type": "number", "description": "Default 0"],
+                    "name": ["type": "string"], "sets": ["type": "integer", "description": "Default \(defaults.sets)"],
+                    "reps": ["type": "integer", "description": "Default \(defaults.reps)"], "weight_kg": ["type": "number", "description": "Default 0"],
                 ],
             ],
         ]

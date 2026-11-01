@@ -1,4 +1,5 @@
 import Core
+import SwiftData
 import SwiftUI
 
 /// "Me and <partner>" or "Only me", asked before adding, removing, replacing or moving an exercise for both in a shared plan,
@@ -48,6 +49,39 @@ struct OwnerNote: View {
                 Text("Only my training partner").font(.caption).foregroundStyle(.secondary)
             }
         }
+    }
+}
+
+/// Whether an exercise is for both or your own, as a badge that switches it with a click. In a plan not shared yet, it
+/// says what the training partner gets once it is.
+struct OwnerButton: View {
+    @Environment(\.modelContext) private var context
+    let item: PlanItem
+
+    var body: some View {
+        switch item.ownedBy {
+        case .both:
+            badge("For both", "person.2.fill", .green) { context.setForBoth(item, false) }
+                .help("For both. Click to make it only yours.")
+        case .me:
+            badge("Only me", "lock.fill", .gray) { context.setForBoth(item, true) }
+                .help("Only yours. Click to do it together.")
+        case .partner:
+            EmptyView() // its note says whose it is
+        }
+    }
+
+    private func badge(_ title: LocalizedStringKey, _ symbol: String, _ color: Color, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Label(title, systemImage: symbol)
+                .labelStyle(.iconOnly)
+                .foregroundStyle(color)
+                .frame(width: 28, height: 22)
+                .background(color.opacity(0.15), in: .rect(cornerRadius: 6))
+                .overlay { RoundedRectangle(cornerRadius: 6).strokeBorder(color.opacity(0.4)) }
+                .contentShape(.rect)
+        }
+        .buttonStyle(.plain)
     }
 }
 

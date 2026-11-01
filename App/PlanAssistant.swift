@@ -50,11 +50,12 @@ struct PlanAssistant: View {
     }
 
     private static func exercises(from request: String, custom: [String]) async throws -> [PlannedExercise] {
+        let defaults = targetDefaults()
         let session = LanguageModelSession(tools: [FindExercise(custom: custom)], instructions: """
             You turn a description of gym exercises into a list. For each exercise, search its English name with \
             findExercise (translate German names first: Klimmzüge are pull ups) and use the exact name it returns; \
             if nothing fits, use the user's own words. Take sets, reps and weight from the user: "3x10 at 60 kg" is \
-            3 sets of 10 reps with 60 kg. Only for what the user leaves out, use 3 sets, 10 reps and 0 kg.
+            3 sets of 10 reps with 60 kg. Only for what the user leaves out, use \(defaults.sets) sets, \(defaults.reps) reps and 0 kg.
             """)
         return try await session.respond(to: request, generating: Draft.self).content.exercises.map {
             PlannedExercise(name: $0.name, sets: $0.sets, reps: $0.reps, weightKg: $0.weightKg)
