@@ -4,7 +4,7 @@ import SwiftData
 import SwiftUI
 
 /// Every plan as a column side by side, its exercises as cards with their sets, reps and weight. Drag an exercise onto
-/// another column, or use its Move to menu, to move it there. While plans are shared, View as shows the shared plans
+/// another column, or use Move to in its context menu, to move it there. While plans are shared, View as shows the shared plans
 /// as the training partner trains them.
 struct PlansOverview: View {
     @Environment(\.modelContext) private var context
@@ -93,6 +93,7 @@ private struct PlanColumn: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 10) {
                 header(shared: shared, count: items.count)
+                Divider()
                 ForEach(items) { ExerciseCard(item: $0, shared: shared, asPartner: asPartner, locked: locked, forWhom: $forWhom) }
                 if !locked {
                     Button(action: add) {
@@ -154,8 +155,9 @@ private struct PlanColumn: View {
     }
 }
 
-/// An exercise as a card: its name, sets and reps, and its weight to step. In a shared plan, a button switches it between
-/// for both and your own. The training partner's own shows greyed, without targets: theirs stay on their devices.
+/// An exercise as a card, its grip to drag it by: its name, sets and reps, and its weight to step. A button switches it
+/// between for both and your own. The training partner's own shows greyed, without targets: theirs stay on their
+/// devices. Its context menu moves or deletes it.
 private struct ExerciseCard: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
@@ -166,68 +168,39 @@ private struct ExerciseCard: View {
 
     var body: some View {
         let theirs = item.ownedBy == .partner
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                ExerciseThumbnail(id: item.exerciseID, size: 28)
+                Image(systemName: "line.3.horizontal").foregroundStyle(.tertiary).accessibilityHidden(true)
                 ExerciseName(item.exerciseID).font(.headline).lineLimit(1)
                 Spacer(minLength: 0)
-                if shared { OwnerButton(item: item, locked: locked) }
-                if !locked && !theirs {
-                    Menu {
-                        MoveToPlan(item: item, forWhom: $forWhom)
-                        Button("Delete", systemImage: "trash", role: .destructive) {
-                            ForWhom.edit(item.plan, item, asking: $forWhom) { context.deleteExercise(item, forBoth: $0) }
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis")
-                    }
-                    .menuStyle(.borderlessButton)
-                    .menuIndicator(.hidden)
-                    .fixedSize()
-                }
+                OwnerButton(item: item).disabled(locked)
             }
             if !asPartner && !theirs {
-                HStack {
-                    Text(verbatim: "\(item.targetSets) × \(item.targetReps)").font(.body.monospacedDigit()).foregroundStyle(.secondary)
+                Divider()
+                HStack(spacing: 8) {
+                    TargetsButton(item: item).disabled(locked)
                     Spacer()
+                    if shared { Text("You").font(.caption.weight(.semibold)).foregroundStyle(.secondary) }
                     WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
-                        .frame(width: 140, alignment: .trailing)
+                        .fixedSize()
                         .disabled(locked)
                 }
             }
-            if !asPartner { OwnerNote(item: item) }
+            if theirs && !asPartner { OwnerNote(item: item) }
         }
-        .padding(10)
-        .background(.quaternary.opacity(0.5), in: .rect(cornerRadius: 10))
+        .padding(12)
+        .background(.quaternary.opacity(0.5), in: .rect(cornerRadius: 12))
+        .overlay { RoundedRectangle(cornerRadius: 12).strokeBorder(.separator) }
         .foregroundStyle(theirs && !asPartner ? .secondary : .primary)
-        .draggable(item.id.uuidString)
-    }
-}
-
-/// Whether an exercise of a shared plan is for both or your own, as a button that switches it.
-private struct OwnerButton: View {
-    @Environment(\.modelContext) private var context
-    let item: PlanItem
-    let locked: Bool
-
-    var body: some View {
-        Group {
-            switch item.ownedBy {
-            case .both:
-                Button("For both", systemImage: "person.2.fill") { context.setForBoth(item, false) }
-                    .foregroundStyle(.green)
-                    .help("For both. Click to make it only yours.")
-            case .me:
-                Button("Only me", systemImage: "lock.fill") { context.setForBoth(item, true) }
-                    .foregroundStyle(.secondary)
-                    .help("Only yours. Click to do it together.")
-            case .partner:
-                EmptyView() // its card says whose it is
+        .contextMenu {
+            if !locked && !theirs {
+                MoveToPlan(item: item, forWhom: $forWhom)
+                Button("Delete", systemImage: "trash", role: .destructive) {
+                    ForWhom.edit(item.plan, item, asking: $forWhom) { context.deleteExercise(item, forBoth: $0) }
+                }
             }
         }
-        .labelStyle(.iconOnly)
-        .buttonStyle(.borderless)
-        .disabled(locked)
+        .draggable(item.id.uuidString)
     }
 }
 #endif

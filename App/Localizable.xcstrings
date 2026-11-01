@@ -581,6 +581,16 @@
         }
       }
     },
+    "Click to change the sets and reps." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klicke, um Sätze und Wiederholungen zu ändern."
+          }
+        }
+      }
+    },
     "Commit" : {
       "localizations" : {
         "de" : {
