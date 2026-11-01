@@ -24,6 +24,7 @@ struct PlanEditor: View {
         List(selection: editing ? $selection : nil) { // outside Edit, a tap beside the controls selects nothing
             Group {
                 HStack {
+                    PlanPicture(plan, size: 48)
                     Text(plan.title).font(.largeTitle.bold())
                     Button("Rename", systemImage: "pencil") { (name, renaming) = (plan.name, true) }
                         .labelStyle(.iconOnly)

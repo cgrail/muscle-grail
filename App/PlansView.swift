@@ -16,7 +16,7 @@ struct PlansView: View {
                 ForEach(plans) { plan in
                     NavigationLink { PlanEditor(plan: plan) } label: {
                         HStack {
-                            PlanLabel(plan)
+                            PlanLabel(plan, among: plans)
                             Spacer()
                             SharedBadge(plan: plan)
                             PlanSyncBadge(plan: plan)

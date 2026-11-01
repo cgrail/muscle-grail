@@ -30,8 +30,11 @@ public extension Plan {
     /// Whether nobody typed the plan's name: it has none, "New plan" or a funny one, in any language.
     var hasAutoName: Bool { name.isEmpty || newPlanNames.contains(name) || funnyEmoji[name] != nil }
 
-    /// The plan's picture: its funny name's emoji, else the first funny name's for what it trains, else a lifter.
-    var emoji: String { funnyEmoji[name] ?? focusRegions.flatMap { funnyNames[$0.first]?.first?.emoji } ?? "🏋️" }
+    /// The plan's picture: its funny name's emoji, else one of the funny names' for what it trains, by its place in the list,
+    /// so plans side by side differ, else a lifter.
+    var emoji: String {
+        funnyEmoji[name] ?? focusRegions.flatMap { funnyNames[$0.first].map { $0[abs(order) % $0.count].emoji } } ?? "🏋️"
+    }
 }
 
 public extension ModelContext {

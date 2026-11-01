@@ -21,6 +21,46 @@
         }
       }
     },
+    "%lld times" : {
+      "localizations" : {
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "einmal"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld-mal"
+                }
+              }
+            }
+          }
+        },
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "once"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld times"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "ab_crunch_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -133,6 +173,16 @@
         }
       }
     },
+    "After that" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Danach"
+          }
+        }
+      }
+    },
     "air_bike" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -241,16 +291,6 @@
         }
       }
     },
-    "Back-heavy" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rückenbetont"
-          }
-        }
-      }
-    },
     "back_extension_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -265,6 +305,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Back extension machine"
+          }
+        }
+      }
+    },
+    "Back-heavy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rückenbetont"
           }
         }
       }
@@ -503,16 +553,6 @@
         }
       }
     },
-    "Chest-heavy" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Brustbetont"
-          }
-        }
-      }
-    },
     "chest_fly_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -545,6 +585,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chest press machine"
+          }
+        }
+      }
+    },
+    "Chest-heavy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brustbetont"
           }
         }
       }
@@ -587,6 +637,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kalte Schulter"
+          }
+        }
+      }
+    },
+    "Continue" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsetzen"
           }
         }
       }
@@ -1287,16 +1347,6 @@
         }
       }
     },
-    "Leg-heavy" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beinbetont"
-          }
-        }
-      }
-    },
     "leg_curl" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1347,6 +1397,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leg press"
+          }
+        }
+      }
+    },
+    "Leg-heavy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beinbetont"
           }
         }
       }
@@ -2009,16 +2069,6 @@
         }
       }
     },
-    "Shoulder-heavy" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Schulterbetont"
-          }
-        }
-      }
-    },
     "shoulder_press_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -2033,6 +2083,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shoulder press machine"
+          }
+        }
+      }
+    },
+    "Shoulder-heavy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulterbetont"
           }
         }
       }
@@ -2239,6 +2299,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Standing calf raise machine"
+          }
+        }
+      }
+    },
+    "Start" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starten"
           }
         }
       }
@@ -2680,5 +2750,5 @@
       }
     }
   },
-  "version" : "1.0"
+  "version" : "1.1"
 }

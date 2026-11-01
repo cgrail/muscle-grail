@@ -33,19 +33,29 @@ import Testing
         #expect(workout.sets(of: "Curl").map(\.reps) == [10, 8, 8])
     }
 
-    /// Plans A, B and C, with a workout of `done` (one set each), in that order.
+    /// Plans A, B and C, with a finished workout of `done` (one set each), in that order.
     func rotation(done: [Int]) -> [Plan] {
         let plans = ["A", "B", "C"].map { name in
             let plan = makePlan(context, "Bench")
             context.rename(plan, to: name)
             return plan
         }
-        for index in done { context.log("Bench", reps: 5, weightKg: 50, in: context.startWorkout(plans[index])) }
+        for index in done {
+            let workout = context.startWorkout(plans[index])
+            context.log("Bench", reps: 5, weightKg: 50, in: workout)
+            context.finish(workout)
+        }
         return plans
     }
 
     @Test func thePlanDoneLongestAgoComesFirstAndTheOneDoneLastLast() {
         #expect(trainingOrder(rotation(done: [2, 0, 1])).map(\.name) == ["C", "A", "B"])
+    }
+
+    @Test func aPlanWithAWorkoutRunningIsLeftOut() {
+        let plans = rotation(done: [])
+        _ = context.startWorkout(plans[1])
+        #expect(trainingOrder(plans).map(\.name) == ["A", "C"])
     }
 
     @Test func plansNeverDoneComeFirstInPlanOrder() {
@@ -57,6 +67,21 @@ import Testing
         #expect(daysAgo(morning.addingTimeInterval(-3600), from: morning) == "today")
         #expect(daysAgo(morning.addingTimeInterval(-10 * 3600), from: morning) == "yesterday") // 10 pm
         #expect(daysAgo(morning.addingTimeInterval(-14 * 86400), from: morning) == "2 weeks ago")
+    }
+
+    @Test func aPlanCountsTheWorkoutsWithSets() {
+        let plan = rotation(done: [0, 0])[0]
+        _ = context.startWorkout(plan)
+        #expect(plan.timesDone == 2)
+    }
+
+    @Test func lastDoneSaysWhenAndHowOften() {
+        #expect(rotation(done: [0])[0].lastDoneText == "Last done today · once")
+    }
+
+    @Test func specialExercisesAreThoseNoOtherPlanHas() {
+        let push = makePlan(context, "Squat", "Curl"), pull = makePlan(context, "Squat", "Row")
+        #expect(specialExercises(of: push, among: [push, pull]) == ["Curl"])
     }
 
     @Test func aWorkoutWithoutSetsIsNotDone() {

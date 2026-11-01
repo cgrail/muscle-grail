@@ -25,7 +25,7 @@ public struct SyncStatusView: View {
     }
 }
 
-/// Unfinished workouts, then the plans in `trainingOrder`: the one done longest ago is next up, the one done last comes last.
+/// A running workout on top, then the plans in `trainingOrder`: the one done longest ago is next up, the one done last comes last.
 /// Picking a plan starts a workout, once none runs.
 public struct WorkoutPicker: View {
     @Environment(\.modelContext) private var context
@@ -40,11 +40,14 @@ public struct WorkoutPicker: View {
     public var body: some View {
         List {
             let training = context.isTraining
-            ForEach(unfinished) { workout in
-                Button(String(localized: "Continue \(workout.title)", bundle: .module), systemImage: "play.fill") { onPick(workout) }
-            }
             if training {
-                Text("Finish the running workout to start another.", bundle: .module).foregroundStyle(.secondary)
+                Section {
+                    ForEach(unfinished) { running($0) }
+                } header: {
+                    Text("Continue", bundle: .module)
+                } footer: {
+                    Text("Finish the running workout to start another.", bundle: .module)
+                }
             }
             let order = trainingOrder(plans)
             if let next = order.first {
@@ -67,17 +70,33 @@ public struct WorkoutPicker: View {
         .task(id: plans.count) { await PhotoCache.shared.download(plans.flatMap { $0.trainedItems.map(\.exerciseID) }) }
     }
 
+    private func running(_ workout: Workout) -> some View {
+        Button { onPick(workout) } label: {
+            HStack {
+                if let plan = workout.plan { PlanLabel(plan, among: plans) } else { Text(workout.title).font(.headline) }
+                #if !os(watchOS) // no room beside the name
+                Spacer()
+                Image(systemName: "play.circle.fill").font(.largeTitle).foregroundStyle(.tint)
+                #endif
+            }
+        }
+        .accessibilityLabel(String(localized: "Continue \(workout.title)", bundle: .module))
+    }
+
     private func start(_ plan: Plan) -> some View {
-        Button { onPick(context.startWorkout(plan)) } label: { PlanLabel(plan) }
+        Button { onPick(context.startWorkout(plan)) } label: { PlanLabel(plan, among: plans) }
     }
 }
 
-/// A plan as the lists show it: its picture, its name, what it trains and how many days ago it was last done.
+/// A plan as the lists show it: its picture, its name, what it trains, the exercises no other of `plans` has,
+/// and when and how often it was done.
 public struct PlanLabel: View {
+    @Environment(\.modelContext) private var context
     private let plan: Plan
+    private let plans: [Plan]
 
-    public init(_ plan: Plan) {
-        self.plan = plan
+    public init(_ plan: Plan, among plans: [Plan]) {
+        (self.plan, self.plans) = (plan, plans)
     }
 
     public var body: some View {
@@ -91,11 +110,9 @@ public struct PlanLabel: View {
                 Text(plan.title).font(.headline)
                 Group {
                     if let focus = plan.focus { Text(verbatim: focus) }
-                    if let last = plan.lastDone {
-                        Text("Last done \(daysAgo(last))", bundle: .module)
-                    } else {
-                        Text("Not done yet", bundle: .module)
-                    }
+                    let special = specialExercises(of: plan, among: plans).map { context.exerciseName($0) }
+                    if !special.isEmpty { Text(verbatim: special.joined(separator: ", ")).lineLimit(1) }
+                    Text(verbatim: plan.lastDoneText)
                 }
                 .font(.caption).foregroundStyle(.secondary)
             }
@@ -103,7 +120,7 @@ public struct PlanLabel: View {
     }
 }
 
-/// A plan's picture: the emoji of its funny name, or of what it trains, on a tinted tile.
+/// A plan's picture: the emoji of its funny name, or of what it trains, on a tile in the plan's color.
 public struct PlanPicture: View {
     private let plan: Plan
     private let size: Double
@@ -116,9 +133,14 @@ public struct PlanPicture: View {
         Text(verbatim: plan.emoji)
             .font(.system(size: size * 0.6))
             .frame(width: size, height: size)
-            .background(.tint.opacity(0.15), in: .rect(cornerRadius: size / 4))
+            .background(plan.color.gradient, in: .rect(cornerRadius: size / 4))
             .accessibilityHidden(true) // the name beside it says it
     }
+}
+
+public extension Plan {
+    /// The plan's color, from its place in the list, so plans side by side differ.
+    var color: Color { [Color.orange, .pink, .purple, .indigo, .blue, .teal, .green, .mint, .red][abs(order) % 9] }
 }
 
 /// An exercise's name, kept current as its catalog entry changes or arrives.
