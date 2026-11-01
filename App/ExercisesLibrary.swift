@@ -3,14 +3,18 @@ import Core
 import SwiftData
 import SwiftUI
 
-/// Every exercise, the user's own and the bundled ones, listed like Apple Music's songs: search, sort, add to a plan,
-/// or double-click for the details. The selected one previews on the right, as in Finder.
+/// Every exercise, the user's own and the bundled ones, listed like Apple Music's songs or shown as thumbnails to zoom:
+/// search, sort, add to a plan, or double-click for the details. The selected one previews on the right, as in Finder.
 struct ExercisesLibrary: View {
     struct Row: Identifiable {
         let id: String, name: String, muscles: String, equipment: String
     }
 
     struct Detail: Identifiable { let id: String }
+
+    enum Layout: String { case list, thumbnails }
+
+    static let thumbnailSizes = 64.0...256.0
 
     @Environment(\.modelContext) private var context
     @Query(sort: \CatalogEntry.name) private var entries: [CatalogEntry]
@@ -22,6 +26,8 @@ struct ExercisesLibrary: View {
     @State private var order = [KeyPathComparator(\Row.name)]
     @State private var detail: Detail?
     @State private var previewing = false
+    @AppStorage("exercisesLayout") private var layout = Layout.list
+    @AppStorage("thumbnailSize") private var thumbnailSize = 128.0
     @FocusState private var tableFocused: Bool
 
     var body: some View {
@@ -29,30 +35,32 @@ struct ExercisesLibrary: View {
         let bundled = CatalogExercise.all.filter(filter.admits).map { Row(id: $0.id, name: $0.label, muscles: $0.primaryMuscles.map(catalogTerm).joined(separator: ", "), equipment: $0.equipment.map(catalogTerm) ?? "") }
         let rows = (own + bundled).filter { search.isEmpty || matchesEveryWord(of: search, in: [$0.name, $0.muscles, $0.equipment]) }
         NavigationStack { // puts the preview under the toolbar, which then spans the table and the preview in one color
-            Table(rows.sorted(using: order), selection: $selection, sortOrder: $order) {
-                TableColumn("Exercise", value: \.name) { row in
-                    HStack {
-                        ExerciseThumbnail(id: row.id, size: 28)
-                        Text(row.name)
-                    }
+            Group {
+                switch layout {
+                case .list: table(rows.sorted(using: order))
+                case .thumbnails:
+                    ExerciseGrid(rows: rows.sorted(using: order), selection: $selection, size: $thumbnailSize,
+                                 open: { detail = Detail(id: $0) }, actions: actions)
                 }
-                TableColumn("Muscles", value: \.muscles)
-                TableColumn("Equipment", value: \.equipment)
-            }
-            .focused($tableFocused)
-            .contextMenu(forSelectionType: String.self) { ids in
-                Menu("Add to Plan") {
-                    ForEach(plans) { plan in
-                        Button(plan.title) { for id in ids { context.addNew(id, to: plan) } }
-                    }
-                }
-                .disabled(ids.isEmpty || plans.isEmpty || !newer.isEmpty)
-                Button("Details") { detail = ids.first.map(Detail.init) }.disabled(ids.count != 1)
-            } primaryAction: { ids in
-                detail = ids.first.map(Detail.init)
             }
             .searchable(text: $search, prompt: "Exercise, muscle or equipment")
             .toolbar {
+                if layout == .thumbnails {
+                    Slider(value: $thumbnailSize, in: Self.thumbnailSizes) {
+                        Text("Size")
+                    } minimumValueLabel: {
+                        Image(systemName: "photo").imageScale(.small)
+                    } maximumValueLabel: {
+                        Image(systemName: "photo").imageScale(.large)
+                    }
+                    .frame(width: 140)
+                }
+                Picker("View", selection: $layout) {
+                    Label("List", systemImage: "list.bullet").tag(Layout.list)
+                    Label("Thumbnails", systemImage: "square.grid.2x2").tag(Layout.thumbnails)
+                }
+                .pickerStyle(.segmented)
+                .labelStyle(.iconOnly)
                 FilterMenu(filter: $filter)
                 Button("Preview", systemImage: "sidebar.trailing") { previewing.toggle() }
             }
@@ -75,6 +83,34 @@ struct ExercisesLibrary: View {
             // Opening or closing the preview takes the table's focus, and with it the arrow keys; take it back once it's laid out.
             .onChange(of: previewing) { Task { tableFocused = true } }
         }
+    }
+
+    private func table(_ rows: [Row]) -> some View {
+        Table(rows, selection: $selection, sortOrder: $order) {
+            TableColumn("Exercise", value: \.name) { row in
+                HStack {
+                    ExerciseThumbnail(id: row.id, size: 28)
+                    Text(row.name)
+                }
+            }
+            TableColumn("Muscles", value: \.muscles)
+            TableColumn("Equipment", value: \.equipment)
+        }
+        .focused($tableFocused)
+        .contextMenu(forSelectionType: String.self) { actions($0) } primaryAction: { ids in
+            detail = ids.first.map(Detail.init)
+        }
+    }
+
+    /// What a right-click offers for the exercises it's on, in the list and as thumbnails.
+    @ViewBuilder private func actions(_ ids: Set<String>) -> some View {
+        Menu("Add to Plan") {
+            ForEach(plans) { plan in
+                Button(plan.title) { for id in ids { context.addNew(id, to: plan) } }
+            }
+        }
+        .disabled(ids.isEmpty || plans.isEmpty || !newer.isEmpty)
+        Button("Details") { detail = ids.first.map(Detail.init) }.disabled(ids.count != 1)
     }
 }
 #endif
