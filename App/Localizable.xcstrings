@@ -651,6 +651,16 @@
         }
       }
     },
+    "Describe exercises" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen beschreiben"
+          }
+        }
+      }
+    },
     "Describe exercises, like 3x10 bench press at 60 kg" : {
       "localizations" : {
         "de" : {
@@ -1823,6 +1833,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Teilen der Pläne beenden?"
+          }
+        }
+      }
+    },
+    "Suggest" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschlagen"
+          }
+        }
+      }
+    },
+    "Suggestion" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vorschlag"
           }
         }
       }
