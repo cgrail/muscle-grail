@@ -28,6 +28,12 @@ import Testing
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 100))
     }
 
+    @Test func aBodyweightMoveShowsTheWeightItWasGiven() {
+        let item = makePlan(context, "chin-ups").sortedItems[0]
+        context.setTargets(item, weightKg: 10)
+        #expect(item.showsWeight)
+    }
+
     @Test func reorderingMovesAnExercise() {
         let plan = makePlan(context, "Bench", "Squat", "Row")
         context.reorder(plan.sortedItems, fromOffsets: [2], toOffset: 0)

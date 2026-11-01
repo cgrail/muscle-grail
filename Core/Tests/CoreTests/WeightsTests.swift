@@ -50,4 +50,20 @@ struct WeightsTests {
         #expect(Weights.previous(before: 0, for: "squat") == 0)
         #expect(Weights.next(after: 48, for: "kettlebell-swing") == 48)
     }
+
+    @Test func bodyweightMovesHaveNoWeight() {
+        #expect(["chin-ups", "back-extension", "box-jump"].allSatisfy { !Weights.used(by: $0) })
+    }
+
+    @Test func weightedBodyweightMovesHaveAWeight() {
+        #expect(Weights.used(by: "weighted-pull-up"))
+    }
+
+    @Test func exercisesWithALoadHaveAWeight() {
+        #expect(["bicep-curl", "assisted-pull-ups"].allSatisfy(Weights.used))
+    }
+
+    @Test func ownExercisesHaveAWeight() {
+        #expect(Weights.used(by: "00000000-0000-0000-0000-000000000007"))
+    }
 }

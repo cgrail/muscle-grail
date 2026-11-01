@@ -122,8 +122,12 @@ private struct PlanRow: View {
             Spacer()
             OwnerButton(item: item).frame(width: Column.owner)
             TargetsButton(item: item).frame(width: Column.targets, alignment: .leading)
-            WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
-                .frame(width: Column.weight, alignment: .leading)
+            if item.showsWeight {
+                WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
+                    .frame(width: Column.weight, alignment: .leading)
+            } else {
+                Color.clear.frame(width: Column.weight) // a bodyweight move has no weight
+            }
             Menu {
                 Button("Details", systemImage: "info.circle") { showingDetail = true }
                 Button("Replace with…", systemImage: "arrow.left.arrow.right") { replacing = true }
@@ -142,51 +146,6 @@ private struct PlanRow: View {
         .sheet(isPresented: $showingDetail) { ExerciseDetail(id: item.exerciseID) }
         .sheet(isPresented: $replacing) {
             ExercisePicker(title: "Replace with") { id in ForWhom.edit(item.plan, item, asking: $forWhom) { context.replace(item, with: id, forBoth: $0) } }
-        }
-    }
-}
-
-/// An exercise's sets and reps as text, "3 × 10". A click opens them to type or step.
-struct TargetsButton: View {
-    @Environment(\.modelContext) private var context
-    let item: PlanItem
-    @State private var editing = false
-
-    var body: some View {
-        Button { editing = true } label: {
-            HStack(spacing: 4) {
-                Text(verbatim: "\(item.targetSets)").fontWeight(.semibold)
-                Text(verbatim: "× \(item.targetReps)").foregroundStyle(.secondary)
-            }
-            .monospacedDigit()
-            .contentShape(.rect)
-        }
-        .buttonStyle(.plain)
-        .help("Click to change the sets and reps.")
-        .popover(isPresented: $editing) {
-            Grid(alignment: .leading) {
-                GridRow {
-                    Text("Sets")
-                    count("Sets", item.targetSets, in: 1...20) { context.setTargets(item, sets: $0) }
-                }
-                GridRow {
-                    Text("Reps")
-                    count("Reps", item.targetReps, in: 1...100) { context.setTargets(item, reps: $0) }
-                }
-            }
-            .padding()
-        }
-    }
-
-    /// A number to type, or to step to. A typed one outside `range` lands on its nearest end.
-    private func count(_ title: LocalizedStringKey, _ value: Int, in range: ClosedRange<Int>, set: @escaping (Int) -> Void) -> some View {
-        let binding = Binding { value } set: { set(min(max($0, range.lowerBound), range.upperBound)) }
-        return Stepper(value: binding, in: range) {
-            TextField(title, value: binding, format: .number)
-                .textFieldStyle(.roundedBorder)
-                .multilineTextAlignment(.trailing)
-                .monospacedDigit()
-                .frame(width: 44)
         }
     }
 }
