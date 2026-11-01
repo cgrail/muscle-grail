@@ -23,6 +23,10 @@ struct CatalogTests {
         #expect(bench.imageURL?.absoluteString == "https://raw.githubusercontent.com/RepDB/exercise-dataset/\(CatalogExercise.repdbCommit)/images/flat/b-start.webp")
     }
 
+    @Test func anExtraShowsItsOwnDrawing() {
+        #expect(CatalogExercise.byID["machine-torso-rotation"]?.imageURL?.isFileURL == true)
+    }
+
     @Test func exerciseWithoutImagesHasNoImageURL() {
         let plank = CatalogExercise(id: "p", name: "Plank", equipment: nil, primaryMuscles: ["rectus_abdominis"], images: [])
         #expect(plank.imageURL == nil)

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Machine Torso Rotation, a stick figure drawn for Muscle Grail. Rendered to Core/Sources/Core/Extras/machine-torso-rotation.png -->
+  <defs>
+    <marker id="head" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#E5484D"/>
+    </marker>
+  </defs>
+  <rect width="512" height="512" fill="#F4F1EA"/>
+  <g stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- floor -->
+    <line x1="56" y1="446" x2="456" y2="446" stroke="#D6D0C4" stroke-width="8"/>
+    <!-- machine: weight stack, frame, seat, handle post -->
+    <rect x="86" y="236" width="64" height="196" rx="8" fill="#C3C7CE"/>
+    <path d="M90 284 H146 M90 316 H146 M90 348 H146 M90 380 H146" stroke="#A9AEB7" stroke-width="5"/>
+    <path d="M118 446 V128 H196" stroke="#7D838D" stroke-width="12"/>
+    <path d="M254 446 V336 M206 446 H306" stroke="#7D838D" stroke-width="12"/>
+    <rect x="190" y="314" width="128" height="24" rx="12" fill="#7D838D"/>
+    <path d="M400 446 V196 M400 210 H344 M344 192 V228" stroke="#7D838D" stroke-width="12"/>
+    <!-- the rotation's far side, behind the body -->
+    <path d="M334 244 A78 22 0 0 0 178 244" stroke="#E5484D" stroke-width="7" stroke-dasharray="4 14" opacity="0.6"/>
+    <!-- stick figure, seated, facing right -->
+    <g stroke="#2B2D31" stroke-width="16">
+      <circle cx="270" cy="142" r="30"/>
+      <path d="M262 178 L252 302"/>
+      <path d="M252 302 L340 306 L346 420 L376 428"/>
+      <path d="M260 196 L304 232 L338 210"/>
+    </g>
+    <!-- the rotation's near side, in front of the body -->
+    <path d="M178 244 A78 22 0 0 0 334 244" stroke="#E5484D" stroke-width="7" marker-end="url(#head)"/>
+  </g>
+</svg>

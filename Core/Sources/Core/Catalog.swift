@@ -29,8 +29,10 @@ public struct CatalogExercise: Identifiable, Sendable {
     }
 
     // shortcut: images (~20 MB in total) load from RepDB's GitHub, so they show placeholders offline; bundle thumbnails if plans get built offline
+    // Our extras have no RepDB images: their own drawing ships in Core, as `Extras/<id>.png`.
     public var imageURL: URL? {
-        images.first.flatMap { URL(string: "https://raw.githubusercontent.com/RepDB/exercise-dataset/\(Self.repdbCommit)/\($0)") }
+        guard let path = images.first else { return Bundle.module.url(forResource: id, withExtension: "png", subdirectory: "Extras") }
+        return URL(string: "https://raw.githubusercontent.com/RepDB/exercise-dataset/\(Self.repdbCommit)/\(path)")
     }
 
     /// Whether the app runs in German, which RepDB has names and steps for. It only changes with a relaunch.
