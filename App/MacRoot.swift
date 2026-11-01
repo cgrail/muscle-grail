@@ -70,7 +70,7 @@ struct MacRootView: View {
                     PlanSyncBadge(plan: plan)
                 }
             } icon: {
-                PlanArtwork(plan: plan, size: 20)
+                PlanPicture(plan, size: 20)
             }
             .badge(plan.sortedItems.count)
             .tag(Page.plan(plan))
@@ -104,16 +104,6 @@ struct MacRootView: View {
     private func delete(_ plan: Plan) {
         if page == .plan(plan) { page = nil }
         context.deletePlan(plan)
-    }
-}
-
-/// A plan's artwork, like a playlist's: its first exercise's photo.
-struct PlanArtwork: View {
-    let plan: Plan
-    let size: Double
-
-    var body: some View {
-        ExerciseThumbnail(id: plan.sortedItems.first?.exerciseID ?? "", size: size, placeholder: "list.bullet.clipboard")
     }
 }
 #endif

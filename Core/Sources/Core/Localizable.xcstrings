@@ -75,6 +75,18 @@
         }
       }
     },
+    "Abs of Steel" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stahlbauch"
+          }
+        }
+      }
+    },
     "Added %@" : {
       "localizations" : {
         "de" : {
@@ -167,6 +179,18 @@
         }
       }
     },
+    "Armageddon" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Armageddon"
+          }
+        }
+      }
+    },
     "Arms" : {
       "localizations" : {
         "de" : {
@@ -201,6 +225,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rücken"
+          }
+        }
+      }
+    },
+    "Back to the Future" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zurück in die Zukunft"
           }
         }
       }
@@ -287,6 +323,18 @@
         }
       }
     },
+    "Bench Warmers" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bankdrücker-Bande"
+          }
+        }
+      }
+    },
     "bicep_curl_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -337,6 +385,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bicycle"
+          }
+        }
+      }
+    },
+    "Boulder Shoulders" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Felsenschultern"
           }
         }
       }
@@ -489,6 +549,18 @@
         }
       }
     },
+    "Chesty McChestface" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brusti McBrustface"
+          }
+        }
+      }
+    },
     "climbing_rope" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -503,6 +575,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Climbing rope"
+          }
+        }
+      }
+    },
+    "Cold Shoulder" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalte Schulter"
           }
         }
       }
@@ -537,12 +621,36 @@
         }
       }
     },
+    "Core-ocalypse" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bauchpokalypse"
+          }
+        }
+      }
+    },
     "Created the plan" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plan erstellt"
+          }
+        }
+      }
+    },
+    "Curl Power" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curl-Power"
           }
         }
       }
@@ -573,6 +681,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plan gelöscht"
+          }
+        }
+      }
+    },
+    "Delt With It" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delta Force"
           }
         }
       }
@@ -691,6 +811,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lower back"
+          }
+        }
+      }
+    },
+    "Everything Hurts" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alles tut weh"
           }
         }
       }
@@ -859,6 +991,18 @@
         }
       }
     },
+    "Got Your Back" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rückendeckung"
+          }
+        }
+      }
+    },
     "Gym on %lld days in the last %lld weeks" : {
       "localizations" : {
         "de" : {
@@ -901,6 +1045,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hamstrings"
+          }
+        }
+      }
+    },
+    "Head to Toe Woe" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muskelkater von Kopf bis Fuß"
           }
         }
       }
@@ -995,6 +1151,18 @@
         }
       }
     },
+    "International Chest Day" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Internationaler Brusttag"
+          }
+        }
+      }
+    },
     "jump_rope" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1037,6 +1205,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zuletzt %@"
+          }
+        }
+      }
+    },
+    "Lat Attack" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lat-Attacke"
           }
         }
       }
@@ -1091,6 +1271,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lats"
+          }
+        }
+      }
+    },
+    "Leg Day Sucks" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beintag, na toll"
           }
         }
       }
@@ -1321,6 +1513,18 @@
         }
       }
     },
+    "Pec Deck Party" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Butterfly-Party"
+          }
+        }
+      }
+    },
     "pec_deck" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1353,6 +1557,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chest"
+          }
+        }
+      }
+    },
+    "Plank You Very Much" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brett vorm Bauch"
           }
         }
       }
@@ -1483,6 +1699,18 @@
         }
       }
     },
+    "Pull Request" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pull Request"
+          }
+        }
+      }
+    },
     "pull_up_bar" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1533,6 +1761,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quadriceps"
+          }
+        }
+      }
+    },
+    "Quadzilla" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quadzilla"
           }
         }
       }
@@ -1807,6 +2047,18 @@
         }
       }
     },
+    "Shrug Life" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulterzucken"
+          }
+        }
+      }
+    },
     "shrug_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1831,6 +2083,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Melde dich bei iCloud an, um zu synchronisieren"
+          }
+        }
+      }
+    },
+    "Six-Pack Hunt" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sixpack-Jagd"
           }
         }
       }
@@ -2053,6 +2317,18 @@
         }
       }
     },
+    "Sun's Out, Guns Out" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sonne raus, Bizeps raus"
+          }
+        }
+      }
+    },
     "suspension_trainer" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -2091,6 +2367,18 @@
         }
       }
     },
+    "The Full Monty" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ganz oder gar nicht"
+          }
+        }
+      }
+    },
     "This deletes your plans, workouts and exercises on every device and in iCloud. It can't be undone. A backup on the Mac can bring them back." : {
       "localizations" : {
         "de" : {
@@ -2111,6 +2399,18 @@
         }
       }
     },
+    "Thunder Thighs" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donnerschenkel"
+          }
+        }
+      }
+    },
     "tibialis_anterior" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -2125,6 +2425,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shins"
+          }
+        }
+      }
+    },
+    "Total Body Meltdown" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ganzkörper-Kernschmelze"
           }
         }
       }
@@ -2207,6 +2519,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Treadmill"
+          }
+        }
+      }
+    },
+    "Tricep Trouble" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trizeps-Terror"
           }
         }
       }
@@ -2301,6 +2625,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gewicht"
+          }
+        }
+      }
+    },
+    "Wobbly Walk Home" : {
+      "comment" : "A funny plan name, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wackelbeine"
           }
         }
       }

@@ -3,7 +3,8 @@
 ## 1.0 (current)
 
 ### Plans
-- The Mac app looks like Apple Music: plans sit in the sidebar like playlists, with their first exercise's photo as artwork. A plan opens as a table of its exercises with sets, reps and weight to edit in place, and a search to find an exercise in it. Under Exercises, every exercise is listed with its muscles and equipment, to sort, search and add to a plan.
+- Plans get funny names from what they train, like Quadzilla, Armageddon or Core-ocalypse, in English or German, each with its own emoji as the plan's picture in Train, Plans and the Mac's sidebar. A new plan gets one with its first exercise, a GymBook import with its exercises, and the name follows along as you, the plan assistant or Claude change the exercises. A name you typed yourself stays, and its plan shows the emoji of what it trains. The dice beside a plan's name, on the iPhone and the Mac, picks the next funny name.
+- The Mac app looks like Apple Music: plans sit in the sidebar like playlists, with their emoji as artwork. A plan opens as a table of its exercises with sets, reps and weight to edit in place, and a search to find an exercise in it. Under Exercises, every exercise is listed with its muscles and equipment, to sort, search and add to a plan.
 - On the Mac, the up and down arrow keys move between a plan's exercises and through the exercise library, with the preview following along.
 - Move an exercise to another plan from its menu, on the Mac and the iPhone. It keeps its sets, reps and weight.
 - On the Mac, All plans shows every plan as a column side by side, with what it trains and its exercises as cards with their sets and reps and a weight to step. Drag an exercise by its grip onto another column, or right-click it and choose Move to, to move it there with its sets, reps and weight; add an exercise at the bottom of a column; click a plan's name to open it. The toolbar switches between All plans and a single plan.
@@ -40,7 +41,7 @@
 - An exercise's details, opened from a plan or the Mac's exercise library, show the catalog's steps for how to do it. On the watch, an opened exercise shows how to do it under its sets.
 - Weight steppers only offer weights the gym has, by the exercise's equipment: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, kettlebells in their sizes, machines and cables in 5 kg steps.
 - Only one workout runs at a time: finish it before starting another plan.
-- Plans take turns: the plan after the one you did last comes first as "Next up", and every plan shows when you last did it.
+- The plan you haven't done for longest comes first as "Next up", and the one you did last comes last. Every plan shows how many days ago you last did it: today, yesterday, 5 days ago, 2 weeks ago.
 - Train on the iPhone or the Apple Watch, fully offline. Each set prefills from the set just done, else from last time, else from the plan.
 - On the iPhone and the Mac, a workout lists its exercises as cards with the next set's weight and reps and how many sets are done, the next exercise to do outlined; tick off its next set right in the list. Open one to see its sets as dots and the next set in large type: log it in one tap, adjust it first with large − and + buttons that step through the gym's weights (or type the weight), or log all remaining sets at once; once its sets are done, the list comes back. Summary shows the volume lifted, the sets done, how long you trained and each exercise's sets before Finish workout ends it, and shows on its own after the last set of the last exercise.
 - Log a set with one tap, or all of an exercise's remaining sets with Log all; swipe a logged set to delete it.

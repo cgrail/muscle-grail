@@ -22,8 +22,15 @@ public extension ModelContext {
         file.sessions.filter { workout($0.id) == nil }
     }
 
-    /// Imports `file`: its plans, apart from those named in `leavingOut` and those you have by name, which stay as they are,
-    /// and each workout with the sets done in it, under the plan of its name; a plan left out leaves its workouts without one.
+    /// The names of `file`'s plans you have, which importing leaves as they are: one by that name, or one imported before.
+    func gymBookPlansHere(_ file: GymBook.File) -> Set<String> {
+        let names = Set(((try? fetch(FetchDescriptor<Plan>())) ?? []).map(\.name))
+        return Set(file.plans.map(\.name).filter { names.contains($0) || plan(importedPlan($0)) != nil })
+    }
+
+    /// Imports `file`: its plans, each with a funny name for what it trains, apart from those named in `leavingOut` and
+    /// those you have (`gymBookPlansHere`), which stay as they are, and each workout with the sets done in it, under the plan
+    /// of its name; a plan left out leaves its workouts without one.
     /// `exercises` maps a GymBook name to an exercise here, and one it leaves out becomes your own; without it,
     /// `gymBookMatches` decides. An exercise GymBook last showed in lb shows in lb. Returns how many workouts it added:
     /// importing the same file again adds none.
@@ -38,13 +45,18 @@ public extension ModelContext {
             return id
         }
         var plans = Dictionary(((try? fetch(FetchDescriptor<Plan>())) ?? []).map { ($0.name, $0.id) }) { first, _ in first }
-        for plan in file.plans where plans[plan.name] == nil && !leavingOut.contains(plan.name) {
-            let new = addPlan()
-            rename(new, to: plan.name)
-            for planned in plan.exercises {
-                setTargets(add(id(planned.exercise), to: new), sets: planned.sets, reps: planned.reps, weightKg: planned.weightKg)
+        for plan in file.plans where plans[plan.name] == nil {
+            let imported = importedPlan(plan.name)
+            if self.plan(imported) == nil {
+                guard !leavingOut.contains(plan.name) else { continue }
+                let new = addPlan(id: imported)
+                rename(new, to: plan.name) // kept while its exercises tell nothing it trains
+                for planned in plan.exercises {
+                    setTargets(add(id(planned.exercise), to: new), sets: planned.sets, reps: planned.reps, weightKg: planned.weightKg)
+                }
+                nameFunnily(new, force: true)
             }
-            plans[plan.name] = new.id
+            plans[plan.name] = imported
         }
         let workouts = newWorkouts(in: file)
         for session in workouts {
@@ -60,6 +72,9 @@ public extension ModelContext {
         }
         return workouts.count
     }
+
+    /// The id of the plan imported for GymBook's plan `name`: it gets a funny name, so its name can't tell it.
+    private func importedPlan(_ name: String) -> UUID { GymBook.id("plan \(name)") }
 
     /// The unit GymBook last showed `name`'s weight in, or planned it in.
     private func unit(of name: String, in file: GymBook.File) -> WeightUnit? {

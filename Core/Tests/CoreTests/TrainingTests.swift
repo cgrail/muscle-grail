@@ -44,18 +44,19 @@ import Testing
         return plans
     }
 
-    @Test func nextPlanFollowsTheOneDoneLast() {
-        let plans = rotation(done: [2, 0])
-        #expect(nextPlan(plans)?.name == "B")
+    @Test func thePlanDoneLongestAgoComesFirstAndTheOneDoneLastLast() {
+        #expect(trainingOrder(rotation(done: [2, 0, 1])).map(\.name) == ["C", "A", "B"])
     }
 
-    @Test func nextPlanStartsOverAfterTheLast() {
-        let plans = rotation(done: [0, 1, 2])
-        #expect(nextPlan(plans)?.name == "A")
+    @Test func plansNeverDoneComeFirstInPlanOrder() {
+        #expect(trainingOrder(rotation(done: [0])).map(\.name) == ["B", "C", "A"])
     }
 
-    @Test func withoutHistoryTheFirstPlanIsNext() {
-        #expect(nextPlan(rotation(done: []))?.name == "A")
+    @Test func daysAgoCountsCalendarDaysNotHours() {
+        let morning = Calendar.current.date(bySettingHour: 8, minute: 0, second: 0, of: .now)!
+        #expect(daysAgo(morning.addingTimeInterval(-3600), from: morning) == "today")
+        #expect(daysAgo(morning.addingTimeInterval(-10 * 3600), from: morning) == "yesterday") // 10 pm
+        #expect(daysAgo(morning.addingTimeInterval(-14 * 86400), from: morning) == "2 weeks ago")
     }
 
     @Test func aWorkoutWithoutSetsIsNotDone() {

@@ -113,12 +113,12 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
         #expect(context.importGymBook(file) == 2)
         #expect(context.importGymBook(file) == 0)
         #expect(try context.fetchCount(FetchDescriptor<LoggedSet>()) == 3)
+        #expect(try context.fetchCount(FetchDescriptor<Plan>()) == 1)
     }
 
     @Test func aWorkoutNameBecomesAPlanOfItsNewestWorkout() throws {
         context.importGymBook(file)
         let plan = try #require(context.fetch(FetchDescriptor<Plan>()).first)
-        #expect(plan.name == "MoDi 1")
         #expect(plan.sortedItems.map { context.exerciseName($0.exerciseID) } == ["Machine Torso Rotation", "Incline Dumbbell Press"])
         #expect(plan.sortedItems.map(\.targetSets) == [2, 1]) // the skipped set was planned
         #expect(workouts.allSatisfy { $0.plan == plan })
@@ -127,9 +127,19 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
     @Test func aBackupsPlansComeInWithTheirTargets() throws {
         context.importGymBook(try GymBook.read(gymBookBackupSample))
         let plans = try context.fetch(FetchDescriptor<Plan>(sortBy: [SortDescriptor(\.order)]))
-        #expect(plans.map(\.name) == ["MoDi 1", "Anfang"])
+        #expect(plans.count == 2)
         #expect(plans[0].sortedItems.map { [$0.targetSets, $0.targetReps] } == [[2, 10], [3, 10]])
         #expect(plans[0].sortedItems.map(\.targetWeightKg) == [WeightUnit.lb.kg(130), 22])
+    }
+
+    @Test func anImportedPlanGetsAFunnyName() throws {
+        context.importGymBook(file)
+        #expect(try context.fetch(FetchDescriptor<Plan>()).map(\.name) == ["Core-ocalypse"])
+    }
+
+    @Test func aPlanImportedBeforeIsHereUnderItsFunnyName() {
+        context.importGymBook(file)
+        #expect(context.gymBookPlansHere(file) == ["MoDi 1"])
     }
 
     @Test func aPlanLeftOutLeavesItsWorkoutsWithoutOne() throws {
@@ -200,9 +210,9 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
         let other = try Store.makeContainer(inMemory: true) // kept: a context traps once its container is gone
         let rebuilt = other.mainContext
         rebuilt.importGymBook(try GymBook.read(context.gymBookExport()))
-        let sets = { (context: ModelContext) in
+        let sets = { (context: ModelContext) in // without the plan's name: an imported plan gets a funny one
             try context.fetch(Workout.history).map { workout in
-                [workout.title] + workout.exercises.flatMap { exercise in
+                workout.exercises.flatMap { exercise in
                     exercise.sets.map { "\(context.exerciseName(exercise.id)) \($0.reps) \($0.weightKg)" }
                 }
             }

@@ -25,7 +25,8 @@ public struct SyncStatusView: View {
     }
 }
 
-/// Unfinished workouts, the plan that is next in rotation, then the other plans. Picking a plan starts a workout, once none runs.
+/// Unfinished workouts, then the plans in `trainingOrder`: the one done longest ago is next up, the one done last comes last.
+/// Picking a plan starts a workout, once none runs.
 public struct WorkoutPicker: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -45,12 +46,12 @@ public struct WorkoutPicker: View {
             if training {
                 Text("Finish the running workout to start another.", bundle: .module).foregroundStyle(.secondary)
             }
-            let next = nextPlan(plans)
-            if let next {
+            let order = trainingOrder(plans)
+            if let next = order.first {
                 Section { start(next).disabled(training) } header: { Text("Next up", bundle: .module) }
             }
             Section {
-                ForEach(plans.filter { $0 != next }) { start($0).disabled(training) }
+                ForEach(order.dropFirst()) { start($0).disabled(training) }
                 if plans.isEmpty {
                     #if os(macOS)
                     Text("No plans yet. Create one under Plans.", bundle: .module).foregroundStyle(.secondary)
@@ -67,13 +68,31 @@ public struct WorkoutPicker: View {
     }
 
     private func start(_ plan: Plan) -> some View {
-        Button { onPick(context.startWorkout(plan)) } label: {
+        Button { onPick(context.startWorkout(plan)) } label: { PlanLabel(plan) }
+    }
+}
+
+/// A plan as the lists show it: its picture, its name, what it trains and how many days ago it was last done.
+public struct PlanLabel: View {
+    private let plan: Plan
+
+    public init(_ plan: Plan) {
+        self.plan = plan
+    }
+
+    public var body: some View {
+        HStack(spacing: 12) {
+            #if os(watchOS)
+            PlanPicture(plan, size: 32)
+            #else
+            PlanPicture(plan, size: 48)
+            #endif
             VStack(alignment: .leading) {
-                Text(plan.title)
+                Text(plan.title).font(.headline)
                 Group {
                     if let focus = plan.focus { Text(verbatim: focus) }
                     if let last = plan.lastDone {
-                        Text("Last done \(last, format: .relative(presentation: .named))", bundle: .module)
+                        Text("Last done \(daysAgo(last))", bundle: .module)
                     } else {
                         Text("Not done yet", bundle: .module)
                     }
@@ -81,6 +100,24 @@ public struct WorkoutPicker: View {
                 .font(.caption).foregroundStyle(.secondary)
             }
         }
+    }
+}
+
+/// A plan's picture: the emoji of its funny name, or of what it trains, on a tinted tile.
+public struct PlanPicture: View {
+    private let plan: Plan
+    private let size: Double
+
+    public init(_ plan: Plan, size: Double) {
+        (self.plan, self.size) = (plan, size)
+    }
+
+    public var body: some View {
+        Text(verbatim: plan.emoji)
+            .font(.system(size: size * 0.6))
+            .frame(width: size, height: size)
+            .background(.tint.opacity(0.15), in: .rect(cornerRadius: size / 4))
+            .accessibilityHidden(true) // the name beside it says it
     }
 }
 
