@@ -4,7 +4,7 @@ import SwiftData
 import SwiftUI
 
 /// A plan on the iPhone, its exercises as cards like training shows them. Edit selects exercises to move to another plan
-/// or delete, and drags them into order. The pencil beside its name renames it.
+/// or delete, and drags them into order. The pencil beside its name renames it, the dice gives it the next funny name.
 struct PlanEditor: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -30,6 +30,7 @@ struct PlanEditor: View {
                         .font(.title2)
                         .buttonStyle(.borderless) // only the pencil, not the whole row
                         .disabled(locked)
+                    FunnyNameButton(plan: plan).font(.title2).disabled(locked)
                 }
                 if locked { UpdateToEdit() }
                 ForEach(plan.sortedItems) { item in

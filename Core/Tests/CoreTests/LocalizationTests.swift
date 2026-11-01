@@ -37,6 +37,10 @@ struct LocalizationTests {
         #expect(try terms.filter { try german("Localizable")[$0] == nil } == [])
     }
 
+    @Test func everyFunnyNameHasGerman() throws {
+        #expect(try funnyNames.values.joined().map(\.key).filter { try german("Localizable")[$0] == nil } == [])
+    }
+
     /// RepDB brings German itself; a new commit of it must too.
     @Test func everyExerciseComesInGerman() {
         let missing = CatalogExercise.all.filter { $0.germanName.isEmpty || $0.germanInstructions.count != $0.instructions.count }

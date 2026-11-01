@@ -25,11 +25,14 @@ struct PlanPage: View {
         List(selection: $selection) {
             if locked { UpdateToEdit() }
             HStack(alignment: .bottom, spacing: 20) {
-                PlanArtwork(plan: plan, size: 140).shadow(radius: 6, y: 3)
+                PlanPicture(plan, size: 140).shadow(radius: 6, y: 3)
                 VStack(alignment: .leading, spacing: 6) {
-                    TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
-                        .font(.largeTitle.bold())
-                        .textFieldStyle(.plain)
+                    HStack {
+                        TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
+                            .font(.largeTitle.bold())
+                            .textFieldStyle(.plain)
+                        FunnyNameButton(plan: plan).font(.title2)
+                    }
                     if let focus = plan.focus {
                         Text(verbatim: focus).font(.title3).foregroundStyle(.tint)
                     }

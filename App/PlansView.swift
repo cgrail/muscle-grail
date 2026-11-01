@@ -16,7 +16,7 @@ struct PlansView: View {
                 ForEach(plans) { plan in
                     NavigationLink { PlanEditor(plan: plan) } label: {
                         HStack {
-                            Text(plan.title)
+                            PlanLabel(plan)
                             Spacer()
                             SharedBadge(plan: plan)
                             PlanSyncBadge(plan: plan)
@@ -63,6 +63,20 @@ struct UpdateToEdit: View {
     var body: some View {
         Label("Update Muscle Grail to edit plans. A newer version changed them. Training works as usual.", systemImage: "arrow.down.app")
             .foregroundStyle(.secondary)
+    }
+}
+
+/// The dice beside a plan's name: the next funny name for what it trains. A name it gives changes with the plan's exercises.
+struct FunnyNameButton: View {
+    @Environment(\.modelContext) private var context
+    let plan: Plan
+
+    var body: some View {
+        Button("Funny name", systemImage: "dice") { context.rollFunnyName(plan) }
+            .labelStyle(.iconOnly)
+            .buttonStyle(.borderless) // only the dice, not the whole row
+            .help("Funny name")
+            .disabled(plan.focus == nil)
     }
 }
 

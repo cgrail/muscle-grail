@@ -72,6 +72,17 @@ public extension Plan {
     /// What the plan trains, by its target sets per body region: "Leg-heavy" when one region gets more than half,
     /// else its top two while they get more than two thirds, else "Full body". Nil while it has no bundled exercise.
     var focus: String? {
+        focusRegions.map { regions in
+            switch regions.count {
+            case 1: regions[0].heavy
+            case 2: String(localized: "\(regions[0].name) & \(regions[1].name)", bundle: .module)
+            default: String(localized: "Full body", bundle: .module)
+            }
+        }
+    }
+
+    /// The regions `focus` names, the one with the most sets first: none for full body.
+    var focusRegions: [BodyRegion]? {
         var sets = [BodyRegion: Int]()
         for item in trainedItems {
             for region in CatalogExercise.byID[item.exerciseID]?.regions ?? [] { sets[region, default: 0] += item.targetSets }
@@ -79,19 +90,25 @@ public extension Plan {
         let ranked = BodyRegion.allCases.filter { sets[$0, default: 0] > 0 }.sorted { sets[$0]! > sets[$1]! }
         let total = sets.values.reduce(0, +)
         guard let top = ranked.first else { return nil }
-        if sets[top]! * 2 > total { return top.heavy }
+        if sets[top]! * 2 > total { return [top] }
         let second = ranked[1] // top has at most half, so another region has sets
-        if (sets[top]! + sets[second]!) * 3 > total * 2 { return String(localized: "\(top.name) & \(second.name)", bundle: .module) }
-        return String(localized: "Full body", bundle: .module)
+        return (sets[top]! + sets[second]!) * 3 > total * 2 ? [top, second] : []
     }
 }
 
-/// The plan to do next: the one after the plan trained most recently, in plan order and round again. Else the first.
-public func nextPlan(_ plans: [Plan]) -> Plan? {
-    let sorted = plans.sorted { $0.order < $1.order }
-    guard let last = sorted.filter({ $0.lastDone != nil }).max(by: { $0.lastDone! < $1.lastDone! }),
-          let index = sorted.firstIndex(of: last) else { return sorted.first }
-    return sorted[(index + 1) % sorted.count]
+/// Plans in the order to train them: those never done first, in plan order, then the one done longest ago,
+/// so the one done last ends the list.
+public func trainingOrder(_ plans: [Plan]) -> [Plan] {
+    plans.map { ($0, $0.lastDone ?? .distantPast) }.sorted { ($0.1, $0.0.order) < ($1.1, $1.0.order) }.map(\.0)
+}
+
+/// How long ago `date` was, in calendar days: "today", "yesterday", "5 days ago", "2 weeks ago".
+public func daysAgo(_ date: Date, from now: Date = .now) -> String {
+    let (day, today) = (Calendar.current.startOfDay(for: date), Calendar.current.startOfDay(for: now))
+    let formatter = RelativeDateTimeFormatter()
+    formatter.dateTimeStyle = .named
+    // between two midnights, the same day reads "now"
+    return day == today ? formatter.localizedString(from: DateComponents(day: 0)) : formatter.localizedString(for: day, relativeTo: today)
 }
 
 public extension Workout {

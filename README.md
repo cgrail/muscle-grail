@@ -69,14 +69,14 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 - A catalog of 650 exercises by [RepDB](https://repdb.co), with illustrations and step-by-step instructions in English and German. Filter by body region, level, equipment and category, or make your own exercise.
 - Describe what you want, typed or dictated: "3x10 bench press at 60 kg, then squats". Apple's on-device model adds it, in English or German (needs Apple Intelligence).
 - Let Claude build and extend plans through MCP, served by the Mac app on your own machine only and off until you switch it on.
-- Every plan says what it trains, like *Chest & Back*, *Leg-heavy* or *Full body*.
+- Every plan says what it trains, like *Chest & Back*, *Leg-heavy* or *Full body*, and gets a funny name and emoji from it, like *Quadzilla* 🦖, unless you name it yourself.
 - A history of every plan change, with undo, and a restore to any earlier version of a plan.
 
 ### Train on iPhone and Apple Watch
 
 - One tap logs a set, or ticks off a whole exercise like "3 × 10 at 20 kg". Swipe to delete.
 - Each set is prefilled from the set you just did, else from last time, else from the plan.
-- Plans take turns: the one after your last workout comes first as *Next up*.
+- The plan you haven't done for longest comes first as *Next up*, with how long ago each plan was: *5 days ago*, *2 weeks ago*.
 - Weights step through what your gym really has: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, machines in 5 kg steps. Machines that show pounds switch to lb per exercise.
 - How to do each exercise, with your own photo or video link, right in the workout.
 - Workouts go to Apple Health; the watch records heart rate and calories. The Mac can run a workout too.

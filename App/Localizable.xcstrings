@@ -907,6 +907,16 @@
         }
       }
     },
+    "Funny name" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lustiger Name"
+          }
+        }
+      }
+    },
     "General" : {
       "localizations" : {
         "de" : {
@@ -2137,12 +2147,12 @@
         }
       }
     },
-    "You have a plan by this name: it stays as it is." : {
+    "You have this plan: it stays as it is." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Du hast einen Plan mit diesem Namen: Er bleibt, wie er ist."
+            "value" : "Diesen Plan hast du schon: Er bleibt, wie er ist."
           }
         }
       }

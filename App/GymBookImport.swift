@@ -10,7 +10,6 @@ import SwiftUI
 struct GymBookImport: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
-    @Query private var plans: [Plan]
     let file: GymBook.File
     /// The workouts not imported before, the newest first.
     let workouts: [GymBook.Session]
@@ -38,7 +37,7 @@ struct GymBookImport: View {
     }
 
     var body: some View {
-        let here = Set(plans.map(\.name))
+        let here = context.gymBookPlansHere(file)
         let matched = file.exercises.filter { !unmatched.contains($0) }
         NavigationStack {
             Form {
@@ -49,7 +48,7 @@ struct GymBookImport: View {
                         }) {
                             Text(plan.name)
                             if here.contains(plan.name) {
-                                Text("You have a plan by this name: it stays as it is.")
+                                Text("You have this plan: it stays as it is.")
                             } else if plan.archived {
                                 Text("Archived · Exercises: \(plan.exercises.count) · Workouts: \(planWorkouts[plan.name] ?? 0)")
                             } else {

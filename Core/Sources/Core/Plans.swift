@@ -12,12 +12,12 @@ extension Plan: Ordered {}
 extension PlanItem: Ordered {}
 
 // Plan editing: every function records a `Change`, so nothing edits a model directly.
+// Changing a plan's exercises renames it funnily for what it trains, unless you typed its name (`nameFunnily`).
 public extension ModelContext {
     /// A new plan at the end of the list.
     @discardableResult
-    func addPlan() -> Plan {
+    func addPlan(id: UUID = UUID()) -> Plan {
         let last = ((try? fetch(FetchDescriptor<Plan>())) ?? []).map(\.order).max() ?? -1
-        let id = UUID()
         record(.addPlan(id: id, name: String(localized: "New plan", bundle: .module), order: last + 1))
         return plan(id)!
     }
@@ -43,6 +43,7 @@ public extension ModelContext {
     func addNew(_ exerciseID: String, to plan: Plan, own: Own? = nil, defaults: (sets: Int, reps: Int) = targetDefaults()) -> PlanItem {
         let item = add(exerciseID, to: plan, own: own)
         setTargets(item, sets: defaults.sets, reps: defaults.reps)
+        nameFunnily(plan)
         return item
     }
 
@@ -57,6 +58,7 @@ public extension ModelContext {
             let item = add(catalogID(named: exercise.name) ?? createExercise(named: exercise.name), to: plan, own: own)
             setTargets(item, sets: exercise.sets, reps: exercise.reps, weightKg: exercise.weightKg)
         }
+        nameFunnily(plan)
     }
 
     /// Changes the targets given and keeps the others.
@@ -67,6 +69,8 @@ public extension ModelContext {
     /// Moves `item` to the end of `plan`, with its sets, reps and weight. Only for you, an exercise for both stays where it was
     /// as the training partner's own, and goes into `plan` as yours.
     func move(_ item: PlanItem, to plan: Plan, forBoth: Bool = true) {
+        let from = item.plan
+        defer { nameFunnily(from); nameFunnily(plan) }
         guard !forBoth, item.ownedBy == .both else {
             return record(.moveExercise(id: item.id, plan: plan.id, order: (plan.sortedItems.last?.order ?? -1) + 1))
         }
@@ -78,6 +82,7 @@ public extension ModelContext {
     /// Only for you, an exercise for both stays as the training partner's own, and yours goes right after it.
     func replace(_ item: PlanItem, with exerciseID: String, forBoth: Bool = true) {
         let weightKg = lastWeight(of: exerciseID) ?? 0
+        defer { nameFunnily(item.plan) }
         guard !forBoth, item.ownedBy == .both, let plan = item.plan else {
             return record(.replaceExercise(id: item.id, exerciseID: exerciseID, weightKg: weightKg))
         }
@@ -91,7 +96,10 @@ public extension ModelContext {
 
     /// Removes `item`. Only for you, an exercise for both stays in the plan as the training partner's own.
     func deleteExercise(_ item: PlanItem, forBoth: Bool = true) {
+        let plan = item.plan
         record(!forBoth && item.ownedBy == .both ? .setOwner(id: item.id, own: .theirs) : .deleteExercise(id: item.id))
+        processPendingChanges() // else the plan's exercises still hold the deleted one
+        nameFunnily(plan)
     }
 
     /// Your weight in your last set of `exerciseID`, if you ever did it.
