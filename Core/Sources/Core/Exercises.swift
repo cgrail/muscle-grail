@@ -42,7 +42,7 @@ public func videoURL(_ id: String, entry: CatalogEntry?) -> URL? {
 
 /// Up to `limit` catalog names matching `query`, the user's own (`custom`) first: what the plan assistant searches.
 public func catalogNames(matching query: String, custom: [String], limit: Int = 8) -> [String] {
-    let names = custom.filter { matchesEveryWord(of: query, in: [$0]) } + CatalogExercise.all.filter { $0.matches(query) }.map(\.name)
+    let names = custom.filter { matchesEveryWord(of: query, in: [$0]) } + CatalogExercise.search(query).map(\.name)
     return Array(names.prefix(limit))
 }
 

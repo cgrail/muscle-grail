@@ -15,12 +15,9 @@ struct ExercisePicker: View {
     var body: some View {
         let query = search.trimmingCharacters(in: .whitespaces)
         let custom = entries.filter { filter.isEmpty && $0.isOwnExercise && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
-        let results = CatalogExercise.alphabetical.filter { filter.admits($0) && (query.isEmpty || $0.matches(query)) }
+        let results = CatalogExercise.search(query).filter(filter.admits)
         NavigationStack {
             List {
-                if !query.isEmpty {
-                    Button("Add “\(query)”", systemImage: "plus") { pick(context.createExercise(named: query)) }
-                }
                 ForEach(custom) { entry in
                     Button { pick(entry.id) } label: { CatalogRow(name: entry.name, detail: entry.details, photo: entry.photo) }
                         .buttonStyle(.plain)
@@ -28,6 +25,9 @@ struct ExercisePicker: View {
                 ForEach(results) { exercise in
                     Button { pick(exercise.id) } label: { CatalogRow(name: exercise.label, detail: exercise.detail, imageURL: exercise.imageURL) }
                         .buttonStyle(.plain)
+                }
+                if !query.isEmpty { // below the matches: a new exercise is for when none of them is it
+                    Button("Add “\(query)”", systemImage: "plus") { pick(context.createExercise(named: query)) }
                 }
             }
             .searchable(text: $search, prompt: "Exercise, muscle or equipment")

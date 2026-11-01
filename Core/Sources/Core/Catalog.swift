@@ -52,14 +52,31 @@ public struct CatalogExercise: Identifiable, Sendable {
     /// Whether it trains `region`; with no region, every exercise does.
     public func trains(_ region: BodyRegion?) -> Bool { region.map(regions.contains) ?? true }
 
-    /// Whether every word of `query` is in its name, muscles or equipment, in English or the user's language.
+    /// Whether every word of `query` is in its name in English, German or Spanish, or in its muscles or equipment, in
+    /// English or the user's language: "klimmzug" finds Pull-Up whatever language the app runs in.
     public func matches(_ query: String) -> Bool {
         let terms = primaryMuscles + [equipment].compactMap { $0 }
-        return matchesEveryWord(of: query, in: [name, label] + terms + terms.map(catalogTerm))
+        return matchesEveryWord(of: query, in: [name, germanName, spanishName] + terms + terms.map(catalogTerm))
     }
 
     /// The catalog in the order of its names in the user's language.
     public static let alphabetical = all.sorted { $0.label.localizedStandardCompare($1.label) == .orderedAscending }
+
+    /// The exercises that `match` `query`, the direct hits first: those named just that in English, German or Spanish, then
+    /// those whose name starts with it, then the rest, each in `alphabetical` order. An empty query matches every one.
+    public static func search(_ query: String) -> [CatalogExercise] {
+        let hits = Dictionary(grouping: alphabetical.filter { $0.matches(query) }) { $0.directness(of: query) }
+        return hits.keys.sorted().flatMap { hits[$0]! }
+    }
+
+    /// 0 if one of its names is `query`, 1 if one starts with it, else 2, ignoring case, accents and hyphens.
+    func directness(of query: String) -> Int {
+        let options: String.CompareOptions = [.caseInsensitive, .diacriticInsensitive]
+        let query = query.replacing("-", with: " ")
+        let names = [name, germanName, spanishName].map { $0.replacing("-", with: " ") }
+        if names.contains(where: { $0.compare(query, options: options) == .orderedSame }) { return 0 }
+        return names.contains { $0.range(of: query, options: options.union(.anchored)) != nil } ? 1 : 2
+    }
 
     /// The `limit` exercises whose name in English, German or Spanish is most like one of `names`, the likeliest first, with
     /// how alike, 1 for the same words: "Beinpressen" finds Leg Press by its German name, Beinpresse.
@@ -147,12 +164,12 @@ public struct CatalogFilter: Equatable, Sendable {
 /// A muscle, level, piece of equipment or category in the user's language: RepDB has them as English keys only.
 public func catalogTerm(_ term: String) -> String { String(localized: String.LocalizationValue(term), bundle: .module) }
 
-/// Whether each word of `query` turns up somewhere in `fields`, ignoring case, hyphens and a plural "s":
-/// "dumbbell curl" finds Dumbbell Bicep Curl, "squats" Barbell Back Squat and "lat-pulldowns" Lat Pulldown.
+/// Whether each word of `query` turns up somewhere in `fields`, ignoring case, accents, hyphens and a plural "s":
+/// "dumbbell curl" finds Dumbbell Bicep Curl, "squats" Barbell Back Squat, "lat-pulldowns" Lat Pulldown and "klimmzuge" Klimmzüge.
 public func matchesEveryWord(of query: String, in fields: [String]) -> Bool {
     query.split(whereSeparator: { $0 == " " || $0 == "-" }).allSatisfy { word in
         let singular = word.count > 3 && word.hasSuffix("s") ? word.dropLast() : word
-        return fields.contains { $0.localizedCaseInsensitiveContains(singular) }
+        return fields.contains { $0.localizedStandardContains(singular) }
     }
 }
 

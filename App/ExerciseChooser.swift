@@ -24,7 +24,7 @@ struct ExerciseChooser: View {
     var body: some View {
         let query = search.trimmingCharacters(in: .whitespaces)
         let custom = entries.filter { $0.isOwnExercise && (query.isEmpty || $0.name.localizedCaseInsensitiveContains(query)) }
-        let others = CatalogExercise.alphabetical.filter { query.isEmpty ? !likeliest.contains($0.id) : $0.matches(query) }
+        let others = query.isEmpty ? CatalogExercise.alphabetical.filter { !likeliest.contains($0.id) } : CatalogExercise.search(query)
         NavigationStack {
             HStack(spacing: 0) {
                 List(selection: $selection) {

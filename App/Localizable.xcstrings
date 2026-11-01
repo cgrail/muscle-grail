@@ -1547,6 +1547,26 @@
         }
       }
     },
+    "Rename" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umbenennen"
+          }
+        }
+      }
+    },
+    "Rename plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plan umbenennen"
+          }
+        }
+      }
+    },
     "Reopen Muscle Grail to switch the language." : {
       "localizations" : {
         "de" : {

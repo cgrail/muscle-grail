@@ -4,7 +4,7 @@ import SwiftData
 import SwiftUI
 
 /// A plan on the iPhone, its exercises as cards like training shows them. Edit selects exercises to move to another plan
-/// or delete, and drags them into order.
+/// or delete, and drags them into order. The pencil beside its name renames it.
 struct PlanEditor: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -14,18 +14,24 @@ struct PlanEditor: View {
     @State private var selection = Set<UUID>()
     @State private var picking = false
     @State private var forWhom: PendingEdit?
+    @State private var renaming = false
+    @State private var name = ""
+    @State private var scrolled = false
 
     var body: some View {
         let locked = !newer.isEmpty
         let editing = editMode.isEditing
         List(selection: editing ? $selection : nil) { // outside Edit, a tap beside the controls selects nothing
             Group {
+                HStack {
+                    Text(plan.title).font(.largeTitle.bold())
+                    Button("Rename", systemImage: "pencil") { (name, renaming) = (plan.name, true) }
+                        .labelStyle(.iconOnly)
+                        .font(.title2)
+                        .buttonStyle(.borderless) // only the pencil, not the whole row
+                        .disabled(locked)
+                }
                 if locked { UpdateToEdit() }
-                TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
-                    .font(.title3.weight(.semibold))
-                    .padding()
-                    .background(.fill.tertiary, in: .rect(cornerRadius: 20))
-                    .disabled(locked)
                 ForEach(plan.sortedItems) { item in
                     PlanItemCard(item: item, editing: editing, forWhom: $forWhom)
                         .disabled(locked || item.ownedBy == .partner)
@@ -39,7 +45,9 @@ struct PlanEditor: View {
             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
         }
         .listStyle(.plain)
-        .navigationTitle(plan.title)
+        .navigationTitle(scrolled ? plan.title : "") // the first row shows it, large, until it scrolls away
+        .navigationBarTitleDisplayMode(.inline)
+        .onScrollGeometryChange(for: Bool.self) { $0.contentOffset.y + $0.contentInsets.top > 40 } action: { scrolled = $1 }
         .toolbar {
             ToolbarItemGroup {
                 EditButton().disabled(locked)
@@ -68,6 +76,11 @@ struct PlanEditor: View {
             ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.addNew(id, to: plan, own: $0 ? nil : .mine) } }
         }
         .forWhom($forWhom)
+        .alert("Rename plan", isPresented: $renaming) {
+            TextField("Name", text: $name)
+            Button("Rename") { context.rename(plan, to: name) }
+            Button("Cancel", role: .cancel) {}
+        }
     }
 
     /// Runs `edit` on each selected exercise in plan order, asking once for whom if any of them is for both.
