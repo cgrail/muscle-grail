@@ -74,9 +74,15 @@ struct OwnerButton: View {
     private func badge(_ title: LocalizedStringKey, _ symbol: String, _ color: Color, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Label(title, systemImage: symbol)
+                #if os(macOS) // its help names it
                 .labelStyle(.iconOnly)
-                .foregroundStyle(color)
                 .frame(width: 28, height: 22)
+                #else
+                .font(.caption.weight(.semibold))
+                .padding(.horizontal, 10)
+                .padding(.vertical, 6)
+                #endif
+                .foregroundStyle(color)
                 .background(color.opacity(0.15), in: .rect(cornerRadius: 6))
                 .overlay { RoundedRectangle(cornerRadius: 6).strokeBorder(color.opacity(0.4)) }
                 .contentShape(.rect)

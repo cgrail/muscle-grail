@@ -18,13 +18,23 @@ struct LanguagePicker: View {
 }
 
 #if os(iOS)
-/// The iPhone's settings, behind the gear on the Train tab. The Mac has its Settings window.
+/// The gear on every tab that opens the iPhone's settings.
+struct SettingsButton: View {
+    @State private var showing = false
+
+    var body: some View {
+        Button("Settings", systemImage: "gear") { showing = true }
+            .sheet(isPresented: $showing) { SettingsSheet() }
+    }
+}
+
+/// The iPhone's settings. The Mac has its Settings window.
 struct SettingsSheet: View {
     @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
-            Form { LanguagePicker(); PartnerSettings(); Credits() }
+            Form { LanguagePicker(); Section { TargetDefaultsLink() }; PartnerSettings(); Credits() }
                 .navigationTitle("Settings")
                 .toolbar { Button("Done") { dismiss() } }
         }

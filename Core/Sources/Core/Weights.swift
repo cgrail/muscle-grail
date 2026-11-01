@@ -11,6 +11,19 @@ public enum Weights {
         ladder(for: CatalogExercise.byID[exerciseID]?.equipment, in: unit).last { $0 < weight - 0.01 } ?? 0
     }
 
+    /// Whether an exercise has a weight to set. Bodyweight moves don't: those without equipment, or on equipment that holds
+    /// or moves the body and carries no load, like a pull-up bar or a treadmill. Their weighted versions do, and so does every
+    /// exercise of the user's own.
+    public static func used(by exerciseID: String) -> Bool {
+        guard let exercise = CatalogExercise.byID[exerciseID], !exercise.name.hasPrefix("Weighted") else { return true }
+        return exercise.equipment.map { !unloaded.contains($0) } ?? false
+    }
+
+    /// RepDB's equipment that carries no weight.
+    static let unloaded: Set = ["pull_up_bar", "dip_station", "rings", "suspension_trainer", "loop_band", "resistance_band", "stability_ball",
+                                "flat_bench", "plyo_box", "ab_wheel", "glute_ham_developer", "battle_rope", "jump_rope", "climbing_rope",
+                                "treadmill", "air_bike", "bicycle", "elliptical", "rower", "ski_erg", "stair_climber", "stationary_bike"]
+
     /// A typed weight with either decimal separator, "62,5" or "62.5". Nil for anything but a weight of 0 kg or more.
     public static func parse(_ text: String) -> Double? {
         Double(text.trimmingCharacters(in: .whitespaces).replacing(",", with: ".")).flatMap { $0 >= 0 && $0.isFinite ? $0 : nil }
@@ -30,6 +43,11 @@ public enum Weights {
         default: Array(stride(from: 0.0, through: 500, by: 2.5))
         }
     }
+}
+
+public extension PlanItem {
+    /// Whether a plan shows its weight: it has one, or its exercise takes one.
+    var showsWeight: Bool { targetWeightKg > 0 || Weights.used(by: exerciseID) }
 }
 
 /// The unit an exercise's machine shows. Weights are always stored in kg; only showing, typing and stepping use the unit.

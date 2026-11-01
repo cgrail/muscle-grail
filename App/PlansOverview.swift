@@ -155,9 +155,9 @@ private struct PlanColumn: View {
     }
 }
 
-/// An exercise as a card, its grip to drag it by: its name, sets and reps, and its weight to step. A button switches it
-/// between for both and your own. The training partner's own shows greyed, without targets: theirs stay on their
-/// devices. Its context menu moves or deletes it.
+/// An exercise as a card, its grip to drag it by: its name, sets and reps, and its weight to step unless it's a bodyweight
+/// move. A button switches it between for both and your own. The training partner's own shows greyed, without targets:
+/// theirs stay on their devices. Its context menu moves or deletes it.
 private struct ExerciseCard: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
@@ -180,10 +180,12 @@ private struct ExerciseCard: View {
                 HStack(spacing: 8) {
                     TargetsButton(item: item).disabled(locked)
                     Spacer()
-                    if shared { Text("You").font(.caption.weight(.semibold)).foregroundStyle(.secondary) }
-                    WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
-                        .fixedSize()
-                        .disabled(locked)
+                    if item.showsWeight {
+                        if shared { Text("You").font(.caption.weight(.semibold)).foregroundStyle(.secondary) }
+                        WeightStepper(kg: Binding { item.targetWeightKg } set: { context.setTargets(item, weightKg: $0) }, exerciseID: item.exerciseID)
+                            .fixedSize()
+                            .disabled(locked)
+                    }
                 }
             }
             if theirs && !asPartner { OwnerNote(item: item) }
