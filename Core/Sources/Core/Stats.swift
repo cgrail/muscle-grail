@@ -125,3 +125,31 @@ public func dayProgress(steps: Double, km: Double, stepGoal: Double, kmGoal: Dou
     if kmGoal > 0 { return min(km / kmGoal, 1) }
     return stepGoal > 0 ? min(steps / stepGoal, 1) : nil
 }
+
+/// Each day's steps and kilometers, which the iPhone copies from Health to iCloud's key-value store for the Mac, which
+/// has no Health.
+public func savedDaily(in store: NSUbiquitousKeyValueStore = .default) -> (steps: [Date: Double], km: [Date: Double]) {
+    (byDay(store.dictionary(forKey: "dailySteps")), byDay(store.dictionary(forKey: "dailyKm")))
+}
+
+/// Saves what `savedDaily` reads. Without steps it keeps what's there: Health can't be read while the iPhone is locked.
+public func saveDaily(steps: [Date: Double], km: [Date: Double], in store: NSUbiquitousKeyValueStore = .default) {
+    guard !steps.isEmpty else { return }
+    store.set(dayKeyed(steps), forKey: "dailySteps")
+    store.set(dayKeyed(km), forKey: "dailyKm")
+}
+
+/// Totals by start of day keyed like "2026-10-20", so a day stays the same day on a device in another time zone.
+func dayKeyed(_ totals: [Date: Double]) -> [String: Double] {
+    Dictionary(totals.map { ($0.key.formatted(dayKey), $0.value) }, uniquingKeysWith: max)
+}
+
+func byDay(_ keyed: [String: Any]?) -> [Date: Double] {
+    var totals: [Date: Double] = [:]
+    for case let (key, total as Double) in keyed ?? [:] {
+        if let day = try? Date(key, strategy: dayKey) { totals[day] = total }
+    }
+    return totals
+}
+
+private var dayKey: Date.ISO8601FormatStyle { .init(timeZone: .current).year().month().day() }

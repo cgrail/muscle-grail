@@ -2,7 +2,7 @@ import Core
 import SwiftUI
 
 /// The last year day by day in one grid: gym days, and on the iPhone whether the daily step and walking goals were
-/// reached. A selected day shows its workouts, steps and kilometers.
+/// reached. A selected day shows its workouts, steps and kilometers (on the Mac, as the iPhone last copied them).
 struct ActivitySection: View {
     let workouts: [Workout]
     @State private var selected = Calendar.current.startOfDay(for: .now)
@@ -17,13 +17,14 @@ struct ActivitySection: View {
     var body: some View {
         #if os(iOS)
         let (stepGoal, kmGoal) = (goals.steps, goals.km)
+        let weeks = activityWeeks(gym: gymSessions(workouts, health: health), steps: steps, km: km, stepGoal: stepGoal, kmGoal: kmGoal, weeks: 53)
         #else
-        let (stepGoal, kmGoal) = (0.0, 0.0) // the Mac has no Health, so only gym days
+        let (stepGoal, kmGoal) = (0.0, 0.0) // the Mac has no Health: only gym days in the grid, the iPhone's steps and km below
+        let weeks = activityWeeks(gym: gymSessions(workouts, health: health), weeks: 53)
         #endif
         let others = healthOnly(health, besides: workouts)
         Section {
-            ActivityGrid(weeks: activityWeeks(gym: gymSessions(workouts, health: health), steps: steps, km: km,
-                                              stepGoal: stepGoal, kmGoal: kmGoal, weeks: 53), selected: $selected)
+            ActivityGrid(weeks: weeks, selected: $selected)
             legend
             VStack(alignment: .leading, spacing: 8) {
                 dayPicker
@@ -31,13 +32,11 @@ struct ActivitySection: View {
                 let elsewhere = others.filter { Calendar.current.isDate($0, inSameDayAs: selected) }.count
                 if elsewhere > 0 { Text("\(elsewhere) workouts from other apps") }
                 if trained(workouts, on: selected).isEmpty, elsewhere == 0 { Text("No gym workout").foregroundStyle(.secondary) }
-                #if os(iOS)
                 let (daySteps, dayKm) = (steps[selected] ?? 0, km[selected] ?? 0)
                 Text(stepGoal > 0 ? "\(daySteps.formatted(.number.precision(.fractionLength(0)))) of \(stepGoal.formatted()) steps"
                                   : "\(daySteps.formatted(.number.precision(.fractionLength(0)))) steps")
                 Text(kmGoal > 0 ? "\(dayKm.formatted(.number.precision(.fractionLength(1)))) of \(kmGoal.formatted()) km walked"
                                 : "\(dayKm.formatted(.number.precision(.fractionLength(1)))) km walked")
-                #endif
             }
         } header: {
             HStack {
@@ -55,6 +54,15 @@ struct ActivitySection: View {
             async let steps = Health.daily(.stepCount, unit: .count(), days: 371)
             async let km = Health.daily(.distanceWalkingRunning, unit: .meterUnit(with: .kilo), days: 371)
             (self.health, self.steps, self.km) = await (health, steps, km)
+            saveDaily(steps: self.steps, km: self.km)
+        }
+        #else
+        .onAppear {
+            NSUbiquitousKeyValueStore.default.synchronize()
+            (steps, km) = savedDaily()
+        }
+        .onReceive(NotificationCenter.default.publisher(for: NSUbiquitousKeyValueStore.didChangeExternallyNotification).receive(on: DispatchQueue.main)) { _ in
+            (steps, km) = savedDaily()
         }
         #endif
     }

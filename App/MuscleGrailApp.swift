@@ -36,6 +36,9 @@ struct MuscleGrailApp: App {
     static func observeSteps() {
         Health.observeSteps {
             WidgetCenter.shared.reloadAllTimelines() // new steps for the widget
+            async let steps = Health.daily(.stepCount, unit: .count(), days: 371)
+            async let km = Health.daily(.distanceWalkingRunning, unit: .meterUnit(with: .kilo), days: 371)
+            await saveDaily(steps: steps, km: km) // for the Mac
             await PartnerSync.current?.sync()
             await SyncMonitor.shared.waitUntilIdle()
         }
