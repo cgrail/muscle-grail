@@ -88,7 +88,7 @@ Share your plans with your training partner in one invite: all of them, now and 
 ### See your year
 
 <p align="center">
-  <img src="Design/readme/activity.svg" width="100%" alt="Illustration of the activity chart: a year of days, gym days in red, days that reached every daily goal in blue, days short of them in light blue">
+  <img src="Design/readme/activity.svg" width="100%" alt="Illustration of the activity chart: a year of days, gym days in red, days that reached every daily goal in blue, days short of them in lighter blue the further short they fell">
 </p>
 
 One chart shows the last year day by day: gym days in red, and the days you reached your step and distance goals in blue. Strength workouts from any app count. Statistics per week, month, quarter or year show your workouts, sets and volume.

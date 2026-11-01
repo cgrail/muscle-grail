@@ -73,17 +73,17 @@ public func trained(_ workouts: [Workout], on day: Date, calendar: Calendar = .c
     workouts.filter { $0.sets?.isEmpty == false && calendar.isDate($0.start, inSameDayAs: day) }
 }
 
-/// The activity grid, one level per day: 3 a gym day, 2 every daily goal set was reached, 1 moving but short of them
-/// (or no goals set), 0 nothing recorded. `steps` and `km` are by start of day.
+/// The activity grid, one level per day: 5 a gym day, 4 every daily goal set was reached, 1 to 3 moving but short of them
+/// by thirds of the furthest-off goal (1 also without goals), 0 nothing recorded. `steps` and `km` are by start of day.
 public func activityWeeks(gym: [Date] = [], steps: [Date: Double] = [:], km: [Date: Double] = [:], stepGoal: Double = 0, kmGoal: Double = 0,
                           weeks: Int, now: Date = .now, calendar: Calendar = .current) -> [GridWeek] {
     let gymDays = Set(gym.map { calendar.startOfDay(for: $0) })
     return dayGrid(weeks: weeks, now: now, calendar: calendar) { day in
         let moved = [(steps[day] ?? 0, stepGoal), (km[day] ?? 0, kmGoal)]
-        let goals = moved.filter { $0.1 > 0 }
-        if gymDays.contains(day) { return 3 }
-        if !goals.isEmpty, goals.allSatisfy({ $0.0 >= $0.1 }) { return 2 }
-        return moved.contains { $0.0 > 0 } ? 1 : 0
+        if gymDays.contains(day) { return 5 }
+        guard moved.contains(where: { $0.0 > 0 }) else { return 0 }
+        let progress = moved.filter { $0.1 > 0 }.map { $0.0 / $0.1 }.min() ?? 0
+        return progress >= 1 ? 4 : 1 + Int(progress * 3)
     }
 }
 

@@ -69,19 +69,21 @@ struct ActivitySection: View {
 
     private var legend: some View {
         HStack(spacing: 12) {
-            key(3, "Gym")
+            key([5], "Gym")
             #if os(iOS)
-            key(2, "Goal reached")
-            key(1, "Short of goal")
+            key([1, 2, 3], "Short of goal")
+            key([4], "Goal reached")
             #endif
         }
         .font(.caption)
         .foregroundStyle(.secondary)
     }
 
-    private func key(_ level: Int, _ title: LocalizedStringKey) -> some View {
+    private func key(_ levels: [Int], _ title: LocalizedStringKey) -> some View {
         HStack(spacing: 4) {
-            RoundedRectangle(cornerRadius: 2).fill(ActivityGrid.color(level)).frame(width: 11, height: 11)
+            HStack(spacing: 2) {
+                ForEach(levels, id: \.self) { RoundedRectangle(cornerRadius: 2).fill(ActivityGrid.color($0)).frame(width: 11, height: 11) }
+            }
             Text(title)
         }
     }
