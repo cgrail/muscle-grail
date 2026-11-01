@@ -25,6 +25,12 @@ public enum Period: String, CaseIterable, Identifiable, Sendable {
         case .year: calendar.date(byAdding: .year, value: steps, to: start)!
         }
     }
+
+    /// The period that contains `date`, from its start to the next one's.
+    public func interval(containing date: Date, calendar: Calendar = .current) -> DateInterval {
+        let first = start(of: date, in: calendar)
+        return DateInterval(start: first, end: start(1, after: first, in: calendar))
+    }
 }
 
 public struct PeriodStats: Equatable, Sendable {

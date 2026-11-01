@@ -4,15 +4,17 @@ import SwiftUI
 
 struct HistoryView: View {
     @Query(Workout.history) private var workouts: [Workout]
+    @State private var opened: OpenedPeriod?
 
     var body: some View {
         NavigationStack {
             List {
                 ActivitySection(workouts: workouts)
-                StatsSection(workouts: workouts)
+                StatsSection(workouts: workouts, opened: $opened)
                 Section("Workouts") { PeriodLinks(workouts: workouts, period: .year) }
             }
             .navigationTitle("History")
+            .navigationDestination(item: $opened) { PeriodHistory(period: $0.period, interval: $0.interval) }
             #if os(macOS)
             .toolbar { GymBookMenu() }
             #else

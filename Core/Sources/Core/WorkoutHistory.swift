@@ -14,7 +14,7 @@ public extension Workout {
 public func periods(_ workouts: [Workout], per period: Period, calendar: Calendar = .current) -> [(interval: DateInterval, count: Int)] {
     let byStart = Dictionary(grouping: workouts) { period.start(of: $0.start, in: calendar) }
     return byStart.keys.sorted(by: >).map { start in
-        (interval: DateInterval(start: start, end: period.start(1, after: start, in: calendar)),
+        (interval: period.interval(containing: start, calendar: calendar),
          count: byStart[start]!.filter { $0.sets?.isEmpty == false }.count)
     }
 }

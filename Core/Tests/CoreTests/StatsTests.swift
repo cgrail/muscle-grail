@@ -130,6 +130,11 @@ import Testing
         #expect(months.map { $0.count } == [2, 1])
     }
 
+    @Test func aQuarterRunsThreeMonths() {
+        #expect(Period.quarter.interval(containing: date("2026-11-15"), calendar: calendar)
+                == DateInterval(start: midnight("2026-10-01"), end: midnight("2027-01-01")))
+    }
+
     @Test func periodsCountOnlyWorkoutsWithSets() {
         workout(on: "2026-10-19", [])
         #expect(periods(all(), per: .year, calendar: calendar).map { $0.count } == [0])

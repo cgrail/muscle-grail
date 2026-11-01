@@ -20,7 +20,13 @@ struct PeriodLinks: View {
     }
 }
 
-/// A year or a month: how often each plan was trained, then the year's months or the month's workouts.
+/// A week, month, quarter or year to open in the history, from a bar of the statistics chart.
+struct OpenedPeriod: Hashable {
+    let period: Period
+    let interval: DateInterval
+}
+
+/// A year, quarter, month or week: how often each plan was trained, then its months or its workouts.
 struct PeriodHistory: View {
     let period: Period
     let interval: DateInterval
@@ -39,13 +45,23 @@ struct PeriodHistory: View {
                     LabeledContent(training.title) { Text(verbatim: "\(training.count)×") }
                 }
             }
-            if period == .year {
+            if period == .year || period == .quarter {
                 Section("Months") { PeriodLinks(workouts: workouts, period: .month) }
             } else {
                 Section("Workouts") { ForEach(workouts) { WorkoutRow(workout: $0) } }
             }
         }
-        .navigationTitle(interval.start.formatted(period == .year ? Date.FormatStyle.dateTime.year() : .dateTime.month(.wide).year()))
+        .navigationTitle(title)
+    }
+
+    private var title: String {
+        let days = interval.start..<interval.end.addingTimeInterval(-1) // the end is where the next period starts
+        return switch period {
+        case .year: interval.start.formatted(.dateTime.year())
+        case .quarter: days.formatted(.interval.month(.wide).year())
+        case .month: interval.start.formatted(.dateTime.month(.wide).year())
+        case .week: days.formatted(.interval.day().month().year())
+        }
     }
 }
 
