@@ -1687,6 +1687,24 @@
         }
       }
     },
+    "rotary_torso_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rumpfrotationsmaschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rotary torso machine"
+          }
+        }
+      }
+    },
     "rower" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",

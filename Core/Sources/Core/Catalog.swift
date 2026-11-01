@@ -1,7 +1,8 @@
 import Foundation
 
 /// An exercise from RepDB's free dataset (https://github.com/RepDB/exercise-dataset), which `fetch-catalog.sh` downloads
-/// into `RepDB/` at `repdbCommit`. Its license wants "Exercise data by RepDB (repdb.co)" visible in the app and the README.
+/// into `RepDB/` at `repdbCommit`, or one of our `extras`. Its license wants "Exercise data by RepDB (repdb.co)" visible in
+/// the app and the README.
 public struct CatalogExercise: Identifiable, Sendable {
     /// The RepDB commit the catalog and its images come from. Plans and sets refer to its ids: a new commit must keep them.
     static let repdbCommit = "b407c5951a027a27817fb2a5cee9ec9feffc4dc7"
@@ -19,7 +20,7 @@ public struct CatalogExercise: Identifiable, Sendable {
     var germanInstructions: [String] = []
     var spanishName = ""
 
-    public static let all = load(Bundle.module.url(forResource: "exercises", withExtension: "json", subdirectory: "RepDB"))
+    public static let all = withExtras(load(Bundle.module.url(forResource: "exercises", withExtension: "json", subdirectory: "RepDB")))
 
     static func load(_ url: URL?) -> [CatalogExercise] {
         struct Dataset: Decodable { let exercises: [CatalogExercise] }
