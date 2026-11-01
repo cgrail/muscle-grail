@@ -60,6 +60,25 @@ struct CatalogTests {
         #expect(CatalogExercise.byID["lat-pulldown"]?.matches("lat-pulldowns") == true)
     }
 
+    @Test func searchFindsNamesInEveryLanguage() {
+        let pullUp = CatalogExercise.byID["pull-up"]
+        #expect(pullUp?.matches("klimmzug") == true)
+        #expect(pullUp?.matches("dominada") == true)
+    }
+
+    @Test func searchIgnoresAccents() {
+        #expect(CatalogExercise.byID["pull-up"]?.matches("klimmzüg") == true)
+    }
+
+    @Test func searchListsTheDirectHitFirst() {
+        #expect(CatalogExercise.search("klimmzug").first?.id == "pull-up")
+    }
+
+    @Test func searchListsNamesStartingWithTheQueryBeforeOtherMatches() {
+        let ids = CatalogExercise.search("klimmzug").map(\.id)
+        #expect(ids.firstIndex(of: "pause-pull-up")! < ids.firstIndex(of: "archer-pull-ups")!)
+    }
+
     @Test func assistantSearchListsYourOwnExercisesFirst() {
         let names = catalogNames(matching: "fly", custom: ["Cable Fly", "Squat"], limit: 3)
         #expect(names.first == "Cable Fly")

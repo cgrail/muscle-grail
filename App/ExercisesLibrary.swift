@@ -31,9 +31,11 @@ struct ExercisesLibrary: View {
     @FocusState private var tableFocused: Bool
 
     var body: some View {
-        let own = entries.filter { filter.isEmpty && $0.isOwnExercise }.map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
-        let bundled = CatalogExercise.all.filter(filter.admits).map { Row(id: $0.id, name: $0.label, muscles: $0.primaryMuscles.map(catalogTerm).joined(separator: ", "), equipment: $0.equipment.map(catalogTerm) ?? "") }
-        let rows = (own + bundled).filter { search.isEmpty || matchesEveryWord(of: search, in: [$0.name, $0.muscles, $0.equipment]) }
+        let own = entries.filter { filter.isEmpty && $0.isOwnExercise && (search.isEmpty || matchesEveryWord(of: search, in: [$0.name])) }
+            .map { Row(id: $0.id, name: $0.name, muscles: "", equipment: "") }
+        let bundled = CatalogExercise.all.filter { filter.admits($0) && (search.isEmpty || $0.matches(search)) }
+            .map { Row(id: $0.id, name: $0.label, muscles: $0.primaryMuscles.map(catalogTerm).joined(separator: ", "), equipment: $0.equipment.map(catalogTerm) ?? "") }
+        let rows = own + bundled
         NavigationStack { // puts the preview under the toolbar, which then spans the table and the preview in one color
             Group {
                 switch layout {
