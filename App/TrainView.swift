@@ -8,12 +8,21 @@ struct TrainView: View {
     var body: some View {
         // Not NavigationStack(path:): the sidebar tabs on Mac and iPad compare paths across tabs and crash on a typed one.
         NavigationStack {
-            WorkoutPicker { workout = $0 }
+            picker
                 .navigationDestination(item: $workout) { WorkoutView(workout: $0) }
                 #if os(iOS)
                 .toolbar { SettingsButton() }
                 #endif
         }
+    }
+
+    /// The Mac has the room for covers; the iPhone and iPad list the plans.
+    @ViewBuilder private var picker: some View {
+        #if os(macOS)
+        TrainOverview { workout = $0 }
+        #else
+        WorkoutPicker { workout = $0 }
+        #endif
     }
 }
 

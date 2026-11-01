@@ -3,7 +3,7 @@ import SwiftData
 import SwiftUI
 
 /// The running workout's exercises as cards, the next one to do outlined: tick a card to log its next set as prefilled,
-/// or open it to log and adjust. Summary shows the workout before it ends, as does logging the last set of the last exercise.
+/// or open it to log and adjust. Finish shows the workout before it ends, as does logging the last set of the last exercise.
 struct WorkoutView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -24,7 +24,7 @@ struct WorkoutView: View {
         }
         .navigationTitle(workout.title)
         .navigationSubtitle(workout.plan?.focus ?? "")
-        .toolbar { Button("Summary") { finishing = true } }
+        .toolbar { Button("Finish") { finishing = true }.buttonStyle(.borderedProminent).tint(.green) }
         .navigationDestination(item: $exercise) { item in
             ExerciseView(item: item, workout: workout) {
                 exercise = nil

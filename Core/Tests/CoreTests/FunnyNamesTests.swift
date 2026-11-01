@@ -77,4 +77,11 @@ import Testing
         context.rename(plan, to: "Push")
         #expect(plan.emoji == "🌍")
     }
+
+    @Test func typedNamesSideBySideGetDifferentPictures() {
+        let first = makePlan(context, "bench-press"), second = makePlan(context, "bench-press")
+        context.rename(first, to: "Push A")
+        context.rename(second, to: "Push B")
+        #expect(first.emoji != second.emoji)
+    }
 }

@@ -66,8 +66,20 @@ public extension Plan {
 
     var title: String { name.isEmpty ? String(localized: "Untitled", bundle: .module) : name }
 
-    /// When this plan was last trained. A workout without sets doesn't count.
-    var lastDone: Date? { workouts?.filter { $0.sets?.isEmpty == false }.map(\.start).max() }
+    /// The workouts this plan was trained in. A workout without sets doesn't count.
+    private var done: [Workout] { workouts?.filter { $0.sets?.isEmpty == false } ?? [] }
+
+    /// When this plan was last trained.
+    var lastDone: Date? { done.map(\.start).max() }
+
+    /// How many times this plan was trained.
+    var timesDone: Int { done.count }
+
+    /// "Last done 5 days ago · 12 times", or "Not done yet".
+    var lastDoneText: String {
+        guard let lastDone else { return String(localized: "Not done yet", bundle: .module) }
+        return String(localized: "Last done \(daysAgo(lastDone))", bundle: .module) + " · " + String(localized: "\(timesDone) times", bundle: .module)
+    }
 
     /// What the plan trains, by its target sets per body region: "Leg-heavy" when one region gets more than half,
     /// else its top two while they get more than two thirds, else "Full body". Nil while it has no bundled exercise.
@@ -97,9 +109,15 @@ public extension Plan {
 }
 
 /// Plans in the order to train them: those never done first, in plan order, then the one done longest ago,
-/// so the one done last ends the list.
+/// so the one done last ends the list. A plan with a workout running is left out: that workout is continued, on top.
 public func trainingOrder(_ plans: [Plan]) -> [Plan] {
-    plans.map { ($0, $0.lastDone ?? .distantPast) }.sorted { ($0.1, $0.0.order) < ($1.1, $1.0.order) }.map(\.0)
+    plans.filter { $0.workouts?.contains { $0.end == nil } != true }.map { ($0, $0.lastDone ?? .distantPast) }.sorted { ($0.1, $0.0.order) < ($1.1, $1.0.order) }.map(\.0)
+}
+
+/// The exercises of `plan` that none of the other `plans` has, in plan order: what sets it apart.
+public func specialExercises(of plan: Plan, among plans: [Plan]) -> [String] {
+    let elsewhere = Set(plans.filter { $0 != plan }.flatMap { $0.trainedItems.map(\.exerciseID) })
+    return plan.trainedItems.map(\.exerciseID).filter { !elsewhere.contains($0) }
 }
 
 /// How long ago `date` was, in calendar days: "today", "yesterday", "5 days ago", "2 weeks ago".

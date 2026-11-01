@@ -70,6 +70,14 @@ import Testing
         #expect(try context.fetchCount(FetchDescriptor<Workout>()) == 1)
     }
 
+    @Test func trainOverviewRendersEmptyAndWhileTraining() {
+        render(NavigationStack { TrainOverview { _ in } })
+        let plan = makePlan(context, "bench-press")
+        makePlan(context, "squat")
+        context.log("bench-press", reps: 8, weightKg: 60, in: context.startWorkout(plan))
+        render(NavigationStack { TrainOverview { _ in } })
+    }
+
     @Test func weightStepperRendersInTheExercisesUnit() {
         let id = context.createExercise(named: "Cable Fly")
         context.setUnit(id, to: .lb)

@@ -837,6 +837,16 @@
         }
       }
     },
+    "Finish" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beenden"
+          }
+        }
+      }
+    },
     "Finish workout" : {
       "localizations" : {
         "de" : {
@@ -1863,16 +1873,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vorschlag"
-          }
-        }
-      }
-    },
-    "Summary" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Übersicht"
           }
         }
       }
