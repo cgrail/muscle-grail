@@ -37,7 +37,6 @@ struct PlanPage: View {
                         Text(verbatim: focus).font(.title3).foregroundStyle(.tint)
                     }
                     Text("\(plan.sortedItems.count) exercises").foregroundStyle(.secondary)
-                    PlanAssistant(plan: plan)
                 }
             }
             .disabled(locked)
@@ -62,6 +61,14 @@ struct PlanPage: View {
                     Color.clear.frame(width: Column.menu)
                 }
             }
+            HStack(spacing: 20) {
+                Button("Add exercise", systemImage: "plus") { picking = true }
+                PlanAssistant(plan: plan)
+            }
+            .buttonStyle(.borderless)
+            .disabled(locked)
+            .padding(.vertical, 6)
+            .listRowSeparator(.hidden)
         }
         .listStyle(.inset)
         .focused($listFocused)
