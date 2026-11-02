@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Captain Curl (Captain Curl), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/captain-curl.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M190 170 C120 220 66 310 30 430 C80 410 110 426 150 446 L360 446 C380 340 364 240 330 170 Z" fill="#8E5CD9"/>
+<path d="M60 330 C80 300 100 280 120 266" fill="none" stroke="#FFFFFF" stroke-width="8" opacity="0.5"/>
+<path d="M154 266 C108 300 104 340 150 362" fill="none" stroke-width="54"/><path d="M154 266 C108 300 104 340 150 362" fill="none" stroke="#F28C28" stroke-width="34"/>
+<path d="M356 262 C410 284 432 300 432 252 L430 200" fill="none" stroke-width="54"/><path d="M356 262 C410 284 432 300 432 252 L430 200" fill="none" stroke="#F28C28" stroke-width="34"/>
+<rect x="382.0" y="200" width="96" height="12" rx="6" fill="#9AA5B4"/><rect x="368.0" y="179.0" width="22" height="54" rx="7" fill="#4A5568"/><rect x="470.0" y="179.0" width="22" height="54" rx="7" fill="#4A5568"/>
+<circle cx="430" cy="214" r="24" fill="#F28C28"/>
+<path d="M198 420 H238 V466 H186 C186 446 190 432 198 420 Z M314 420 H274 V466 H326 C326 446 322 432 314 420 Z" fill="#8E5CD9"/>
+<path d="M256 84 C334 84 364 146 364 226 L364 380 C364 420 334 438 256 438 C178 438 148 420 148 380 L148 226 C148 146 178 84 256 84 Z" fill="#F28C28"/>
+<path d="M148 380 C148 420 178 438 256 438 C334 438 364 420 364 380 L364 366 H148 Z" fill="#D46F12"/>
+<path d="M148 352 H364 V376 H148 Z" fill="#FFD23F"/>
+<path d="M156 196 C160 162 230 158 250 184 L262 184 C282 158 352 162 356 196 C352 228 294 234 264 212 L248 212 C218 234 160 228 156 196 Z" fill="#1D2340"/>
+<ellipse cx="214" cy="190" rx="26" ry="18" fill="#FFFFFF" stroke="none"/><ellipse cx="298" cy="190" rx="26" ry="18" fill="#FFFFFF" stroke="none"/>
+<circle cx="218" cy="192" r="9" fill="#1D2340" stroke="none"/><circle cx="294" cy="192" r="9" fill="#1D2340" stroke="none"/>
+<path d="M224 246 Q256 270 288 246" fill="none" stroke-width="9"/>
+<circle cx="256" cy="306" r="38" fill="#FFFFFF"/>
+<path d="M272 296 C262 286 244 290 242 304 C242 318 258 324 270 314" fill="none" stroke="#8E5CD9" stroke-width="8"/>
+<path d="M180 120 C196 100 220 92 240 92" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.6"/>
+
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Calf Carl (Waden-Werner), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/calf-carl.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<rect x="140" y="440" width="232" height="30" rx="10" fill="#C3CAD5"/>
+<path d="M220 380 L214 430" fill="none" stroke-width="50"/><path d="M220 380 L214 430" fill="none" stroke="#FFFFFF" stroke-width="30"/><path d="M292 380 L298 430" fill="none" stroke-width="50"/><path d="M292 380 L298 430" fill="none" stroke="#FFFFFF" stroke-width="30"/>
+<path d="M196 444 L232 444 L226 418 L202 418 Z M280 444 L316 444 L310 418 L286 418 Z" fill="#3B3F4C"/>
+<path d="M190 398 C176 362 182 312 210 296 L302 296 C330 312 336 362 322 398 Z" fill="#FFFFFF"/>
+<path d="M290 330 C310 322 324 340 316 362 C300 370 284 352 290 330 Z" fill="#1D2340" stroke="none"/>
+<path d="M164 152 C120 126 74 136 60 162 C92 182 134 184 166 176 Z" fill="#FFFFFF"/><path d="M146 160 C120 152 96 154 82 162 C104 170 128 172 146 166 Z" fill="#FFB5C2" stroke="none"/>
+<path d="M348 152 C392 126 438 136 452 162 C420 182 378 184 346 176 Z" fill="#FFFFFF"/><path d="M366 160 C392 152 416 154 430 162 C408 170 384 172 366 166 Z" fill="#FFB5C2" stroke="none"/>
+<path d="M206 92 C204 70 220 62 230 76 Z M306 92 C308 70 292 62 282 76 Z" fill="#F4E3C1" stroke-width="8"/>
+<ellipse cx="256" cy="186" rx="118" ry="104" fill="#FFFFFF"/>
+<path d="M150 150 C158 110 196 92 222 104 C228 136 200 164 168 172 C158 170 152 162 150 150 Z" fill="#1D2340" stroke="none"/>
+<ellipse cx="256" cy="244" rx="86" ry="48" fill="#FFB5C2"/>
+<ellipse cx="226" cy="246" rx="9" ry="13" fill="#1D2340" stroke="none"/><ellipse cx="286" cy="246" rx="9" ry="13" fill="#1D2340" stroke="none"/>
+<circle cx="208" cy="168" r="17" fill="#FFFFFF" stroke="none"/>
+<circle cx="208" cy="168" r="13" fill="#1D2340" stroke="none"/><circle cx="204" cy="164" r="4" fill="#FFFFFF" stroke="none"/><circle cx="304" cy="168" r="13" fill="#1D2340" stroke="none"/><circle cx="300" cy="164" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M220 304 C240 316 272 316 292 304" fill="none" stroke="#3BA3E0" stroke-width="12"/>
+<path d="M240 312 C240 342 272 342 272 312 Z" fill="#FFD23F"/>
+<path d="M176 430 v-34 M336 430 v-34 M176 396 l-8 10 M176 396 l8 10 M336 396 l-8 10 M336 396 l8 10" fill="none" stroke-width="6"/>
+
+  </g>
+</svg>

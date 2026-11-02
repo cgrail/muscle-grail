@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Cardio Carol (Cardio-Karin), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/cardio-carol.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M196 340 L170 392 L198 430" fill="none" stroke-width="46"/><path d="M196 340 L170 392 L198 430" fill="none" stroke="#F2545B" stroke-width="26"/><path d="M270 340 L304 384 L346 376" fill="none" stroke-width="46"/><path d="M270 340 L304 384 L346 376" fill="none" stroke="#F2545B" stroke-width="26"/>
+<path d="M164 448 C164 428 178 420 196 422 L224 426 C232 428 234 436 232 444 L230 454 H170 C166 454 164 452 164 448 Z" fill="#FFFFFF"/>
+<path d="M352 352 C368 348 382 358 384 374 L386 400 C386 406 382 410 376 410 L354 410 C348 410 344 404 346 398 Z" fill="#FFFFFF"/>
+<path d="M110 230 C80 252 74 284 92 312" fill="none" stroke-width="44"/><path d="M110 230 C80 252 74 284 92 312" fill="none" stroke="#F2545B" stroke-width="24"/><path d="M346 236 C380 228 398 202 394 170" fill="none" stroke-width="44"/><path d="M346 236 C380 228 398 202 394 170" fill="none" stroke="#F2545B" stroke-width="24"/>
+<path d="M232 384 C140 330 62 262 62 186 C62 128 104 92 156 92 C192 92 220 112 232 140 C244 112 272 92 308 92 C360 92 402 128 402 186 C402 262 324 330 232 384 Z" fill="#F2545B"/>
+<path d="M98 160 C104 132 124 116 148 112" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.6"/>
+<path d="M66 176 C120 158 180 170 232 186 C284 170 344 158 398 176 L400 204 C344 186 284 198 232 214 C180 198 120 186 64 204 Z" fill="#3BC4C0"/>
+<circle cx="192" cy="246" r="13" fill="#1D2340" stroke="none"/><circle cx="188" cy="242" r="4" fill="#FFFFFF" stroke="none"/><circle cx="270" cy="246" r="13" fill="#1D2340" stroke="none"/><circle cx="266" cy="242" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M206 280 Q231 304 256 280 Z" fill="#7A2E3A"/>
+<ellipse cx="160" cy="276" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="304" cy="276" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<path d="M380 20 H480 C492 20 500 28 500 40 V88 C500 100 492 108 480 108 H432 L408 132 L412 108 H380 C368 108 360 100 360 88 V40 C360 28 368 20 380 20 Z" fill="#FFFFFF"/>
+<circle cx="398" cy="64" r="9" fill="#1D2340" stroke="none"/><circle cx="430" cy="64" r="9" fill="#1D2340" stroke="none"/><circle cx="462" cy="64" r="9" fill="#1D2340" stroke="none"/>
+
+  </g>
+</svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Squatzilla (Squatzilla), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/squatzilla.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M346 400 C420 420 470 400 486 352 C462 380 420 386 370 370 Z" fill="#5E9C63"/>
+<path d="M150 160 L170 104 L194 150 Z M318 150 L342 104 L362 160 Z" fill="#B7E08E"/>
+<path d="M206 108 L226 46 L250 100 L272 46 L292 108 Z" fill="#B7E08E"/>
+<path d="M196 340 C150 350 120 372 128 440" fill="none" stroke-width="86"/><path d="M196 340 C150 350 120 372 128 440" fill="none" stroke="#5E9C63" stroke-width="66"/>
+<path d="M316 340 C362 350 392 372 384 440" fill="none" stroke-width="86"/><path d="M316 340 C362 350 392 372 384 440" fill="none" stroke="#5E9C63" stroke-width="66"/>
+<path d="M86 466 C86 444 104 432 128 432 L158 432 C166 432 170 440 170 450 V466 Z M426 466 C426 444 408 432 384 432 L354 432 C346 432 342 440 342 450 V466 Z" fill="#4D8752"/>
+<path d="M100 466 v-12 M118 466 v-14 M412 466 v-12 M394 466 v-14" stroke-width="6"/>
+<path d="M182 210 C146 210 120 196 110 176" fill="none" stroke-width="60"/><path d="M182 210 C146 210 120 196 110 176" fill="none" stroke="#5E9C63" stroke-width="40"/>
+<path d="M330 210 C366 210 392 196 402 176" fill="none" stroke-width="60"/><path d="M330 210 C366 210 392 196 402 176" fill="none" stroke="#5E9C63" stroke-width="40"/>
+<path d="M256 120 C330 120 360 170 362 230 C364 300 336 360 256 362 C176 360 148 300 150 230 C152 170 182 120 256 120 Z" fill="#6FB070"/>
+<path d="M210 250 C220 300 236 340 256 346 C276 340 292 300 302 250 C286 262 226 262 210 250 Z" fill="#C9E7B0" stroke="none"/>
+<path d="M214 280 h84 M220 310 h72" fill="none" stroke="#8CC98A" stroke-width="7"/>
+<path d="M36 176 H476" stroke-width="30"/><path d="M36 176 H476" stroke="#C5CDD8" stroke-width="14"/>
+<rect x="26" y="116" width="40" height="120" rx="12" fill="#4A5568"/><rect x="66" y="132" width="24" height="88" rx="9" fill="#4A5568"/>
+<rect x="446" y="116" width="40" height="120" rx="12" fill="#4A5568"/><rect x="422" y="132" width="24" height="88" rx="9" fill="#4A5568"/>
+<circle cx="104" cy="176" r="20" fill="#5E9C63"/><circle cx="408" cy="176" r="20" fill="#5E9C63"/>
+<path d="M202 160 L236 176 M310 160 L276 176" fill="none" stroke-width="12"/>
+<circle cx="226" cy="192" r="12" fill="#1D2340" stroke="none"/><circle cx="222" cy="188" r="4" fill="#FFFFFF" stroke="none"/><circle cx="286" cy="192" r="12" fill="#1D2340" stroke="none"/><circle cx="282" cy="188" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M218 222 Q256 250 294 222 Z" fill="#7A2E3A"/>
+<path d="M232 226 l6 10 l6 -9 M268 227 l6 9 l6 -10" fill="#FFFFFF" stroke-width="4"/>
+
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- The Treadmill Titan (Der Laufband-Titan), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/the-treadmill-titan.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M410 420 L436 214" stroke-width="30"/><path d="M410 420 L436 214" stroke="#9AA5B4" stroke-width="14"/>
+<rect x="380" y="176" width="112" height="54" rx="14" fill="#3D4451"/>
+<rect x="398" y="190" width="56" height="20" rx="5" fill="#3BC4C0" stroke="none"/>
+<path d="M380 220 L330 236" stroke-width="24"/><path d="M380 220 L330 236" stroke="#9AA5B4" stroke-width="10"/>
+<path d="M232 330 L178 388 L130 380" fill="none" stroke-width="52"/><path d="M232 330 L178 388 L130 380" fill="none" stroke="#59A8E8" stroke-width="32"/><path d="M272 334 L300 398 L282 436" fill="none" stroke-width="52"/><path d="M272 334 L300 398 L282 436" fill="none" stroke="#59A8E8" stroke-width="32"/>
+<path d="M98 372 C104 360 120 356 134 362 L150 370 L134 396 L100 388 C94 384 94 378 98 372 Z" fill="#FFD23F"/>
+<path d="M250 426 h46 C306 426 312 434 312 444 V452 H254 C248 452 246 446 248 440 Z" fill="#FFD23F"/>
+<path d="M206 214 C170 230 150 262 148 296" fill="none" stroke-width="50"/><path d="M206 214 C170 230 150 262 148 296" fill="none" stroke="#59A8E8" stroke-width="30"/><path d="M300 220 C336 216 356 196 362 168" fill="none" stroke-width="50"/><path d="M300 220 C336 216 356 196 362 168" fill="none" stroke="#59A8E8" stroke-width="30"/>
+<g transform="rotate(12 256 240)"><path d="M256 92 C330 92 354 156 354 226 C354 302 324 346 256 346 C188 346 158 302 158 226 C158 156 182 92 256 92 Z" fill="#59A8E8"/>
+<path d="M162 160 C210 142 302 142 350 160 L352 188 C302 170 210 170 160 188 Z" fill="#E5484D"/>
+<path d="M212 206 L244 218 M312 206 L280 218" fill="none" stroke-width="12"/>
+<circle cx="230" cy="230" r="12" fill="#1D2340" stroke="none"/><circle cx="226" cy="226" r="4" fill="#FFFFFF" stroke="none"/><circle cx="292" cy="230" r="12" fill="#1D2340" stroke="none"/><circle cx="288" cy="226" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M234 268 Q262 290 290 268 Z" fill="#FFFFFF"/>
+</g>
+<path d="M60 452 H460" stroke-width="44"/><path d="M60 452 H460" stroke="#3D4451" stroke-width="24"/>
+<path d="M90 452 h40 M170 452 h40 M250 452 h40 M330 452 h40 M410 452 h30" stroke="#5A6475" stroke-width="6"/>
+<path d="M30 200 h70 M40 250 h80 M24 300 h60" fill="none" stroke="#FFFFFF" stroke-width="12"/>
+
+  </g>
+</svg>

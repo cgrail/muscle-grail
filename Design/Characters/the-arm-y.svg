@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- The Arm-y (Armee), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/the-arm-y.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    <g fill="#F4B183" stroke-width="20">
+<rect x="28" y="318" width="390" height="124" rx="62"/>
+<rect x="300" y="160" width="118" height="270" rx="59"/>
+<rect x="282" y="62" width="160" height="128" rx="48"/>
+<ellipse cx="188" cy="306" rx="128" ry="104"/>
+</g><g fill="#F4B183" stroke="none">
+<rect x="28" y="318" width="390" height="124" rx="62"/>
+<rect x="300" y="160" width="118" height="270" rx="59"/>
+<rect x="282" y="62" width="160" height="128" rx="48"/>
+<ellipse cx="188" cy="306" rx="128" ry="104"/>
+</g>
+<path d="M300 98 C320 92 336 98 344 112 M300 130 h40 M300 158 h40" fill="none" stroke-width="8"/>
+<path d="M356 352 C372 372 384 380 398 382" fill="none" stroke-width="8"/>
+<path d="M92 220 C88 140 290 140 288 220 Z" fill="#6E7F3B"/>
+<path d="M76 214 H304 V240 H76 Z" fill="#5A6930"/>
+<path d="M190 166 l8 16 l18 2 l-13 12 l4 18 l-17 -9 l-17 9 l4 -18 l-13 -12 l18 -2 Z" fill="#FFFFFF" stroke-width="5"/>
+<path d="M142 268 L176 280 M238 268 L204 280" fill="none" stroke-width="11"/>
+<circle cx="160" cy="294" r="13" fill="#1D2340" stroke="none"/><circle cx="156" cy="290" r="4" fill="#FFFFFF" stroke="none"/><circle cx="220" cy="294" r="13" fill="#1D2340" stroke="none"/><circle cx="216" cy="290" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M164 334 Q190 356 216 334 Z" fill="#FFFFFF"/>
+<ellipse cx="128" cy="330" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="252" cy="330" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+
+  </g>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Thunder Thighs (Donneroberschenkel), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/thunder-thighs.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M96 284 L56 362 L88 362 L66 432 L130 340 L98 340 L120 284 Z" fill="#FFD23F"/>
+<path d="M428 284 L468 362 L436 362 L458 432 L394 340 L426 340 L404 284 Z" fill="#FFD23F"/>
+<path d="M214 296 C196 336 196 376 206 414" fill="none" stroke-width="82"/><path d="M214 296 C196 336 196 376 206 414" fill="none" stroke="#8EA1C8" stroke-width="62"/>
+<path d="M310 296 C328 336 328 376 318 414" fill="none" stroke-width="82"/><path d="M310 296 C328 336 328 376 318 414" fill="none" stroke="#8EA1C8" stroke-width="62"/>
+<path d="M150 462 C150 432 172 418 200 418 L236 418 C246 418 250 428 250 440 L250 452 C250 460 246 464 238 464 L156 464 C152 464 150 464 150 462 Z" fill="#FFD23F"/>
+<path d="M374 462 C374 432 352 418 324 418 L288 418 C278 418 274 428 274 440 L274 452 C274 460 278 464 286 464 L368 464 C372 464 374 464 374 462 Z" fill="#FFD23F"/>
+<path d="M130 304 C84 304 72 250 112 232 C100 176 150 150 190 168 C200 104 284 86 316 140 C356 112 418 136 412 196 C462 206 466 280 418 304 Z" fill="#A9B9DA"/>
+<path d="M140 222 C150 196 172 186 196 192 M224 150 C244 130 276 128 296 146" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.7"/>
+<path d="M210 210 L240 222 M318 210 L288 222" fill="none" stroke-width="12"/>
+<circle cx="234" cy="240" r="13" fill="#1D2340" stroke="none"/><circle cx="230" cy="236" r="4" fill="#FFFFFF" stroke="none"/><circle cx="294" cy="240" r="13" fill="#1D2340" stroke="none"/><circle cx="290" cy="236" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M232 270 Q264 296 296 270 Z" fill="#FFFFFF"/>
+<ellipse cx="206" cy="270" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="322" cy="270" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+
+  </g>
+</svg>

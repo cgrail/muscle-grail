@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- The Sweaty Potato (Das schwitzende Kartoffelchen), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/the-sweaty-potato.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<ellipse cx="214" cy="440" rx="40" ry="20" fill="#C08A4E"/><ellipse cx="306" cy="440" rx="40" ry="20" fill="#C08A4E"/>
+<path d="M128 300 C96 320 90 350 106 376" fill="none" stroke-width="44"/><path d="M128 300 C96 320 90 350 106 376" fill="none" stroke="#D9A86C" stroke-width="24"/>
+<path d="M392 270 C430 250 440 210 426 170" fill="none" stroke-width="44"/><path d="M392 270 C430 250 440 210 426 170" fill="none" stroke="#D9A86C" stroke-width="24"/>
+<rect x="391.0" y="144" width="70" height="12" rx="6" fill="#9AA5B4"/><rect x="377.0" y="130.0" width="22" height="40" rx="7" fill="#4A5568"/><rect x="453.0" y="130.0" width="22" height="40" rx="7" fill="#4A5568"/>
+<circle cx="426" cy="164" r="20" fill="#D9A86C"/>
+<path d="M140 196 C152 120 238 92 300 106 C384 124 414 190 404 270 C396 352 352 428 262 432 C170 436 118 372 116 300 C114 260 132 232 140 196 Z" fill="#D9A86C"/>
+<ellipse cx="190" cy="350" rx="12" ry="8" fill="#B07A44" stroke="none"/><ellipse cx="340" cy="320" rx="10" ry="7" fill="#B07A44" stroke="none"/><ellipse cx="290" cy="390" rx="9" ry="6" fill="#B07A44" stroke="none"/><ellipse cx="350" cy="160" rx="8" ry="6" fill="#B07A44" stroke="none"/>
+<path d="M134 214 C190 178 330 170 406 214 L406 244 C330 202 190 208 128 244 Z" fill="#E5484D"/>
+<path d="M196 274 Q216 262 236 274 M276 274 Q296 262 316 274" fill="none" stroke-width="8"/>
+<circle cx="216" cy="286" r="12" fill="#1D2340" stroke="none"/><circle cx="212" cy="282" r="4" fill="#FFFFFF" stroke="none"/><circle cx="296" cy="286" r="12" fill="#1D2340" stroke="none"/><circle cx="292" cy="282" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M232 320 Q256 346 280 320 Z" fill="#7A2E3A"/>
+<path d="M248 332 c0 18 18 18 18 0" fill="#FF8FA3" stroke-width="5"/>
+<ellipse cx="186" cy="318" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="326" cy="318" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<path d="M104 160 q-14 22 0 32 q14 -10 0 -32 Z M86 236 q-12 18 0 26 q12 -8 0 -26 Z M440 236 q-12 18 0 26 q12 -8 0 -26 Z" fill="#7CC7F5" stroke-width="5"/>
+
+  </g>
+</svg>

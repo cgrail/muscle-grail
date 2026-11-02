@@ -121,7 +121,7 @@ public struct PlanLabel: View {
     }
 }
 
-/// A plan's picture: the emoji of its funny name, or of what it trains, on a tile in the plan's color.
+/// A plan's picture: the drawing of its character, or of one for what it trains, else a lifter, on a tile in the plan's color.
 public struct PlanPicture: View {
     private let plan: Plan
     private let size: Double
@@ -131,11 +131,16 @@ public struct PlanPicture: View {
     }
 
     public var body: some View {
-        Text(verbatim: plan.emoji)
-            .font(.system(size: size * 0.6))
-            .frame(width: size, height: size)
-            .background(plan.color.gradient, in: .rect(cornerRadius: size / 4))
-            .accessibilityHidden(true) // the name beside it says it
+        Group {
+            if let image = plan.picture.flatMap({ try? Data(contentsOf: $0) }).flatMap(Photo.image) {
+                Image(decorative: image, scale: 1).resizable().scaledToFit().padding(size * 0.06)
+            } else {
+                Image(systemName: "figure.strengthtraining.traditional").font(.system(size: size * 0.5)).foregroundStyle(.white)
+            }
+        }
+        .frame(width: size, height: size)
+        .background(plan.color.gradient, in: .rect(cornerRadius: size / 4))
+        .accessibilityHidden(true) // the name beside it says it
     }
 }
 

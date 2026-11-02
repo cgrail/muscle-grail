@@ -33,6 +33,7 @@ struct PlanPage: View {
                             .textFieldStyle(.plain)
                         FunnyNameButton(plan: plan).font(.title2)
                     }
+                    if let motto = plan.motto { Text(verbatim: motto).italic().foregroundStyle(.secondary) }
                     if let focus = plan.focus {
                         Text(verbatim: focus).font(.title3).foregroundStyle(.tint)
                     }

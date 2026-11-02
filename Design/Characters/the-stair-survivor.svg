@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- The Stair Survivor (Der Treppen-Überlebende), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/the-stair-survivor.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M24 486 V430 H96 V374 H168 V318 H250 V486 Z" fill="#B8C3D6"/>
+<path d="M24 430 H96 M96 374 H168 M168 318 H250" fill="none" stroke="#FFFFFF" stroke-width="6" opacity="0.7"/>
+<path d="M250 486 V330 H488 V486 Z" fill="#B8C3D6"/>
+<path d="M338 270 l-16 14 l18 12 l-14 14" fill="none" stroke-width="44"/><path d="M338 270 l-16 14 l18 12 l-14 14" fill="none" stroke="#FFB547" stroke-width="24"/>
+<path d="M410 270 l16 14 l-18 12 l14 14" fill="none" stroke-width="44"/><path d="M410 270 l16 14 l-18 12 l14 14" fill="none" stroke="#FFB547" stroke-width="24"/>
+<path d="M306 322 h44 M398 322 h44" stroke-width="18"/>
+<path d="M296 300 q-10 -10 0 -20 M456 300 q10 -10 0 -20" fill="none" stroke-width="6"/>
+<path d="M320 150 C286 132 276 96 284 62" fill="none" stroke-width="48"/><path d="M320 150 C286 132 276 96 284 62" fill="none" stroke="#FFB547" stroke-width="28"/>
+<circle cx="286" cy="52" r="24" fill="#FFB547"/>
+<path d="M432 170 C458 194 460 222 446 246" fill="none" stroke-width="48"/><path d="M432 170 C458 194 460 222 446 246" fill="none" stroke="#FFB547" stroke-width="28"/>
+<path d="M374 66 C448 66 470 120 470 176 C470 236 440 276 374 276 C308 276 278 236 278 176 C278 120 300 66 374 66 Z" fill="#FFB547"/>
+<path d="M330 160 c0 -12 18 -12 18 0 c0 16 -28 16 -28 0 c0 -22 38 -22 38 0" fill="none" stroke-width="6"/>
+<path d="M400 160 c0 -12 18 -12 18 0 c0 16 -28 16 -28 0 c0 -22 38 -22 38 0" fill="none" stroke-width="6"/>
+<path d="M344 208 Q374 238 404 208 Z" fill="#7A2E3A"/>
+<path d="M376 224 c0 22 22 22 22 0" fill="#FF8FA3" stroke-width="6"/>
+<g transform="rotate(-24 390 104)"><rect x="356" y="92" width="70" height="26" rx="9" fill="#F4D7B5" stroke-width="6"/><path d="M382 99 v12 M398 99 v12" stroke-width="4"/></g>
+<path d="M262 122 q-12 18 0 26 q12 -8 0 -26 Z M484 128 q-12 18 0 26 q12 -8 0 -26 Z" fill="#7CC7F5" stroke-width="5"/>
+
+  </g>
+</svg>

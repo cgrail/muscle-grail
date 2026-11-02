@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Rest Day Rudy (Ruhetag-Rudi), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/rest-day-rudy.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M88 418 H424" stroke-width="40"/><path d="M88 418 H424" stroke="#C5CDD8" stroke-width="20"/>
+<rect x="34" y="350" width="62" height="136" rx="18" fill="#4A5568"/><rect x="416" y="350" width="62" height="136" rx="18" fill="#4A5568"/>
+<ellipse cx="290" cy="352" rx="140" ry="76" fill="#A88B6E"/>
+<path d="M226 360 C250 390 290 404 330 400 M300 330 C330 360 370 384 404 392" fill="none" stroke-width="0"/>
+<path d="M230 340 C250 380 280 404 300 410" fill="none" stroke-width="54"/><path d="M230 340 C250 380 280 404 300 410" fill="none" stroke="#A88B6E" stroke-width="34"/><path d="M330 340 C350 380 380 404 396 410" fill="none" stroke-width="54"/><path d="M330 340 C350 380 380 404 396 410" fill="none" stroke="#A88B6E" stroke-width="34"/>
+<path d="M290 404 l6 26 M302 406 l10 24 M386 404 l6 26 M398 406 l10 24" fill="none" stroke-width="8"/>
+<circle cx="178" cy="262" r="100" fill="#A88B6E"/>
+<ellipse cx="178" cy="276" rx="74" ry="62" fill="#F1DEC4"/>
+<path d="M118 262 C130 242 160 244 170 270 C150 286 124 284 118 262 Z M238 262 C226 242 196 244 186 270 C206 286 232 284 238 262 Z" fill="#5A4636" stroke="none"/>
+<path d="M132 264 Q146 276 160 264 M196 264 Q210 276 224 264" fill="none" stroke="#F1DEC4" stroke-width="6"/>
+<ellipse cx="178" cy="294" rx="16" ry="10" fill="#1D2340" stroke="none"/>
+<path d="M160 316 Q178 330 196 316" fill="none" stroke-width="7"/>
+<path d="M92 214 C80 150 140 104 206 118 C250 128 280 160 278 206 C230 178 140 180 92 214 Z" fill="#3BA3E0"/>
+<path d="M206 118 C252 96 300 104 330 140" fill="none" stroke="#3BA3E0" stroke-width="40"/><path d="M206 118 C252 96 300 104 330 140" fill="none" stroke-width="0"/>
+<circle cx="336" cy="150" r="22" fill="#FFFFFF"/>
+<path d="M370 44 h38 l-38 40 h38 M430 112 h26 l-26 28 h26 M462 24 h20 l-20 22 h20" fill="none" stroke-width="10"/>
+
+  </g>
+</svg>

@@ -69,7 +69,7 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 - A catalog of 650 exercises by [RepDB](https://repdb.co), with illustrations and step-by-step instructions in English and German. Filter by body region, level, equipment and category, or make your own exercise.
 - Describe what you want, typed or dictated: "3x10 bench press at 60 kg, then squats". Apple's on-device model adds it, in English or German (needs Apple Intelligence).
 - Let Claude build and extend plans through MCP, served by the Mac app on your own machine only and off until you switch it on.
-- Every plan says what it trains, like *Chest & Back*, *Leg-heavy* or *Full body*, and gets a funny name and emoji from it, like *Quadzilla* 🦖, unless you name it yourself.
+- Every plan says what it trains, like *Chest & Back*, *Leg-heavy* or *Full body*, and gets a funny name from it: a cartoon character with its own drawing and motto, like *Squatzilla* or *Captain Curl*, unless you name it yourself.
 - A history of every plan change, with undo, and a restore to any earlier version of a plan.
 
 ### Train on iPhone and Apple Watch

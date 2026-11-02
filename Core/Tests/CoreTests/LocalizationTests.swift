@@ -37,8 +37,8 @@ struct LocalizationTests {
         #expect(try terms.filter { try german("Localizable")[$0] == nil } == [])
     }
 
-    @Test func everyFunnyNameHasGerman() throws {
-        #expect(try funnyNames.values.joined().map(\.key).filter { try german("Localizable")[$0] == nil } == [])
+    @Test func everyFunnyNameAndMottoHasGerman() throws {
+        #expect(try funnyNames.values.joined().flatMap { [$0.key, $0.motto] }.filter { try german("Localizable")[$0] == nil } == [])
     }
 
     /// RepDB brings German itself; a new commit of it must too.

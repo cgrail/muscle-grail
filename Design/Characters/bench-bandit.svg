@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Bench Bandit (Bankdrück-Bandit), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/bench-bandit.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<clipPath id="tail"><path d="M330 400 C420 420 480 360 470 290 C462 240 420 220 392 236 C430 262 430 330 360 350 Z"/></clipPath>
+<path d="M330 400 C420 420 480 360 470 290 C462 240 420 220 392 236 C430 262 430 330 360 350 Z" fill="#9AA3AE"/>
+<g clip-path="url(#tail)" stroke="none" fill="#2F3542"><rect x="300" y="226" width="200" height="22" transform="rotate(40 400 300)"/><rect x="300" y="276" width="200" height="22" transform="rotate(40 400 300)"/><rect x="300" y="326" width="200" height="22" transform="rotate(40 400 300)"/></g>
+<path d="M330 400 C420 420 480 360 470 290 C462 240 420 220 392 236 C430 262 430 330 360 350 Z" fill="none"/>
+<path d="M186 444 h46 v22 h-58 Z M296 444 h-46 v22 h58 Z" fill="#2F3542"/>
+<ellipse cx="242" cy="362" rx="124" ry="100" fill="#9AA3AE"/>
+<path d="M140 108 L130 30 L206 78 Z M344 108 L354 30 L278 78 Z" fill="#9AA3AE"/>
+<path d="M150 90 L146 52 L184 76 Z M334 90 L338 52 L300 76 Z" fill="#2F3542" stroke="none"/>
+<ellipse cx="242" cy="178" rx="138" ry="108" fill="#9AA3AE"/>
+<path d="M120 200 C150 220 200 206 242 184 C284 206 334 220 364 200 C380 236 330 264 242 252 C154 264 104 236 120 200 Z" fill="#FFFFFF" stroke="none"/>
+<path d="M112 168 C140 140 200 140 242 162 C284 140 344 140 372 168 C376 194 340 212 300 206 C276 202 256 190 242 184 C228 190 208 202 184 206 C144 212 108 194 112 168 Z" fill="#2F3542"/>
+<circle cx="190" cy="176" r="20" fill="#FFFFFF" stroke="none"/><circle cx="294" cy="176" r="20" fill="#FFFFFF" stroke="none"/>
+<circle cx="182" cy="178" r="10" fill="#1D2340" stroke="none"/><circle cx="286" cy="178" r="10" fill="#1D2340" stroke="none"/>
+<path d="M150 132 Q180 118 210 130 M274 130 Q304 118 334 132" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+<ellipse cx="242" cy="226" rx="16" ry="11" fill="#1D2340" stroke="none"/>
+<path d="M210 248 Q240 262 278 242" fill="none" stroke-width="8"/>
+<circle cx="242" cy="366" r="86" fill="#3D4451"/>
+<circle cx="242" cy="366" r="56" fill="none" stroke="#5A6475" stroke-width="10"/>
+<circle cx="242" cy="366" r="16" fill="#C5CDD8"/>
+<path d="M190 310 C200 300 214 296 226 296" fill="none" stroke="#FFFFFF" stroke-width="8" opacity="0.5"/>
+<ellipse cx="160" cy="352" rx="26" ry="22" fill="#9AA3AE"/><ellipse cx="324" cy="352" rx="26" ry="22" fill="#9AA3AE"/>
+
+  </g>
+</svg>

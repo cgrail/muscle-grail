@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Tricep Titan (Trizeps-Titan), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/tricep-titan.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M210 330 C170 290 130 260 118 200" fill="none" stroke-width="74"/><path d="M210 330 C170 290 130 260 118 200" fill="none" stroke="#9B7BE6" stroke-width="54"/>
+<path d="M256 320 L256 150" fill="none" stroke-width="74"/><path d="M256 320 L256 150" fill="none" stroke="#9B7BE6" stroke-width="54"/>
+<path d="M302 330 C342 290 382 260 394 200" fill="none" stroke-width="74"/><path d="M302 330 C342 290 382 260 394 200" fill="none" stroke="#9B7BE6" stroke-width="54"/>
+<path d="M176 440 h50 v26 h-60 Z M336 440 h-50 v26 h60 Z" fill="#7D5CCB"/>
+<ellipse cx="256" cy="364" rx="150" ry="96" fill="#9B7BE6"/>
+<ellipse cx="256" cy="384" rx="88" ry="58" fill="#D6C8FA" stroke="none"/>
+<path d="M78 126 L88 86 L110 118 Z M158 126 L148 86 L126 118 Z" fill="#F2C14E"/>
+<circle cx="118" cy="176" r="62" fill="#9B7BE6"/><circle cx="96" cy="168" r="11" fill="#1D2340" stroke="none"/><circle cx="92" cy="164" r="4" fill="#FFFFFF" stroke="none"/><circle cx="140" cy="168" r="11" fill="#1D2340" stroke="none"/><circle cx="136" cy="164" r="4" fill="#FFFFFF" stroke="none"/><path d="M100 214 Q118 228 136 214" fill="#FFFFFF" stroke-width="8"/><ellipse cx="82" cy="194" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="154" cy="194" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/><path d="M216 62 L226 22 L248 54 Z M296 62 L286 22 L264 54 Z" fill="#F2C14E"/>
+<circle cx="256" cy="112" r="62" fill="#9B7BE6"/><circle cx="234" cy="104" r="11" fill="#1D2340" stroke="none"/><circle cx="230" cy="100" r="4" fill="#FFFFFF" stroke="none"/><circle cx="278" cy="104" r="11" fill="#1D2340" stroke="none"/><circle cx="274" cy="100" r="4" fill="#FFFFFF" stroke="none"/><path d="M232 150 Q256 172 280 150 Z" fill="#FFFFFF" stroke-width="8"/><ellipse cx="220" cy="130" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="292" cy="130" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/><path d="M354 126 L364 86 L386 118 Z M434 126 L424 86 L402 118 Z" fill="#F2C14E"/>
+<circle cx="394" cy="176" r="62" fill="#9B7BE6"/><circle cx="372" cy="168" r="11" fill="#1D2340" stroke="none"/><circle cx="368" cy="164" r="4" fill="#FFFFFF" stroke="none"/><circle cx="416" cy="168" r="11" fill="#1D2340" stroke="none"/><circle cx="412" cy="164" r="4" fill="#FFFFFF" stroke="none"/><path d="M376 216 Q394 206 412 216" fill="#FFFFFF" stroke-width="8"/><ellipse cx="358" cy="194" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="430" cy="194" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<path d="M196 112 l-10 -24 M316 112 l10 -24" fill="none" stroke-width="0"/>
+
+  </g>
+</svg>

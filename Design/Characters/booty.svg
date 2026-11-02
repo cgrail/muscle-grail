@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Booty (Booty), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/booty.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M378 262 C420 238 452 196 470 132 C482 204 470 264 440 306 Z" fill="#4FBF7F"/>
+<path d="M232 412 L232 458 L292 458 L288 412 Z" fill="#3FA56B"/>
+<path d="M330 412 L326 458 L388 458 L386 410 Z" fill="#3FA56B"/>
+<path d="M236 458 v-12 M252 458 v-12 M332 458 v-12 M348 458 v-12" stroke-width="6"/>
+<path d="M196 196 C236 216 268 230 300 232 C396 236 452 290 446 360 C440 420 392 440 330 440 L236 440 C186 440 166 404 172 364 C178 320 196 290 186 252 Z" fill="#4FBF7F"/>
+<path d="M200 300 C214 340 220 380 236 424 C200 420 180 396 184 360 C186 334 194 318 200 300 Z" fill="#B9EBC8" stroke="none"/>
+<path d="M384 300 C420 320 432 350 426 380" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.6"/>
+<path d="M206 300 C186 304 172 318 168 334 M178 322 l-14 -2 M174 334 l-12 6" fill="none" stroke-width="10"/>
+<rect x="56" y="92" width="196" height="136" rx="62" fill="#4FBF7F"/>
+<path d="M80 184 C120 194 168 196 214 186" fill="none"/>
+<path d="M96 186 l10 14 l10 -12 l10 14 l10 -12 l10 14 l10 -12" fill="none" stroke-width="7"/>
+<circle cx="88" cy="132" r="5" fill="#1D2340" stroke="none"/>
+<path d="M176 142 Q196 128 216 142" fill="none" stroke-width="11"/>
+<ellipse cx="200" cy="172" rx="16" ry="9" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<path d="M470 316 Q490 352 470 388 M496 300 Q522 352 496 404" fill="none" stroke-width="9"/>
+<path d="M392 456 Q410 474 436 470" fill="none" stroke-width="8"/>
+
+  </g>
+</svg>

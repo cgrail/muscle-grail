@@ -1,17 +1,65 @@
 import Foundation
 import SwiftData
 
-/// Funny plan names by the region a plan trains most, nil for full body, each with the emoji that pictures it.
-/// They're looked up by key at runtime, so their German is added to Core's catalog by hand, like `catalogTerm`'s terms.
-let funnyNames: [BodyRegion?: [(key: String, emoji: String)]] = [
-    .legs: [("Leg Day Sucks", "🍗"), ("Quadzilla", "🦖"), ("Thunder Thighs", "⚡️"), ("Wobbly Walk Home", "🥴")],
-    .arms: [("Armageddon", "💪"), ("Sun's Out, Guns Out", "☀️"), ("Curl Power", "🌀"), ("Tricep Trouble", "😤")],
-    .chest: [("International Chest Day", "🌍"), ("Chesty McChestface", "🦍"), ("Pec Deck Party", "🎉"), ("Bench Warmers", "🪑")],
-    .back: [("Back to the Future", "🚀"), ("Lat Attack", "🦇"), ("Got Your Back", "🐢"), ("Pull Request", "🔁")],
-    .shoulders: [("Boulder Shoulders", "🪨"), ("Delt With It", "😎"), ("Shrug Life", "🤷"), ("Cold Shoulder", "🧊")],
-    .core: [("Core-ocalypse", "🔥"), ("Plank You Very Much", "🙏"), ("Abs of Steel", "🛡️"), ("Six-Pack Hunt", "🍺")],
-    nil: [("Everything Hurts", "😵"), ("The Full Monty", "🎩"), ("Head to Toe Woe", "🫠"), ("Total Body Meltdown", "🌋")],
+/// Funny plan names by the region a plan trains most, nil for full body: cartoon characters, each with a motto and a drawing,
+/// `Characters/<pictureID>.png`, rendered from `Design/Characters/`.
+/// They're looked up by key at runtime, so the German of names and mottos is added to Core's catalog by hand, like `catalogTerm`'s terms.
+let funnyNames: [BodyRegion?: [(key: String, motto: String)]] = [
+    .legs: [
+        ("Leggy", "Stairs are temporary. Gains are forever."),
+        ("Booty", "Built from behind."),
+        ("The Quadfather", "Make them an offer they can't refuse: more squats."),
+        ("Thunder Thighs", "Walk in wobbly. Walk out legendary."),
+        ("Peach Protocol", "No peach left behind."),
+        ("Squatzilla", "Fear the rack. Respect the depth."),
+        ("Lunge Larry", "One step at a time, preferably burning."),
+        ("Hamstring Hank", "Pull your weight, then some more."),
+        ("Calf Carl", "Small muscle. Big attitude."),
+        ("The Stair Survivor", "Leg day today. Walking sideways tomorrow."),
+    ],
+    .arms: [
+        ("The Arm-y", "Enlisted today. Flexing forever."),
+        ("Captain Curl", "Curl first, ask questions later."),
+        ("Tricep Titan", "Three heads. One mission."),
+    ],
+    .chest: [
+        ("Bench Bernie", "Keep pressing. No regrets."),
+        ("Bench Bandit", "No bench is safe."),
+        ("Chicken Breast Charlie", "Chest out, beak up."),
+    ],
+    .back: [
+        ("Back Rambo", "Rows before bros."),
+        ("The Pull-Up Pirate", "Steal reps. Raise the bar."),
+    ],
+    .shoulders: [
+        ("Shoulder Shogun", "Rule from every angle."),
+        ("Deltoid Diva", "Capped, not cancelled."),
+    ],
+    .core: [
+        ("Corey", "Brace yourself. Literally."),
+        ("Planky", "Hold the line."),
+    ],
+    nil: [
+        ("Full-Body Fiona", "No muscle left untouched."),
+        ("Cardio Carol", "I came for the burn. I stayed for the gossip."),
+        ("The Sweaty Potato", "From couch to crusher."),
+        ("Burpee Betty", "One burpee at a time, sadly."),
+        ("The Treadmill Titan", "Same belt. New best time."),
+        ("Mobility Pug", "Bend so you don't break."),
+        ("Rest Day Rudy", "Professional napper. Amateur lifter."),
+    ],
 ]
+
+/// The funny names before the characters: nobody typed them either, so their plans get a character with their next change.
+private let retiredNames = [
+    "Leg Day Sucks", "Quadzilla", "Wobbly Walk Home", "Armageddon", "Sun's Out, Guns Out", "Curl Power", "Tricep Trouble",
+    "International Chest Day", "Chesty McChestface", "Pec Deck Party", "Bench Warmers", "Back to the Future", "Lat Attack",
+    "Got Your Back", "Pull Request", "Boulder Shoulders", "Delt With It", "Shrug Life", "Cold Shoulder", "Core-ocalypse",
+    "Plank You Very Much", "Abs of Steel", "Six-Pack Hunt", "Everything Hurts", "The Full Monty", "Head to Toe Woe", "Total Body Meltdown",
+]
+
+/// The file name of a character's drawing: "The Pull-Up Pirate" is drawn in `the-pull-up-pirate`.
+func pictureID(_ key: String) -> String { key.lowercased().split { !$0.isLetter }.joined(separator: "-") }
 
 /// `key` in English and every language of Core's catalog.
 private func spellings(_ key: String) -> [String] {
@@ -22,18 +70,22 @@ private func spellings(_ key: String) -> [String] {
     }
 }
 
-/// Each funny name in every language to its emoji, so one a device in the other language gave counts as funny too.
-private let funnyEmoji = Dictionary(funnyNames.values.joined().flatMap { name in spellings(name.key).map { ($0, name.emoji) } }) { first, _ in first }
-private let newPlanNames = Set(spellings("New plan"))
+/// Each funny name in every language to its character, so one a device in the other language gave counts as funny too.
+private let characters = Dictionary(funnyNames.values.joined().flatMap { character in spellings(character.key).map { ($0, character) } }) { first, _ in first }
+private let otherAutoNames = Set((["New plan"] + retiredNames).flatMap(spellings))
 
 public extension Plan {
-    /// Whether nobody typed the plan's name: it has none, "New plan" or a funny one, in any language.
-    var hasAutoName: Bool { name.isEmpty || newPlanNames.contains(name) || funnyEmoji[name] != nil }
+    /// Whether nobody typed the plan's name: it has none, "New plan" or a funny one, of this version or an earlier one, in any language.
+    var hasAutoName: Bool { name.isEmpty || otherAutoNames.contains(name) || characters[name] != nil }
 
-    /// The plan's picture: its funny name's emoji, else one of the funny names' for what it trains, by its place in the list,
-    /// so plans side by side differ, else a lifter.
-    var emoji: String {
-        funnyEmoji[name] ?? focusRegions.flatMap { funnyNames[$0.first].map { $0[abs(order) % $0.count].emoji } } ?? "🏋️"
+    /// The motto of the character the plan is named after, nil for a name you typed.
+    var motto: String? { characters[name].map { catalogTerm($0.motto) } }
+
+    /// The plan's picture: the drawing of the character it's named after, else of one of the characters for what it trains,
+    /// by its place in the list, so plans side by side differ. Nil while it trains no catalog exercise.
+    var picture: URL? {
+        guard let key = characters[name]?.key ?? focusRegions.flatMap({ funnyNames[$0.first].map { $0[abs(order) % $0.count].key } }) else { return nil }
+        return Bundle.module.url(forResource: pictureID(key), withExtension: "png", subdirectory: "Characters")
     }
 }
 

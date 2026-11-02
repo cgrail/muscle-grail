@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Planky (Planki), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/planky.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M70 440 H470" stroke="#C3CAD5" stroke-width="16"/>
+<path d="M118 318 L110 400 L64 404" fill="none" stroke-width="46"/><path d="M118 318 L110 400 L64 404" fill="none" stroke="#D9A066" stroke-width="26"/>
+<path d="M180 312 L176 400 L130 404" fill="none" stroke-width="46"/><path d="M180 312 L176 400 L130 404" fill="none" stroke="#D9A066" stroke-width="26"/>
+<path d="M424 290 L446 418" fill="none" stroke-width="46"/><path d="M424 290 L446 418" fill="none" stroke="#D9A066" stroke-width="26"/>
+<path d="M440 420 h28" stroke-width="20"/>
+<g transform="rotate(-9 260 280)">
+<rect x="46" y="234" width="430" height="96" rx="22" fill="#E6AE6C"/>
+<path d="M210 254 C260 246 330 262 400 250 M250 306 C300 296 360 312 440 300 M120 316 C150 310 180 314 200 318" fill="none" stroke="#B9783A" stroke-width="7"/>
+<ellipse cx="420" cy="272" rx="14" ry="8" fill="none" stroke="#B9783A" stroke-width="6"/>
+<circle cx="98" cy="268" r="12" fill="#1D2340" stroke="none"/><circle cx="94" cy="264" r="4" fill="#FFFFFF" stroke="none"/><circle cx="150" cy="268" r="12" fill="#1D2340" stroke="none"/><circle cx="146" cy="264" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M106 298 H146" fill="none" stroke-width="8"/>
+<path d="M84 244 L114 252 M168 244 L138 252" fill="none" stroke-width="9"/>
+</g>
+<circle cx="330" cy="120" r="66" fill="#FFFFFF"/>
+<path d="M314 44 h32 M330 44 v10" stroke-width="12"/>
+<path d="M330 120 V82 M330 120 L356 136" fill="none" stroke-width="10"/>
+<path d="M330 66 A54 54 0 0 1 384 120 L330 120 Z" fill="#E5484D" opacity="0.35" stroke="none"/>
+<path d="M58 210 q-12 18 0 26 q12 -8 0 -26 Z" fill="#7CC7F5" stroke-width="5"/>
+
+  </g>
+</svg>

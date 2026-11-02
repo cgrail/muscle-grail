@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Deltoid Diva (Deltoid-Diva), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/deltoid-diva.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M256 112 C330 112 366 172 366 246 L366 392 C366 432 330 452 256 452 C182 452 146 432 146 392 L146 246 C146 172 182 112 256 112 Z" fill="#FF8CC6"/>
+<circle cx="132" cy="296" r="74" fill="#FF6FB0"/><circle cx="380" cy="296" r="74" fill="#FF6FB0"/>
+<path d="M92 270 C100 250 116 238 136 236 M420 270 C412 250 396 238 376 236" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.7"/>
+<path d="M194 120 L208 66 L232 100 L256 52 L280 100 L304 66 L318 120 Z" fill="#FFD23F"/>
+<circle cx="256" cy="98" r="9" fill="#3BC4E8" stroke-width="5"/>
+<path d="M164 214 C164 190 182 180 200 194 C218 180 236 190 236 214 C236 236 210 248 200 258 C190 248 164 236 164 214 Z" fill="#E5484D"/>
+<path d="M276 214 C276 190 294 180 312 194 C330 180 348 190 348 214 C348 236 322 248 312 258 C302 248 276 236 276 214 Z" fill="#E5484D"/>
+<path d="M236 210 Q256 198 276 210" fill="none" stroke-width="8"/>
+<path d="M180 210 l14 -10 M292 210 l14 -10" stroke="#FFFFFF" stroke-width="6"/>
+<path d="M222 292 Q256 324 290 292 Q256 302 222 292 Z" fill="#D7263D"/>
+<path d="M440 150 l8 22 l22 8 l-22 8 l-8 22 l-8 -22 l-22 -8 l22 -8 Z M70 140 l6 16 l16 6 l-16 6 l-6 16 l-6 -16 l-16 -6 l16 -6 Z" fill="#FFD23F" stroke-width="6"/>
+
+  </g>
+</svg>
