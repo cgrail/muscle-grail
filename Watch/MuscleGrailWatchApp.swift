@@ -13,6 +13,7 @@ struct MuscleGrailWatchApp: App {
         _ = SyncMonitor.shared // listen before the store's first sync event
         let store = OpenStore()
         _store = State(initialValue: store)
+        if let container = store.container { WatchLinkSession.start(container) }
         #if targetEnvironment(simulator)
         if let container = store.container { SampleData.addIfAsked(to: container.mainContext) }
         #endif
@@ -54,5 +55,7 @@ struct MuscleGrailWatchApp: App {
                 UnreadableStore(store)
             }
         }
+        // The iPhone's sets and finishes, over Bluetooth: the wake lasts until they are in the store.
+        .backgroundTask(.watchConnectivity) { await WatchLinkSession.current?.settle() }
     }
 }

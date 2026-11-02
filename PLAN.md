@@ -28,6 +28,7 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 | Claude edits plans through an MCP server inside the Mac app (Streamable HTTP on 127.0.0.1, off by default) | No extra process or shared store: the tools use the app's own context and actions. Claude Code connects directly, Claude Desktop through `mcp-remote`. |
 | HealthKit step observer (`enableBackgroundDelivery`, hourly) instead of `BGAppRefreshTask` | New steps wake iPhone and Watch in the background all day. Each wake gives CloudKit a chance to sync and refreshes the complication. One mechanism covers both jobs. |
 | The activity chart: gym days from the store's workouts plus Health's strength workouts (any app), and each day's steps and distance from Health against the daily goals, read when it shows | A watch workout reaches the iPhone's Health over Bluetooth long before its record syncs through iCloud, so a gym day shows right away. Nothing from Health is stored. Workouts the app saved itself are matched by `healthKitID`, so they aren't counted twice. Walks count through steps and distance. |
+| The iPhone and the watch hand each other their training changes over Bluetooth with WatchConnectivity (`WatchLinkSession`), besides iCloud | The gym has no internet, so iCloud can't carry a set from the watch to the iPhone until both are home. `transferUserInfo` queues in order and delivers whenever the other app runs, so a set logged on one shows on the other in the gym. Only workouts and sets go: plans are edited on the Mac and come through iCloud. |
 | Daily goals live in iCloud's key-value store; each day's steps and distance come from Health | Tiny settings need no model or migration, and still reach every device. The widget and the complication read the same store for their progress ring. |
 | The iPhone widget is the complication's code built again for iOS (`StepsWidget`) | One source for both. The iPhone app reloads it on every HealthKit step wake, like the watch does its complication. |
 | The complication reads HealthKit directly | No App Group or shared store is needed. |
@@ -51,6 +52,9 @@ Everything works offline, because the gym has no internet. Sync happens in the b
 2. **HealthKit step deliveries, about hourly.** These are background wakes. A wake that cold-launches the app always runs a CloudKit import. `SyncMonitor.waitUntilIdle()` keeps the app awake until sync finishes, up to 20 s.
 3. **Steps complication on the active watch face.** This raises the watch app's background budget to up to 4 wakes per hour, and gives one-tap launch in the gym.
 4. **`HKWorkoutSession`** keeps the watch app alive during the workout. Changes queued offline are uploaded at the next wake at home.
+5. **Bluetooth between the iPhone and the watch** (WatchConnectivity). After each save, a device sends the workout changes it recorded since the last send (`linkOutgoing`: `startWorkout`, `logSet`, `deleteSet`, `finishWorkout`, `savedToHealth`, `deleteWorkout`) with `transferUserInfo`, as the `Change` format with each action's id and date. The other applies them through `record(_:)` with that id and date (`receiveLinked`), skips any it has, and never sends them back. The system wakes the watch app for them (its `.watchConnectivity` background task waits until they're stored); the iPhone app gets them when it next runs.
+
+   This makes copies: iCloud later brings the sender's own records with the same ids, and SwiftData can't make two records one (no unique constraints). So the receiver remembers each record the link made (`LinkCopy`: kind, id and `persistentModelID`) and, after every iCloud import, drops each copy whose original arrived (`dropCopies`): a workout's sets, and an end or Health id only the copy has, move to the original first. Only the device that made a copy drops it, and only that copy, so no device ever deletes another's record, and every device ends with the original alone. A copy whose original never comes stays: it is then the record. It records nothing, since the log already holds each change once. Devices may show a workout twice for the moment between iCloud bringing both and the drop syncing.
 
 Each device shows its sync state: on iOS and watchOS in the footer of the Train list, on the Mac at the bottom of the sidebar. It says "Syncing…" while CloudKit imports or exports, "Waiting to upload" while changes saved on the device haven't gone out in an export yet, and otherwise when it last synced. Each plan in the iPhone's plan list and the Mac's sidebar shows whether that device's changes to it are uploaded yet. There is no "sync now" for SwiftData: it has no API for it, and the system picks when to import ([TN3163](https://developer.apple.com/documentation/technotes/tn3163-understanding-the-synchronization-of-nspersistentcloudkitcontainer)). Reopening the store would import, but SwiftUI keeps a removed view's SwiftData observers, which trap once their store is gone.
 
@@ -155,6 +159,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [ ] **J — Stop.** Stop sharing. Both keep their plans as they were, and changes no longer cross.
 - [ ] **K — History.** A day after the partner moved curls from Push to Pull, Pull's history and the history across plans show who moved it and when, on the Mac and the iPhone. Undo puts curls back in Push on every device of both, with each person's own weight. Restoring Push to last week brings back its exercises in their old order with your old weights; the partner keeps theirs.
 - [ ] **L — Old store.** Install a build with the changed `SchemaV1` over an older one. It offers both choices instead of crashing. Download again brings the data back. Start from scratch empties the iPhone, the watch and the Mac, and the Mac's backup restore brings everything back.
+- [ ] **M — Bluetooth.** Turn off Wi-Fi and mobile data on the iPhone, keep Bluetooth on, and put the watch in airplane mode with Bluetooth turned back on. Log two sets on the watch: within a minute they show in the iPhone's History, and the iPhone continues the workout. Log a set on the iPhone and undo another: the watch shows both. Finish on the iPhone, then go online with both and open nothing. Within 24 h every device, the Mac too, shows the workout once with each set once.
 
 ## Status
 
@@ -163,7 +168,7 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 - [x] Plan editor: "Add exercise" opens a searchable catalog with photos (search by name, muscle or equipment).
 - [x] The iOS app builds with the watch app and complication embedded, and the macOS app builds.
 - [x] Smoke test in the iPhone simulator: the CloudKit store opens and the Health permission sheet appears.
-- [ ] Run on real devices, then acceptance tests A–E.
+- [ ] Run on real devices, then acceptance tests A–E and M.
 - [ ] Plan history, and plan sharing with a training partner (`todo.md`), then acceptance tests F–L with two Apple IDs.
 - [x] App icons: a flexed arm lifting a dumbbell, made from `Design/icon-source.jpg` by `Design/Icon.swift`.
 
@@ -171,11 +176,13 @@ TestFlight and App Store builds use **Production**, and data doesn't cross betwe
 
 - **Two stores mirror into one CloudKit container** (gym data and the catalog). If that misbehaves on devices, move the catalog to a container of its own.
 - **There is no public "sync now" API.** A wake of an app that is already running but suspended may not start a CloudKit import. Silent pushes still cover the common case. If test A or B fails:
-  - **Watch lags behind:** have the phone push the latest state to the watch with WatchConnectivity `updateApplicationContext`. It works over Bluetooth, no internet needed.
+  - **Watch lags behind on plans:** have the phone push its plans to the watch over the WatchConnectivity link too. Today it carries only workouts and sets.
   - **Sync stays unreliable:** move to `CKSyncEngine`, whose fetch and send calls can be awaited in any background wake. It means a lot more code.
 - **SwiftData and `CKSyncEngine` in one private database.** SwiftData mirrors its own zone, and the engine fetches only `Partner` (`FetchChangesOptions.scope`). If they get in each other's way, move sharing to a container of its own. That container is permanent too, so name it once.
 - **Sharing is only checked by hand.** CloudKit doesn't run under `swift test`, so the engine stays a thin wrapper, like `Health.swift`, and the rules (what is shared, how a received change applies) live in `Core` with tests. Acceptance tests F–J need two Apple IDs, on devices or simulators.
 - **A big GymBook import syncs slowly.** Years of history are thousands of sets, each with its action (about 10,000 records for 5,000 sets), all uploaded at once. The import saves workout by workout, and the other devices catch up over the next syncs.
+- **Bluetooth copies.** If a copy's `persistentModelID` didn't match after a relaunch, the copy would never drop and its workout would show twice. `WatchLinkTests` check the drop within one launch; acceptance test M checks it across.
+- **A workout finished on both devices.** With the link, a workout started on one device runs on the other too. Whichever finishes it saves it to Health; finishing it on the second as well, before the first one's Health id arrives, saves it twice.
 - **Locked watch.** HealthKit can't be read while the watch is locked, so the complication then shows the last value read today.
 
 ## Skipped (not asked for)
