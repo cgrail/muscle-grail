@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Lunge Larry (Ausfallschritt-Alex), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/lunge-larry.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M296 300 L300 380 L296 452" fill="none" stroke-width="32"/><path d="M296 300 L300 380 L296 452" fill="none" stroke="#E86A93" stroke-width="12"/>
+<path d="M296 452 L266 462 M296 452 L328 462" fill="none" stroke-width="12"/>
+<path d="M318 296 L376 352 L304 372" fill="none" stroke-width="32"/><path d="M318 296 L376 352 L304 372" fill="none" stroke="#E86A93" stroke-width="12"/>
+<path d="M226 210 C196 186 222 150 214 120 C206 92 172 88 160 104" fill="none" stroke-width="60"/><path d="M226 210 C196 186 222 150 214 120 C206 92 172 88 160 104" fill="none" stroke="#FF8FB1" stroke-width="40"/>
+<path d="M196 214 C220 154 330 146 384 190 C420 220 428 262 404 292 C376 326 290 324 240 296 C210 280 186 246 196 214 Z" fill="#FF8FB1"/>
+<path d="M270 226 C306 210 358 222 380 252 C346 272 300 268 270 226 Z" fill="#F0628E"/>
+<path d="M398 214 L452 196 L430 236 Z" fill="#F0628E"/>
+<circle cx="168" cy="96" r="50" fill="#FF8FB1"/>
+<path d="M126 74 C150 52 196 54 214 78 L210 92 C190 70 150 70 128 90 Z" fill="#3BA3E0"/>
+<path d="M126 108 C100 112 82 130 86 160 C94 144 108 134 128 130 Z" fill="#FFF3E8"/>
+<path d="M94 140 C88 148 86 154 86 160 C94 150 100 146 108 142 Z" fill="#1D2340"/>
+<circle cx="176" cy="104" r="11" fill="#1D2340" stroke="none"/><circle cx="172" cy="100" r="4" fill="#FFFFFF" stroke="none"/>
+<ellipse cx="196" cy="124" rx="13" ry="8" fill="#FF7A90" opacity="0.55" stroke="none"/>
+
+  </g>
+</svg>

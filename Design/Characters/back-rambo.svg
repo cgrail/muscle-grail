@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Back Rambo (Rücken-Rambo), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/back-rambo.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M70 470 L410 70" stroke-width="34"/><path d="M70 470 L410 70" stroke="#C98A4B" stroke-width="18"/>
+<path d="M392 44 C420 20 470 30 482 56 C494 82 470 118 436 120 Z" fill="#C98A4B"/>
+<path d="M256 120 C334 120 366 186 366 266 L366 396 C366 434 334 452 256 452 C178 452 146 434 146 396 L146 266 C146 186 178 120 256 120 Z" fill="#E9A878"/>
+<path d="M146 300 C190 286 210 300 256 300 C302 300 322 286 366 300 L366 396 C366 434 334 452 256 452 C178 452 146 434 146 396 Z" fill="#6E7F3B"/>
+<path d="M184 300 L196 266 M328 300 L316 266" fill="none" stroke="#6E7F3B" stroke-width="16"/>
+<path d="M150 186 C200 170 312 170 362 186 L364 214 C312 198 200 198 148 214 Z" fill="#E5484D"/>
+<path d="M360 196 C400 196 430 214 446 240 C414 230 394 226 372 222 M362 206 C392 222 410 248 412 282 C392 256 378 240 364 228" fill="#E5484D" stroke-width="8"/>
+<path d="M196 230 L238 246 M316 230 L274 246" fill="none" stroke-width="13"/>
+<circle cx="220" cy="258" r="12" fill="#1D2340" stroke="none"/><circle cx="216" cy="254" r="4" fill="#FFFFFF" stroke="none"/><circle cx="292" cy="258" r="12" fill="#1D2340" stroke="none"/><circle cx="288" cy="254" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M230 298 H282" fill="none" stroke-width="9"/>
+<path d="M218 228 l-8 -16" stroke-width="0"/>
+<circle cx="186" cy="356" r="26" fill="#E9A878"/><circle cx="318" cy="216" r="26" fill="#E9A878" opacity="0"/>
+<path d="M200 330 L230 300" stroke-width="0"/>
+
+  </g>
+</svg>

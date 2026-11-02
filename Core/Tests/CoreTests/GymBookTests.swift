@@ -134,7 +134,7 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
 
     @Test func anImportedPlanGetsAFunnyName() throws {
         context.importGymBook(file)
-        #expect(try context.fetch(FetchDescriptor<Plan>()).map(\.name) == ["Core-ocalypse"])
+        #expect(try context.fetch(FetchDescriptor<Plan>()).map(\.name) == ["Corey"])
     }
 
     @Test func aPlanImportedBeforeIsHereUnderItsFunnyName() {

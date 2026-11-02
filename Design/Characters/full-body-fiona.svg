@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Full-Body Fiona (Ganzkörper-Gunda), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/full-body-fiona.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M180 250 C120 260 74 230 70 170" fill="none" stroke-width="60"/><path d="M180 250 C120 260 74 230 70 170" fill="none" stroke="#FF8A65" stroke-width="40"/><path d="M188 268 C150 320 100 350 64 412" fill="none" stroke-width="60"/><path d="M188 268 C150 320 100 350 64 412" fill="none" stroke="#FF8A65" stroke-width="40"/><path d="M224 280 C214 350 192 400 180 462" fill="none" stroke-width="60"/><path d="M224 280 C214 350 192 400 180 462" fill="none" stroke="#FF8A65" stroke-width="40"/><path d="M288 280 C298 350 320 400 332 462" fill="none" stroke-width="60"/><path d="M288 280 C298 350 320 400 332 462" fill="none" stroke="#FF8A65" stroke-width="40"/><path d="M324 268 C362 320 412 350 448 412" fill="none" stroke-width="60"/><path d="M324 268 C362 320 412 350 448 412" fill="none" stroke="#FF8A65" stroke-width="40"/><path d="M332 250 C392 260 438 230 442 170" fill="none" stroke-width="60"/><path d="M332 250 C392 260 438 230 442 170" fill="none" stroke="#FF8A65" stroke-width="40"/>
+<path d="M150 262 C136 126 196 66 256 66 C316 66 376 126 362 262 C336 294 176 294 150 262 Z" fill="#FF8A65"/>
+<path d="M190 120 C206 96 230 86 252 86" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.6"/>
+<path d="M152 168 C200 148 312 148 360 168 L362 196 C312 176 200 176 150 196 Z" fill="#3BA3E0"/>
+<circle cx="222" cy="222" r="14" fill="#1D2340" stroke="none"/><circle cx="217" cy="217" r="5" fill="#FFFFFF" stroke="none"/><circle cx="290" cy="222" r="14" fill="#1D2340" stroke="none"/><circle cx="285" cy="217" r="5" fill="#FFFFFF" stroke="none"/>
+<path d="M232 254 Q256 274 280 254" fill="none" stroke-width="8"/>
+<ellipse cx="192" cy="252" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="320" cy="252" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<rect x="28.0" y="144" width="84" height="12" rx="6" fill="#9AA5B4"/><rect x="14.0" y="127.0" width="22" height="46" rx="7" fill="#4A5568"/><rect x="104.0" y="127.0" width="22" height="46" rx="7" fill="#4A5568"/>
+<path d="M424 128 C424 98 460 98 460 128" fill="none" stroke-width="22"/><path d="M424 128 C424 98 460 98 460 128" fill="none" stroke="#4A5568" stroke-width="10"/>
+<path d="M410 150 C410 126 474 126 474 150 C482 178 466 196 442 196 C418 196 402 178 410 150 Z" fill="#4A5568"/>
+<circle cx="56" cy="426" r="28" fill="#F2C14E"/><path d="M42 426 h28" stroke-width="7"/>
+<rect x="450" y="390.0" width="12" height="60" rx="6" fill="#9AA5B4"/><rect x="438.0" y="376.0" width="36" height="22" rx="7" fill="#4A5568"/><rect x="438.0" y="442.0" width="36" height="22" rx="7" fill="#4A5568"/>
+
+  </g>
+</svg>

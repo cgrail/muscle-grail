@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Peach Protocol (Pfirsich-Protokoll), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/peach-protocol.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <linearGradient id="peach" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#FFC27A"/><stop offset="1" stop-color="#FF7F7F"/>
+    </linearGradient>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M256 136 C254 110 250 92 242 76" fill="none" stroke="#8B5A2B" stroke-width="12"/>
+<path d="M254 128 C268 82 318 60 368 70 C346 116 304 136 254 128 Z" fill="#5DBB63"/>
+<path d="M266 120 C296 100 324 86 350 78" fill="none" stroke-width="6"/>
+<path d="M256 140 C330 98 438 148 432 270 C426 384 344 456 256 456 C168 456 86 384 80 270 C74 148 182 98 256 140 Z" fill="url(#peach)"/>
+<path d="M256 140 C236 220 240 310 268 400" fill="none" stroke="#E86A5A" stroke-width="9"/>
+<path d="M118 220 C126 180 152 158 184 150" fill="none" stroke="#FFFFFF" stroke-width="14" opacity="0.6"/>
+<path d="M140 224 H372" fill="none" stroke-width="10"/>
+<rect x="140" y="218" width="100" height="62" rx="24" fill="#1D2340"/>
+<rect x="272" y="218" width="100" height="62" rx="24" fill="#1D2340"/>
+<path d="M160 234 L182 256 M292 234 L314 256" stroke="#FFFFFF" stroke-width="8" opacity="0.8"/>
+<path d="M224 340 Q256 352 290 336" fill="none" stroke-width="9"/>
+<ellipse cx="166" cy="316" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="346" cy="316" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<circle cx="420" cy="262" r="14" fill="#2B2D3A"/>
+<path d="M420 276 c-14 8 14 16 0 24 c-14 8 14 16 0 24 c-14 8 14 16 0 24" fill="none" stroke-width="6"/>
+
+  </g>
+</svg>

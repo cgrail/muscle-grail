@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Bench Bernie (Brust-Bernd), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/bench-bernie.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<circle cx="162" cy="86" r="40" fill="#A86B3C"/><circle cx="350" cy="86" r="40" fill="#A86B3C"/>
+<circle cx="162" cy="86" r="18" fill="#E8C39E" stroke="none"/><circle cx="350" cy="86" r="18" fill="#E8C39E" stroke="none"/>
+<path d="M190 448 h50 v20 h-62 Z M322 448 h-50 v20 h62 Z" fill="#7A4A26"/>
+<ellipse cx="256" cy="360" rx="150" ry="104" fill="#A86B3C"/>
+<path d="M190 392 Q222 418 254 392 M258 392 Q290 418 322 392" fill="none" stroke-width="8"/>
+<ellipse cx="256" cy="414" rx="56" ry="34" fill="#E8C39E" stroke="none"/>
+<circle cx="256" cy="174" r="110" fill="#A86B3C"/>
+<ellipse cx="256" cy="214" rx="54" ry="40" fill="#E8C39E"/>
+<ellipse cx="256" cy="196" rx="20" ry="13" fill="#1D2340" stroke="none"/>
+<path d="M240 226 Q256 240 272 226" fill="none" stroke-width="7"/>
+<circle cx="210" cy="160" r="13" fill="#1D2340" stroke="none"/><circle cx="206" cy="156" r="4" fill="#FFFFFF" stroke="none"/><circle cx="302" cy="160" r="13" fill="#1D2340" stroke="none"/><circle cx="298" cy="156" r="4" fill="#FFFFFF" stroke="none"/>
+<ellipse cx="186" cy="206" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="326" cy="206" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<path d="M30 316 H482" stroke-width="30"/><path d="M30 316 H482" stroke="#C5CDD8" stroke-width="14"/>
+<rect x="20" y="254" width="40" height="124" rx="12" fill="#4A5568"/><rect x="60" y="270" width="24" height="92" rx="9" fill="#4A5568"/>
+<rect x="452" y="254" width="40" height="124" rx="12" fill="#4A5568"/><rect x="428" y="270" width="24" height="92" rx="9" fill="#4A5568"/>
+<ellipse cx="170" cy="318" rx="30" ry="26" fill="#A86B3C"/><ellipse cx="342" cy="318" rx="30" ry="26" fill="#A86B3C"/>
+
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Corey (Corey), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/corey.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M206 268 C160 276 130 262 120 226" fill="none" stroke-width="44"/><path d="M206 268 C160 276 130 262 120 226" fill="none" stroke="#FFF1CF" stroke-width="24"/><path d="M306 268 C352 276 382 262 392 226" fill="none" stroke-width="44"/><path d="M306 268 C352 276 382 262 392 226" fill="none" stroke="#FFF1CF" stroke-width="24"/>
+<circle cx="120" cy="216" r="20" fill="#FFF1CF"/><circle cx="392" cy="216" r="20" fill="#FFF1CF"/>
+<path d="M188 176 C214 230 214 330 188 384 L324 384 C298 330 298 230 324 176 Z" fill="#FFF1CF"/>
+<path d="M256 96 C258 76 262 60 270 44" fill="none" stroke="#8B5A2B" stroke-width="12"/>
+<path d="M266 70 C292 42 336 40 360 58 C330 82 296 84 266 70 Z" fill="#5DBB63"/>
+<path d="M140 178 C128 108 196 76 256 98 C316 76 384 108 372 178 C334 194 178 194 140 178 Z" fill="#E5484D"/>
+<path d="M170 126 C182 108 204 98 226 98" fill="none" stroke="#FFFFFF" stroke-width="10" opacity="0.6"/>
+<path d="M140 382 C178 370 334 370 372 382 C386 440 330 470 256 460 C182 470 126 440 140 382 Z" fill="#E5484D"/>
+<path d="M200 304 C204 296 308 296 312 304 L314 340 C308 332 204 332 198 340 Z" fill="#8B5A2B"/>
+<rect x="236" y="300" width="40" height="34" rx="6" fill="#C5CDD8" stroke-width="7"/>
+<circle cx="230" cy="230" r="13" fill="#1D2340" stroke="none"/><circle cx="226" cy="226" r="4" fill="#FFFFFF" stroke="none"/><circle cx="282" cy="230" r="13" fill="#1D2340" stroke="none"/><circle cx="278" cy="226" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M236 262 Q256 280 276 262" fill="none" stroke-width="8"/>
+<ellipse cx="212" cy="256" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="300" cy="256" rx="12" ry="7" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<path d="M246 360 q6 -14 12 0 q-6 8 -12 0 Z" fill="#5A3A1E" stroke="none"/>
+
+  </g>
+</svg>

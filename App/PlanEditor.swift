@@ -33,6 +33,7 @@ struct PlanEditor: View {
                         .disabled(locked)
                     FunnyNameButton(plan: plan).font(.title2).disabled(locked)
                 }
+                if let motto = plan.motto { Text(verbatim: motto).italic().foregroundStyle(.secondary) }
                 if locked { UpdateToEdit() }
                 ForEach(plan.sortedItems) { item in
                     PlanItemCard(item: item, editing: editing, forWhom: $forWhom)

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Leggy (Beini), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/leggy.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M168 250 C138 300 138 350 174 392 L234 392 C246 350 250 300 240 250 Z" fill="#FFC23D"/>
+<path d="M344 250 C374 300 374 350 338 392 L278 392 C266 350 262 300 272 250 Z" fill="#FFC23D"/>
+<path d="M164 318 C178 300 196 300 206 314 M348 318 C334 300 316 300 306 314" fill="none" stroke-width="8"/>
+<rect x="170" y="382" width="68" height="28" rx="8" fill="#FFFFFF"/><rect x="274" y="382" width="68" height="28" rx="8" fill="#FFFFFF"/>
+<path d="M172 396 H236 M276 396 H340" stroke="#E5484D" stroke-width="8"/>
+<path d="M110 452 C110 424 132 410 164 410 L236 410 C246 410 250 420 250 432 L250 448 C250 458 244 462 234 462 L122 462 C114 462 110 458 110 452 Z" fill="#E5484D"/>
+<path d="M402 452 C402 424 380 410 348 410 L276 410 C266 410 262 420 262 432 L262 448 C262 458 268 462 278 462 L390 462 C398 462 402 458 402 452 Z" fill="#E5484D"/>
+<path d="M116 444 H244 M268 444 H396" stroke="#FFFFFF" stroke-width="7"/>
+<circle cx="256" cy="166" r="120" fill="#FFC23D"/>
+<path d="M160 120 C180 80 220 62 256 62" fill="none" stroke="#FFFFFF" stroke-width="12" opacity="0.7"/>
+<circle cx="212" cy="158" r="14" fill="#1D2340" stroke="none"/><circle cx="207" cy="153" r="5" fill="#FFFFFF" stroke="none"/><circle cx="300" cy="158" r="14" fill="#1D2340" stroke="none"/><circle cx="295" cy="153" r="5" fill="#FFFFFF" stroke="none"/>
+<path d="M218 204 Q256 238 294 204" fill="#FFFFFF"/>
+<ellipse cx="180" cy="198" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="332" cy="198" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+
+  </g>
+</svg>

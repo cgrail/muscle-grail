@@ -70,6 +70,7 @@ public struct TrainOverview: View {
             PlanPicture(plan, size: 180).shadow(radius: 8, y: 4)
             VStack(alignment: .leading, spacing: 6) {
                 Text(plan.title).font(.largeTitle.bold())
+                if let motto = plan.motto { Text(verbatim: motto).italic().foregroundStyle(.secondary) }
                 if let focus = plan.focus { Text(verbatim: focus).font(.title3).foregroundStyle(plan.color) }
                 Text(verbatim: plan.lastDoneText).foregroundStyle(.secondary)
                 Text(verbatim: plan.trainedItems.map { context.exerciseName($0.exerciseID) }.joined(separator: " · "))

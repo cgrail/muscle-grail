@@ -21,6 +21,330 @@
         }
       }
     },
+    "Back Rambo" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rücken-Rambo"
+          }
+        }
+      }
+    },
+    "Bench Bandit" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bankdrück-Bandit"
+          }
+        }
+      }
+    },
+    "Bench Bernie" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brust-Bernd"
+          }
+        }
+      }
+    },
+    "Bend so you don't break." : {
+      "comment" : "The motto of Mobility Pug, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bieg dich, damit du nicht brichst."
+          }
+        }
+      }
+    },
+    "Booty" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Booty"
+          }
+        }
+      }
+    },
+    "Brace yourself. Literally." : {
+      "comment" : "The motto of Corey, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spann dich an. Wörtlich."
+          }
+        }
+      }
+    },
+    "Built from behind." : {
+      "comment" : "The motto of Booty, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Von hinten gebaut."
+          }
+        }
+      }
+    },
+    "Burpee Betty" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Burpee-Betti"
+          }
+        }
+      }
+    },
+    "Calf Carl" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Waden-Werner"
+          }
+        }
+      }
+    },
+    "Capped, not cancelled." : {
+      "comment" : "The motto of Deltoid Diva, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gecappt, nicht gecancelt."
+          }
+        }
+      }
+    },
+    "Captain Curl" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Captain Curl"
+          }
+        }
+      }
+    },
+    "Cardio Carol" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cardio-Karin"
+          }
+        }
+      }
+    },
+    "Chest out, beak up." : {
+      "comment" : "The motto of Chicken Breast Charlie, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brust raus, Schnabel hoch."
+          }
+        }
+      }
+    },
+    "Chicken Breast Charlie" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hähnchenbrust-Henni"
+          }
+        }
+      }
+    },
+    "Corey" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Corey"
+          }
+        }
+      }
+    },
+    "Curl first, ask questions later." : {
+      "comment" : "The motto of Captain Curl, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erst curlen, dann Fragen stellen."
+          }
+        }
+      }
+    },
+    "Deltoid Diva" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deltoid-Diva"
+          }
+        }
+      }
+    },
+    "Enlisted today. Flexing forever." : {
+      "comment" : "The motto of The Arm-y, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute eingeschrieben. Für immer flexend."
+          }
+        }
+      }
+    },
+    "Fear the rack. Respect the depth." : {
+      "comment" : "The motto of Squatzilla, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fürchte das Rack. Respektiere die Tiefe."
+          }
+        }
+      }
+    },
+    "From couch to crusher." : {
+      "comment" : "The motto of The Sweaty Potato, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vom Sofa zum Kracher."
+          }
+        }
+      }
+    },
+    "Full-Body Fiona" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ganzkörper-Gunda"
+          }
+        }
+      }
+    },
+    "Hamstring Hank" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hamstring-Hansi"
+          }
+        }
+      }
+    },
+    "Hold the line." : {
+      "comment" : "The motto of Planky, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Halte die Linie."
+          }
+        }
+      }
+    },
+    "I came for the burn. I stayed for the gossip." : {
+      "comment" : "The motto of Cardio Carol, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich kam fürs Brennen. Ich blieb für den Klatsch und Tratsch."
+          }
+        }
+      }
+    },
+    "Keep pressing. No regrets." : {
+      "comment" : "The motto of Bench Bernie, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weiter drücken. Keine Reue."
+          }
+        }
+      }
+    },
+    "Leg day today. Walking sideways tomorrow." : {
+      "comment" : "The motto of The Stair Survivor, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Heute Beintag. Morgen seitwärts laufen."
+          }
+        }
+      }
+    },
+    "Leggy" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beini"
+          }
+        }
+      }
+    },
     "%lld times" : {
       "localizations" : {
         "de" : {
@@ -1439,6 +1763,30 @@
         }
       }
     },
+    "Lunge Larry" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ausfallschritt-Alex"
+          }
+        }
+      }
+    },
+    "Make them an offer they can't refuse: more squats." : {
+      "comment" : "The motto of The Quadfather, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mach ihnen ein Angebot, das sie nicht ablehnen können: mehr Squats."
+          }
+        }
+      }
+    },
     "medicine_ball" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -1453,6 +1801,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Medicine ball"
+          }
+        }
+      }
+    },
+    "Mobility Pug" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobil-Mops"
           }
         }
       }
@@ -1487,12 +1847,48 @@
         }
       }
     },
+    "No bench is safe." : {
+      "comment" : "The motto of Bench Bandit, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Bank ist sicher."
+          }
+        }
+      }
+    },
     "No changes yet" : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noch keine Änderungen"
+          }
+        }
+      }
+    },
+    "No muscle left untouched." : {
+      "comment" : "The motto of Full-Body Fiona, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Muskel bleibt unbehelligt."
+          }
+        }
+      }
+    },
+    "No peach left behind." : {
+      "comment" : "The motto of Peach Protocol, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kein Pfirsich bleibt zurück."
           }
         }
       }
@@ -1573,6 +1969,42 @@
         }
       }
     },
+    "One burpee at a time, sadly." : {
+      "comment" : "The motto of Burpee Betty, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Burpee nach dem anderen, leider."
+          }
+        }
+      }
+    },
+    "One step at a time, preferably burning." : {
+      "comment" : "The motto of Lunge Larry, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ein Schritt nach dem anderen – möglichst brennend."
+          }
+        }
+      }
+    },
+    "Peach Protocol" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pfirsich-Protokoll"
+          }
+        }
+      }
+    },
     "Pec Deck Party" : {
       "comment" : "A funny plan name, given for what the plan trains",
       "extractionState" : "manual",
@@ -1617,6 +2049,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Chest"
+          }
+        }
+      }
+    },
+    "Planky" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planki"
           }
         }
       }
@@ -1759,6 +2203,18 @@
         }
       }
     },
+    "Professional napper. Amateur lifter." : {
+      "comment" : "The motto of Rest Day Rudy, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Professioneller Nickerchen-Macher. Amateur-Lifter."
+          }
+        }
+      }
+    },
     "Pull Request" : {
       "comment" : "A funny plan name, given for what the plan trains",
       "extractionState" : "manual",
@@ -1785,6 +2241,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pull-up bar"
+          }
+        }
+      }
+    },
+    "Pull your weight, then some more." : {
+      "comment" : "The motto of Hamstring Hank, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zieh dein Gewicht, dann noch etwas mehr."
           }
         }
       }
@@ -1923,6 +2391,18 @@
         }
       }
     },
+    "Rest Day Rudy" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ruhetag-Rudi"
+          }
+        }
+      }
+    },
     "Restore" : {
       "localizations" : {
         "de" : {
@@ -2023,6 +2503,42 @@
         }
       }
     },
+    "Rows before bros." : {
+      "comment" : "The motto of Back Rambo, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rudern vor Bros."
+          }
+        }
+      }
+    },
+    "Rule from every angle." : {
+      "comment" : "The motto of Shoulder Shogun, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herrsche aus jedem Winkel."
+          }
+        }
+      }
+    },
+    "Same belt. New best time." : {
+      "comment" : "The motto of The Treadmill Titan, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gleiches Band. Neue Bestzeit."
+          }
+        }
+      }
+    },
     "seated_calf_raise_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -2103,6 +2619,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Schultern"
+          }
+        }
+      }
+    },
+    "Shoulder Shogun" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schulter-Schogun"
           }
         }
       }
@@ -2213,6 +2741,18 @@
         }
       }
     },
+    "Small muscle. Big attitude." : {
+      "comment" : "The motto of Calf Carl, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kleiner Muskel. Große Einstellung."
+          }
+        }
+      }
+    },
     "smith_machine" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -2249,6 +2789,18 @@
         }
       }
     },
+    "Squatzilla" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Squatzilla"
+          }
+        }
+      }
+    },
     "stability_ball" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",
@@ -2281,6 +2833,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stair climber"
+          }
+        }
+      }
+    },
+    "Stairs are temporary. Gains are forever." : {
+      "comment" : "The motto of Leggy, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Treppen sind temporär. Zuwachs ist für immer."
           }
         }
       }
@@ -2347,6 +2911,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Stationary bike"
+          }
+        }
+      }
+    },
+    "Steal reps. Raise the bar." : {
+      "comment" : "The motto of The Pull-Up Pirate, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stiehl Wiederholungen. Hiss die Stange."
           }
         }
       }
@@ -2437,6 +3013,18 @@
         }
       }
     },
+    "The Arm-y" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Armee"
+          }
+        }
+      }
+    },
     "The Full Monty" : {
       "comment" : "A funny plan name, given for what the plan trains",
       "extractionState" : "manual",
@@ -2445,6 +3033,66 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ganz oder gar nicht"
+          }
+        }
+      }
+    },
+    "The Pull-Up Pirate" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Klimmzug-Pirat"
+          }
+        }
+      }
+    },
+    "The Quadfather" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Quadfather"
+          }
+        }
+      }
+    },
+    "The Stair Survivor" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Treppen-Überlebende"
+          }
+        }
+      }
+    },
+    "The Sweaty Potato" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das schwitzende Kartoffelchen"
+          }
+        }
+      }
+    },
+    "The Treadmill Titan" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der Laufband-Titan"
           }
         }
       }
@@ -2469,14 +3117,26 @@
         }
       }
     },
-    "Thunder Thighs" : {
-      "comment" : "A funny plan name, given for what the plan trains",
+    "Three heads. One mission." : {
+      "comment" : "The motto of Tricep Titan, a funny plan name",
       "extractionState" : "manual",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Donnerschenkel"
+            "value" : "Drei Köpfe. Eine Mission."
+          }
+        }
+      }
+    },
+    "Thunder Thighs" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Donneroberschenkel"
           }
         }
       }
@@ -2593,6 +3253,18 @@
         }
       }
     },
+    "Tricep Titan" : {
+      "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trizeps-Titan"
+          }
+        }
+      }
+    },
     "Tricep Trouble" : {
       "comment" : "A funny plan name, given for what the plan trains",
       "extractionState" : "manual",
@@ -2667,6 +3339,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noch nicht hochgeladen"
+          }
+        }
+      }
+    },
+    "Walk in wobbly. Walk out legendary." : {
+      "comment" : "The motto of Thunder Thighs, a funny plan name",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wackelig reinkommen. Legendär rausgehen."
           }
         }
       }

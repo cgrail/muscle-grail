@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Hamstring Hank (Hamstring-Hansi), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/hamstring-hank.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<circle cx="140" cy="160" r="42" fill="#F2A65A"/><circle cx="372" cy="160" r="42" fill="#F2A65A"/>
+<circle cx="140" cy="160" r="20" fill="#FFB5C2" stroke="none"/><circle cx="372" cy="160" r="20" fill="#FFB5C2" stroke="none"/>
+<ellipse cx="200" cy="444" rx="36" ry="18" fill="#FFB5C2"/><ellipse cx="312" cy="444" rx="36" ry="18" fill="#FFB5C2"/>
+<ellipse cx="256" cy="296" rx="172" ry="150" fill="#F2A65A"/>
+<ellipse cx="256" cy="334" rx="112" ry="100" fill="#FFF1DC" stroke="none"/>
+<path d="M114 222 C170 178 342 178 398 222 L404 252 C344 206 168 206 108 252 Z" fill="#E5484D"/>
+<circle cx="206" cy="262" r="15" fill="#1D2340" stroke="none"/><circle cx="201" cy="257" r="5" fill="#FFFFFF" stroke="none"/><circle cx="306" cy="262" r="15" fill="#1D2340" stroke="none"/><circle cx="301" cy="257" r="5" fill="#FFFFFF" stroke="none"/>
+<path d="M246 290 L266 290 L256 300 Z" fill="#FF8FA3" stroke-width="6"/>
+<path d="M234 308 Q245 320 256 308 Q267 320 278 308" fill="none" stroke-width="7"/>
+<rect x="246" y="314" width="20" height="18" rx="3" fill="#FFFFFF" stroke-width="6"/>
+<ellipse cx="166" cy="304" rx="26" ry="16" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="346" cy="304" rx="26" ry="16" fill="#FF7A90" opacity="0.55" stroke="none"/>
+<rect x="191.0" y="386" width="130" height="12" rx="6" fill="#9AA5B4"/><rect x="177.0" y="360.0" width="22" height="64" rx="7" fill="#4A5568"/><rect x="313.0" y="360.0" width="22" height="64" rx="7" fill="#4A5568"/>
+<circle cx="208" cy="392" r="20" fill="#F2A65A"/><circle cx="304" cy="392" r="20" fill="#F2A65A"/>
+
+  </g>
+</svg>

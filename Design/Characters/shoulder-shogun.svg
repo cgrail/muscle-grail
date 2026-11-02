@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Shoulder Shogun (Schulter-Schogun), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/shoulder-shogun.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M256 152 C326 152 356 204 356 266 L356 404 C356 436 326 452 256 452 C186 452 156 436 156 404 L156 266 C156 204 186 152 256 152 Z" fill="#F6C39A"/>
+<path d="M156 290 C200 300 312 300 356 290 L356 404 C356 436 326 452 256 452 C186 452 156 436 156 404 Z" fill="#C8372D"/>
+<path d="M160 330 C210 340 302 340 352 330 M160 370 C210 380 302 380 352 370 M162 410 C210 420 302 420 350 410" fill="none" stroke="#F2C14E" stroke-width="7"/>
+<path d="M44 262 C44 218 94 200 150 212 C190 222 196 260 186 304 C176 350 120 358 80 340 C56 330 44 300 44 262 Z" fill="#C8372D"/>
+<path d="M468 262 C468 218 418 200 362 212 C322 222 316 260 326 304 C336 350 392 358 432 340 C456 330 468 300 468 262 Z" fill="#C8372D"/>
+<path d="M60 268 C100 260 150 262 180 272 M66 304 C104 298 146 300 176 308 M452 268 C412 260 362 262 332 272 M446 304 C408 298 366 300 336 308" fill="none" stroke="#F2C14E" stroke-width="7"/>
+<path d="M76 236 C96 222 120 218 140 220 M436 236 C416 222 392 218 372 220" fill="none" stroke="#FFFFFF" stroke-width="10" opacity="0.6"/>
+<path d="M200 96 C188 56 168 34 140 26 C158 54 166 80 176 108 Z M312 96 C324 56 344 34 372 26 C354 54 346 80 336 108 Z" fill="#F2C14E"/>
+<path d="M142 196 C142 106 370 106 370 196 C330 182 182 182 142 196 Z" fill="#2F3542"/>
+<path d="M142 196 C120 210 112 236 118 256 C136 236 156 222 170 216 Z M370 196 C392 210 400 236 394 256 C376 236 356 222 342 216 Z" fill="#2F3542"/>
+<circle cx="256" cy="138" r="20" fill="#F2C14E"/>
+<path d="M196 206 L236 220 M316 206 L276 220" fill="none" stroke-width="12"/>
+<circle cx="220" cy="236" r="12" fill="#1D2340" stroke="none"/><circle cx="216" cy="232" r="4" fill="#FFFFFF" stroke="none"/><circle cx="292" cy="236" r="12" fill="#1D2340" stroke="none"/><circle cx="288" cy="232" r="4" fill="#FFFFFF" stroke="none"/>
+<path d="M226 266 C240 258 250 262 256 268 C262 262 272 258 286 266" fill="none" stroke-width="9"/>
+
+  </g>
+</svg>

@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Chicken Breast Charlie (Hähnchenbrust-Henni), a plan character of Muscle Grail. A browser renders it (the white rim is an SVG filter)
+       to the 512 px PNG Core/Sources/Core/Characters/chicken-breast-charlie.png with a transparent background. -->
+  <defs>
+    <filter id="rim" filterUnits="userSpaceOnUse" x="0" y="0" width="512" height="512">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="9" result="grown"/>
+      <feFlood flood-color="#FFFFFF"/>
+      <feComposite in2="grown" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#rim)" stroke="#1D2340" stroke-width="10" stroke-linejoin="round" stroke-linecap="round">
+    
+<path d="M220 420 L214 462" fill="none" stroke-width="34"/><path d="M220 420 L214 462" fill="none" stroke="#FFB020" stroke-width="14"/><path d="M292 420 L298 462" fill="none" stroke-width="34"/><path d="M292 420 L298 462" fill="none" stroke="#FFB020" stroke-width="14"/>
+<path d="M214 462 l-24 6 M214 462 l4 10 M298 462 l24 6 M298 462 l-4 10" fill="none" stroke-width="10"/>
+<path d="M118 290 C80 260 60 210 76 176 C104 200 124 230 140 262 Z" fill="#FFF8EE"/>
+<path d="M394 290 C432 260 452 210 436 176 C408 200 388 230 372 262 Z" fill="#FFF8EE"/>
+<path d="M210 124 C196 82 230 70 242 98 C246 60 290 62 284 100 C302 72 334 86 316 126 Z" fill="#E5484D"/>
+<path d="M256 112 C346 112 402 192 402 292 C402 388 344 440 256 440 C168 440 110 388 110 292 C110 192 166 112 256 112 Z" fill="#FFF8EE"/>
+<path d="M176 330 Q216 362 256 334 Q296 362 336 330" fill="none" stroke="#E8D9C4" stroke-width="10"/>
+<path d="M150 330 C160 300 180 286 200 282" fill="none" stroke="#FFFFFF" stroke-width="10"/>
+<path d="M120 300 C150 270 162 236 156 200" fill="none" stroke-width="0"/>
+<path d="M228 214 L284 214 L256 252 Z" fill="#FFB020"/>
+<path d="M244 252 C236 276 250 290 258 280 C266 290 278 274 268 252 Z" fill="#E5484D" stroke-width="7"/>
+<path d="M190 164 L232 178 M322 164 L280 178" fill="none" stroke-width="11"/>
+<circle cx="212" cy="190" r="12" fill="#1D2340" stroke="none"/><circle cx="208" cy="186" r="4" fill="#FFFFFF" stroke="none"/><circle cx="300" cy="190" r="12" fill="#1D2340" stroke="none"/><circle cx="296" cy="186" r="4" fill="#FFFFFF" stroke="none"/>
+<ellipse cx="176" cy="226" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/><ellipse cx="336" cy="226" rx="18" ry="10" fill="#FF7A90" opacity="0.55" stroke="none"/>
+
+  </g>
+</svg>
