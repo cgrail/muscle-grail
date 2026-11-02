@@ -63,9 +63,17 @@ import HealthKit
         store.enableBackgroundDelivery(for: steps, frequency: .hourly) { _, _ in }
     }
 
+    /// The strength workout Health already has for one that started at `start`, saved by the other device (`savedInHealth`).
+    public static func saved(startingAt start: Date) async -> UUID? {
+        let health = await strengthWorkouts(since: min(Calendar.current.startOfDay(for: start), start.addingTimeInterval(-3600)))
+        return savedInHealth(start, among: health)
+    }
+
     /// Saves a finished phone workout and returns its HealthKit id. The watch saves its own through its workout session.
+    /// Finished on the watch too, Health keeps the watch's, and this returns its id.
     public static func save(_ workout: Workout) async -> UUID? {
         guard workout.healthKitID == nil, let end = workout.end else { return nil }
+        if let saved = await saved(startingAt: workout.start) { return saved }
         let config = HKWorkoutConfiguration()
         config.activityType = .traditionalStrengthTraining
         config.locationType = .indoor

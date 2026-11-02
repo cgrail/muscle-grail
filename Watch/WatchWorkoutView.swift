@@ -41,15 +41,26 @@ struct WatchWorkoutView: View {
             if let workout {
                 FinishView(workout: workout) {
                     context.finish(workout)
-                    session.end { id in
-                        if let id { context.savedToHealth(workout, as: id) }
-                    }
+                    end(workout)
                     finishing = false
                     dismiss()
                 }
             }
         }
         .onChange(of: workout != nil, initial: true) { if workout != nil { session.start() } }
+        // Finished on the iPhone, over Bluetooth: the session ends here too, and Health keeps the iPhone's workout.
+        .onChange(of: workout?.end != nil) { _, ended in
+            if ended, session.isRunning, let workout {
+                end(workout, save: false)
+                dismiss()
+            }
+        }
+    }
+
+    private func end(_ workout: Workout, save: Bool = true) {
+        session.end(workout, save: save) { id in
+            if let id, workout.healthKitID == nil { context.savedToHealth(workout, as: id) }
+        }
     }
 }
 
@@ -91,7 +102,9 @@ private struct ExerciseCard: View {
 /// Keeps the app frontmost and running for the whole workout, and records heart rate and calories into Health.
 final class WorkoutSession: NSObject, HKWorkoutSessionDelegate {
     private var session: HKWorkoutSession?
-    private var onSaved: ((UUID?) -> Void)?
+    private var finish: ((HKLiveWorkoutBuilder) -> Void)?
+
+    var isRunning: Bool { session != nil && finish == nil }
 
     func start() {
         guard session == nil else { return }
@@ -107,9 +120,24 @@ final class WorkoutSession: NSObject, HKWorkoutSessionDelegate {
         builder.beginCollection(withStart: .now) { _, _ in }
     }
 
-    func end(onSaved: @escaping (UUID?) -> Void) {
-        self.onSaved = onSaved
-        session?.end()
+    /// Ends the session, once. Health gets the workout unless `save` is false, or Health has it already from the iPhone,
+    /// started the same day or within an hour (`Health.saved`): then this one is dropped. `onSaved` gets the id Health keeps.
+    func end(_ workout: Workout, save: Bool = true, onSaved: @escaping (UUID?) -> Void) {
+        guard let session, finish == nil else { return } // kept until it ends: its delegate saves the workout
+        let (start, known) = (workout.start, workout.healthKitID)
+        finish = { builder in
+            Task {
+                var kept = known
+                if kept == nil, save { kept = await Health.saved(startingAt: start) }
+                if kept != nil || !save {
+                    builder.discardWorkout()
+                    onSaved(kept)
+                } else {
+                    onSaved(try? await builder.finishWorkout()?.uuid)
+                }
+            }
+        }
+        session.end()
     }
 
     nonisolated func workoutSession(_ session: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState,
@@ -117,10 +145,7 @@ final class WorkoutSession: NSObject, HKWorkoutSessionDelegate {
         guard toState == .ended else { return }
         let builder = session.associatedWorkoutBuilder()
         builder.endCollection(withEnd: date) { _, _ in
-            builder.finishWorkout { workout, _ in
-                let id = workout?.uuid
-                Task { @MainActor in self.onSaved?(id) }
-            }
+            Task { @MainActor in self.finish?(builder) }
         }
     }
 

@@ -68,6 +68,12 @@ public func healthOnly(_ health: [(start: Date, id: UUID)], besides workouts: [W
     return health.filter { !saved.contains($0.id) }.map(\.start)
 }
 
+/// The strength workout Health already has for one that started at `start`: one that started the same day, or within
+/// an hour across midnight. Nobody trains twice a day, so it's this workout, saved by the other device that finished it too.
+public func savedInHealth(_ start: Date, among health: [(start: Date, id: UUID)], calendar: Calendar = .current) -> UUID? {
+    health.first { calendar.isDate($0.start, inSameDayAs: start) || abs($0.start.timeIntervalSince(start)) < 3600 }?.id
+}
+
 /// This app's workouts with sets on `day`.
 public func trained(_ workouts: [Workout], on day: Date, calendar: Calendar = .current) -> [Workout] {
     workouts.filter { $0.sets?.isEmpty == false && calendar.isDate($0.start, inSameDayAs: day) }

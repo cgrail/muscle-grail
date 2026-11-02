@@ -105,6 +105,21 @@ import Testing
         #expect(gymSessions(all(), health: health).sorted() == [date("2026-10-20"), date("2026-10-21")])
     }
 
+    @Test func aHealthWorkoutTheSameDayIsThisOne() {
+        let watch = UUID()
+        #expect(savedInHealth(date("2026-10-20"), among: [(start: midnight("2026-10-20"), id: watch)], calendar: calendar) == watch)
+    }
+
+    @Test func aHealthWorkoutWithinAnHourAcrossMidnightIsThisOne() {
+        let watch = UUID()
+        let lateEvening = midnight("2026-10-20").addingTimeInterval(-1800)
+        #expect(savedInHealth(midnight("2026-10-20").addingTimeInterval(1200), among: [(start: lateEvening, id: watch)], calendar: calendar) == watch)
+    }
+
+    @Test func aHealthWorkoutTheDayBeforeIsAnother() {
+        #expect(savedInHealth(date("2026-10-20"), among: [(start: date("2026-10-19"), id: UUID())], calendar: calendar) == nil)
+    }
+
     @Test func aDayShowsTheWorkoutsTrainedOnIt() {
         let monday = workout(on: "2026-10-19")
         workout(on: "2026-10-20")

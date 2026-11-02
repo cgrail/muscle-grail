@@ -49,6 +49,7 @@
 - Log a set with one tap, or all of an exercise's remaining sets with Log all; swipe a logged set to delete it.
 - Exercise photos show while training, on the watch too, once they're on the device. They download while there is network; in a gym without internet the workout runs as usual and leaves missing photos out.
 - Finished workouts go to Health, and the watch records heart rate and calories.
+- A workout reaches Health once. Finish it on the iPhone and the watch ends it too, without saving a second one. A strength workout already in Health from the same day, or from within the hour, counts as this one. Finishing a workout that's already finished keeps its first end.
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.
 
 ### History
