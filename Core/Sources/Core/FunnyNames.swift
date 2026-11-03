@@ -61,6 +61,25 @@ private let retiredNames = [
 /// The file name of a character's drawing: "The Pull-Up Pirate" is drawn in `the-pull-up-pirate`.
 func pictureID(_ key: String) -> String { key.lowercased().split { !$0.isLetter }.joined(separator: "-") }
 
+/// A funny name's character, as the lists of names and pictures show it. Its id is its drawing's `pictureID`.
+public struct FunnyCharacter: Identifiable, Hashable, Sendable {
+    let key: String
+    let mottoKey: String
+
+    public var id: String { pictureID(key) }
+    public var name: String { catalogTerm(key) }
+    public var motto: String { catalogTerm(mottoKey) }
+    public var picture: URL? { Bundle.module.url(forResource: id, withExtension: "png", subdirectory: "Characters") }
+}
+
+/// The characters for `region`, nil for full body.
+private func cast(of region: BodyRegion?) -> [FunnyCharacter] {
+    (funnyNames[region] ?? []).map { FunnyCharacter(key: $0.key, mottoKey: $0.motto) }
+}
+
+/// Every character, region by region, full body last.
+public let allCharacters = (BodyRegion.allCases.map { $0 as BodyRegion? } + [nil]).flatMap(cast(of:))
+
 /// `key` in English and every language of Core's catalog.
 private func spellings(_ key: String) -> [String] {
     [key] + Bundle.module.localizations.map { language in
@@ -71,7 +90,7 @@ private func spellings(_ key: String) -> [String] {
 }
 
 /// Each funny name in every language to its character, so one a device in the other language gave counts as funny too.
-private let characters = Dictionary(funnyNames.values.joined().flatMap { character in spellings(character.key).map { ($0, character) } }) { first, _ in first }
+private let characters = Dictionary(allCharacters.flatMap { character in spellings(character.key).map { ($0, character) } }) { first, _ in first }
 private let otherAutoNames = Set((["New plan"] + retiredNames).flatMap(spellings))
 
 public extension Plan {
@@ -79,13 +98,21 @@ public extension Plan {
     var hasAutoName: Bool { name.isEmpty || otherAutoNames.contains(name) || characters[name] != nil }
 
     /// The motto of the character the plan is named after, nil for a name you typed.
-    var motto: String? { characters[name].map { catalogTerm($0.motto) } }
+    var motto: String? { characters[name]?.motto }
 
-    /// The plan's picture: the drawing of the character it's named after, else of one of the characters for what it trains,
-    /// by its place in the list, so plans side by side differ. Nil while it trains no catalog exercise.
-    var picture: URL? {
-        guard let key = characters[name]?.key ?? focusRegions.flatMap({ funnyNames[$0.first].map { $0[abs(order) % $0.count].key } }) else { return nil }
-        return Bundle.module.url(forResource: pictureID(key), withExtension: "png", subdirectory: "Characters")
+    /// The character the plan's picture shows: the one chosen, else `namesake`.
+    var character: FunnyCharacter? { allCharacters.first { $0.id == picture } ?? namesake }
+
+    /// The character the plan is named after, else one of those for what it trains, by its place in the list,
+    /// so plans side by side differ. Nil while it trains no catalog exercise.
+    fileprivate var namesake: FunnyCharacter? {
+        characters[name] ?? focusRegions.map { cast(of: $0.first) }.flatMap { $0.isEmpty ? nil : $0[abs(order) % $0.count] }
+    }
+
+    /// The funny names to pick from: those for what the plan trains on top, then all the others.
+    var funnyNameChoices: (proposals: [FunnyCharacter], others: [FunnyCharacter]) {
+        let proposals = focusRegions.map { regions in regions.isEmpty ? cast(of: nil) : regions.flatMap { cast(of: $0) } } ?? []
+        return (proposals, allCharacters.filter { !proposals.contains($0) })
     }
 }
 
@@ -108,8 +135,20 @@ public extension ModelContext {
         rename(plan, to: name)
     }
 
-    /// The dice: the next funny name for what `plan` trains, whoever named it.
+    /// The dice: the next funny name for what `plan` trains, whoever named it, with its drawing.
     func rollFunnyName(_ plan: Plan) {
-        if let name = funnyName(for: plan, next: true) { rename(plan, to: name) }
+        if let name = funnyName(for: plan, next: true), let character = characters[name] { self.name(plan, after: character) }
+    }
+
+    /// Names `plan` after `character`, and shows its drawing instead of a picture chosen before.
+    func name(_ plan: Plan, after character: FunnyCharacter) {
+        rename(plan, to: character.name)
+        if !plan.picture.isEmpty { record(.setPicture(id: plan.id, picture: "")) }
+    }
+
+    /// Shows `character`'s drawing as `plan`'s picture, whatever its name. Choosing the one it shows anyway keeps it following the name.
+    func choosePicture(_ character: FunnyCharacter, for plan: Plan) {
+        let picture = character == plan.namesake ? "" : character.id
+        if picture != plan.picture { record(.setPicture(id: plan.id, picture: picture)) }
     }
 }

@@ -315,6 +315,16 @@
         }
       }
     },
+    "All funny names" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alle lustigen Namen"
+          }
+        }
+      }
+    },
     "All plans" : {
       "localizations" : {
         "de" : {
@@ -527,6 +537,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto auswählen"
+          }
+        }
+      }
+    },
+    "Choose picture" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild wählen"
           }
         }
       }
@@ -907,6 +927,16 @@
         }
       }
     },
+    "For this plan" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Für diesen Plan"
+          }
+        }
+      }
+    },
     "For whom?" : {
       "localizations" : {
         "de" : {
@@ -943,6 +973,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lustiger Name"
+          }
+        }
+      }
+    },
+    "Funny names" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lustige Namen"
           }
         }
       }
@@ -1317,6 +1357,16 @@
         }
       }
     },
+    "More funny names" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weitere lustige Namen"
+          }
+        }
+      }
+    },
     "Move to" : {
       "localizations" : {
         "de" : {
@@ -1527,6 +1577,16 @@
         }
       }
     },
+    "Picture" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bild"
+          }
+        }
+      }
+    },
     "Plans" : {
       "localizations" : {
         "de" : {
@@ -1593,26 +1653,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto entfernen"
-          }
-        }
-      }
-    },
-    "Rename" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Umbenennen"
-          }
-        }
-      }
-    },
-    "Rename plan" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plan umbenennen"
           }
         }
       }

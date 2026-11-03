@@ -16,6 +16,7 @@ import Testing
         context.setUnit("squat", to: .lb)
         let plan = makePlan(context, "Bench", custom, "Row")
         context.rename(plan, to: "Push")
+        context.choosePicture(allCharacters[0], for: plan)
         let items = plan.sortedItems
         context.setTargets(items[0], sets: 5, reps: 5, weightKg: 80)
         context.reorder(items, fromOffsets: [2], toOffset: 0)
@@ -99,6 +100,11 @@ import Testing
     /// What version 3 added, frozen like version 1.
     @Test func everyVersion3ChangeStillReads() throws {
         expectReads([#"{"setUnit":{"id":"squat","unit":"lb"}}"#])
+    }
+
+    /// What version 4 added, frozen like version 1.
+    @Test func everyVersion4ChangeStillReads() throws {
+        expectReads([#"{"setPicture":{"id":"00000000-0000-0000-0000-000000000001","picture":"booty"}}"#])
     }
 
     func expectReads(_ changes: [String]) {

@@ -66,20 +66,6 @@ struct UpdateToEdit: View {
     }
 }
 
-/// The dice beside a plan's name: the next funny name for what it trains. A name it gives changes with the plan's exercises.
-struct FunnyNameButton: View {
-    @Environment(\.modelContext) private var context
-    let plan: Plan
-
-    var body: some View {
-        Button("Funny name", systemImage: "dice") { context.rollFunnyName(plan) }
-            .labelStyle(.iconOnly)
-            .buttonStyle(.borderless) // only the dice, not the whole row
-            .help("Funny name")
-            .disabled(plan.focus == nil)
-    }
-}
-
 /// Whether this device's changes to a plan have reached iCloud, from where the other devices fetch them.
 struct PlanSyncBadge: View {
     let plan: Plan

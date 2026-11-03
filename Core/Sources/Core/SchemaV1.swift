@@ -15,6 +15,8 @@ public enum SchemaV1: StoreLayout {
         public var id = UUID()
         public var name = ""
         public var order = 0
+        /// The character drawing chosen as its picture (`pictureID`), empty for the one its name or what it trains gives.
+        public var picture = ""
         @Relationship(deleteRule: .cascade, inverse: \PlanItem.plan) public var items: [PlanItem]? = []
         @Relationship(deleteRule: .nullify, inverse: \Workout.plan) public var workouts: [Workout]? = []
 

@@ -45,16 +45,20 @@ public extension PartnerChange {
 
 public extension PartnerChange {
     /// A plan as the training partner gets it when it's shared: `addPlan`, then `addExercise` for each exercise in order,
-    /// with whose own it is, the sender's sets and reps, and the name of an exercise the sender made.
+    /// with whose own it is, the sender's sets and reps, and the name of an exercise the sender made, then its chosen picture.
     static func snapshot(of plan: Plan, in context: ModelContext) -> [PartnerChange] {
         let now = Date.now
         let add = PartnerChange(id: UUID(), date: now, change: .addPlan(id: plan.id, name: plan.name, order: plan.order))
-        return [add] + plan.sortedItems.enumerated().map { index, item in
+        let items = plan.sortedItems
+        let exercises = items.enumerated().map { index, item in
             let change = Change.addExercise(id: item.id, plan: plan.id, exerciseID: item.exerciseID, order: item.order, own: item.ownedBy.own)
             // A millisecond apart, so the partner adds them in this order.
             return PartnerChange(id: UUID(), date: now.addingTimeInterval(Double(index + 1) / 1000), change: change,
                                  sets: item.targetSets, reps: item.targetReps, name: context.ownName(of: change))
         }
+        let picture = PartnerChange(id: UUID(), date: now.addingTimeInterval(Double(items.count + 1) / 1000),
+                                    change: .setPicture(id: plan.id, picture: plan.picture))
+        return [add] + exercises + (plan.picture.isEmpty ? [] : [picture])
     }
 }
 
@@ -63,7 +67,7 @@ extension Walk {
     func outgoing(_ change: Change, shared: Set<UUID>) -> Change? {
         func isShared(_ item: UUID) -> Bool { items[item].map { shared.contains($0.plan) } ?? false }
         switch change {
-        case let .addPlan(id, _, _), let .renamePlan(id, _), let .deletePlan(id):
+        case let .addPlan(id, _, _), let .renamePlan(id, _), let .setPicture(id, _), let .deletePlan(id):
             return shared.contains(id) ? change : nil
         case let .addExercise(_, plan, _, _, _):
             return shared.contains(plan) ? change : nil
@@ -88,7 +92,7 @@ extension Walk {
 public extension ModelContext {
     /// Applies changes from the training partner, oldest first, through `record` with their name and their side's id and date,
     /// so they are in the log, the history and the backup, and never go back. One that's already here, or that lost to
-    /// a later rename, reorder or move of the same plan or exercise, is left out: the later one wins on both sides.
+    /// a later rename, picture, reorder or move of the same plan or exercise, is left out: the later one wins on both sides.
     func receive(_ changes: [PartnerChange], from partner: String) {
         for incoming in changes.sorted(by: { $0.date < $1.date }) where !received(incoming.id) && !outdated(incoming) {
             guard let change = adapted(incoming.change) else { continue }
@@ -120,10 +124,11 @@ public extension ModelContext {
         return later.contains { action in action.change.flatMap { self.target(of: $0) } == target }
     }
 
-    /// What a rename, reorder or move wins or loses against: its kind, and the plan or exercise it changes.
+    /// What a rename, picture, reorder or move wins or loses against: its kind, and the plan or exercise it changes.
     private func target(of change: Change) -> String? {
         switch change {
         case let .renamePlan(id, _): "rename \(id)"
+        case let .setPicture(id, _): "picture \(id)"
         case let .reorder(ids): ids.first.map { "reorder \(item($0)?.plan?.id ?? $0)" }
         case let .moveExercise(id, _, _): "move \(id)"
         default: nil

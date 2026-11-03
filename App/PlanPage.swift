@@ -4,6 +4,7 @@ import SwiftData
 import SwiftUI
 
 /// A plan as Apple Music shows a playlist: artwork and name on top, then its exercises as a table to edit in place.
+/// A click on the artwork chooses another picture; the dice beside the name picks a funny one.
 /// The selected exercise previews on the right, like in the exercise library.
 struct PlanPage: View {
     enum Inspector { case preview, changes }
@@ -25,7 +26,7 @@ struct PlanPage: View {
         List(selection: $selection) {
             if locked { UpdateToEdit() }
             HStack(alignment: .bottom, spacing: 20) {
-                PlanPicture(plan, size: 140).shadow(radius: 6, y: 3)
+                PictureButton(plan: plan, size: 140).shadow(radius: 6, y: 3)
                 VStack(alignment: .leading, spacing: 6) {
                     HStack {
                         TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })

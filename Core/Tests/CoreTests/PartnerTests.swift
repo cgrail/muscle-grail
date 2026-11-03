@@ -41,6 +41,20 @@ import Testing
         #expect(theirs.sortedItems.map(\.exerciseID) == ["Bench", "Row"] && theirs.sortedItems[0].targetSets == 5)
     }
 
+    @Test func aChosenPictureReachesThePartner() throws {
+        let plan = makePlan(me)
+        me.choosePicture(allCharacters[0], for: plan)
+        try send(plan)
+        #expect(partner.plan(plan.id)?.picture == allCharacters[0].id)
+    }
+
+    @Test func aPlanSharedLaterArrivesWithItsPicture() {
+        let plan = makePlan(me)
+        me.choosePicture(allCharacters[0], for: plan)
+        partner.receive(PartnerChange.snapshot(of: plan, in: me), from: "Me")
+        #expect(partner.plan(plan.id)?.picture == allCharacters[0].id)
+    }
+
     @Test func aPlanThatIsNotSharedStaysHere() throws {
         makePlan(me, "Bench")
         #expect(try outgoing().isEmpty)

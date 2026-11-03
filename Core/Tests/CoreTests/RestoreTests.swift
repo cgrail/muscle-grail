@@ -28,6 +28,15 @@ import Testing
         #expect(plan.sortedItems[0].targetWeightKg == 80)
     }
 
+    @Test func restoringBringsBackThePicture() throws {
+        let plan = makePlan(context)
+        context.choosePicture(allCharacters[0], for: plan)
+        context.rename(plan, to: "Push")
+        context.choosePicture(allCharacters[1], for: plan)
+        try restore(plan, back: 2) // chose the second, renamed, chose the first, …
+        #expect(plan.picture == allCharacters[0].id)
+    }
+
     @Test func thePlanAsItIsNowHasNothingToRestore() throws {
         let plan = makePlan(context, "Bench")
         #expect(try history(container, of: plan).map(\.canRestore) == [false, true])

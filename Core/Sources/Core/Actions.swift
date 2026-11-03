@@ -7,7 +7,7 @@ import SwiftData
 /// readable by every version, so an old app can always log in the gym.
 public enum Change: Codable, Equatable, Sendable {
     /// The format this app writes. An app that finds actions of a higher one leaves editing to an update.
-    public static let version = 3
+    public static let version = 4
 
     case addPlan(id: UUID, name: String, order: Int)
     case renamePlan(id: UUID, name: String)
@@ -24,6 +24,8 @@ public enum Change: Codable, Equatable, Sendable {
     case replaceExercise(id: UUID, exerciseID: String, weightKg: Double)
     /// An exercise of a shared plan for both (nil), or one person's own. Version 2.
     case setOwner(id: UUID, own: Own?)
+    /// A plan's picture: a character's `pictureID`, empty for the one its name or what it trains gives. Version 4.
+    case setPicture(id: UUID, picture: String)
     case startWorkout(id: UUID, plan: UUID, start: Date)
     case logSet(id: UUID, workout: UUID, exerciseID: String, reps: Int, weightKg: Double, date: Date)
     case deleteSet(id: UUID)
@@ -147,6 +149,8 @@ public extension ModelContext {
             (item.exerciseID, item.targetWeightKg) = (exerciseID, weightKg)
         case let .setOwner(id, own):
             item(id)?.owner = Owner(own, by: author).rawValue
+        case let .setPicture(id, picture):
+            plan(id)?.picture = picture
         case let .reorder(ids):
             for (index, id) in ids.enumerated() {
                 let row: (any Ordered)? = plan(id) ?? item(id)
