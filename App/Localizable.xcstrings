@@ -1477,6 +1477,16 @@
         }
       }
     },
+    "Next up" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als Nächstes"
+          }
+        }
+      }
+    },
     "No gym workout" : {
       "localizations" : {
         "de" : {

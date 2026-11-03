@@ -3,43 +3,35 @@ import SwiftData
 import SwiftUI
 
 #if os(iOS)
-/// Training's edit mode on the iPhone: every plan in its order, to drag into another, delete, share, or open to edit.
-/// A new plan opens to edit. Changes lists what changed across all plans. `onDone` goes back to training.
+/// Training's edit mode on the iPhone: the plans as training lists them, a running one first, to open to edit, share or
+/// delete. No dragging: training's order comes from when each plan was done. A new plan opens to edit.
+/// Changes lists what changed across all plans. `onDone` goes back to training.
 struct PlansView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Action.newer) private var newer: [Action]
     let onDone: () -> Void
     @State private var opened: Plan?
+    private var locked: Bool { !newer.isEmpty }
 
     var body: some View {
-        let locked = !newer.isEmpty
+        let order = trainingOrder(plans)
+        let running = plans.filter { !order.contains($0) }
         List {
             if locked { UpdateToEdit() }
-            ForEach(plans) { plan in
-                Button { opened = plan } label: { // a plain button: in edit mode a list row takes no taps
-                    HStack {
-                        PlanLabel(plan, among: plans)
-                        Spacer()
-                        SharedBadge(plan: plan)
-                        PlanSyncBadge(plan: plan)
-                        Image(systemName: "chevron.forward").foregroundStyle(.tertiary)
-                    }
-                    .contentShape(.rect)
-                }
-                .buttonStyle(.plain)
-                .contextMenu {
-                    PlanSharing(plan: plan)
-                    Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
-                }
+            if !running.isEmpty {
+                Section { ForEach(running) { row($0) } }
             }
-            .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
-            .onDelete { offsets in offsets.map { plans[$0] }.forEach { context.deletePlan($0) } }
-            .moveDisabled(locked)
-            .deleteDisabled(locked)
+            if let next = order.first {
+                Section { row(next) } header: { Text("Next up") }
+            }
+            Section {
+                ForEach(order.dropFirst()) { row($0) }
+            } footer: {
+                SyncStatusView()
+            }
         }
-        .environment(\.editMode, .constant(.active)) // on the list only, so an opened plan isn't in edit mode
-        .navigationTitle("Plans")
+        .navigationTitle("Training")
         .toolbar {
             NavigationLink { PlanChanges() } label: { Label("Changes", systemImage: "clock.arrow.circlepath") }
             Button("Add plan", systemImage: "plus") { opened = context.addPlan() }.disabled(locked)
@@ -47,6 +39,26 @@ struct PlansView: View {
             Button("Done", action: onDone)
         }
         .navigationDestination(item: $opened) { PlanEditor(plan: $0) }
+    }
+
+    private func row(_ plan: Plan) -> some View {
+        Button { opened = plan } label: {
+            HStack {
+                PlanLabel(plan, among: plans)
+                Spacer()
+                SharedBadge(plan: plan)
+                PlanSyncBadge(plan: plan)
+                Image(systemName: "chevron.forward").foregroundStyle(.tertiary)
+            }
+            .contentShape(.rect)
+        }
+        .contextMenu {
+            PlanSharing(plan: plan)
+            Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
+        }
+        .swipeActions {
+            Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
+        }
     }
 }
 #endif
