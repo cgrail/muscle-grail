@@ -26,6 +26,7 @@ struct MuscleGrailApp: App {
         _store = State(initialValue: store)
         if let container = store.container { PartnerSync.start(container) }
         #if os(iOS)
+        if let container = store.container { WatchLinkSession.start(container) }
         Self.observeSteps()
         #else
         _mac = State(initialValue: store.container.map { MacServices(container: $0) })

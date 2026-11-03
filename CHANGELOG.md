@@ -49,6 +49,7 @@
 - Log a set with one tap, or all of an exercise's remaining sets with Log all; swipe a logged set to delete it.
 - Exercise photos show while training, on the watch too, once they're on the device. They download while there is network; in a gym without internet the workout runs as usual and leaves missing photos out.
 - Finished workouts go to Health, and the watch records heart rate and calories.
+- A workout reaches Health once. Finish it on the iPhone and the watch ends it too, without saving a second one. A strength workout already in Health from the same day, or from within the hour, counts as this one. Finishing a workout that's already finished keeps its first end.
 - Train on the Mac too. Its workouts sync like the others but don't go to Health.
 
 ### History
@@ -61,6 +62,7 @@
 ### Sync
 - Share plans with your training partner with one invite, from Settings → Training partner on the iPhone or the Mac: all plans, now and later, or only the ones you choose from a plan's menu. Shared plans show two people beside their name. Invite opens the share sheet once the share is made, says why if it can't be, and stays until your partner accepts, to send the invite again. Your partner accepts the invite on their iPhone or Mac, and the shared plans join the end of their plan list. Either of you can stop; both keep the plans as they are. Each of you has your own Apple ID, history and weights. Adding, removing, replacing or moving a shared exercise asks whether it's for both of you or only for you, unless Settings says always both. An exercise only one of you does stays in both plans at its place, greyed for the other, and their training skips it.
 - Plans, workouts and history sync through iCloud in the background, without opening the app.
+- Sets you log on the watch show on the iPhone right away, and the other way round, over Bluetooth, with no internet in the gym: in History, in the next set's prefill and as the workout running to continue. The same goes for starting, finishing and deleting a workout and undoing a set. Back home iCloud brings the same sets again, and each still shows once.
 - A device without an iCloud account says "Sign in to iCloud to sync" instead of a bare error code.
 - The sync status under the plan list, on the iPhone, the watch and the Mac, says "Syncing…" while iCloud is at work and "Waiting to upload" while changes made on that device haven't reached iCloud yet, so "Synced" means nothing is left waiting.
 - The sync status shows a sync error until it's resolved, even while the exercise catalog keeps syncing fine. Before, the catalog's next sync could hide a failed sync of plans and workouts behind "Synced".

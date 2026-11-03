@@ -57,7 +57,9 @@ public extension ModelContext {
         try? save()
     }
 
+    /// A workout finishes once: finished on the other device already, it keeps that end.
     func finish(_ workout: Workout) {
+        guard workout.end == nil else { return }
         record(.finishWorkout(id: workout.id, end: .now))
         try? save()
     }

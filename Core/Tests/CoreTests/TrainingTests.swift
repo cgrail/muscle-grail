@@ -109,6 +109,14 @@ import Testing
         #expect(workout.sets(of: "Row").count == 1)
     }
 
+    @Test func aFinishedWorkoutKeepsItsFirstEnd() {
+        let workout = context.startWorkout(makePlan(context, "Bench"))
+        context.finish(workout)
+        let end = workout.end
+        context.finish(workout)
+        #expect(workout.end == end)
+    }
+
     @Test func aRunningWorkoutBlocksTheNextUntilFinished() {
         let workout = context.startWorkout(makePlan(context, "Bench"))
         #expect(context.isTraining)
