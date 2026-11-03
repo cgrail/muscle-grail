@@ -2,8 +2,8 @@ import Core
 import SwiftData
 import SwiftUI
 
-/// Training: the plans to train. On the iPhone, the Training tab also edits them: Edit lists them to reorder, delete,
-/// add and open to edit, and a plan opened to train has its own Edit.
+/// Training: the plans to train. On the iPhone, the Training tab also edits them: Edit lists them in the same order to
+/// delete, add and open to edit, and a plan opened to train has its own Edit.
 struct TrainView: View {
     @State private var workout: Workout?
     @State private var plan: Plan?
