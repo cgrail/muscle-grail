@@ -67,7 +67,7 @@ public struct WorkoutPicker: View {
                 SyncStatusView()
             }
         }
-        .navigationTitle(Text("Train", bundle: .module))
+        .navigationTitle(Text("Training", bundle: .module))
         .task(id: plans.count) { await PhotoCache.shared.download(plans.flatMap { $0.trainedItems.map(\.exerciseID) }) }
     }
 

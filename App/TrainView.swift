@@ -2,9 +2,14 @@ import Core
 import SwiftData
 import SwiftUI
 
+/// Training: the plans to train. On the iPhone, the Training tab also edits them: Edit lists them to reorder, delete,
+/// add and open to edit, and a plan opened to train has its own Edit.
 struct TrainView: View {
     @State private var workout: Workout?
     @State private var plan: Plan?
+    #if os(iOS)
+    @State private var editing = false
+    #endif
 
     var body: some View {
         // Not NavigationStack(path:): the sidebar tabs on Mac and iPad compare paths across tabs and crash on a typed one.
@@ -12,9 +17,6 @@ struct TrainView: View {
             picker
                 .navigationDestination(item: $workout) { WorkoutView(plan: $0.plan, workout: $0) }
                 .navigationDestination(item: $plan) { WorkoutView(plan: $0, workout: nil) }
-                #if os(iOS)
-                .toolbar { SettingsButton() }
-                #endif
         }
     }
 
@@ -23,7 +25,15 @@ struct TrainView: View {
         #if os(macOS)
         TrainOverview { workout = $0 } onStart: { plan = $0 }
         #else
-        WorkoutPicker { workout = $0 } onStart: { plan = $0 }
+        if editing {
+            PlansView { editing = false }
+        } else {
+            WorkoutPicker { workout = $0 } onStart: { plan = $0 }
+                .toolbar {
+                    SettingsButton()
+                    Button("Edit") { editing = true }
+                }
+        }
         #endif
     }
 }
