@@ -28,7 +28,7 @@ final class TestDefaults {
 
 /// The whole model as sorted lines, to compare two stores.
 @MainActor func snapshot(_ context: ModelContext) throws -> [String] {
-    let plans = try context.fetch(FetchDescriptor<Plan>()).map { "plan \($0.id) \($0.name) \($0.order)" }
+    let plans = try context.fetch(FetchDescriptor<Plan>()).map { "plan \($0.id) \($0.name) \($0.order) \($0.picture)" }
     let items = try context.fetch(FetchDescriptor<PlanItem>()).map {
         "item \($0.id) \(String(describing: $0.plan?.id)) \($0.exerciseID) \($0.order) \($0.targetSets) \($0.targetReps) \($0.targetWeightKg) \($0.owner)"
     }

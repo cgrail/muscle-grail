@@ -102,7 +102,7 @@ struct Step {
 
 /// The log, walked oldest first, applied to a model of the plans as `apply` changes them, to say what each change did.
 struct Walk {
-    struct PlanState { var name: String, order: Int }
+    struct PlanState { var name: String, order: Int, picture = "" }
     struct ItemState { var plan: UUID, exerciseID: String, order: Int, sets = 3, reps = 10, weightKg = 0.0, owner = Owner.both }
 
     let context: ModelContext
@@ -122,7 +122,7 @@ struct Walk {
         Version(plan: plans[plan], items: items.filter { $0.value.plan == plan })
     }
 
-    /// The changes that turn `plan` as it is now back into `version`: its name, its exercises with their targets, their order.
+    /// The changes that turn `plan` as it is now back into `version`: its name and picture, its exercises with their targets, their order.
     func restoring(_ plan: UUID, to version: Version) -> [Change] {
         guard let then = version.plan else { return [] }
         var changes: [Change] = []
@@ -131,6 +131,7 @@ struct Walk {
         } else {
             changes.append(.addPlan(id: plan, name: then.name, order: then.order))
         }
+        if (plans[plan]?.picture ?? "") != then.picture { changes.append(.setPicture(id: plan, picture: then.picture)) }
         let order = version.items.sorted { $0.value.order < $1.value.order }
         for (id, was) in order {
             guard let now = items[id] else {
@@ -163,13 +164,19 @@ struct Walk {
             defer { plans[id]?.name = name }
             return Step(key: "rename \(id)", plans: [id], planName: title(id), text: String(localized: "Renamed to \(name)", bundle: .module),
                         undo: [.renamePlan(id: id, name: plan.name)], needs: [id])
+        case let .setPicture(id, picture):
+            guard let plan = plans[id] else { return nil }
+            defer { plans[id]?.picture = picture }
+            return Step(key: "picture \(id)", plans: [id], planName: title(id), text: String(localized: "Changed the picture", bundle: .module),
+                        undo: [.setPicture(id: id, picture: plan.picture)], needs: [id])
         case let .deletePlan(id):
             guard let plan = plans[id] else { return nil }
             let planName = title(id)
             let gone = items.filter { $0.value.plan == id }.sorted { $0.value.order < $1.value.order }
             plans[id] = nil
             for (item, _) in gone { items[item] = nil }
-            let undo = [Change.addPlan(id: id, name: plan.name, order: plan.order)] + gone.flatMap { add($0.key, $0.value) }
+            let picture = plan.picture.isEmpty ? [] : [Change.setPicture(id: id, picture: plan.picture)]
+            let undo = [Change.addPlan(id: id, name: plan.name, order: plan.order)] + picture + gone.flatMap { add($0.key, $0.value) }
             return Step(plans: [id], planName: planName, text: String(localized: "Deleted the plan", bundle: .module), undo: undo, needs: [], absent: [id])
         case let .addExercise(id, plan, exerciseID, order, own):
             var item = items[id] ?? ItemState(plan: plan, exerciseID: exerciseID, order: order)

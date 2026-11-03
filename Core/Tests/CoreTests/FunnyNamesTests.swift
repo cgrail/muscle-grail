@@ -7,6 +7,8 @@ import Testing
     let container = try! Store.makeContainer(inMemory: true)
     var context: ModelContext { container.mainContext }
 
+    func character(_ id: String) -> FunnyCharacter { allCharacters.first { $0.id == id }! }
+
     @Test func aNewPlanGetsAFunnyNameForWhatItTrains() {
         let plan = context.addPlan()
         context.addNew("squat", to: plan)
@@ -86,34 +88,68 @@ import Testing
     }
 
     @Test func everyCharacterIsDrawn() {
-        let missing = funnyNames.values.joined().map(\.key).filter {
-            Bundle.module.url(forResource: pictureID($0), withExtension: "png", subdirectory: "Characters") == nil
-        }
-        #expect(missing == [])
+        #expect(allCharacters.filter { $0.picture == nil }.map(\.id) == [])
     }
 
     @Test func aPlansPictureIsItsCharacter() {
         let plan = context.addPlan()
         context.addNew("squat", to: plan)
         context.rollFunnyName(plan)
-        #expect(plan.picture?.lastPathComponent == "booty.png")
+        #expect(plan.character?.id == "booty")
     }
 
     @Test func aTypedNamesPictureShowsWhatThePlanTrains() {
         let plan = makePlan(context, "bench-press")
         context.rename(plan, to: "Push")
-        #expect(plan.picture?.lastPathComponent == "bench-bernie.png")
+        #expect(plan.character?.id == "bench-bernie")
     }
 
     @Test func typedNamesSideBySideGetDifferentPictures() {
         let first = makePlan(context, "bench-press"), second = makePlan(context, "bench-press")
         context.rename(first, to: "Push A")
         context.rename(second, to: "Push B")
-        #expect(first.picture != second.picture)
+        #expect(first.character != second.character)
     }
 
     @Test func aPlanOfYourOwnExercisesHasNoPicture() {
         let plan = makePlan(context, context.createExercise(named: "Zercher Carry"))
-        #expect(plan.picture == nil)
+        #expect(plan.character == nil)
+    }
+
+    @Test func aChosenPictureStaysWhateverTheName() {
+        let plan = makePlan(context, "squat")
+        context.choosePicture(character("booty"), for: plan)
+        context.rename(plan, to: "Legs")
+        #expect(plan.character?.id == "booty")
+    }
+
+    @Test func choosingThePictureItShowsAnywayFollowsTheNameAgain() {
+        let plan = context.addPlan()
+        context.addNew("squat", to: plan)
+        context.choosePicture(character("booty"), for: plan)
+        context.choosePicture(character("leggy"), for: plan)
+        #expect(plan.picture == "")
+    }
+
+    @Test func namingAfterACharacterShowsItsDrawing() {
+        let plan = makePlan(context, "squat")
+        context.choosePicture(character("booty"), for: plan)
+        context.name(plan, after: character("squatzilla"))
+        #expect(plan.character?.id == "squatzilla")
+    }
+
+    @Test func theNamesForWhatAPlanTrainsComeFirst() {
+        let plan = makePlan(context, "squat")
+        #expect(plan.funnyNameChoices.proposals.map(\.name) == funnyNames[.legs]?.map(\.key))
+    }
+
+    @Test func everyOtherFunnyNameFollowsOnce() {
+        let choices = makePlan(context, "squat").funnyNameChoices
+        #expect((choices.proposals + choices.others).sorted { $0.id < $1.id } == allCharacters.sorted { $0.id < $1.id })
+    }
+
+    @Test func aPlanOfYourOwnExercisesOffersEveryFunnyName() {
+        let plan = makePlan(context, context.createExercise(named: "Zercher Carry"))
+        #expect(plan.funnyNameChoices.others == allCharacters)
     }
 }

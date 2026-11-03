@@ -4,7 +4,8 @@ import SwiftData
 import SwiftUI
 
 /// A plan on the iPhone, its exercises as cards like training shows them. Edit selects exercises to move to another plan
-/// or delete, and drags them into order. The pencil beside its name renames it, the dice gives it the next funny name.
+/// or delete, and drags them into order. Edit also makes its name a field to type in, its picture a button to choose another,
+/// and shows the dice for funny names.
 struct PlanEditor: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
@@ -14,8 +15,6 @@ struct PlanEditor: View {
     @State private var selection = Set<UUID>()
     @State private var picking = false
     @State private var forWhom: PendingEdit?
-    @State private var renaming = false
-    @State private var name = ""
     @State private var scrolled = false
 
     var body: some View {
@@ -24,14 +23,15 @@ struct PlanEditor: View {
         List(selection: editing ? $selection : nil) { // outside Edit, a tap beside the controls selects nothing
             Group {
                 HStack {
-                    PlanPicture(plan, size: 48)
-                    Text(plan.title).font(.largeTitle.bold())
-                    Button("Rename", systemImage: "pencil") { (name, renaming) = (plan.name, true) }
-                        .labelStyle(.iconOnly)
-                        .font(.title2)
-                        .buttonStyle(.borderless) // only the pencil, not the whole row
-                        .disabled(locked)
-                    FunnyNameButton(plan: plan).font(.title2).disabled(locked)
+                    if editing { // Edit is off while locked
+                        PictureButton(plan: plan, size: 48)
+                        TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
+                            .font(.largeTitle.bold())
+                        FunnyNameButton(plan: plan).font(.title2)
+                    } else {
+                        PlanPicture(plan, size: 48)
+                        Text(plan.title).font(.largeTitle.bold())
+                    }
                 }
                 if let motto = plan.motto { Text(verbatim: motto).italic().foregroundStyle(.secondary) }
                 if locked { UpdateToEdit() }
@@ -79,11 +79,6 @@ struct PlanEditor: View {
             ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.addNew(id, to: plan, own: $0 ? nil : .mine) } }
         }
         .forWhom($forWhom)
-        .alert("Rename plan", isPresented: $renaming) {
-            TextField("Name", text: $name)
-            Button("Rename") { context.rename(plan, to: name) }
-            Button("Cancel", role: .cancel) {}
-        }
     }
 
     /// Runs `edit` on each selected exercise in plan order, asking once for whom if any of them is for both.

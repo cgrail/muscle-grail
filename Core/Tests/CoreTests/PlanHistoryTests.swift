@@ -22,6 +22,7 @@ import Testing
         let plan = makePlan(context, "Bench", "Row")
         let other = makePlan(context)
         context.rename(plan, to: "Push")
+        context.choosePicture(allCharacters[0], for: plan)
         context.setTargets(plan.sortedItems[0], sets: 5)
         context.reorder(plan.sortedItems, fromOffsets: [1], toOffset: 0)
         context.reorder([plan, other], fromOffsets: [1], toOffset: 0)
@@ -29,7 +30,7 @@ import Testing
         context.move(plan.sortedItems[1], to: other)
         context.deleteExercise(plan.sortedItems[0])
         context.deletePlan(other)
-        #expect(try history(container).count == 12)
+        #expect(try history(container).count == 13)
     }
 
     @Test func editsInARowAreOneEntry() throws {

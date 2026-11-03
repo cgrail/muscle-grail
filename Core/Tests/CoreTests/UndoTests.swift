@@ -57,6 +57,13 @@ import Testing
         #expect(plan.name == String(localized: "New plan", bundle: .module))
     }
 
+    @Test func undoingAPictureBringsBackTheOneBefore() throws {
+        let plan = makePlan(context)
+        context.choosePicture(allCharacters[0], for: plan)
+        try undoLast()
+        #expect(plan.picture == "")
+    }
+
     @Test func undoingAReplaceBringsBackTheExerciseAndItsWeight() throws {
         let item = makePlan(context, "Bench").sortedItems[0]
         context.setTargets(item, weightKg: 80)
@@ -69,6 +76,14 @@ import Testing
         makePlan(context)
         try undoLast()
         #expect(try context.fetchCount(FetchDescriptor<Plan>()) == 0)
+    }
+
+    @Test func undoingADeletedPlanBringsBackItsPicture() throws {
+        let plan = makePlan(context)
+        context.choosePicture(allCharacters[0], for: plan)
+        context.deletePlan(plan)
+        try undoLast()
+        #expect(try context.fetch(FetchDescriptor<Plan>()).first?.picture == allCharacters[0].id)
     }
 
     @Test func undoingADeletedPlanBringsItBackWithItsExercises() throws {
