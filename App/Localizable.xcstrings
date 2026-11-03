@@ -761,6 +761,16 @@
         }
       }
     },
+    "Edit" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeiten"
+          }
+        }
+      }
+    },
     "Equipment" : {
       "localizations" : {
         "de" : {
@@ -1727,6 +1737,16 @@
         }
       }
     },
+    "Select" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auswählen"
+          }
+        }
+      }
+    },
     "Select an exercise" : {
       "localizations" : {
         "de" : {
@@ -2003,6 +2023,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Trainieren"
+          }
+        }
+      }
+    },
+    "Training" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Training"
           }
         }
       }

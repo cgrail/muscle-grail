@@ -3,14 +3,15 @@ import Core
 import SwiftData
 import SwiftUI
 
-/// A plan on the iPhone, its exercises as cards like training shows them. Edit selects exercises to move to another plan
-/// or delete, and drags them into order. Edit also makes its name a field to type in, its picture a button to choose another,
-/// and shows the dice for funny names.
+/// A plan on the iPhone in edit mode: its name a field to type in, its picture a button to choose another, the dice for
+/// funny names, and its exercises as cards like training shows them. Select selects exercises to move to another plan
+/// or delete, and drags them into order. Changes lists what changed in it. `onDone`, when given, goes back to training.
 struct PlanEditor: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Action.newer) private var newer: [Action]
     let plan: Plan
+    var onDone: (() -> Void)?
     @State private var editMode = EditMode.inactive
     @State private var selection = Set<UUID>()
     @State private var picking = false
@@ -19,30 +20,26 @@ struct PlanEditor: View {
 
     var body: some View {
         let locked = !newer.isEmpty
-        let editing = editMode.isEditing
-        List(selection: editing ? $selection : nil) { // outside Edit, a tap beside the controls selects nothing
+        let selecting = editMode.isEditing
+        List(selection: selecting ? $selection : nil) { // outside Select, a tap beside the controls selects nothing
             Group {
                 HStack {
-                    if editing { // Edit is off while locked
-                        PictureButton(plan: plan, size: 48)
-                        TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
-                            .font(.largeTitle.bold())
-                        FunnyNameButton(plan: plan).font(.title2)
-                    } else {
-                        PlanPicture(plan, size: 48)
-                        Text(plan.title).font(.largeTitle.bold())
-                    }
+                    PictureButton(plan: plan, size: 48)
+                    TextField("Name", text: Binding { plan.name } set: { context.rename(plan, to: $0) })
+                        .font(.largeTitle.bold())
+                    FunnyNameButton(plan: plan).font(.title2)
                 }
+                .disabled(locked)
                 if let motto = plan.motto { Text(verbatim: motto).italic().foregroundStyle(.secondary) }
                 if locked { UpdateToEdit() }
                 ForEach(plan.sortedItems) { item in
-                    PlanItemCard(item: item, editing: editing, forWhom: $forWhom)
+                    PlanItemCard(item: item, selecting: selecting, forWhom: $forWhom)
                         .disabled(locked || item.ownedBy == .partner)
                         .tag(item.id)
                 }
                 .onMove { context.reorder(plan.sortedItems, fromOffsets: $0, toOffset: $1) }
                 .moveDisabled(locked)
-                Button("Add exercise", systemImage: "plus") { picking = true }.disabled(locked || editing)
+                Button("Add exercise", systemImage: "plus") { picking = true }.disabled(locked || selecting)
             }
             .listRowSeparator(.hidden)
             .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
@@ -53,11 +50,16 @@ struct PlanEditor: View {
         .onScrollGeometryChange(for: Bool.self) { $0.contentOffset.y + $0.contentInsets.top > 40 } action: { scrolled = $1 }
         .toolbar {
             ToolbarItemGroup {
-                EditButton().disabled(locked)
                 NavigationLink { PlanChanges(plan: plan.id) } label: { Label("Changes", systemImage: "clock.arrow.circlepath") }
                 SettingsButton() // for the sets and reps new exercises start with
+                if selecting {
+                    Button("Done") { withAnimation { editMode = .inactive } }
+                } else {
+                    Button("Select") { withAnimation { editMode = .active } }.disabled(locked)
+                    if let onDone { Button("Done", action: onDone) }
+                }
             }
-            if editing {
+            if selecting {
                 ToolbarItem(placement: .bottomBar) {
                     Menu("Move to", systemImage: "arrow.turn.up.right") {
                         ForEach(plans.filter { $0 != plan }) { target in
@@ -73,8 +75,8 @@ struct PlanEditor: View {
                 }
             }
         }
-        .toolbar(editing ? .hidden : .visible, for: .tabBar) // the selection's actions take its place, as in Photos
-        .environment(\.editMode, $editMode) // after the toolbar, so its Edit button switches the list
+        .toolbar(selecting ? .hidden : .visible, for: .tabBar) // the selection's actions take its place, as in Photos
+        .environment(\.editMode, $editMode)
         .sheet(isPresented: $picking) {
             ExercisePicker { id in ForWhom.edit(plan, asking: $forWhom) { context.addNew(id, to: plan, own: $0 ? nil : .mine) } }
         }
@@ -97,7 +99,7 @@ struct PlanEditor: View {
 private struct PlanItemCard: View {
     @Environment(\.modelContext) private var context
     let item: PlanItem
-    let editing: Bool
+    let selecting: Bool
     @Binding var forWhom: PendingEdit?
     @State private var showingDetail = false
     @State private var replacing = false
@@ -139,7 +141,7 @@ private struct PlanItemCard: View {
                 }
             }
         }
-        .allowsHitTesting(!editing) // a tap selects the card instead
+        .allowsHitTesting(!selecting) // a tap selects the card instead
         .padding()
         .background(.fill.tertiary, in: .rect(cornerRadius: 20))
         .foregroundStyle(theirs ? .secondary : .primary)

@@ -95,8 +95,7 @@ struct RootView: View {
         MacRootView()
         #else
         TabView {
-            Tab("Train", systemImage: "figure.strengthtraining.traditional") { TrainView() }
-            Tab("Plans", systemImage: "list.bullet.clipboard") { PlansView() }
+            Tab("Training", systemImage: "figure.strengthtraining.traditional") { TrainView() }
             Tab("History", systemImage: "clock") { HistoryView() }
         }
         .tabViewStyle(.sidebarAdaptable)

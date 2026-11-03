@@ -5,6 +5,7 @@ import SwiftUI
 /// The running workout's exercises as cards, the next one to do outlined: tick a card to log its next set as prefilled,
 /// or open it to log and adjust. Finish shows the workout before it ends, as does logging the last set of the last exercise.
 /// A plan picked to train has no workout until its first set is logged, so going back before that leaves nothing behind.
+/// On the iPhone, Edit opens the plan to edit in place, and Done goes back to the workout as it was.
 struct WorkoutView: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -12,6 +13,9 @@ struct WorkoutView: View {
     @State private var workout: Workout?
     @State private var exercise: PlanItem?
     @State private var finishing = false
+    #if os(iOS)
+    @State private var editing = false
+    #endif
 
     init(plan: Plan?, workout: Workout?) {
         self.plan = plan
@@ -19,9 +23,47 @@ struct WorkoutView: View {
     }
 
     var body: some View {
+        content
+            .navigationDestination(item: $exercise) { item in
+                ExerciseView(item: item, workout: $workout) {
+                    exercise = nil
+                    if workout?.isComplete == true { finishing = true }
+                }
+            }
+            .sheet(isPresented: $finishing) {
+                if let workout {
+                    NavigationStack {
+                        FinishView(workout: workout) {
+                            context.finish(workout)
+                            #if os(iOS) // the Mac has no HealthKit
+                            Task {
+                                if let id = await Health.save(workout) { context.savedToHealth(workout, as: id) }
+                            }
+                            #endif
+                            finishing = false
+                            dismiss()
+                        }
+                    }
+                }
+            }
+    }
+
+    @ViewBuilder private var content: some View {
+        #if os(iOS)
+        if editing, let plan {
+            PlanEditor(plan: plan) { editing = false }
+        } else {
+            training
+        }
+        #else
+        training
+        #endif
+    }
+
+    private var training: some View {
         let items = plan?.trainedItems ?? []
         let next = items.first { (workout?.sets(of: $0.exerciseID).count ?? 0) < $0.targetSets }
-        ScrollView {
+        return ScrollView {
             VStack(spacing: 12) {
                 ForEach(items) { item in
                     ExerciseCard(item: item, workout: $workout, isNext: item == next) { exercise = item }
@@ -32,29 +74,10 @@ struct WorkoutView: View {
         .navigationTitle(workout?.title ?? plan?.title ?? "")
         .navigationSubtitle(plan?.focus ?? "")
         .toolbar {
+            #if os(iOS)
+            if plan != nil { Button("Edit") { editing = true } }
+            #endif
             if workout != nil { Button("Finish") { finishing = true }.buttonStyle(.borderedProminent).tint(.green) }
-        }
-        .navigationDestination(item: $exercise) { item in
-            ExerciseView(item: item, workout: $workout) {
-                exercise = nil
-                if workout?.isComplete == true { finishing = true }
-            }
-        }
-        .sheet(isPresented: $finishing) {
-            if let workout {
-                NavigationStack {
-                    FinishView(workout: workout) {
-                        context.finish(workout)
-                        #if os(iOS) // the Mac has no HealthKit
-                        Task {
-                            if let id = await Health.save(workout) { context.savedToHealth(workout, as: id) }
-                        }
-                        #endif
-                        finishing = false
-                        dismiss()
-                    }
-                }
-            }
         }
     }
 }

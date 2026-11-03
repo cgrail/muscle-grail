@@ -3,41 +3,50 @@ import SwiftData
 import SwiftUI
 
 #if os(iOS)
+/// Training's edit mode on the iPhone: every plan in its order, to drag into another, delete, share, or open to edit.
+/// A new plan opens to edit. Changes lists what changed across all plans. `onDone` goes back to training.
 struct PlansView: View {
     @Environment(\.modelContext) private var context
     @Query(sort: \Plan.order) private var plans: [Plan]
     @Query(Action.newer) private var newer: [Action]
+    let onDone: () -> Void
+    @State private var opened: Plan?
 
     var body: some View {
         let locked = !newer.isEmpty
-        NavigationStack {
-            List {
-                if locked { UpdateToEdit() }
-                ForEach(plans) { plan in
-                    NavigationLink { PlanEditor(plan: plan) } label: {
-                        HStack {
-                            PlanLabel(plan, among: plans)
-                            Spacer()
-                            SharedBadge(plan: plan)
-                            PlanSyncBadge(plan: plan)
-                        }
+        List {
+            if locked { UpdateToEdit() }
+            ForEach(plans) { plan in
+                Button { opened = plan } label: { // a plain button: in edit mode a list row takes no taps
+                    HStack {
+                        PlanLabel(plan, among: plans)
+                        Spacer()
+                        SharedBadge(plan: plan)
+                        PlanSyncBadge(plan: plan)
+                        Image(systemName: "chevron.forward").foregroundStyle(.tertiary)
                     }
-                    .contextMenu {
-                        PlanSharing(plan: plan)
-                        Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
-                    }
+                    .contentShape(.rect)
                 }
-                .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
-                .moveDisabled(locked)
+                .buttonStyle(.plain)
+                .contextMenu {
+                    PlanSharing(plan: plan)
+                    Button("Delete", systemImage: "trash", role: .destructive) { context.deletePlan(plan) }.disabled(locked)
+                }
             }
-            .navigationTitle("Plans")
-            .toolbar {
-                EditButton()
-                NavigationLink { PlanChanges() } label: { Label("Changes", systemImage: "clock.arrow.circlepath") }
-                Button("Add plan", systemImage: "plus") { context.addPlan() }.disabled(locked)
-                SettingsButton()
-            }
+            .onMove { context.reorder(plans, fromOffsets: $0, toOffset: $1) }
+            .onDelete { offsets in offsets.map { plans[$0] }.forEach { context.deletePlan($0) } }
+            .moveDisabled(locked)
+            .deleteDisabled(locked)
         }
+        .environment(\.editMode, .constant(.active)) // on the list only, so an opened plan isn't in edit mode
+        .navigationTitle("Plans")
+        .toolbar {
+            NavigationLink { PlanChanges() } label: { Label("Changes", systemImage: "clock.arrow.circlepath") }
+            Button("Add plan", systemImage: "plus") { opened = context.addPlan() }.disabled(locked)
+            SettingsButton()
+            Button("Done", action: onDone)
+        }
+        .navigationDestination(item: $opened) { PlanEditor(plan: $0) }
     }
 }
 #endif
