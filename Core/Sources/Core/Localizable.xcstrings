@@ -1349,6 +1349,24 @@
         }
       }
     },
+    "glute_kickback_machine" : {
+      "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glute-Kickback-Maschine"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glute kickback machine"
+          }
+        }
+      }
+    },
     "gluteus_maximus" : {
       "comment" : "A muscle, level, piece of equipment or category from the exercise catalog",
       "extractionState" : "manual",

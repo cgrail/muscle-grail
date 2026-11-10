@@ -11,7 +11,7 @@ struct CatalogTests {
 
     @Test func repdbsExerciseReplacesOursOfTheSameID() {
         let theirs = CatalogExercise(id: "machine-torso-rotation", name: "Rotary Torso", equipment: nil, primaryMuscles: [], images: [])
-        #expect(CatalogExercise.withExtras([theirs]).map(\.name) == ["Rotary Torso"])
+        #expect(CatalogExercise.withExtras([theirs]).filter { $0.id == theirs.id }.map(\.name) == ["Rotary Torso"])
     }
 
     @Test func missingOrBrokenCatalogLoadsEmpty() {

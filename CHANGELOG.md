@@ -1,6 +1,11 @@
 # Changelog
 
-## 1.0 (current)
+## 1.1 (current)
+
+### Plans
+- Gluteus Kickback am Gerät (Machine Glute Kickback) is in the catalog with its steps in English and German and a picture of someone training on the machine.
+
+## 1.0
 
 ### Plans
 - Plans get funny names from what they train: cartoon characters like Squatzilla, Captain Curl, Corey the apple core or Rest Day Rudy, in English or German (Beini, Armee, Ruhetag-Rudi). Each has its own drawing, on a tile in the plan's color as its picture in Training, the Mac's sidebar and beside the name on the plan's page, and a motto under the name in Train and on the plan's page. Plans side by side get different colors, and different characters' drawings when you named them yourself. Plans with a funny name from before get a character with their next change, or from the dice. A new plan gets one with its first exercise, a GymBook import with its exercises, and the name follows along as you, the plan assistant or Claude change the exercises. A name you typed yourself stays, and its plan shows the drawing of a character for what it trains. A funny name is only a proposal: type any name you like, and pick another picture from every character's drawing, on the iPhone in Edit and on the Mac with a click on the artwork. The dice beside a plan's name, on the iPhone in Edit and on the Mac, picks the next funny name and lists every funny name to pick from, each with its motto and drawing: those for what the plan trains on top, then all the others. Picking a funny name brings its drawing along. A picture you picked syncs to your devices and your training partner, and shows in the plan's changes to undo.
