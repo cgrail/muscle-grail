@@ -14,7 +14,11 @@
 </p>
 
 <p align="center">
-  <img src="Design/readme/hero.svg" width="100%" alt="Muscle Grail on the Mac, iPhone and Apple Watch: a plan as a table on the Mac, the workout list on the iPhone with no signal, and the watch logging set 2 of 3">
+  <a href="https://apps.apple.com/us/app/muscle-grail/id6826920887"><img src="https://toolbox.marketingtools.apple.com/api/v2/badges/download-on-the-app-store/black/en-us" height="48" alt="Download on the App Store"></a>
+</p>
+
+<p align="center">
+  <img src="Design/readme/hero.png" width="100%" alt="Muscle Grail on the Mac, Apple Watch and iPhone: the Mac app, in German, with the plan due next and three more, each with its cartoon character; the watch logging set 1 of 3 of the bench press; and the iPhone in a workout with two of five exercises done">
 </p>
 
 ## Why Muscle Grail
@@ -67,6 +71,10 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 
 ### Plan on the Mac
 
+<p align="center">
+  <img src="Design/readme/mac-plan.png" width="100%" alt="A plan on the Mac, in German: plans in the sidebar, and the plan as a table of eight exercises with their muscles, sets, reps and weight to edit in place">
+</p>
+
 - A Mac app laid out like Apple Music: plans sit in the sidebar like playlists, and a plan opens as a table to edit sets, reps and weight in place.
 - A catalog of 650 exercises by [RepDB](https://repdb.co), with illustrations and step-by-step instructions in English and German. Filter by body region, level, equipment and category, or make your own exercise.
 - Describe what you want, typed or dictated: "3x10 bench press at 60 kg, then squats". Apple's on-device model adds it, in English or German (needs Apple Intelligence).
@@ -75,6 +83,19 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 - A history of every plan change, with undo, and a restore to any earlier version of a plan.
 
 ### Train on iPhone and Apple Watch
+
+<p align="center">
+  <img src="Design/readme/iphone-plan.png" width="23%" alt="A plan on the iPhone: its cartoon character and motto, and each exercise with its sets and reps, marked as shared with the training partner">
+  <img src="Design/readme/iphone-workout.png" width="23%" alt="A running workout on the iPhone: five exercises, two of them done with 3 of 3 sets">
+  <img src="Design/readme/iphone-set.png" width="23%" alt="An exercise on the iPhone: its illustration, 11 reps, one button to log set 1, and how to do it">
+  <img src="Design/readme/iphone-done.png" width="23%" alt="The finished workout on the iPhone: volume, sets and duration, and a note that finishing saves it to Apple Health">
+</p>
+
+<p align="center">
+  <img src="Design/readme/watch-workout.png" width="18%" alt="A workout on the Apple Watch: each exercise with its sets, reps and weight">
+  <img src="Design/readme/watch-set.png" width="18%" alt="A set on the Apple Watch: 10 reps at 47.5 kg and one button to log set 1 of 3">
+  <img src="Design/readme/watch-done.png" width="18%" alt="The finished workout on the Apple Watch with its volume">
+</p>
 
 - One tap logs a set, or ticks off a whole exercise like "3 × 10 at 20 kg". Swipe to delete.
 - Each set is prefilled from the set you just did, else from last time, else from the plan.
@@ -113,7 +134,7 @@ On the Mac, import GymBook's log export: match its exercises to the catalog once
 
 ## Status
 
-Version 1.0 is in development and not on the App Store yet. To try it, build it yourself.
+Version 1.0 is [on the App Store](https://apps.apple.com/us/app/muscle-grail/id6826920887), free, for iPhone, Apple Watch and Mac.
 
 ## Build it yourself
 
