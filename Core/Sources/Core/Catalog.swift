@@ -11,7 +11,7 @@ public struct CatalogExercise: Identifiable, Sendable {
     public let name: String
     public let equipment: String?
     public let primaryMuscles: [String]
-    /// Paths in RepDB's repository, the starting pose first.
+    /// Paths in RepDB's repository, the starting pose first, or our extras' picture in Core's `Extras/`.
     public let images: [String]
     public var instructions: [String] = []
     public var level: String?
@@ -29,9 +29,9 @@ public struct CatalogExercise: Identifiable, Sendable {
     }
 
     // shortcut: images (~20 MB in total) load from RepDB's GitHub, so they show placeholders offline; bundle thumbnails if plans get built offline
-    // Our extras have no RepDB images: their own drawing ships in Core, as `Extras/<id>.png`.
     public var imageURL: URL? {
-        guard let path = images.first else { return Bundle.module.url(forResource: id, withExtension: "png", subdirectory: "Extras") }
+        guard let path = images.first else { return nil }
+        if path.hasPrefix("Extras/") { return Bundle.module.resourceURL?.appending(path: path) }
         return URL(string: "https://raw.githubusercontent.com/RepDB/exercise-dataset/\(Self.repdbCommit)/\(path)")
     }
 

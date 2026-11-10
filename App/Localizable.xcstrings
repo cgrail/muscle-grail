@@ -1377,16 +1377,6 @@
         }
       }
     },
-    "Machine Torso Rotation drawing adapted from [Open Exercise Art](https://github.com/AlexMollard/Open-Exercise-Art) by Alex Mollard, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)" : {
-      "localizations" : {
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zeichnung für Rumpfdrehung am Gerät, bearbeitet nach [Open Exercise Art](https://github.com/AlexMollard/Open-Exercise-Art) von Alex Mollard, [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/)"
-          }
-        }
-      }
-    },
     "Me and %@" : {
       "localizations" : {
         "de" : {

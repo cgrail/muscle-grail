@@ -23,8 +23,9 @@ struct CatalogTests {
         #expect(bench.imageURL?.absoluteString == "https://raw.githubusercontent.com/RepDB/exercise-dataset/\(CatalogExercise.repdbCommit)/images/flat/b-start.webp")
     }
 
-    @Test func anExtraShowsItsOwnDrawing() {
-        #expect(CatalogExercise.byID["machine-torso-rotation"]?.imageURL?.isFileURL == true)
+    @Test func anExtraShowsItsOwnPicture() throws {
+        let url = try #require(CatalogExercise.byID["machine-torso-rotation"]?.imageURL)
+        #expect(FileManager.default.fileExists(atPath: url.path))
     }
 
     @Test func exerciseWithoutImagesHasNoImageURL() {
