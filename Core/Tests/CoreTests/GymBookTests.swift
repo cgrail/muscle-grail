@@ -132,9 +132,9 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
         #expect(plans[0].sortedItems.map(\.targetWeightKg) == [WeightUnit.lb.kg(130), 22])
     }
 
-    @Test func anImportedPlanGetsAFunnyName() throws {
+    @Test func anImportedPlanKeepsItsNameWithAFunnyOneBehind() throws {
         context.importGymBook(file)
-        #expect(try context.fetch(FetchDescriptor<Plan>()).map(\.name) == ["Corey"])
+        #expect(try context.fetch(FetchDescriptor<Plan>()).map(\.name) == ["MoDi 1 · Corey"])
     }
 
     @Test func aPlanImportedBeforeIsHereUnderItsFunnyName() {

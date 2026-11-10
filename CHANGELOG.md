@@ -3,6 +3,7 @@
 ## 1.1 (current)
 
 ### Plans
+- A plan imported from GymBook keeps its GymBook name, with its funny name behind it ("Push · Corey"), and shows that character's drawing and motto.
 - Gluteus Kickback am Gerät (Machine Glute Kickback) is in the catalog with its steps in English and German and a picture of someone training on the machine.
 
 ## 1.0
