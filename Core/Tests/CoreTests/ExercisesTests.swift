@@ -87,6 +87,50 @@ import Testing
     }
 }
 
+@MainActor struct MergeTests {
+    let container = try! Store.makeContainer(inMemory: true)
+    var context: ModelContext { container.mainContext }
+
+    @Test func mergedSetsBecomeTheKeptExercisesWithTheirRepsAndWeight() throws {
+        let own = context.createExercise(named: "Rumpfdrehung")
+        context.log(own, reps: 12, weightKg: 30, in: context.startWorkout(makePlan(context, own)))
+        context.mergeSets(own, into: "squat")
+        let sets = try context.fetch(FetchDescriptor<LoggedSet>())
+        #expect(sets.map { [$0.exerciseID, "\($0.reps)", "\($0.weightKg)"] } == [["squat", "12", "30.0"]])
+    }
+
+    @Test func mergedPlanExercisesBecomeTheKeptOne() {
+        let own = context.createExercise(named: "Rumpfdrehung")
+        let plan = makePlan(context, own)
+        context.merge(own, into: "squat")
+        #expect(plan.sortedItems.map(\.exerciseID) == ["squat"])
+    }
+
+    @Test func mergedExerciseOfYourOwnLeavesTheLibrary() {
+        let own = context.createExercise(named: "Rumpfdrehung")
+        context.merge(own, into: "squat")
+        #expect(context.catalogEntry(own)?.isOwnExercise == false)
+    }
+
+    @Test func aBundledExerciseIsKeptOverYourOwn() {
+        #expect(mergeTarget([context.createExercise(named: "Rumpfdrehung"), "squat"]) == "squat")
+    }
+
+    @Test func keptExerciseTakesTheUnitItLacks() {
+        let own = context.createExercise(named: "Rumpfdrehung")
+        context.setUnit(own, to: .lb)
+        context.merge(own, into: "squat")
+        #expect(context.weightUnit(of: "squat") == .lb)
+    }
+
+    @Test func keptExerciseTakesThePhotoItLacks() {
+        let own = context.createExercise(named: "Rumpfdrehung")
+        context.setPhoto(own, to: testPhoto())
+        context.merge(own, into: "squat")
+        #expect(context.catalogEntry("squat")?.photo != nil)
+    }
+}
+
 @MainActor struct PhotoCacheTests {
     let container = try! Store.makeContainer(inMemory: true)
     var context: ModelContext { container.mainContext }

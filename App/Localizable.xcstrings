@@ -1407,6 +1407,26 @@
         }
       }
     },
+    "Merge" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zusammenführen"
+          }
+        }
+      }
+    },
+    "Merge into “%@”?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In „%@“ zusammenführen?"
+          }
+        }
+      }
+    },
     "Month" : {
       "localizations" : {
         "de" : {
@@ -2063,6 +2083,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jetzt synchronisieren"
+          }
+        }
+      }
+    },
+    "The others' sets and places in plans move to it. This can't be undone." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Sätze und Plätze in Plänen der anderen gehen auf sie über. Das lässt sich nicht rückgängig machen."
           }
         }
       }

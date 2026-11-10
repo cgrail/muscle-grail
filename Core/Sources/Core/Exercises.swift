@@ -40,6 +40,13 @@ public func videoURL(_ id: String, entry: CatalogEntry?) -> URL? {
     return search.url
 }
 
+/// The exercise a merge of `ids` keeps: a bundled one, since only yours can leave the library, so they end up one. Among
+/// equals, the first by id, so it never depends on the order they were picked in.
+public func mergeTarget(_ ids: Set<String>) -> String? {
+    let sorted = ids.sorted()
+    return sorted.first { CatalogExercise.byID[$0] != nil } ?? sorted.first
+}
+
 /// Up to `limit` catalog names matching `query`, the user's own (`custom`) first: what the plan assistant searches.
 public func catalogNames(matching query: String, custom: [String], limit: Int = 8) -> [String] {
     let names = custom.filter { matchesEveryWord(of: query, in: [$0]) } + CatalogExercise.search(query).map(\.name)
@@ -83,6 +90,33 @@ public extension ModelContext {
 
     /// The unit `exerciseID`'s weights show in once, where a view can't keep it current (`WeightStepper` does).
     func weightUnit(of exerciseID: String) -> WeightUnit { catalogEntry(exerciseID)?.weightUnit ?? .kg }
+
+    /// Makes `id` one with `target` in plans and the catalog: its plan exercises become `target` (as one batch in the plans'
+    /// history), which takes its photo and unit where it has none, and one of your own leaves the library. `mergeSets` moves
+    /// its sets. Call it on the main context: it changes records the views hold, and another context's updates don't reach them.
+    func merge(_ id: String, into target: String) {
+        guard id != target else { return }
+        let batch = UUID()
+        for item in (try? fetch(FetchDescriptor<PlanItem>(predicate: #Predicate { $0.exerciseID == id }))) ?? [] {
+            record(.replaceExercise(id: item.id, exerciseID: target, weightKg: item.targetWeightKg), batch: batch)
+        }
+        let (from, to) = (catalogEntry(id), catalogEntry(target))
+        if let photo = from?.photo, to?.photo == nil { record(.setPhoto(id: target, photo: photo)) }
+        if let unit = from?.unit, !unit.isEmpty, to?.unit.isEmpty ?? true { record(.setUnit(id: target, unit: unit)) }
+        if from?.isOwnExercise == true { editExercise(id, name: "") } // a nameless entry lists nowhere
+    }
+
+    /// Makes `id`'s sets `target`'s. A set is never edited, so each is logged anew under `target` and the old one deleted:
+    /// only inserts and deletes, which reach the main context from another one. 500 sets take a second, so call it off the main actor.
+    // shortcut: a set of `id` that syncs in after the merge, logged offline, stays `id`'s; keep a merged-into field if that shows up
+    func mergeSets(_ id: String, into target: String) {
+        guard id != target else { return }
+        for set in (try? fetch(FetchDescriptor<LoggedSet>(predicate: #Predicate { $0.exerciseID == id }))) ?? [] {
+            guard let workout = set.workout else { continue }
+            record(.logSet(id: UUID(), workout: workout.id, exerciseID: target, reps: set.reps, weightKg: set.weightKg, date: set.date))
+            record(.deleteSet(id: set.id))
+        }
+    }
 
     /// Stores `image` shrunk to sync, or removes the photo for nil. Data that isn't an image changes nothing.
     func setPhoto(_ id: String, to image: Data?) {

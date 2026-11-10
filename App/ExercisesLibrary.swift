@@ -26,6 +26,8 @@ struct ExercisesLibrary: View {
     @State private var order = [KeyPathComparator(\Row.name)]
     @State private var detail: Detail?
     @State private var previewing = false
+    /// The exercises to merge, while the merge waits to be confirmed.
+    @State private var merging: Set<String>?
     @AppStorage("exercisesLayout") private var layout = Layout.list
     @AppStorage("thumbnailSize") private var thumbnailSize = 128.0
     @FocusState private var tableFocused: Bool
@@ -79,6 +81,13 @@ struct ExercisesLibrary: View {
                 .inspectorColumnWidth(min: 240, ideal: 300, max: 420)
             }
             .sheet(item: $detail) { ExerciseDetail(id: $0.id) }
+            .alert(merging.flatMap(mergeTarget).map { String(localized: "Merge into “\(context.exerciseName($0))”?") } ?? "",
+                   isPresented: Binding { merging != nil } set: { if !$0 { merging = nil } }, presenting: merging) { ids in
+                Button("Merge") { perform(ids) }
+                Button("Cancel", role: .cancel) {}
+            } message: { _ in
+                Text("The others' sets and places in plans move to it. This can't be undone.")
+            }
             .navigationTitle("Exercises")
             // Opened by selecting, not with the page.
             .onChange(of: selection.isEmpty) { _, empty in if !empty { previewing = true } }
@@ -113,6 +122,21 @@ struct ExercisesLibrary: View {
         }
         .disabled(ids.isEmpty || plans.isEmpty || !newer.isEmpty)
         Button("Details") { detail = ids.first.map(Detail.init) }.disabled(ids.count != 1)
+        Button("Merge") { merging = ids }.disabled(ids.count < 2 || !newer.isEmpty)
+    }
+
+    /// Merges `ids` into the one they keep (`mergeTarget`): plans and the catalog here, where the views see it at once, and
+    /// the sets, maybe hundreds, off the main actor.
+    private func perform(_ ids: Set<String>) {
+        guard let target = mergeTarget(ids) else { return }
+        let (container, others) = (context.container, ids.subtracting([target]))
+        for id in others { context.merge(id, into: target) }
+        selection = [target]
+        Task.detached {
+            let context = ModelContext(container)
+            for id in others { context.mergeSets(id, into: target) }
+            try? context.save()
+        }
     }
 }
 #endif
