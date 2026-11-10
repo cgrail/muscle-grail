@@ -35,25 +35,54 @@ import Testing
     }
 
     /// What iCloud brings the phone later: the watch's own workouts, sets and actions, as records of their own with the same ids.
-    func iCloud() throws {
-        for theirs in try watch.fetch(FetchDescriptor<Workout>()) {
+    /// A new watch (`plans`) gets the phone's, and its plans with their exercises first.
+    func iCloud(plans: Bool = false) throws {
+        let (from, to) = plans ? (phone, watch) : (watch, phone)
+        var brought: [UUID: Plan] = [:]
+        for theirs in try plans ? from.fetch(FetchDescriptor<Plan>()) : [] {
+            let plan = Plan(name: theirs.name, order: theirs.order)
+            (plan.id, plan.picture) = (theirs.id, theirs.picture)
+            to.insert(plan)
+            brought[plan.id] = plan
+            for exercise in theirs.items ?? [] {
+                let item = PlanItem(exerciseID: exercise.exerciseID, order: exercise.order)
+                (item.id, item.targetSets, item.targetReps, item.targetWeightKg) = (exercise.id, exercise.targetSets, exercise.targetReps, exercise.targetWeightKg)
+                to.insert(item)
+                item.plan = plan
+            }
+        }
+        for theirs in try from.fetch(FetchDescriptor<Workout>()) {
             let workout = Workout()
             (workout.id, workout.start, workout.end, workout.healthKitID) = (theirs.id, theirs.start, theirs.end, theirs.healthKitID)
-            phone.insert(workout)
-            workout.plan = theirs.plan.flatMap { phone.plan($0.id) }
+            to.insert(workout)
+            workout.plan = theirs.plan.flatMap { brought[$0.id] ?? to.plan($0.id) }
             for logged in theirs.sets ?? [] {
                 let set = LoggedSet(exerciseID: logged.exerciseID, reps: logged.reps, weightKg: logged.weightKg)
                 (set.id, set.date) = (logged.id, logged.date)
-                phone.insert(set)
+                to.insert(set)
                 set.workout = workout
             }
         }
-        for theirs in try watch.fetch(FetchDescriptor<Action>()) {
+        for theirs in try from.fetch(FetchDescriptor<Action>()) {
             let action = Action()
             (action.id, action.date, action.version, action.payload) = (theirs.id, theirs.date, theirs.version, theirs.payload)
-            phone.insert(action)
+            to.insert(action)
         }
+        try to.save()
+    }
+
+    /// A new watch, handed what the phone has to train. Returns the copies it made there.
+    @discardableResult
+    func start() throws -> [LinkCopy] {
         try phone.save()
+        return try watch.receiveStart(phone.linkedStart())
+    }
+
+    /// A finished workout on the phone, with a set of `exercise` at 60 kg.
+    func phoneTrains(_ plan: Plan, _ exercise: String, reps: Int) {
+        let workout = phone.startWorkout(plan)
+        phone.log(exercise, reps: reps, weightKg: 60, in: workout)
+        phone.finish(workout)
     }
 
     /// The phone's history: each workout's reps of Bench, newest first.
@@ -132,5 +161,77 @@ import Testing
         let copies = try link()
         phone.undo(try #require(phone.fetch(FetchDescriptor<LoggedSet>()).first))
         #expect(try !phone.dropCopies(copies).contains { $0.kind == .set })
+    }
+
+    // A new watch, which iCloud has brought nothing yet.
+
+    @Test func aNewWatchGetsItsPlansFromThePhone() throws {
+        let plan = makePlan(phone, "Bench", "Curl")
+        phone.setTargets(plan.sortedItems[0], sets: 4, reps: 8, weightKg: 60)
+        phone.record(.setPicture(id: plan.id, picture: "squatzilla"))
+        try start()
+        #expect(try snapshot(watch) == snapshot(phone))
+    }
+
+    @Test func thePlanDueNextComesAlong() throws {
+        let bench = makePlan(phone, "Bench"), squat = makePlan(phone, "Squat")
+        phoneTrains(squat, "Squat", reps: 5)
+        phoneTrains(bench, "Bench", reps: 8)
+        try start()
+        #expect(try trainingOrder(watch.fetch(FetchDescriptor<Plan>())).map(\.id) == [squat.id, bench.id])
+    }
+
+    @Test func theWeightOfAnExerciseSkippedLastTimeComesAlong() throws {
+        let plan = makePlan(phone, "Bench", "Curl")
+        phoneTrains(plan, "Bench", reps: 8)
+        phoneTrains(plan, "Curl", reps: 12)
+        try start()
+        let bench = try #require(watch.fetch(FetchDescriptor<PlanItem>()).first { $0.exerciseID == "Bench" })
+        #expect(watch.nextSet(for: bench, in: nil).reps == 8)
+    }
+
+    @Test func aWatchWithAPlanKeepsToICloud() throws {
+        _ = try plan()
+        makePlan(phone, "Squat")
+        try start()
+        #expect(try watch.fetchCount(FetchDescriptor<Plan>()) == 1)
+    }
+
+    @Test func whatTheWatchIsHandedIsNotRecorded() throws {
+        makePlan(phone, "Bench")
+        try start()
+        #expect(try watch.fetchCount(FetchDescriptor<Action>()) == 0)
+    }
+
+    @Test func aNewWatchsCopiesGoWhenICloudBringsTheOriginals() throws {
+        phoneTrains(makePlan(phone, "Bench", "Curl"), "Bench", reps: 8)
+        let copies = try start()
+        try iCloud(plans: true)
+        _ = try watch.dropCopies(copies)
+        #expect(try snapshot(watch) == snapshot(phone))
+    }
+
+    @Test func aWorkoutOfAPlansCopyMovesToThePlan() throws {
+        makePlan(phone, "Bench")
+        let copies = try start()
+        _ = watch.startWorkout(try #require(watch.fetch(FetchDescriptor<Plan>()).first))
+        try iCloud(plans: true)
+        _ = try watch.dropCopies(copies)
+        #expect(try watch.fetch(FetchDescriptor<Plan>()).map { $0.workouts?.count } == [1])
+    }
+
+    @Test func aPlansCopyStaysWhileItsStoreStillImports() throws {
+        makePlan(phone, "Bench")
+        let copies = try start()
+        try iCloud(plans: true)
+        #expect(try watch.dropCopies(copies, plansOf: []) == copies)
+    }
+
+    @Test func aPlansCopyGoesOnceItsStoreIsImported() throws {
+        makePlan(phone, "Bench")
+        let copies = try start()
+        try iCloud(plans: true)
+        let store = try #require(watch.fetch(FetchDescriptor<Plan>()).first?.persistentModelID.storeIdentifier)
+        #expect(try watch.dropCopies(copies, plansOf: [store]).isEmpty)
     }
 }

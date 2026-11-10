@@ -53,6 +53,7 @@ Each device keeps a complete copy of your plans, workouts and history and works 
 |---|---|
 | iPhone and Watch both log sets offline | Every set is its own record and is never edited, so two devices can't conflict. All sets show up everywhere, none twice. |
 | You log on the watch in a gym without internet | The set reaches your iPhone over Bluetooth right away. When iCloud brings it again later, the iPhone keeps one. |
+| You open the watch app for the first time | It gets your plans, the one due next and your last weights from the iPhone over Bluetooth within seconds. iCloud brings your history in the background. |
 | You edit a plan on the Mac while the watch sits in a drawer | A silent push from iCloud, or the next hourly step update from Health, wakes the watch and pulls the change in. |
 | You and your partner both edit a shared plan offline | Both sides end the same, in whatever order the changes arrive. The later rename or reorder wins, and a removal wins over a move. |
 | A device runs an older app version | It keeps training and syncing. Only plan editing waits until it is updated. |

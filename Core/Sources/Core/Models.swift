@@ -69,8 +69,11 @@ public extension Plan {
     /// The workouts this plan was trained in. A workout without sets doesn't count.
     private var done: [Workout] { workouts?.filter { $0.sets?.isEmpty == false } ?? [] }
 
+    /// The workout this plan was last trained in.
+    var lastWorkout: Workout? { done.max { $0.start < $1.start } }
+
     /// When this plan was last trained.
-    var lastDone: Date? { done.map(\.start).max() }
+    var lastDone: Date? { lastWorkout?.start }
 
     /// How many times this plan was trained.
     var timesDone: Int { done.count }
@@ -111,12 +114,22 @@ public extension Plan {
 /// Plans in the order to train them: those never done first, in plan order, then the one done longest ago,
 /// so the one done last ends the list. A plan with a workout running is left out: that workout is continued, on top.
 public func trainingOrder(_ plans: [Plan]) -> [Plan] {
-    plans.filter { $0.workouts?.contains { $0.end == nil } != true }.map { ($0, $0.lastDone ?? .distantPast) }.sorted { ($0.1, $0.0.order) < ($1.1, $1.0.order) }.map(\.0)
+    withoutTwins(plans).filter { $0.workouts?.contains { $0.end == nil } != true }.map { ($0, $0.lastDone ?? .distantPast) }.sorted { ($0.1, $0.0.order) < ($1.1, $1.0.order) }.map(\.0)
+}
+
+/// `plans` with each listed once. A watch that got its plans from the iPhone has iCloud's own beside them until those are
+/// whole (`receiveStart`): of two with one id, the one with more exercises is listed, else the one trained last.
+func withoutTwins(_ plans: [Plan]) -> [Plan] {
+    let rank = { (plan: Plan) in (plan.items?.count ?? 0, plan.lastDone ?? .distantPast) }
+    return plans.reduce(into: [Plan]()) { listed, plan in
+        guard let twin = listed.firstIndex(where: { $0.id == plan.id }) else { return listed.append(plan) }
+        if rank(listed[twin]) < rank(plan) { listed[twin] = plan }
+    }
 }
 
 /// The exercises of `plan` that none of the other `plans` has, in plan order: what sets it apart.
 public func specialExercises(of plan: Plan, among plans: [Plan]) -> [String] {
-    let elsewhere = Set(plans.filter { $0 != plan }.flatMap { $0.trainedItems.map(\.exerciseID) })
+    let elsewhere = Set(plans.filter { $0.id != plan.id }.flatMap { $0.trainedItems.map(\.exerciseID) })
     return plan.trainedItems.map(\.exerciseID).filter { !elsewhere.contains($0) }
 }
 
