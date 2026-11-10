@@ -81,6 +81,12 @@ import Testing
         #expect(plan.motto == "Stairs are temporary. Gains are forever.")
     }
 
+    @Test func aNameEndingInAFunnyOneShowsItsMotto() {
+        let plan = makePlan(context, "squat")
+        context.rename(plan, to: "Legs · Booty")
+        #expect(plan.motto == "Built from behind.")
+    }
+
     @Test func aTypedNameHasNoMotto() {
         let plan = makePlan(context, "squat")
         context.rename(plan, to: "Legs")

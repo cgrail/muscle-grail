@@ -98,7 +98,10 @@ public extension Plan {
     var hasAutoName: Bool { name.isEmpty || otherAutoNames.contains(name) || characters[name] != nil }
 
     /// The motto of the character the plan is named after, nil for a name you typed.
-    var motto: String? { characters[name]?.motto }
+    var motto: String? { namedAfter?.motto }
+
+    /// The character the name is, or ends in after " · ", as an import keeps GymBook's name before it: "Push · Corey".
+    private var namedAfter: FunnyCharacter? { characters[name.components(separatedBy: " · ").last!] }
 
     /// The character the plan's picture shows: the one chosen, else `namesake`.
     var character: FunnyCharacter? { allCharacters.first { $0.id == picture } ?? namesake }
@@ -106,7 +109,7 @@ public extension Plan {
     /// The character the plan is named after, else one of those for what it trains, by its place in the list,
     /// so plans side by side differ. Nil while it trains no catalog exercise.
     fileprivate var namesake: FunnyCharacter? {
-        characters[name] ?? focusRegions.map { cast(of: $0.first) }.flatMap { $0.isEmpty ? nil : $0[abs(order) % $0.count] }
+        namedAfter ?? focusRegions.map { cast(of: $0.first) }.flatMap { $0.isEmpty ? nil : $0[abs(order) % $0.count] }
     }
 
     /// The funny names to pick from: those for what the plan trains on top, then all the others.

@@ -36,7 +36,7 @@ public extension ModelContext {
         return Set(file.plans.map(\.name).filter { names.contains($0) || plan(importedPlan($0)) != nil })
     }
 
-    /// Imports `file`: its plans, each with a funny name for what it trains, apart from those named in `leavingOut` and
+    /// Imports `file`: its plans, each under its name with a funny one for what it trains behind it, apart from those named in `leavingOut` and
     /// those you have (`gymBookPlansHere`), which stay as they are, and each workout with the sets done in it, under the plan
     /// of its name; a plan left out leaves its workouts without one.
     /// `exercises` maps a GymBook name to an exercise here, and one it leaves out becomes your own; without it,
@@ -53,6 +53,7 @@ public extension ModelContext {
             return id
         }
         var plans = Dictionary(((try? fetch(FetchDescriptor<Plan>())) ?? []).map { ($0.name, $0.id) }) { first, _ in first }
+        var named: [(plan: Plan, gymBook: String)] = []
         for plan in file.plans where plans[plan.name] == nil {
             let imported = importedPlan(plan.name)
             if self.plan(imported) == nil {
@@ -63,9 +64,12 @@ public extension ModelContext {
                     setTargets(add(id(planned.exercise), to: new), sets: planned.sets, reps: planned.reps, weightKg: planned.weightKg)
                 }
                 nameFunnily(new, force: true)
+                named.append((new, plan.name))
             }
             plans[plan.name] = imported
         }
+        // once all have their funny names, so each gets its own
+        for (plan, gymBook) in named where plan.name != gymBook { rename(plan, to: "\(gymBook) · \(plan.name)") }
         let workouts = history ? newWorkouts(in: file) : []
         for session in workouts {
             let done = session.done
