@@ -8,6 +8,14 @@ public extension GymBook.File {
     }
 }
 
+public extension GymBook {
+    /// The records an import adds, by kind.
+    struct ImportSize: Equatable, Sendable {
+        public var plans = 0, planExercises = 0, exercises = 0, workouts = 0, sets = 0
+        public var total: Int { plans + planExercises + exercises + workouts + sets }
+    }
+}
+
 public extension ModelContext {
     /// The exercise here each of `file`'s exercises surely is: yours or the catalog's by that name, else the catalog's
     /// whose name in English, German or Spanish is close to its own. One without stays out, to become one of your own.
@@ -32,10 +40,10 @@ public extension ModelContext {
     /// those you have (`gymBookPlansHere`), which stay as they are, and each workout with the sets done in it, under the plan
     /// of its name; a plan left out leaves its workouts without one.
     /// `exercises` maps a GymBook name to an exercise here, and one it leaves out becomes your own; without it,
-    /// `gymBookMatches` decides. An exercise GymBook last showed in lb shows in lb. Returns how many workouts it added:
-    /// importing the same file again adds none.
+    /// `gymBookMatches` decides. An exercise GymBook last showed in lb shows in lb. Without `history`, only the plans come
+    /// in. Returns how many workouts it added: importing the same file again adds none.
     @discardableResult
-    func importGymBook(_ file: GymBook.File, exercises: [String: String]? = nil, leavingOut: Set<String> = []) -> Int {
+    func importGymBook(_ file: GymBook.File, exercises: [String: String]? = nil, leavingOut: Set<String> = [], history: Bool = true) -> Int {
         var ids = exercises ?? gymBookMatches(file)
         var used: Set<String> = []
         func id(_ name: String) -> String { // an exercise of your own only once something uses it, so importing again makes none
@@ -58,7 +66,7 @@ public extension ModelContext {
             }
             plans[plan.name] = imported
         }
-        let workouts = newWorkouts(in: file)
+        let workouts = history ? newWorkouts(in: file) : []
         for session in workouts {
             let done = session.done
             // a plan left out has no id, and a new one matches no plan
@@ -71,6 +79,37 @@ public extension ModelContext {
             try? save() // a workout at a time: each change's lookup by id slows with every unsaved one
         }
         return workouts.count
+    }
+
+    /// What `importGymBook` with the same choices adds, `workouts` being those it imports (`newWorkouts`, or none without
+    /// the history). Each record comes with an entry in the change log, which this leaves out.
+    func gymBookImportSize(_ file: GymBook.File, workouts: [GymBook.Session], exercises: [String: String],
+                           leavingOut: Set<String>) -> GymBook.ImportSize {
+        let plans = gymBookPlansComing(file, leavingOut: leavingOut)
+        let entries = Set(gymBookExercisesUsed(file, workouts: workouts, leavingOut: leavingOut).compactMap { name -> String? in // one of your own, or a bundled one's to show in lb
+            guard let id = exercises[name] else { return "own \(name)" }
+            return catalogEntry(id) == nil && unit(of: name, in: file) == .lb ? id : nil
+        })
+        return GymBook.ImportSize(plans: plans.count, planExercises: plans.map(\.exercises.count).reduce(0, +), exercises: entries.count,
+                                  workouts: workouts.count, sets: workouts.map(\.done.count).reduce(0, +))
+    }
+
+    /// The GymBook exercises `importGymBook` with the same choices uses: those of the plans coming in and of `workouts`.
+    func gymBookExercisesUsed(_ file: GymBook.File, workouts: [GymBook.Session], leavingOut: Set<String>) -> Set<String> {
+        Set(gymBookPlansComing(file, leavingOut: leavingOut).flatMap { $0.exercises.map(\.exercise) } + workouts.flatMap { $0.done.map(\.exercise) })
+    }
+
+    /// The plans of `file` importing it adds, each name once: not left out, and not here already.
+    private func gymBookPlansComing(_ file: GymBook.File, leavingOut: Set<String>) -> [GymBook.Plan] {
+        let here = gymBookPlansHere(file)
+        var names: Set<String> = []
+        return file.plans.filter { !here.contains($0.name) && !leavingOut.contains($0.name) && names.insert($0.name).inserted }
+    }
+
+    /// The records here that an import adds to: plans and their exercises, your exercises, workouts and sets.
+    func gymBookRecordCount() -> Int {
+        [try? fetchCount(FetchDescriptor<Plan>()), try? fetchCount(FetchDescriptor<PlanItem>()), try? fetchCount(FetchDescriptor<CatalogEntry>()),
+         try? fetchCount(FetchDescriptor<Workout>()), try? fetchCount(FetchDescriptor<LoggedSet>())].compactMap { $0 }.reduce(0, +)
     }
 
     /// The id of the plan imported for GymBook's plan `name`: it gets a funny name, so its name can't tell it.

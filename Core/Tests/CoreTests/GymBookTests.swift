@@ -148,6 +148,27 @@ func day(_ day: Int, _ hour: Int, _ minute: Int) -> Date {
         #expect(workouts.map(\.plan) == [nil, nil])
     }
 
+    @Test func withoutTheHistoryOnlyThePlansComeIn() throws {
+        #expect(context.importGymBook(file, history: false) == 0)
+        #expect(try context.fetchCount(FetchDescriptor<Workout>()) == 0)
+        #expect(try context.fetchCount(FetchDescriptor<Plan>()) == 1)
+    }
+
+    @Test func withoutTheHistoryOnlyThePlansExercisesAreUsed() throws {
+        let file = try GymBook.read(gymBookBackupSample)
+        #expect(context.gymBookExercisesUsed(file, workouts: [], leavingOut: ["MoDi 1"]) == ["Klimmzüge"])
+    }
+
+    @Test(arguments: [true, false]) func theImportSizeIsWhatImportingAdds(history: Bool) throws {
+        let file = try GymBook.read(gymBookBackupSample)
+        let matches = context.gymBookMatches(file)
+        let size = context.gymBookImportSize(file, workouts: history ? context.newWorkouts(in: file) : [], exercises: matches,
+                                             leavingOut: ["Anfang"])
+        let before = context.gymBookRecordCount()
+        context.importGymBook(file, exercises: matches, leavingOut: ["Anfang"], history: history)
+        #expect(context.gymBookRecordCount() - before == size.total)
+    }
+
     @Test func importingAgainMakesNoExerciseOfYourOwn() throws {
         context.importGymBook(file)
         let own = try context.fetchCount(FetchDescriptor<CatalogEntry>())

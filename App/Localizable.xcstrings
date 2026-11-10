@@ -761,6 +761,16 @@
         }
       }
     },
+    "Each record also gets an entry in the change log, and syncs to your devices." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeder Datensatz bekommt auch einen Eintrag im Änderungsprotokoll und wird mit deinen Geräten synchronisiert."
+          }
+        }
+      }
+    },
     "Edit" : {
       "localizations" : {
         "de" : {
@@ -827,6 +837,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Übungen"
+          }
+        }
+      }
+    },
+    "Exercises in plans" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Übungen in Plänen"
+          }
+        }
+      }
+    },
+    "Exercises of your own" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eigene Übungen"
           }
         }
       }
@@ -1027,6 +1057,16 @@
         }
       }
     },
+    "Growth" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zuwachs"
+          }
+        }
+      }
+    },
     "Guessed by Apple Intelligence" : {
       "localizations" : {
         "de" : {
@@ -1107,6 +1147,16 @@
         }
       }
     },
+    "Import the history" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlauf importieren"
+          }
+        }
+      }
+    },
     "Imported %lld workouts from GymBook." : {
       "localizations" : {
         "de" : {
@@ -1143,6 +1193,16 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "Imported the plans from GymBook." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Pläne aus GymBook wurden importiert."
           }
         }
       }
@@ -1663,6 +1723,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Quartal"
+          }
+        }
+      }
+    },
+    "Records added" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neue Datensätze"
+          }
+        }
+      }
+    },
+    "Records here now" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Datensätze bisher"
           }
         }
       }
@@ -2283,6 +2363,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diesen Plan hast du schon: Er bleibt, wie er ist."
+          }
+        }
+      }
+    },
+    "Your data" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine Daten"
           }
         }
       }

@@ -3,10 +3,10 @@ import Core
 import SwiftData
 import SwiftUI
 
-/// What a GymBook file brings, before it comes in: its plans to pick, the history it adds, and each of its exercises beside
-/// the one it becomes here, with its photo, muscles and equipment. One found by its name in English, German or Spanish is
-/// picked; the others come first, and Apple Intelligence guesses among the likeliest, where it can. Click one to choose
-/// another (`ExerciseChooser`).
+/// What a GymBook file brings, before it comes in: its plans to pick, the history it adds or leaves out, how many records
+/// that adds to yours, and each exercise it uses beside the one it becomes here, with its photo, muscles and equipment.
+/// One found by its name in English, German or Spanish is picked; the others come first, and Apple Intelligence guesses
+/// among the likeliest, where it can. Click one to choose another (`ExerciseChooser`).
 struct GymBookImport: View {
     @Environment(\.modelContext) private var context
     @Environment(\.dismiss) private var dismiss
@@ -14,9 +14,12 @@ struct GymBookImport: View {
     /// The workouts not imported before, the newest first.
     let workouts: [GymBook.Session]
     let suggestions: [String: [String]]
-    let onImport: (_ exercises: [String: String], _ leavingOut: Set<String>) -> Void
+    let onImport: (_ exercises: [String: String], _ leavingOut: Set<String>, _ history: Bool) -> Void
     @State private var exercises: [String: String]
     @State private var leavingOut: Set<String>
+    @State private var history = true
+    /// The records here now, which the import adds to.
+    @State private var records: Int?
     @State private var choosing: String?
     /// The exercises Apple Intelligence guessed, and those you chose, which it leaves alone.
     @State private var guessed: Set<String> = []
@@ -27,7 +30,7 @@ struct GymBookImport: View {
     private let planWorkouts: [String: Int]
 
     init(file: GymBook.File, matches: [String: String], workouts: [GymBook.Session], suggestions: [String: [String]],
-         onImport: @escaping ([String: String], Set<String>) -> Void) {
+         onImport: @escaping ([String: String], Set<String>, Bool) -> Void) {
         (self.file, self.workouts, self.suggestions, self.onImport) = (file, workouts, suggestions, onImport)
         _exercises = State(initialValue: matches)
         _leavingOut = State(initialValue: Set(file.plans.filter(\.archived).map(\.name))) // GymBook's active plans come in
@@ -38,7 +41,9 @@ struct GymBookImport: View {
 
     var body: some View {
         let here = context.gymBookPlansHere(file)
-        let matched = file.exercises.filter { !unmatched.contains($0) }
+        let used = context.gymBookExercisesUsed(file, workouts: history ? workouts : [], leavingOut: leavingOut)
+        let unfound = unmatched.filter(used.contains)
+        let matched = file.exercises.filter { used.contains($0) && !unmatched.contains($0) }
         NavigationStack {
             Form {
                 Section {
@@ -63,14 +68,15 @@ struct GymBookImport: View {
                     Text("Each comes in with its exercises, sets, reps and weight. A workout of a plan left out has no plan here.")
                 }
                 Section {
-                    if let last = workouts.first?.done.first?.date, let first = workouts.last?.done.first?.date {
+                    Toggle("Import the history", isOn: $history)
+                    if history, let last = workouts.first?.done.first?.date, let first = workouts.last?.done.first?.date {
                         LabeledContent("Workouts", value: workouts.count, format: .number)
                         LabeledContent("Sets", value: workouts.map(\.done.count).reduce(0, +), format: .number)
                         LabeledContent("From", value: first, format: .dateTime.day().month().year())
                         LabeledContent("To", value: last, format: .dateTime.day().month().year())
                         let planless = workouts.filter { !here.contains($0.plan) && leavingOut.contains($0.plan) }.count
                         if planless > 0 { LabeledContent("Without a plan", value: planless, format: .number) }
-                    } else {
+                    } else if history {
                         Text("Every workout of this file is here already.")
                     }
                 } header: {
@@ -78,9 +84,10 @@ struct GymBookImport: View {
                 } footer: {
                     Text("Cardio and skipped sets stay out. Importing again adds nothing.")
                 }
-                if !unmatched.isEmpty {
+                size
+                if !unfound.isEmpty {
                     Section {
-                        ForEach(unmatched, id: \.self, content: row)
+                        ForEach(unfound, id: \.self, content: row)
                     } header: {
                         HStack {
                             Text("Not found by name")
@@ -108,7 +115,7 @@ struct GymBookImport: View {
             .navigationTitle("Import from GymBook")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("Import") { onImport(exercises, leavingOut); dismiss() } }
+                ToolbarItem(placement: .confirmationAction) { Button("Import") { onImport(exercises, leavingOut, history); dismiss() } }
             }
             .sheet(isPresented: Binding { choosing != nil } set: { if !$0 { choosing = nil } }) {
                 if let choosing {
@@ -119,7 +126,31 @@ struct GymBookImport: View {
             }
         }
         .frame(minWidth: 680, minHeight: 640)
-        .task { await guess() }
+        .task {
+            records = context.gymBookRecordCount()
+            await guess()
+        }
+    }
+
+    /// How many records the import adds with what is chosen, beside those here now.
+    private var size: some View {
+        let size = context.gymBookImportSize(file, workouts: history ? workouts : [], exercises: exercises, leavingOut: leavingOut)
+        return Section {
+            LabeledContent("Plans", value: size.plans, format: .number)
+            LabeledContent("Exercises in plans", value: size.planExercises, format: .number)
+            LabeledContent("Exercises of your own", value: size.exercises, format: .number)
+            LabeledContent("Workouts", value: size.workouts, format: .number)
+            LabeledContent("Sets", value: size.sets, format: .number)
+            LabeledContent("Records added", value: size.total, format: .number).bold()
+            if let records {
+                LabeledContent("Records here now", value: records, format: .number)
+                if records > 0 { LabeledContent("Growth", value: Double(size.total) / Double(records), format: .percent.precision(.fractionLength(0))) }
+            }
+        } header: {
+            Text("Your data")
+        } footer: {
+            Text("Each record also gets an entry in the change log, and syncs to your devices.")
+        }
     }
 
     /// Lets Apple Intelligence guess each exercise its name doesn't find among the closest, unless you chose already.

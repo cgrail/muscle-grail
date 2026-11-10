@@ -57,7 +57,7 @@ struct GymBookImporter: ViewModifier {
             .sheet(isPresented: Binding { found != nil } set: { if !$0 { found = nil } }) {
                 if let found {
                     GymBookImport(file: found.file, matches: found.matches, workouts: found.workouts, suggestions: found.suggestions) {
-                        run(found.file, $0, leavingOut: $1)
+                        run(found.file, $0, leavingOut: $1, history: $2)
                     }
                 }
             }
@@ -86,21 +86,22 @@ struct GymBookImporter: ViewModifier {
         }
     }
 
-    private func run(_ file: GymBook.File, _ exercises: [String: String], leavingOut: Set<String>) {
+    private func run(_ file: GymBook.File, _ exercises: [String: String], leavingOut: Set<String>, history: Bool) {
         busy = true
         let container = context.container
         Task {
             let result = await Task.detached {
                 Result {
                     let context = ModelContext(container)
-                    let added = context.importGymBook(file, exercises: exercises, leavingOut: leavingOut)
+                    let added = context.importGymBook(file, exercises: exercises, leavingOut: leavingOut, history: history)
                     try context.save()
                     return added
                 }
             }.value
             busy = false
             switch result {
-            case let .success(added): message = String(localized: "Imported \(added) workouts from GymBook.")
+            case let .success(added):
+                message = history ? String(localized: "Imported \(added) workouts from GymBook.") : String(localized: "Imported the plans from GymBook.")
             case let .failure(failure): message = failure.localizedDescription
             }
         }
