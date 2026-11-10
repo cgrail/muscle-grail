@@ -84,6 +84,24 @@ import Testing
         #expect(specialExercises(of: push, among: [push, pull]) == ["Curl"])
     }
 
+    /// A plan and the record iCloud is still bringing of it, with the same id and only `exercises` so far.
+    func twins(_ exercises: String...) -> [Plan] {
+        let plan = makePlan(context, "Squat", "Curl"), twin = Plan(name: "Twin", order: 0)
+        context.insert(twin)
+        twin.id = plan.id
+        for exercise in exercises { context.add(exercise, to: plan).plan = twin }
+        return [twin, plan]
+    }
+
+    @Test func aPlanHereTwiceIsListedOnceWithAllItsExercises() {
+        #expect(trainingOrder(twins("Squat")).map(\.name) == ["New plan"])
+    }
+
+    @Test func aPlansTwinIsNoOtherPlan() {
+        let plans = twins("Squat")
+        #expect(specialExercises(of: plans[1], among: plans) == ["Squat", "Curl"])
+    }
+
     @Test func aWorkoutWithoutSetsIsNotDone() {
         let plan = makePlan(context, "Bench")
         _ = context.startWorkout(plan)

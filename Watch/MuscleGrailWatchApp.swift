@@ -43,6 +43,8 @@ struct MuscleGrailWatchApp: App {
                             }
                         }
                 }
+                // An open plan keeps the copy the iPhone handed over, until iCloud's own can take its place unseen.
+                .onChange(of: path.isEmpty) { _, isEmpty in WatchLinkSession.planOpen = !isEmpty }
                 // A sheet, so the complication opens it over a running workout too.
                 .sheet(isPresented: $showingActivity) { NavigationStack { ActivityView() } }
                 .onOpenURL { _ in showingActivity = true } // the complication's link, the only one

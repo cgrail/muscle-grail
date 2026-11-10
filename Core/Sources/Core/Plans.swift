@@ -102,11 +102,16 @@ public extension ModelContext {
         nameFunnily(plan)
     }
 
-    /// Your weight in your last set of `exerciseID`, if you ever did it.
-    func lastWeight(of exerciseID: String) -> Double? {
+    /// Your last set of `exerciseID`, if you ever did it.
+    func lastSet(of exerciseID: String) -> LoggedSet? {
         var last = FetchDescriptor<LoggedSet>(predicate: #Predicate { $0.exerciseID == exerciseID }, sortBy: [SortDescriptor(\.date, order: .reverse)])
         last.fetchLimit = 1
-        return (try? fetch(last))?.first?.weightKg
+        return (try? fetch(last))?.first
+    }
+
+    /// Your weight in your last set of `exerciseID`, if you ever did it.
+    func lastWeight(of exerciseID: String) -> Double? {
+        lastSet(of: exerciseID)?.weightKg
     }
 
     /// Applies a `List.onMove` to plans or to the exercises of one plan.
