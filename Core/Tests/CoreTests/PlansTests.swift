@@ -49,6 +49,14 @@ import Testing
         #expect((item.targetSets, item.targetReps, item.targetWeightKg) == (5, 5, 80))
     }
 
+    @Test func duplicateKeepsTheExercisesAtTheirTargets() {
+        let plan = makePlan(context, "Bench", "Squat")
+        context.setTargets(plan.sortedItems[0], sets: 5, reps: 5, weightKg: 80)
+        let copy = context.duplicate(plan).sortedItems
+        #expect(copy.map(\.exerciseID) == ["Bench", "Squat"])
+        #expect((copy[0].targetSets, copy[0].targetReps, copy[0].targetWeightKg) == (5, 5, 80))
+    }
+
     @Test func replacedExerciseStaysInItsPlace() {
         let plan = makePlan(context, "Bench", "Squat", "Row")
         context.replace(plan.sortedItems[1], with: "Curl")

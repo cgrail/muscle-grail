@@ -5,6 +5,7 @@
 ### Plans
 - A plan imported from GymBook keeps its GymBook name, with its funny name behind it ("Push · Corey"), and shows that character's drawing and motto.
 - Gluteus Kickback am Gerät (Machine Glute Kickback) is in the catalog with its steps in English and German and a picture of someone training on the machine.
+- On the Mac, select several plans in the sidebar with ⌘ or ⇧ and delete them together, from the right-click menu or with the Delete key, after a confirmation. A plan's right-click menu also renames it right in the sidebar, duplicates it with its exercises, sets, reps and weight, and gives it the next funny name.
 
 ## 1.0
 
