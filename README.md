@@ -82,37 +82,7 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 - Every plan says what it trains, like *Chest & Back*, *Leg-heavy* or *Full body*, and gets a funny name from it: a cartoon character with its own drawing and motto, like *Squatzilla* or *Captain Curl*, unless you name it yourself.
 - A history of every plan change, with undo, and a restore to any earlier version of a plan.
 
-### Train on iPhone and Apple Watch
-
-<p align="center">
-  <img src="Design/readme/iphone-plan.png" width="300" alt="Your plan, ready to go: a running workout on the iPhone with five exercises and their sets and reps">
-</p>
-
-- Every exercise and set is on your iPhone and watch before you leave home, so the plan opens with no signal in the gym.
-- The plan you haven't done for longest comes first as *Next up*, with how long ago each plan was: *5 days ago*, *2 weeks ago*.
-- The Mac can run a workout too.
-
-<p align="center">
-  <img src="Design/readme/iphone-set.png" width="300" alt="Log a set in one tap: an exercise on the iPhone with its illustration, 11 reps, one button to log set 1, and how to do it">
-</p>
-
-- One tap logs a set, or ticks off a whole exercise like "3 × 10 at 20 kg". Swipe to delete.
-- Each set is prefilled from the set you just did, else from last time, else from the plan.
-- Weights step through what your gym really has: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, machines in 5 kg steps. Machines that show pounds switch to lb per exercise.
-
-<p align="center">
-  <img src="Design/readme/iphone-howto.png" width="300" alt="Know every move: an exercise's steps on the iPhone, with a video link and a photo">
-</p>
-
-- Step-by-step instructions for each exercise, right in the workout.
-- Add your own photo and a link to a video that shows how.
-
-<p align="center">
-  <img src="Design/readme/iphone-done.png" width="300" alt="Saved to Health: the finished workout on the iPhone with volume, sets and duration, and a note that finishing saves it to Apple Health">
-</p>
-
-- The finished workout shows its volume, sets and time.
-- Finishing saves it to Apple Health; the watch records heart rate and calories.
+### Train on Apple Watch
 
 <p align="center">
   <img src="Design/readme/watch-workout.png" width="18%" alt="A workout on the Apple Watch: each exercise with its sets, reps and weight">
@@ -121,6 +91,30 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 </p>
 
 The watch alone is enough at the gym: start the plan, log every set, add or delete one, and finish, with the iPhone left in the locker.
+
+### Train on iPhone
+
+<p align="center">
+  <img src="Design/readme/iphone-plan.png" width="300" alt="Your plan, ready to go: a running workout on the iPhone with five exercises and their sets and reps">
+  <img src="Design/readme/iphone-set.png" width="300" alt="Log a set in one tap: an exercise on the iPhone with its illustration, 11 reps, one button to log set 1, and how to do it">
+</p>
+
+- Every exercise and set is on your iPhone and watch before you leave home, so the plan opens with no signal in the gym.
+- The plan you haven't done for longest comes first as *Next up*, with how long ago each plan was: *5 days ago*, *2 weeks ago*.
+- One tap logs a set, or ticks off a whole exercise like "3 × 10 at 20 kg". Swipe to delete.
+- Each set is prefilled from the set you just did, else from last time, else from the plan.
+- Weights step through what your gym really has: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, machines in 5 kg steps. Machines that show pounds switch to lb per exercise.
+
+<p align="center">
+  <img src="Design/readme/iphone-howto.png" width="300" alt="Know every move: an exercise's steps on the iPhone, with a video link and a photo">
+  <img src="Design/readme/iphone-done.png" width="300" alt="Saved to Health: the finished workout on the iPhone with volume, sets and duration, and a note that finishing saves it to Apple Health">
+</p>
+
+- Step-by-step instructions for each exercise, right in the workout.
+- Add your own photo and a link to a video that shows how.
+- The finished workout shows its volume, sets and time.
+- Finishing saves it to Apple Health; the watch records heart rate and calories.
+- The Mac can run a workout too, though macOS has no Apple Health to save it to.
 
 ### Train together
 
