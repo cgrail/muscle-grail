@@ -85,11 +85,34 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
 ### Train on iPhone and Apple Watch
 
 <p align="center">
-  <img src="Design/readme/iphone-plan.png" width="23%" alt="A plan on the iPhone: its cartoon character and motto, and each exercise with its sets and reps, marked as shared with the training partner">
-  <img src="Design/readme/iphone-workout.png" width="23%" alt="A running workout on the iPhone: five exercises, two of them done with 3 of 3 sets">
-  <img src="Design/readme/iphone-set.png" width="23%" alt="An exercise on the iPhone: its illustration, 11 reps, one button to log set 1, and how to do it">
-  <img src="Design/readme/iphone-done.png" width="23%" alt="The finished workout on the iPhone: volume, sets and duration, and a note that finishing saves it to Apple Health">
+  <img src="Design/readme/iphone-plan.png" width="300" alt="Your plan, ready to go: a running workout on the iPhone with five exercises and their sets and reps">
 </p>
+
+- Every exercise and set is on your iPhone and watch before you leave home, so the plan opens with no signal in the gym.
+- The plan you haven't done for longest comes first as *Next up*, with how long ago each plan was: *5 days ago*, *2 weeks ago*.
+- The Mac can run a workout too.
+
+<p align="center">
+  <img src="Design/readme/iphone-set.png" width="300" alt="Log a set in one tap: an exercise on the iPhone with its illustration, 11 reps, one button to log set 1, and how to do it">
+</p>
+
+- One tap logs a set, or ticks off a whole exercise like "3 × 10 at 20 kg". Swipe to delete.
+- Each set is prefilled from the set you just did, else from last time, else from the plan.
+- Weights step through what your gym really has: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, machines in 5 kg steps. Machines that show pounds switch to lb per exercise.
+
+<p align="center">
+  <img src="Design/readme/iphone-howto.png" width="300" alt="Know every move: an exercise's steps on the iPhone, with a video link and a photo">
+</p>
+
+- Step-by-step instructions for each exercise, right in the workout.
+- Add your own photo and a link to a video that shows how.
+
+<p align="center">
+  <img src="Design/readme/iphone-done.png" width="300" alt="Saved to Health: the finished workout on the iPhone with volume, sets and duration, and a note that finishing saves it to Apple Health">
+</p>
+
+- The finished workout shows its volume, sets and time.
+- Finishing saves it to Apple Health; the watch records heart rate and calories.
 
 <p align="center">
   <img src="Design/readme/watch-workout.png" width="18%" alt="A workout on the Apple Watch: each exercise with its sets, reps and weight">
@@ -97,14 +120,13 @@ Good to know: swiping the app away in the app switcher, Low Power Mode and turni
   <img src="Design/readme/watch-done.png" width="18%" alt="The finished workout on the Apple Watch with its volume">
 </p>
 
-- One tap logs a set, or ticks off a whole exercise like "3 × 10 at 20 kg". Swipe to delete.
-- Each set is prefilled from the set you just did, else from last time, else from the plan.
-- The plan you haven't done for longest comes first as *Next up*, with how long ago each plan was: *5 days ago*, *2 weeks ago*.
-- Weights step through what your gym really has: dumbbells 20 → 22 kg, barbells in 2.5 kg steps, machines in 5 kg steps. Machines that show pounds switch to lb per exercise.
-- How to do each exercise, with your own photo or video link, right in the workout.
-- Workouts go to Apple Health; the watch records heart rate and calories. The Mac can run a workout too.
+The watch alone is enough at the gym: start the plan, log every set, add or delete one, and finish, with the iPhone left in the locker.
 
 ### Train together
+
+<p align="center">
+  <img src="Design/readme/iphone-partner.png" width="300" alt="Train together: a plan on the iPhone with its cartoon character, each exercise marked as for both or only me">
+</p>
 
 Share your plans with your training partner in one invite: all of them, now and later, or just the ones you choose. You each keep your own Apple ID, weights and history. Changing a shared exercise asks whether it is for both of you or only for you, so one of you can do curls while the other benches, at the same spot in the plan.
 
