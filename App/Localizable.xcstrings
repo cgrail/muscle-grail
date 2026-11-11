@@ -109,6 +109,16 @@
         }
       }
     },
+    "%lld selected" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld ausgewählt"
+          }
+        }
+      }
+    },
     "%lld sets" : {
       "localizations" : {
         "de" : {
@@ -681,6 +691,16 @@
         }
       }
     },
+    "Delete %lld plans?" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Pläne löschen?"
+          }
+        }
+      }
+    },
     "Describe exercises" : {
       "localizations" : {
         "de" : {
@@ -737,6 +757,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zieh eine Übung auf einen anderen Plan, um sie dorthin zu verschieben."
+          }
+        }
+      }
+    },
+    "Duplicate" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Duplizieren"
           }
         }
       }
@@ -1763,6 +1793,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto entfernen"
+          }
+        }
+      }
+    },
+    "Rename" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Umbenennen"
           }
         }
       }

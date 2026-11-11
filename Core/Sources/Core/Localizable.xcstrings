@@ -21,6 +21,16 @@
         }
       }
     },
+    "%@ copy" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Kopie"
+          }
+        }
+      }
+    },
     "Back Rambo" : {
       "comment" : "A funny plan name: a cartoon character, given for what the plan trains",
       "extractionState" : "manual",

@@ -30,6 +30,19 @@ public extension ModelContext {
         record(.deletePlan(id: plan.id))
     }
 
+    /// A copy of `plan` at the end of the list, with its picture and the exercises you train in it at their targets.
+    /// It isn't shared, so the training partner's own stay out.
+    @discardableResult
+    func duplicate(_ plan: Plan) -> Plan {
+        let copy = addPlan()
+        rename(copy, to: String(localized: "\(plan.title) copy", bundle: .module))
+        if !plan.picture.isEmpty { record(.setPicture(id: copy.id, picture: plan.picture)) }
+        for item in plan.trainedItems {
+            setTargets(add(item.exerciseID, to: copy), sets: item.targetSets, reps: item.targetReps, weightKg: item.targetWeightKg)
+        }
+        return copy
+    }
+
     /// Appends the catalog exercise `exerciseID` to the end of `plan`: for both, or in a shared plan one person's own.
     @discardableResult
     func add(_ exerciseID: String, to plan: Plan, own: Own? = nil) -> PlanItem {
