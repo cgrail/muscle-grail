@@ -14,27 +14,46 @@ defaults:
   run:
     shell: bash # with pipefail, so a failure before `| tee` fails the step
 
+# Three jobs, so the tests and both app builds run at the same time.
+# A failed check posts the end of its log as an annotation, so the run's summary shows why without a login.
 jobs:
-  build:
-    runs-on: macos-26
+  test:
+    runs-on: xcode-27 # swift test compiles String Catalogs only from Xcode 27; macos-26 has only Xcode 26
     steps:
       - uses: actions/checkout@v5
       - uses: maxim-lobanov/setup-xcode@v1
         with:
           xcode-version: latest-stable
       - run: echo "::notice::$(xcodebuild -version | tr '\n' ' ')"
-      # A failed check posts the end of its log as an annotation, so the run's summary shows why without a login.
-      # xcodebuild, not swift test: SwiftPM before Xcode 27 doesn't compile String Catalogs, so every German lookup fails.
-      # One test at a time, so a crash names its test (the last one started) instead of failing every test running beside it.
       - name: Fetch the exercise catalog
         run: Core/fetch-catalog.sh
+      # One test at a time, so a crash names its test (the last one started) instead of failing every test running beside it.
       - name: Core tests
         working-directory: Core
         run: |
-          xcodebuild test -scheme Core -destination 'platform=macOS' -parallel-testing-enabled NO 2>&1 | tee ../check.log || { ../.github/annotate.sh ../check.log; exit 1; }
+          swift test --no-parallel 2>&1 | tee ../check.log || { ../.github/annotate.sh ../check.log; exit 1; }
+  ios:
+    runs-on: xcode-27
+    steps:
+      - uses: actions/checkout@v5
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Fetch the exercise catalog
+        run: Core/fetch-catalog.sh
+      # ARCHS=arm64: a generic destination builds every simulator architecture, and x86_64 doubles the work for nothing.
       - name: Build iPhone, watch and complication
         run: |
-          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
+          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'generic/platform=iOS Simulator' ARCHS=arm64 CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
+  mac:
+    runs-on: xcode-27
+    steps:
+      - uses: actions/checkout@v5
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+      - name: Fetch the exercise catalog
+        run: Core/fetch-catalog.sh
       - name: Build Mac
         run: |
-          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
+          xcodebuild -project MuscleGrail.xcodeproj -scheme MuscleGrail -destination 'platform=macOS' ARCHS=arm64 CODE_SIGNING_ALLOWED=NO build 2>&1 | tee check.log || { .github/annotate.sh check.log; exit 1; }
