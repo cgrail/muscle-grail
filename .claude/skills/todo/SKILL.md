@@ -45,7 +45,7 @@ Do **not** batch items. For each item, in order:
    - A changed decision about sync, the data model or HealthKit: [PLAN.md](../../../PLAN.md).
    - A bug fix that changes no rule: none of them.
 7. **Tick the item** in `todo.md`: `[ ]` → `[x]`. If the work revealed a follow-up the user should decide on, append it as a new `[ ]` line rather than doing it silently.
-8. **Commit everything for that item together:** code, tests, catalogs, `todo.md`, the changelog and docs, with a message in the style of CLAUDE.md's Workflow section. **Then push it straight to `main`**, without asking, only with every check green. If the push is rejected because `main` moved, rebase onto `origin/main`, resolve any conflicts keeping both sides' intent, run the checks again and push. Never force-push.
+8. **Commit everything for that item together:** code, tests, catalogs, `todo.md`, the changelog, the README's Features for a new or changed feature, and docs, and `CURRENT_PROJECT_VERSION` in `Config/Version.xcconfig` raised by 1, with a message in the style of CLAUDE.md's Workflow section. Work on a branch, never on `main`: start one from an up-to-date `main` before the first item, push each commit to it once every check is green, and open a pull request after the first push (later items go to the same branch and pull request). If `main` moved, rebase onto `origin/main`, resolve any conflicts keeping both sides' intent, and run the checks again. Never force-push a branch someone else works on.
 
 ## Reporting
 

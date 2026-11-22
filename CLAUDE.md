@@ -74,15 +74,44 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - A workout goes to HealthKit only from the device that ran it. That device stores the UUID in `Workout.healthKitID`. A workout finishes once, and Health gets no second strength workout started the same day or within an hour (`savedInHealth`): the user never trains twice a day, so it is the same workout, finished on the other device too, and takes that one's id.
 - The CloudKit container `iCloud.de.grails.musclegrail` is permanent: Apple can't delete or rename it.
 
+## Privacy
+
+Three things must agree, or App Review rejects the build: what the apps do, `docs/privacy-policy.html`, and the App Privacy answers in App Store Connect ("Data Not Collected").
+
+- A change that touches new data, a new framework or a network call updates the privacy policy and its "Last updated" date in the same commit.
+- Each target that runs code has its own `PrivacyInfo.xcprivacy`: `App/` (iPhone and Mac), `Watch/`, `Complication/` (both the complication and the widget). Core links into each, so its API use counts for every target it runs in. A target that starts to use a required-reason API (`UserDefaults`, file timestamps, disk space, system boot time) declares it in its manifest; `UserDefaults.standard` is `CA92.1`.
+- Export compliance ([Apple](https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations)): the app's Info.plist sets `ITSAppUsesNonExemptEncryption` to NO, so uploads skip the encryption question. That holds while the apps use only Apple's encryption (HTTPS, CloudKit) and hashing (SHA-256 in `GymBook.id`). Adding encryption of our own means revisiting it.
+
 ## Releases and the App Store
 
 - The apps ship through the App Store when the user releases a version; the watch app and complication ship inside the iPhone app. A push to `main` releases nothing.
-- `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION` are set once in the project's build settings, so every target shares them (the watch app's version must match the iPhone app's). Each upload needs a higher `CURRENT_PROJECT_VERSION`.
+- `Config/Version.xcconfig` is the only place that sets `MARKETING_VERSION` and `CURRENT_PROJECT_VERSION`: the project's configurations take it as their base, so every target shares it (the watch app's and the extensions' versions must match the iPhone app's). Never set them on a target, in Xcode's General tab or in `project.pbxproj`.
+- Each commit raises `CURRENT_PROJECT_VERSION` by 1, in the same commit, so each upload has a higher one. `MARKETING_VERSION` changes only for a release.
 - TestFlight and App Store builds use CloudKit's Production environment. Before uploading a build with a model change, deploy the schema to Production in the CloudKit Console. First run the app from Xcode with the MuscleGrail scheme's `-initializeCloudKitSchema` argument ticked (`CloudKitSchema`, debug builds only): it creates every SwiftData record type and field in Development, and the `Partner` zone's (`CKSyncEngine`'s records and the zone share) from one full record of each in a throwaway zone, then quits. Syncing alone creates only the fields it uploaded a value for, and Production refuses records with a type or field it lacks: downloads keep working while every upload fails with "Failed to modify some records". Before submitting for review, check that the console's Deploy Schema Changes lists nothing left to deploy. To try a schema change in TestFlight before deploying it, set the entitlement `com.apple.developer.icloud-container-environment` to `Development`, and set it back to `Production` before the App Store build. Background: [why sync stops after App Store release](https://fatbobman.com/en/snippet/why-core-data-or-swiftdata-cloud-sync-stops-working-after-app-store-login/).
-- Export compliance ([Apple](https://developer.apple.com/documentation/security/complying-with-encryption-export-regulations)): the app's Info.plist sets `ITSAppUsesNonExemptEncryption` to NO, so uploads skip the encryption question. That holds while the apps use only Apple's encryption (HTTPS, CloudKit) and hashing (SHA-256 in `GymBook.id`). Adding encryption of our own means revisiting it.
 - Saved data: the `UserDefaults` keys `lastSync`, `lastChange`, `lastExport` and `unsentPlans` (`SyncMonitor`), `day`, `steps`, `km` (the complication), `mcpServer` (the Mac's Claude switch), `backupFolder` (the bookmark of the Mac's backup folder), `linkSent` and `linkCopies` (`WatchLinkSession`: the date of the last change sent over Bluetooth, and the copies it made that wait for iCloud's originals), `exercisesLayout` and `thumbnailSize` (the Mac's exercise library as a list or thumbnails, and their size) and `AppleLanguages` (the language switch on iPhone and Mac, Apple's own key read at launch), and the iCloud key-value keys `goalSteps` and `goalKm` (daily goals), `dailySteps` and `dailyKm` (each day's steps and km, which the iPhone copies from Health for the Mac, `saveDaily`), `partnerAlwaysBoth` (whether changes to shared exercises are always for both) and `defaultSets` and `defaultReps` (what a new exercise starts with, `targetDefaults`), keep their names and meaning, so an update reads what the old version saved.
 - [CHANGELOG.md](CHANGELOG.md) gets an entry in the same commit as every change a user would notice, under `## <MARKETING_VERSION> (current)`. Say what the app does now, not what the diff did; refactors that change nothing visible stay out. When `MARKETING_VERSION` is bumped, the top section is closed and a new current one opens above it.
 - `WHATS-NEW.md` is the user-facing cut for App Store Connect's "What's New", in English and German, written when a version ships, not per commit. Plain text: App Store Connect rejects bullets, emoji and typographic dashes or quotes there (umlauts are fine).
+
+### Preparing a release
+
+When the user asks to prepare a release, do these steps in order. The release is ready when every step is done and its check is green.
+
+1. Create the branch `release-<version>` from an up-to-date `main`.
+2. Run the checks in Build and test. Done when they pass.
+3. In `Config/Version.xcconfig`, add 1 to `CURRENT_PROJECT_VERSION`. For a new version, raise `MARKETING_VERSION`, drop `(current)` from the top changelog section, and open a new `## <new version> (current)` above it.
+4. Write `WHATS-NEW.md` from the changelog section (see above).
+5. Compare [APP-STORE.md](APP-STORE.md) with the changelog section. If a feature is new or changed, update the description in both languages. Done when `scripts/check-listing.py` exits 0.
+6. Check privacy (see Privacy). Done when each target's manifest matches what `grep -rnE "UserDefaults|@AppStorage|modificationDate|creationDate|systemUptime|volumeAvailableCapacity" --include='*.swift' App Watch Complication Core/Sources` finds in the code it builds, and the policy describes every framework that handles user data.
+7. Commit, push, and open the pull request.
+8. End with the steps below for the user, and mark the ones this release needs.
+
+### Steps only the user can do
+
+- If a schema version changed: run the app from Xcode with `-initializeCloudKitSchema`, deploy the schema to Production in the CloudKit Console, and check that Deploy Schema Changes lists nothing (see above).
+- Merge the pull request.
+- In Xcode, Product → Archive with the MuscleGrail scheme, once for iOS and once for macOS, then Distribute App → App Store Connect.
+- In App Store Connect, paste the texts from APP-STORE.md and WHATS-NEW.md, update the screenshots if the UI changed, select the builds and submit for review.
+- Test on devices before submitting: the acceptance tests in PLAN.md (A–N) that the release touches, and always B (watch offline) and M (Bluetooth).
 
 ## Exercise catalog
 
@@ -110,5 +139,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 
 ## Workflow
 
+- Work on a branch, push it, and open a pull request. Commit nothing to `main`.
+- A new or changed feature, control or setting updates the README's Features in the same commit.
 - The backlog is `todo.md`, worked through with the `/todo` skill. Each item gets its own commit, and done items are ticked `[x]` and kept.
 - Commit messages use an imperative subject of about 60 characters with no scope prefix ("Add searchable exercise catalog picker"). Add a body only when the reason isn't obvious.
