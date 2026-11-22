@@ -19,7 +19,7 @@ Read [PLAN.md](PLAN.md) before changing sync, the data model, or HealthKit. It h
 - An unsigned build traps inside CloudKit at launch. To launch in the simulator, sign ad hoc: `CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY=- DEVELOPMENT_TEAM=`. A simulator without an iCloud account gets no plans: tick `-sampleData` in the MuscleGrailWatch scheme, and the watch adds a plan to train with while its store has none (`SampleData`, simulator builds only). Real sync needs signed device builds (team `3Z7QAPFM7G`).
 - Done means `swift test` passes and the compile check succeeds for iOS (which includes the watch) and macOS. The user runs the UI tests by hand.
 - Fix every warning and error the build reports, the ones that were there before your change too. An incremental build repeats warnings only for files it recompiles, so check with a clean build (`-derivedDataPath` in a scratch folder). Xcode's "Metadata extraction skipped, no AppIntents.framework dependency found" is a build tool's note, not a warning in the code: leave it.
-- GitHub Actions (`.github/workflows/build.yml`) runs those three checks on every pull request and push to `main`, on the `macos-26` runner with its newest stable Xcode. It fetches the catalog, then runs Core's tests with `xcodebuild test -scheme Core`, because SwiftPM before Xcode 27 doesn't compile String Catalogs. It doesn't measure coverage.
+- GitHub Actions (`.github/workflows/build.yml`) runs those three checks as parallel jobs on every pull request and push to `main`, on the `xcode-27` runner with its newest stable Xcode (SwiftPM before Xcode 27 doesn't compile String Catalogs, so `swift test` needs it). Each job fetches the catalog; the builds compile arm64 only. It doesn't measure coverage.
 
 ## Tests
 
